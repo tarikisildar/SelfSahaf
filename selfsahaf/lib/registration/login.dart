@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/registration/input_field.dart';
+import 'package:selfsahaf/registration/signup.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -36,8 +37,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return  Scaffold(
           backgroundColor: Colors.orange,
       body: Container(
         
@@ -52,8 +52,8 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.only(top: 30),
                 ),
                 Container(
-                  width: 200,
-                  height: 200,
+                  width: 300,
+                  height: 300,
                   child: Image.asset("images/logo_white/logo_white.png"),
                 ),
                 Padding(
@@ -113,7 +113,10 @@ class _LoginPageState extends State<LoginPage> {
                               side: BorderSide(
                                   color: Colors.orange)),
                       color: Colors.white,
-                      onPressed: (){print("kayit oldum aq");},
+                      onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Signup())),
                       child: Text("Kayit Ol", style:TextStyle(color: Colors.orange, fontSize: 20), 
                       ),
                     ),
@@ -125,8 +128,6 @@ class _LoginPageState extends State<LoginPage> {
                   child: Center(
                     
                     child: GestureDetector(
-
-                      
                       onTap: (){print("Sifremi unuttum aq");},
                       child: Text("Sifremi Unuttum", style:TextStyle(color: Colors.white, fontSize: 15), 
                       ),
@@ -138,6 +139,6 @@ class _LoginPageState extends State<LoginPage> {
           )),
         ),
       ),
-    ));
+    );
   }
 }
