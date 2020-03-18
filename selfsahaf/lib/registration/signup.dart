@@ -248,8 +248,9 @@ class _SignupState extends State<Signup> {
                                   } else if (!_kvkk) {
                                     _scaffoldKey.currentState
                                         .showSnackBar(SnackBar(
+                                          backgroundColor: Colors.white,
                                       content: Text(
-                                          "Lütfen KVKK sözleşmesini kabul ediniz!"),
+                                          "Lütfen KVKK sözleşmesini kabul ediniz!", style: TextStyle(color: Colors.orange),),
                                       duration: Duration(seconds: 2),
                                     ));
                                   } else {
