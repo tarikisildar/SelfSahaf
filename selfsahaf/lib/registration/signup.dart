@@ -1,19 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/registration/input_field.dart';
-
 
 import 'login.dart';
 
 class Signup extends StatefulWidget {
-  
-
   @override
   _SignupState createState() => _SignupState();
 }
 
 class _SignupState extends State<Signup> {
-  
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _emailController = TextEditingController();
@@ -22,8 +17,6 @@ class _SignupState extends State<Signup> {
   final _passController = TextEditingController();
   final _passCheckController = TextEditingController();
   bool _kvkk = false;
-
-  
 
   String fullnameValidation(String fullname) {
     String pattern = r'([a-zA-Z0-9]{4,20})$';
@@ -115,174 +108,180 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: Colors.orange,
-            key: _scaffoldKey,
-            body: SafeArea(
-              child: Form(
-                key: _formKey,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                  child: Container(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          SizedBox(height: 5.0),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20.0,left: 13.0, right: 13.0),
-                            child: Container(
-                                child: Image.asset(
-                                  "images/logo_white/logo_white.png",
-                                  fit: BoxFit.contain,
-                                ),
-                                height: 100.0,
-                                width: 100.0),
+      backgroundColor: Color.fromRGBO(230,81,0,1),
+      key: _scaffoldKey,
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+            child: Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(height: 5.0),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 20.0, left: 13.0, right: 13.0),
+                      child: Container(
+                          child: Image.asset(
+                            "images/logo_white/logo_white.png",
+                            fit: BoxFit.contain,
                           ),
-                          SizedBox(height: 20.0),
-                           InputField(
-                              controller: _fullnameController,
-                              inputType: TextInputType.text,
-                              validation: fullnameValidation,
-                              labelText: "Kullanıcı adı",
-                              suffixIcon: Icon(
-                                Icons.person,
-                                color: Colors.white,
-                              ),
-                            ),
-                          
-                          SizedBox(height: 12.0),
-                           InputField(
-                              controller: _emailController,
-                              inputType: TextInputType.emailAddress,
-                              validation: emailValidation,
-                              labelText: "Email",
-                              suffixIcon: Icon(
-                                Icons.mail,
-                                color: Colors.white,
-                              ),
-                            ),
-                          
-                          SizedBox(height: 12.0),
-                           InputField(
-                              controller: _phoneController,
-                              inputType: TextInputType.phone,
-                              validation: telephoneNumberValidation,
-                              labelText: "Telefon Numarasi",
-                              suffixIcon: Icon(
-                                Icons.phone,
-                                color: Colors.white,
-                              ),
-                            ),
-                          
-                          SizedBox(height: 12.0),
-                           InputField(
-                              controller: _passController,
-                              inputType: TextInputType.visiblePassword,
-                              validation: passwrdValidation,
-                              labelText: "Sifre",
-                              isPassword: true,
-                              suffixIcon: Icon(
-                                Icons.lock,
-                                color: Colors.white,
-                              ),
-                            ),
-                          
-                          SizedBox(height: 12.0),
-                           InputField(
-                              controller: _passCheckController,
-                              inputType: TextInputType.visiblePassword,
-                              validation: passwrdValidation,
-                              isPassword: true,
-                              labelText: "Sifrenizi Yeniden Yazınız",
-                              suffixIcon: Icon(
-                                Icons.verified_user,
-                                color: Colors.white,
-                              ),
-                            ),
-                          
-                          SizedBox(height: 10.0),
-                          Row(children: <Widget>[
-                            Checkbox(
-                        
-                              activeColor: Colors.white,
-                              checkColor: Colors.white,
-                              onChanged: (bool value) {
-                                setState(() => this._kvkk = value);
-                              },
-                              value: this._kvkk,
-                            ),
-                            Text(
-                              "KVKK kapsamı doğrultusundaki aydınlatma\n metnini okuyup kabul ettim.",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontStyle: FontStyle.italic),
-                            ),
-                          ]),
-                          SizedBox(height: 12.0),
-                          Container(
-                              width: 80.0,
-                              height: 50.0,
-                              child: FlatButton(
-                                shape: new RoundedRectangleBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(12.0),
-                                    side: BorderSide(
-                                        color: Colors.white)),
-                                color: Colors.white,
-                                child: Text(
-                                  "Kayıt Ol",
-                                  style: TextStyle(
-                                      color: Colors.orange, fontSize: 20.0),
-                                ),
-                                onPressed: () {
-                                  CircularProgressIndicator();
-                                  if (doppelValidation(
-                                          _passController.value.text,
-                                          _passCheckController.value.text) &&
-                                      _kvkk) {
-                                    if (_formKey.currentState.validate()) {
-                                      print("kayitoldum");
-                                    }
-                                  } else if (!_kvkk) {
-                                    _scaffoldKey.currentState
-                                        .showSnackBar(SnackBar(
-                                          backgroundColor: Colors.white,
-                                      content: Text(
-                                          "Lütfen KVKK sözleşmesini kabul ediniz!", style: TextStyle(color: Colors.orange),),
-                                      duration: Duration(seconds: 2),
-                                    ));
-                                  } else {
-                                    _scaffoldKey.currentState
-                                        .showSnackBar(SnackBar(
-                                      content: Text("Şifreler Uyuşmuyor!",
-                                          style: TextStyle(fontSize: 15)),
-                                    ));
-                                  }
-                                },
-                              )),
-                          SizedBox(height: 30.0),
-                          Center(
-                              child: GestureDetector(
-                                  child: Text("Zaten üye misiniz? Giriş Yap",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20)),
-                                  onTap: () {
-                                    
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => LoginPage()));
-                                  })),
-                        ],
+                          height: 100.0,
+                          width: 100.0),
+                    ),
+                    SizedBox(height: 20.0),
+                    InputField(
+                      controller: _fullnameController,
+                      inputType: TextInputType.text,
+                      validation: fullnameValidation,
+                      labelText: "Adiniz",
+                      suffixIcon: Icon(
+                        Icons.person,
+                        color: Colors.white,
                       ),
                     ),
-                  ),
+                    SizedBox(height: 12.0),
+                    InputField(
+                      controller: _fullnameController,
+                      inputType: TextInputType.text,
+                      validation: fullnameValidation,
+                      labelText: "Soyadiniz",
+                      suffixIcon: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                    InputField(
+                      controller: _emailController,
+                      inputType: TextInputType.emailAddress,
+                      validation: emailValidation,
+                      labelText: "Email",
+                      suffixIcon: Icon(
+                        Icons.mail,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                    InputField(
+                      controller: _phoneController,
+                      inputType: TextInputType.phone,
+                      validation: telephoneNumberValidation,
+                      labelText: "Telefon Numarasi",
+                      suffixIcon: Icon(
+                        Icons.phone,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                    InputField(
+                      controller: _passController,
+                      inputType: TextInputType.visiblePassword,
+                      validation: passwrdValidation,
+                      labelText: "Sifre",
+                      isPassword: true,
+                      suffixIcon: Icon(
+                        Icons.lock,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                    InputField(
+                      controller: _passCheckController,
+                      inputType: TextInputType.visiblePassword,
+                      validation: passwrdValidation,
+                      isPassword: true,
+                      labelText: "Sifrenizi Yeniden Yazınız",
+                      suffixIcon: Icon(
+                        Icons.verified_user,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(children: <Widget>[
+                      Checkbox(
+                        activeColor: Colors.white,
+                        checkColor: Colors.white,
+                        onChanged: (bool value) {
+                          setState(() => this._kvkk = value);
+                        },
+                        value: this._kvkk,
+                      ),
+                      Text(
+                        "KVKK kapsamı doğrultusundaki aydınlatma\n metnini okuyup kabul ettim.",
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontStyle: FontStyle.italic),
+                      ),
+                    ]),
+                    SizedBox(height: 12.0),
+                    Container(
+                        width: 80.0,
+                        height: 50.0,
+                        child: FlatButton(
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(12.0),
+                              side: BorderSide(color: Colors.white)),
+                          color: Colors.white,
+                          child: Text(
+                            "Kayıt Ol",
+                            style:
+                                TextStyle(color: Color.fromRGBO(230,81,0,1), fontSize: 20.0),
+                          ),
+                          onPressed: () {
+                            CircularProgressIndicator();
+                            if (doppelValidation(_passController.value.text,
+                                    _passCheckController.value.text) &&
+                                _kvkk) {
+                              if (_formKey.currentState.validate()) {
+                                print("kayitoldum");
+                              }
+                            } else if (!_kvkk) {
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                backgroundColor: Colors.white,
+                                content: Text(
+                                  "Lütfen KVKK sözleşmesini kabul ediniz!",
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(230,81,0,1), fontSize: 18),
+                                ),
+                                duration: Duration(seconds: 2),
+                              ));
+                            } else {
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                backgroundColor: Colors.white,
+                                content: Text(
+                                  "Şifreler Uyuşmuyor!",
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(230,81,0,1), fontSize: 18),
+                                ),
+                              ));
+                            }
+                          },
+                        )),
+                    SizedBox(height: 30.0),
+                    Center(
+                        child: GestureDetector(
+                            child: Text("Zaten üye misiniz? Giriş Yap",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20)),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()));
+                            })),
+                  ],
                 ),
               ),
             ),
-          );
+          ),
+        ),
+      ),
+    );
   }
 }

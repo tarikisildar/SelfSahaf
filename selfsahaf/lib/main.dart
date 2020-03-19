@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/main_page/main_page.dart';
 import 'package:selfsahaf/registration/login.dart';
 
 
@@ -11,7 +12,9 @@ class SelfSahaf extends StatelessWidget {
     return MaterialApp(
       title: 'SelfSahaf',
       theme: ThemeData(
-        accentColor: Color.fromRGBO(47, 19, 8, 1),
+        primaryColor: Color(0xffe65100),
+        accentColor: Color(0xff833a),
+        textSelectionColor: Color(0xffac1900),
         appBarTheme: AppBarTheme(
           color: Color.fromRGBO(255, 165, 0, 1)
         ),
@@ -45,6 +48,7 @@ class SelfSahaf extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => LoginPage(),
+        '/mainPage' : (context) => MainPage(),
         
       },
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/main_page/main_page.dart';
 import 'package:selfsahaf/registration/input_field.dart';
 import 'package:selfsahaf/registration/signup.dart';
 
@@ -10,7 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
+  
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
 
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-          backgroundColor: Colors.orange,
+          backgroundColor: Color.fromRGBO(230,81,0,1),
       body: Container(
         
         child: SingleChildScrollView(
@@ -92,10 +93,11 @@ class _LoginPageState extends State<LoginPage> {
                       shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(12.0),
                               side: BorderSide(
-                                  color: Colors.orange)),
+                                  color: Color.fromRGBO(230,81,0,1))),
                       color: Colors.white,
-                      onPressed: (){print("girdim aq");},
-                      child: Text("Giris Yap", style:TextStyle(color: Colors.orange, fontSize: 20), 
+                      onPressed: (){Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => MainPage()),
+    ModalRoute.withName('/mainPage'));},
+                      child: Text("Giris Yap", style:TextStyle(color: Color.fromRGBO(230,81,0,1), fontSize: 20), 
                       ),
                     ),
                   ),
@@ -111,13 +113,13 @@ class _LoginPageState extends State<LoginPage> {
                       shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(12.0),
                               side: BorderSide(
-                                  color: Colors.orange)),
+                                  color: Color.fromRGBO(230,81,0,1))),
                       color: Colors.white,
                       onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Signup())),
-                      child: Text("Kayit Ol", style:TextStyle(color: Colors.orange, fontSize: 20), 
+                      child: Text("Kayit Ol", style:TextStyle(color: Color.fromRGBO(230,81,0,1), fontSize: 20), 
                       ),
                     ),
                   ),

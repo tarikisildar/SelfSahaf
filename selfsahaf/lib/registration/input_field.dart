@@ -39,10 +39,11 @@ class _InputFieldState extends State<InputField> {
         suffixIcon: widget.suffixIcon,
         labelStyle: TextStyle(color: Colors.white),
         focusedBorder: OutlineInputBorder(
-            
+            gapPadding: 2.0,
             borderSide: BorderSide(color: Colors.white, width: 3.0),
             borderRadius: new BorderRadius.circular(16.0)),
         enabledBorder: new OutlineInputBorder(
+          gapPadding: 2.0,
           borderRadius: new BorderRadius.circular(16.0),
           borderSide: new BorderSide(
             color: Colors.white,
@@ -50,6 +51,7 @@ class _InputFieldState extends State<InputField> {
           ),
         ),
         errorBorder: new OutlineInputBorder(
+          gapPadding: 2.0,
           borderRadius: new BorderRadius.circular(16.0),
           borderSide: new BorderSide(
             color:Colors.white,
@@ -57,6 +59,7 @@ class _InputFieldState extends State<InputField> {
           ),
         ),
         focusedErrorBorder: new OutlineInputBorder(
+          gapPadding: 2.0,
           borderRadius: new BorderRadius.circular(16.0),
           borderSide: new BorderSide(
             color:Colors.white,
