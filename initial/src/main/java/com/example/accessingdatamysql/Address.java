@@ -32,14 +32,25 @@ public class Address {
     private PostalCodeCity postalCodeCity;*//*
 
 */
-    private String postalCode;
+
     private String addressLine;
+
+    @OneToOne
+    @JoinColumn(name = "postalCodeCity")
+    private PostalCodeCity postalCodeCity;
+
+    public PostalCodeCity getPostalCodeCity() {
+        return postalCodeCity;
+    }
+
+    public void setPostalCodeCity(PostalCodeCity postalCodeCity) {
+        this.postalCodeCity = postalCodeCity;
+    }
 
     public Address() {
     }
 
     public Address(String postalCode, String addressLine) {
-        this.postalCode = postalCode;
         this.addressLine = addressLine;
     }
 
@@ -62,14 +73,6 @@ public class Address {
 
     public void setAddressID(Integer addressID) {
         this.addressID = addressID;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
     }
 
     public String getAddressLine() {

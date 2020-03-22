@@ -1,6 +1,9 @@
 com\example\accessingdatamysql\AccessingDataMysqlApplication.class
+com\example\accessingdatamysql\PostalCodeCity.class
+com\example\accessingdatamysql\PostalRepository.class
 com\example\accessingdatamysql\MainController.class
 com\example\accessingdatamysql\Address.class
 com\example\accessingdatamysql\User.class
 com\example\accessingdatamysql\AddressRepository.class
 com\example\accessingdatamysql\UserRepository.class
+com\example\accessingdatamysql\Swagger2Config.class

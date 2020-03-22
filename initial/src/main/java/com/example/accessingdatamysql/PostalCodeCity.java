@@ -1,4 +1,3 @@
-/*
 package com.example.accessingdatamysql;
 import javax.persistence.*;
 import java.util.Set;
@@ -7,16 +6,6 @@ import java.util.Set;
 @Table(name = "postalcodecity")
 public class PostalCodeCity {
 
- public CityCountry getCityCountry() {
-         return cityCountry;
-     }
-
-     public void setCityCountry(CityCountry cityCountry) {
-         this.cityCountry = cityCountry;
-     }
-    @OneToOne
-    @JoinColumn(name = "city")
-    private CityCountry cityCountry;
 
 
     @Id
@@ -33,9 +22,15 @@ public class PostalCodeCity {
     }
 
     private String city;
+    private String country;
 
-    @OneToOne(mappedBy = "postalCodeCity")
-    private Address address;
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public String getPostalCode() {
         return postalCode;
@@ -53,4 +48,3 @@ public class PostalCodeCity {
         this.city = city;
     }
 }
-*/

@@ -98,7 +98,7 @@ public class User {
         return dob;
     }
 
-    public void setDoB(String DoB) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 
