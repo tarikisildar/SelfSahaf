@@ -70,7 +70,9 @@ public class User {
         return addresses;
     }
 
-
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
+    }
 
     public Address getSellerAddressID() {
         return sellerAddressID;
@@ -140,6 +142,5 @@ public class User {
     public void setPhoneNum(String phoneNum) {
         this.phoneNumber = phoneNumber;
     }
-
 
 }

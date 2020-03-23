@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
+
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/demo") // This means URL's start with /demo (after Application path)
 @Api(value = "asdas", description = "Controller")
@@ -66,18 +68,41 @@ public class MainController {
         }
     }
     @PostMapping(path= "/addSellerAddress")
-    public @ResponseBody String addAddress(@RequestParam Integer userID, @RequestBody Address address){
+    public @ResponseBody String addSellerAddress(@RequestParam Integer userID, @RequestParam String addressName){
             User user = userRepository.findUserByUserID(userID);
             if(user == null){
                 return "Requested user not found";
             }
-            if(address.getPostalCodeCity().getCity() != null){
-                postalRepository.save(address.getPostalCodeCity());
+
+            Address address = new Address();
+            //Address[] addresses = user.getAddresses();
+            boolean found = false;
+            for(Address a:user.getAddresses()){
+                if(addressName.equals(a.getAddressName()))
+                {
+                    address.setAddressID(a.getAddressID());
+                    found = true;
+                }
             }
-            addressRepository.save(address);
+            if(!found)
+                return "address not found";
+
             user.setSellerAddressID(address);
+
             userRepository.save(user);
             return "saved";
+    }
+    @PostMapping(path= "/addAddress")
+    public @ResponseBody String addAddress(@RequestParam Integer userID, @RequestBody Address address){
+        User user = userRepository.findUserByUserID(userID);
+        if(user == null){
+            return "Requested user not found";
+        }
+
+        addressRepository.save(address);
+        user.getAddresses().add(address);
+        userRepository.save(user);
+        return "saved";
     }
     @PostMapping(path ="/addBook")
     public @ResponseBody String addBook(@RequestParam Integer sellerID )
@@ -86,7 +111,7 @@ public class MainController {
     }
     /*
     @PostMapping(path="/addpostal")
-    public @ResponseBody String addPostal(@RequestBody PostalCodeCity postalCodeCity){
+    public @ResponseBody String addPostal(@RequestBody PostalCode postalCodeCity){
         postalRepository.save(postalCodeCity);
         return "saved";
     }*/

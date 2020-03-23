@@ -1,8 +1,8 @@
 com\example\accessingdatamysql\models\CardInfo.class
 com\example\accessingdatamysql\controllers\MainController.class
 com\example\accessingdatamysql\dao\UserRepository.class
-com\example\accessingdatamysql\models\PostalCodeCity.class
 com\example\accessingdatamysql\models\Address.class
+com\example\accessingdatamysql\models\PostalCode.class
 com\example\accessingdatamysql\models\embeddedKey\CardOwnerKey.class
 com\example\accessingdatamysql\dao\PostalRepository.class
 com\example\accessingdatamysql\AccessingDataMysqlApplication.class

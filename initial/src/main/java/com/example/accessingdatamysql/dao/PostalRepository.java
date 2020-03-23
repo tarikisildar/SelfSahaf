@@ -1,9 +1,9 @@
 package com.example.accessingdatamysql.dao;
 
-import com.example.accessingdatamysql.models.PostalCodeCity;
+import com.example.accessingdatamysql.models.PostalCode;
 import org.springframework.data.repository.CrudRepository;
 
-public interface PostalRepository extends CrudRepository<PostalCodeCity, Integer>
+public interface PostalRepository extends CrudRepository<PostalCode, Integer>
 {
 
 }

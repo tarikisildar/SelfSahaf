@@ -9,11 +9,11 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer addressID;
-/*    public PostalCodeCity getPostalCodeCity() {
+/*    public PostalCode getPostalCodeCity() {
         return postalCodeCity;
     }
 
-    public void setPostalCodeCity(PostalCodeCity postalCodeCity) {
+    public void setPostalCodeCity(PostalCode postalCodeCity) {
         this.postalCodeCity = postalCodeCity;
     }*/
 
@@ -28,29 +28,33 @@ public class Address {
     */
 /*@OneToOne
     @JoinColumn(name = "city")
-    private PostalCodeCity postalCodeCity;*//*
+    private PostalCode postalCodeCity;*//*
 
 */
-
+    private String addressName;
     private String addressLine;
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "postalCode")
+    private PostalCode postalCode;
 
-    @OneToOne
-    @JoinColumn(name = "postalCodeCity")
-    private PostalCodeCity postalCodeCity;
-
-    public PostalCodeCity getPostalCodeCity() {
-        return postalCodeCity;
+    public PostalCode getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostalCodeCity(PostalCodeCity postalCodeCity) {
-        this.postalCodeCity = postalCodeCity;
+    public void setPostalCode(PostalCode postalCode) {
+        this.postalCode = postalCode;
     }
 
     public Address() {
     }
 
-    public Address(String postalCode, String addressLine) {
+    public Address(String addressLine) {
         this.addressLine = addressLine;
+    }
+
+    public Address(String addressLine, PostalCode postalCode) {
+        this.addressLine = addressLine;
+        this.postalCode= postalCode;
     }
 
 /*
@@ -65,6 +69,14 @@ public class Address {
         this.user = user;
     }
 */
+
+    public String getAddressName() {
+        return addressName;
+    }
+
+    public void setAddressName(String addressName) {
+        this.addressName = addressName;
+    }
 
     public Integer getAddressID() {
         return addressID;
