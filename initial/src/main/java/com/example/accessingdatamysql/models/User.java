@@ -139,7 +139,7 @@ public class User {
         return phoneNumber;
     }
 
-    public void setPhoneNum(String phoneNum) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

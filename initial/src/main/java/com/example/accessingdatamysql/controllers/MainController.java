@@ -1,10 +1,10 @@
 package com.example.accessingdatamysql.controllers;
 
+import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.Address;
+import com.example.accessingdatamysql.models.Category;
+import com.example.accessingdatamysql.models.Product;
 import com.example.accessingdatamysql.models.User;
-import com.example.accessingdatamysql.dao.AddressRepository;
-import com.example.accessingdatamysql.dao.PostalRepository;
-import com.example.accessingdatamysql.dao.UserRepository;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +23,11 @@ public class MainController {
     private AddressRepository addressRepository;
     @Autowired
     private PostalRepository postalRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+
 
     @PostMapping(path="/add") // Map ONLY POST Requests
     public @ResponseBody String addNewUser (@RequestBody User user) {
@@ -100,14 +105,25 @@ public class MainController {
         }
 
         addressRepository.save(address);
+
         user.getAddresses().add(address);
         userRepository.save(user);
         return "saved";
     }
     @PostMapping(path ="/addBook")
-    public @ResponseBody String addBook(@RequestParam Integer sellerID )
+    public @ResponseBody String addBook(@RequestParam Integer sellerID, @RequestBody Product product)
     {
-        return "Not Implemented";
+
+        productRepository.save(product);
+        return "seller Not Implemented, added book";
+    }
+
+    @PostMapping(path = "/addCategory") // Admin
+    public @ResponseBody String addCategory(@RequestParam String name)
+    {
+        Category category = new Category(name);
+        categoryRepository.save(category);
+        return "Category Saved";
     }
     /*
     @PostMapping(path="/addpostal")
