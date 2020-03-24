@@ -15,9 +15,7 @@ class SelfSahaf extends StatelessWidget {
         primaryColor: Color(0xffe65100),
         accentColor: Color(0xff833a),
         textSelectionColor: Color(0xffac1900),
-        appBarTheme: AppBarTheme(
-          color: Color.fromRGBO(255, 165, 0, 1)
-        ),
+        
       
       
          // Butun uygulamadaki font ailesi
@@ -45,7 +43,7 @@ class SelfSahaf extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       
-      initialRoute: '/',
+      initialRoute: '/mainPage',
       routes: {
         '/': (context) => LoginPage(),
         '/mainPage' : (context) => MainPage(),
