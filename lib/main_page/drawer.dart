@@ -46,6 +46,7 @@ class MainPageDrawer extends StatelessWidget {
               ),
             ),
           ),
+
           new ListWidgetElements(
               Icon(
                 Icons.account_box,
