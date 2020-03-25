@@ -7,7 +7,7 @@ class SahafDrawer extends StatelessWidget {
       padding: const EdgeInsets.only(right: 100.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Color.fromRGBO(192, 72, 46,1),
+          color: Color.fromRGBO(192, 72, 46, 1),
         ),
         child: ListView(
           children: <Widget>[
@@ -22,7 +22,8 @@ class SahafDrawer extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                          child: Image.asset('images/logo_white/logo_white.png'),
+                          child:
+                              Image.asset('images/logo_white/logo_white.png'),
                           height: 150,
                           width: 200),
                       Text('İsim Soyisim',
@@ -42,16 +43,17 @@ class SahafDrawer extends StatelessWidget {
               thickness: 2,
               color: Colors.white60,
             ),
-            GestureDetector(
+            InkWell(
               child: ListTile(
                   leading: Icon(Icons.person, color: Colors.white),
                   title: Text(
                     "Hesabim",
                     style: TextStyle(fontSize: 20, color: Colors.white),
-                  )),
+                  )
+                  ),
               onTap: () => {},
             ),
-            GestureDetector(
+            InkWell(
               child: ListTile(
                   leading: Icon(
                     Icons.category,
@@ -63,7 +65,7 @@ class SahafDrawer extends StatelessWidget {
                   )),
               onTap: () => {},
             ),
-            GestureDetector(
+            InkWell(
               child: ListTile(
                   leading: Icon(Icons.settings, color: Colors.white),
                   title: Text(
@@ -78,7 +80,3 @@ class SahafDrawer extends StatelessWidget {
     );
   }
 }
-
-
-
-

@@ -19,6 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  carousel_pro: ^1.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -38,6 +39,8 @@ flutter:
     - images/logo_white/
     - images/logo_white/2.0x/
     - images/logo_white/3.0x/
+    - images/carousel/
+    - images/sell/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/page_classes/BookCard.dart';
+import 'package:selfsahaf/page_classes/HomePageCarousel.dart';
 import 'package:selfsahaf/page_classes/sahaf_drawer.dart';
+
 
 class MainPage extends StatefulWidget{
   
@@ -10,27 +13,34 @@ class MainPage extends StatefulWidget{
 }
 
 class _MainPageState extends State<MainPage> {
-  
+
+
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("sasasasa"),
+        title: Text("SelfSahaf.com"),
+        actions: <Widget>[
+          new IconButton(icon: Icon(Icons.search) , onPressed: (){
+            print("search");
+          }),
+          new IconButton(icon: Icon(Icons.shopping_cart) , onPressed: (){
+            print("shoping");
+          }),
+        ],
       ),
       drawer: SahafDrawer(
-        
       ),
-      body: Center(
-        child:Column(
-          children: <Widget>[
-            Text(
-              "sa"
-            ),
-          ],
-        )
-      ),
+      body: new ListView(
+        children: <Widget>[
+          HomePageCarousel(),
+          Padding(padding: EdgeInsets.all(2)),
+          Container(height:400,child: BookCard(),)
+        ],
+      )
     );
   }
 
 }
+ 
