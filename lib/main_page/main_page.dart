@@ -35,8 +35,8 @@ class _MainPageState extends State<MainPage> {
       body: new ListView(
         children: <Widget>[
           HomePageCarousel(),
-          Padding(padding: EdgeInsets.all(2)),
-          Container(height:400,child: BookCard(),)
+          Padding(padding: EdgeInsets.all(0.1)),
+          Container(height:320,child: BookCard(),)
         ],
       )
     );
