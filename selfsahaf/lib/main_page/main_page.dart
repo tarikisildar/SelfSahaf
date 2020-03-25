@@ -18,9 +18,7 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Text("sasasasa"),
       ),
-      drawer: SahafDrawer(
-        
-      ),
+      drawer: SahafDrawer(),
       body: Center(
         child:Column(
           children: <Widget>[
