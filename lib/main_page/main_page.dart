@@ -155,21 +155,20 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Image.asset("images/logo_white/logo_white.png"),
         actions: <Widget>[
-          new IconButton(icon: Icon(Icons.search) , onPressed: (){
+          IconButton(icon: Icon(Icons.search) , onPressed: (){
             print("search");
           }),
-          new IconButton(icon: Icon(Icons.shopping_cart) , onPressed: (){
+          IconButton(icon: Icon(Icons.shopping_cart) , onPressed: (){
             print("shoping");
           }),
         ],
       ),
-      drawer: SahafDrawer(
-      ),
-      body: new ListView(
+      drawer: SahafDrawer(),
+      body: Column(
         children: <Widget>[
           HomePageCarousel(),
-          Padding(padding: EdgeInsets.all(0.1)),
-          Container(height:320,child: BookCard(),)
+          Padding(padding: EdgeInsets.all(2)),
+          Expanded(flex:2,child: BookCard(),),
         ],
       )
     );

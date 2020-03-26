@@ -36,33 +36,6 @@ class _BookCardState extends State<BookCard> {
       "writer": "Jean Christophe Grange",
       "price": "\$5",
       "seller": "Barkın",
-    },{
-      "name": "1984",
-      "picture": "images/sell/1984.jpg",
-      "writer": "George Orwell",
-      "price": "\$10",
-      "seller": "Ali Osman Kocaman",
-    },
-    {
-      "name": "A Clash Of Kings",
-      "picture": "images/sell/clashOfKings.jpg",
-      "writer": "George R.R. Martin",
-      "price": "\$15",
-      "seller": "Tarık",
-    },
-    {
-      "name": "Fire And Blood",
-      "picture": "images/sell/fireAndBlood.jpg",
-      "writer": "George Orwell",
-      "price": "\$20",
-      "seller": "Fatih",
-    },
-    {
-      "name": "LONTANO",
-      "picture": "images/sell/lontano.jpg",
-      "writer": "Jean Christophe Grange",
-      "price": "\$5",
-      "seller": "Barkın",
     },
     {
       "name": "1984",
@@ -148,8 +121,34 @@ class _BookCardState extends State<BookCard> {
       "price": "\$5",
       "seller": "Barkın",
     },
-   
-
+    {
+      "name": "1984",
+      "picture": "images/sell/1984.jpg",
+      "writer": "George Orwell",
+      "price": "\$10",
+      "seller": "Ali Osman Kocaman",
+    },
+    {
+      "name": "A Clash Of Kings",
+      "picture": "images/sell/clashOfKings.jpg",
+      "writer": "George R.R. Martin",
+      "price": "\$15",
+      "seller": "Tarık",
+    },
+    {
+      "name": "Fire And Blood",
+      "picture": "images/sell/fireAndBlood.jpg",
+      "writer": "George Orwell",
+      "price": "\$20",
+      "seller": "Fatih",
+    },
+    {
+      "name": "LONTANO",
+      "picture": "images/sell/lontano.jpg",
+      "writer": "Jean Christophe Grange",
+      "price": "\$5",
+      "seller": "Barkın",
+    },
   ];
   @override
   Widget build(BuildContext context) {
@@ -187,37 +186,23 @@ class Book extends StatelessWidget {
           onTap: () {},
           child: GridTile(
             footer: Container(
-              
                 width: 40,
-                color: Colors.white70,
+                color: Colors.transparent,
                 child: Column(
                   children: <Widget>[
                     Text(bookName,
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                       
-                        Row(
-                        children:<Widget>[
-                          Expanded(child:Text (
-                            writer,
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.w800),
-                          )),
-                          Padding(padding: EdgeInsets.all(5.0)),
-                           Text(
-                            price,
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.w800),
-                          ),]
-                        ),
-                    
                     Text(
-                          seller,
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w800),
-                        ),
+                      price,
+                      style: TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.w800),
+                    ),
                   ],
                 )),
-            child: Image.asset(picture, fit: BoxFit.cover),
+            child: Container(
+              child: Image.asset(picture, fit: BoxFit.cover),
+              
+            ),
           ),
         ),
         padding: EdgeInsets.all(4.0),
