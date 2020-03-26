@@ -27,6 +27,7 @@ public class Product
     private String ISBN;
 
 
+
     public Product() {
     }
 
@@ -48,10 +49,29 @@ public class Product
     )
     private Set<Category> categories;
 
+/*
+
+    @JsonIgnoreProperties("products")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "sells",
+            joinColumns = @JoinColumn(name = "productID"),
+            inverseJoinColumns = @JoinColumn(name = "productID")
+    )
+    private Set<Sells> sells;
     public Set<Category> getCategories() {
         return categories;
     }
 
+
+    public Set<Sells> getSells() {
+        return sells;
+    }
+
+    public void setSells(Set<Sells> sells) {
+        this.sells = sells;
+    }
+*/
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }

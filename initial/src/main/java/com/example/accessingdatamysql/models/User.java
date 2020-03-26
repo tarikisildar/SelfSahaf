@@ -52,10 +52,20 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "cardnumber")
     )
     private Set<CardInfo> cards;
+/*
 
+    @JsonIgnoreProperties("users")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "sells",
+            joinColumns = @JoinColumn(name = "userID"),
+            inverseJoinColumns = @JoinColumn(name = "sellerID")
+    )
+    private Set<Sells> sells;
     public Set<CardInfo> getCards() {
         return cards;
     }
+*/
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -65,6 +75,19 @@ public class User {
     )
     private Set<Address> addresses;
 
+    public void setCards(Set<CardInfo> cards) {
+        this.cards = cards;
+    }
+/*
+
+    public Set<Sells> getSells() {
+        return sells;
+    }
+
+    public void setSells(Set<Sells> sells) {
+        this.sells = sells;
+    }
+*/
 
     public Set<Address> getAddresses() {
         return addresses;
@@ -103,7 +126,7 @@ public class User {
         return surname;
     }
 
-    public void setSurName(String surname) {
+    public void setSurname(String surname) {
         this.surname = surname;
     }
     public String getPassword() {

@@ -25,6 +25,9 @@ public class Category {
     @ManyToMany(mappedBy = "categories",fetch = FetchType.LAZY)
     private Set<Product> products;
 
+
+
+
     public Set<Product> getProducts() {
         return products;
     }

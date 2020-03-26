@@ -7,8 +7,6 @@ import javax.persistence.*;
 @Table(name = "postalcodecity")
 public class PostalCode {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

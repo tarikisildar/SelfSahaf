@@ -9,28 +9,6 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer addressID;
-/*    public PostalCode getPostalCodeCity() {
-        return postalCodeCity;
-    }
-
-    public void setPostalCodeCity(PostalCode postalCodeCity) {
-        this.postalCodeCity = postalCodeCity;
-    }*/
-
-
-
-
-/*@OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "addressID")
-    private User user;*//*
-
-
-    */
-/*@OneToOne
-    @JoinColumn(name = "city")
-    private PostalCode postalCodeCity;*//*
-
-*/
     private String addressName;
     private String addressLine;
     @OneToOne(cascade=CascadeType.ALL)
@@ -57,18 +35,6 @@ public class Address {
         this.postalCode= postalCode;
     }
 
-/*
-    @OneToOne(mappedBy = "sellerAddressID")
-    public User user;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-*/
 
     public String getAddressName() {
         return addressName;

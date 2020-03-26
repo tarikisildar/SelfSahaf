@@ -1,8 +1,10 @@
 package com.example.accessingdatamysql.models.embeddedKey;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Embeddable
 public class ProductCategoryKey {
     @Column
     private Integer productID;
