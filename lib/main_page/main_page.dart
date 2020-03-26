@@ -36,7 +36,7 @@ class _MainPageState extends State<MainPage> {
         children: <Widget>[
           HomePageCarousel(),
           Padding(padding: EdgeInsets.all(0.1)),
-          Container(height:320,child: BookCard(),)
+          Container(height:400,child: BookCard(),)
         ],
       )
     );
