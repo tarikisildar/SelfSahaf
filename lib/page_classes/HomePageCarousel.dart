@@ -6,7 +6,7 @@ class HomePageCarousel extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-    Widget carouselImages=new Container(
+    return Container(
       height: 200,
       child: new Carousel(
         boxFit: BoxFit.cover,
@@ -20,12 +20,11 @@ class HomePageCarousel extends StatelessWidget {
         autoplay: true,
         animationCurve: Curves.fastOutSlowIn,
         animationDuration: Duration(milliseconds: 1000),
-        showIndicator: true,
 
       ),
 
     );
-    return carouselImages ;
+
   }
 
 
