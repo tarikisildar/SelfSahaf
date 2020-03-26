@@ -13,6 +13,7 @@ com\example\accessingdatamysql\AccessingDataMysqlApplication.class
 com\example\accessingdatamysql\models\User.class
 com\example\accessingdatamysql\config\Swagger2Config.class
 com\example\accessingdatamysql\dao\AddressRepository.class
+com\example\accessingdatamysql\dao\CardRepository.class
 com\example\accessingdatamysql\dao\ProductRepository.class
 com\example\accessingdatamysql\models\embeddedKey\UserAddressKey.class
 com\example\accessingdatamysql\models\Category.class

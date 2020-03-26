@@ -1,16 +1,15 @@
 package com.example.accessingdatamysql.controllers;
 
 import com.example.accessingdatamysql.dao.*;
-import com.example.accessingdatamysql.models.Address;
-import com.example.accessingdatamysql.models.Category;
-import com.example.accessingdatamysql.models.Product;
-import com.example.accessingdatamysql.models.User;
+import com.example.accessingdatamysql.models.*;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/demo") // This means URL's start with /demo (after Application path)
@@ -27,22 +26,53 @@ public class MainController {
     private ProductRepository productRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private CardRepository cardRepository;
 
 
     @PostMapping(path="/add") // Map ONLY POST Requests
     public @ResponseBody String addNewUser (@RequestBody User user) {
-        // @ResponseBody means the returned String is the response, not a view name
-        // @RequestParam means it is a parameter from the GET or POST request
 
-        /*User n = new User();
-        n.setName(name);
-        n.setEmail(email);*/
 
         User user1 = userRepository.findUserByEmail(user.getEmail());
 
         if(user1!= null)
             return "This mail is already in use";
+
+
         userRepository.save(user);
+        return "Saved";
+    }
+
+    @PostMapping(path= "updateUser")
+    public @ResponseBody String updateUser (@RequestBody User user) {
+
+        User user1 = userRepository.findUserByEmail(user.getEmail());
+
+        if(user1 == null)
+            return "Requested User not found";
+
+        for(Address a: user.getAddresses())
+        {
+            PostalCode postalCode = postalRepository.findByPostalCode(a.getPostalCode().getPostalCode());
+            if(postalCode != null)
+            {
+                a.setPostalCode(postalCode);
+            }
+            user1.getAddresses().add(a);
+        }
+
+        Set<CardInfo> cards = new HashSet<>();
+        for(CardInfo c: user.getCards()){
+
+            Set<User> s = new HashSet<User>();
+            s.add(user1);
+            c.setUsers(s);
+            cards.add(c);
+        }
+
+        user1.setCards(cards);
+        userRepository.save(user1);
         return "Saved";
     }
 

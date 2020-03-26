@@ -75,6 +75,12 @@ public class User {
     )
     private Set<Address> addresses;
 
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+    public Set<CardInfo> getCards() {
+        return cards;
+    }
     public void setCards(Set<CardInfo> cards) {
         this.cards = cards;
     }
@@ -119,6 +125,7 @@ public class User {
     }
 
 
+
     public void setName(String name) {
         this.name = name;
     }
@@ -126,7 +133,7 @@ public class User {
         return surname;
     }
 
-    public void setSurname(String surname) {
+    public void setSurName(String surname) {
         this.surname = surname;
     }
     public String getPassword() {

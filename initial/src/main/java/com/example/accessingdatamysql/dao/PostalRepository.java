@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PostalRepository extends CrudRepository<PostalCode, Integer>
 {
-
+    PostalCode findByPostalCode(String postalCode);
 }
