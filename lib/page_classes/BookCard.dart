@@ -187,7 +187,8 @@ class Book extends StatelessWidget {
           onTap: () {},
           child: GridTile(
             footer: Container(
-                width: 50,
+              
+                width: 40,
                 color: Colors.white70,
                 child: Column(
                   children: <Widget>[
@@ -219,7 +220,7 @@ class Book extends StatelessWidget {
             child: Image.asset(picture, fit: BoxFit.cover),
           ),
         ),
-        padding: EdgeInsets.all(1.0),
+        padding: EdgeInsets.all(4.0),
       ),
     ));
   }
