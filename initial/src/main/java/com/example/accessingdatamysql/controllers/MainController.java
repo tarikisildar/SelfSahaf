@@ -2,11 +2,14 @@ package com.example.accessingdatamysql.controllers;
 
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
+import com.google.common.hash.Hashing;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -36,8 +39,18 @@ public class MainController {
 
         User user1 = userRepository.findUserByEmail(user.getEmail());
 
+
         if(user1!= null)
             return "This mail is already in use";
+
+        String passSha;
+        String pass;
+        if(user.getPassword() != null)
+            pass = user.getPassword();
+        else return "pass";
+
+        passSha = Hashing.sha256().hashString(user.getPassword(), StandardCharsets.UTF_8).toString();
+        user.setPassword(passSha);
 
 
         userRepository.save(user);
@@ -70,7 +83,11 @@ public class MainController {
             c.setUsers(s);
             cards.add(c);
         }
-
+        if(user.getPassword() != null)
+        {
+            String passSha = Hashing.sha256().hashString(user.getPassword(), StandardCharsets.UTF_8).toString();
+            user1.setPassword(passSha);
+        }
         user1.setCards(cards);
         userRepository.save(user1);
         return "Saved";
@@ -95,7 +112,7 @@ public class MainController {
         if(user == null){
             return "Incorrect email";
         }
-        if(user.getPassword() == password){
+        if(user.getPassword().equals(Hashing.sha256().hashString(password,StandardCharsets.UTF_8).toString())){
             return "Logged In";
         }
         else {
@@ -143,7 +160,6 @@ public class MainController {
     @PostMapping(path ="/addBook")
     public @ResponseBody String addBook(@RequestParam Integer sellerID, @RequestBody Product product)
     {
-
         productRepository.save(product);
         return "seller Not Implemented, added book";
     }
