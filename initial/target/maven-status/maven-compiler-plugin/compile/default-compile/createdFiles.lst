@@ -1,6 +1,7 @@
 com\example\accessingdatamysql\models\CardInfo.class
 com\example\accessingdatamysql\controllers\MainController.class
 com\example\accessingdatamysql\dao\UserRepository.class
+com\example\accessingdatamysql\controllers\ProductController.class
 com\example\accessingdatamysql\ServletInitializer.class
 com\example\accessingdatamysql\models\Address.class
 com\example\accessingdatamysql\models\PostalCode.class
@@ -8,6 +9,7 @@ com\example\accessingdatamysql\dao\CategoryRepository.class
 com\example\accessingdatamysql\models\Product.class
 com\example\accessingdatamysql\models\embeddedKey\CardOwnerKey.class
 com\example\accessingdatamysql\dao\PostalRepository.class
+com\example\accessingdatamysql\controllers\UserController.class
 com\example\accessingdatamysql\models\embeddedKey\ProductCategoryKey.class
 com\example\accessingdatamysql\AccessingDataMysqlApplication.class
 com\example\accessingdatamysql\models\User.class
