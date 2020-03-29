@@ -104,6 +104,13 @@ public class MainController {
         // This returns a JSON or XML with the users
         return addressRepository.findAll();
     }
+
+    @GetMapping(path="/allproducts")
+    public @ResponseBody Iterable<Product> getAllProducts() {
+        // This returns a JSON or XML with the users
+        return productRepository.findAll();
+    }
+
     @PostMapping(path="/login")
     public @ResponseBody String login(@RequestParam String email, @RequestParam String password) {
         User user;

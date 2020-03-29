@@ -1,4 +1,4 @@
-/*
+
 package com.example.accessingdatamysql.models;
 
 import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
@@ -15,13 +15,19 @@ public class Sells {
 
     private Integer quantity;
 
-    @JsonIgnoreProperties("sells")
-    @OneToMany(mappedBy = "sells",fetch = FetchType.LAZY)
-    private Set<Product> products;
 
     @JsonIgnoreProperties("sells")
-    @OneToMany(mappedBy = "sells",fetch = FetchType.LAZY)
-    private Set<User> users;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("productID")
+    @JoinColumn(name = "productID", referencedColumnName = "productID")
+    private Product product;
+
+
+    @JsonIgnoreProperties("sells")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("sellerID")
+    @JoinColumn(name = "sellerID", referencedColumnName = "userID")
+    private User user;
 
     public SellsKey getSellerID() {
         return sellerID;
@@ -39,4 +45,4 @@ public class Sells {
         this.quantity = quantity;
     }
 }
-*/
+

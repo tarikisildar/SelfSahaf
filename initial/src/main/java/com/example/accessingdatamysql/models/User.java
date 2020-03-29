@@ -52,20 +52,29 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "cardnumber")
     )
     private Set<CardInfo> cards;
-/*
 
-    @JsonIgnoreProperties("users")
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "sells",
-            joinColumns = @JoinColumn(name = "userID"),
-            inverseJoinColumns = @JoinColumn(name = "sellerID")
-    )
-    private Set<Sells> sells;
+
     public Set<CardInfo> getCards() {
         return cards;
     }
-*/
+
+    public void setCards(Set<CardInfo> cards) {
+        this.cards = cards;
+    }
+
+
+    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<Sells> sells;
+
+
+    public Set<Sells> getSells() {
+        return sells;
+    }
+    public void setSells(Set<Sells> sells) {
+        this.sells = sells;
+    }
+
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -78,22 +87,12 @@ public class User {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-    public Set<CardInfo> getCards() {
-        return cards;
-    }
-    public void setCards(Set<CardInfo> cards) {
-        this.cards = cards;
-    }
-/*
 
-    public Set<Sells> getSells() {
-        return sells;
-    }
 
-    public void setSells(Set<Sells> sells) {
-        this.sells = sells;
-    }
-*/
+
+
+
+
 
     public Set<Address> getAddresses() {
         return addresses;

@@ -1,4 +1,4 @@
-/*
+
 package com.example.accessingdatamysql.models.embeddedKey;
 
 import javax.persistence.Column;
@@ -46,4 +46,4 @@ public class SellsKey implements Serializable {
                 Objects.equals(getProductID(), that.getProductID());
     }
 }
-*/
+
