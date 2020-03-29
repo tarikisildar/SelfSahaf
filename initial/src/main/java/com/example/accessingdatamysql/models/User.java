@@ -25,7 +25,7 @@ public class User {
 
     private String email;
 
-    private int isAdmin;
+    private String role;
 
     public User(){
 
@@ -148,12 +148,13 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    public int getIsAdmin() {
-        return isAdmin;
+
+    public String getRole() {
+        return role;
     }
 
-    public void setIsAdmin(int isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getDob() {
