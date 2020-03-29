@@ -153,7 +153,9 @@ class _BookCardState extends State<BookCard> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      physics: ScrollPhysics(),
         itemCount: bookList.length,
+        shrinkWrap: true,
         gridDelegate:
             new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (BuildContext context, int index) {
@@ -201,7 +203,6 @@ class Book extends StatelessWidget {
                 )),
             child: Container(
               child: Image.asset(picture, fit: BoxFit.cover),
-              
             ),
           ),
         ),

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/main_page/main_page.dart';
+import 'package:selfsahaf/page_classes/add_book.dart';
 import 'package:selfsahaf/registration/login.dart';
 
 
@@ -43,11 +44,12 @@ class SelfSahaf extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       
-      initialRoute: '/mainPage',
+      initialRoute: '/addBook',
       routes: {
         '/': (context) => LoginPage(),
         '/mainPage' : (context) => MainPage(),
-        
+        '/addBook' : (context) => AddBook(),
+         
       },
     );
   }
