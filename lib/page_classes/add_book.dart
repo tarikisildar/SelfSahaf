@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 
 class AddBook extends StatefulWidget{
   @override
@@ -6,6 +7,10 @@ class AddBook extends StatefulWidget{
 }
 
 class _AddBookState extends State<AddBook>{
+  var bookNameController = new TextEditingController();
+  final dio = new Dio();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,16 +29,37 @@ class _AddBookState extends State<AddBook>{
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Kitabin Adi"
+              
+              Padding(
+                padding: const EdgeInsets.only(top:15.0),
+                child: TextFormField(
+                  controller: bookNameController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Kitabin Adi"
+                  ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(top:15.0),
+                child: RaisedButton(
+                  onPressed: () => {
+                    _addBook()
+                  },
+                  child: Container(
+                    child: Text("sa"),
+                  ),
+                ),
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  _addBook() async {
+    final response = await dio.post('http://142.93.106.79/product/addBook');
+    print(response);
   }
 }

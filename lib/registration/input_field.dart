@@ -33,6 +33,9 @@ class _InputFieldState extends State<InputField> {
       obscureText: widget.isPassword,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        errorStyle: TextStyle(
+          color: Colors.white
+        ),
         
         contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         labelText: widget.labelText,

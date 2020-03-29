@@ -44,7 +44,7 @@ class SelfSahaf extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       
-      initialRoute: '/addBook',
+      initialRoute: '/',
       routes: {
         '/': (context) => LoginPage(),
         '/mainPage' : (context) => MainPage(),

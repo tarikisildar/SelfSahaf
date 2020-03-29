@@ -14,17 +14,21 @@ class _SignupState extends State<Signup> {
   
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _fullnameController = TextEditingController();
+  final _fnameController = TextEditingController();
+  final _surnameController = TextEditingController();
   final _passController = TextEditingController();
   final _passCheckController = TextEditingController();
   bool _kvkk = false;
 
-  String fullnameValidation(String fullname) {
-    String pattern = r'([a-zA-Z0-9]{4,20})$';
-    RegExp regExp = new RegExp(pattern);
-    return regExp.hasMatch(fullname)
-        ? null
-        : "Lütfen geçerli bir kullanıcı adı giriniz.";
+  String fnameValidation(String fullname) {
+    if(fullname == ""){
+      return "Isim kismi bos birakilamaz.";
+    }
+  }
+  String surnameValidation(String fullname) {
+    if(fullname == ""){
+      return "Soyisim kismi bos birakilamaz.";
+    }
   }
 
   String telephoneNumberValidation(String number) {
@@ -136,9 +140,9 @@ class _SignupState extends State<Signup> {
                     ),
                     SizedBox(height: 20.0),
                     InputField(
-                      controller: _fullnameController,
+                      controller: _fnameController,
                       inputType: TextInputType.text,
-                      validation: fullnameValidation,
+                      validation: fnameValidation,
                       labelText: "Adiniz",
                       suffixIcon: Icon(
                         Icons.person,
@@ -147,9 +151,9 @@ class _SignupState extends State<Signup> {
                     ),
                     SizedBox(height: 12.0),
                     InputField(
-                      controller: _fullnameController,
+                      controller: _surnameController,
                       inputType: TextInputType.text,
-                      validation: fullnameValidation,
+                      validation: surnameValidation,
                       labelText: "Soyadiniz",
                       suffixIcon: Icon(
                         Icons.person,
