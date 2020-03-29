@@ -15,6 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   final _passController = TextEditingController();
 
   String emailValidation(String email) {
+    //.tr .edu.tr eklenecek
     bool emailValid =
         RegExp(r"^[a-zA-Z0-9.]+@([a-zA-Z0-9]+(\.))[a-zA-Z]+").hasMatch(email);
     return emailValid ? null : 'not valid email.';
