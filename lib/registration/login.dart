@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:selfsahaf/main_page/main_page.dart';
 import 'package:selfsahaf/registration/input_field.dart';
 import 'package:selfsahaf/registration/signup.dart';
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,7 +17,14 @@ class _LoginPageState extends State<LoginPage> {
   final _passController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  var response;
+ void postUser() async{
+   var url='http://142.93.106.79:8080/accessing-data-mysql/demo/login';
+    this.response = await http.post(url, body: {"email":_emailController.text,"password":_passController.text});
+  print('Response status: ${response.statusCode}');
+ } 
   String emailValidation(String email) {
+    //.tr .edu.tr eklenecek
     bool emailValid =
         RegExp(r"^[a-zA-Z0-9.]+@([a-zA-Z0-9]+(\.))[a-zA-Z]+").hasMatch(email);
     return emailValid ? null : 'not valid email.';
@@ -102,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                               MaterialPageRoute(
                                   builder: (context) => MainPage()));
                         } else {
-                          print("not valid.");
+                          postUser();
                         }
                         },
                         child: Text(

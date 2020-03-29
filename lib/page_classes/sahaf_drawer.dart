@@ -56,20 +56,6 @@ class SahafDrawer extends StatelessWidget {
             InkWell(
               child: ListTile(
                   leading: Icon(
-                    Icons.library_add,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    "Kitap Sat",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  )),
-              onTap: () => {
-
-              },
-            ),
-            InkWell(
-              child: ListTile(
-                  leading: Icon(
                     Icons.category,
                     color: Colors.white,
                   ),
@@ -87,6 +73,7 @@ class SahafDrawer extends StatelessWidget {
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
               onTap: () => {},
+              
             )
           ],
         ),
