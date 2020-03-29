@@ -64,6 +64,20 @@ public class Product
     }
 
 
+    @JsonIgnoreProperties("product")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<OrderDetail> orderDetails;
+
+
+    public Set<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+    public void setOrderDetails(Set<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+
+
     public Set<Category> getCategories() {
         return categories;
     }

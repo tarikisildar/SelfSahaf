@@ -10,6 +10,7 @@ import java.util.Set;
 @Table(name = "cardInfo")
 public class CardInfo {
     @Id
+
     private String cardNumber;
 
     private String ownerSurname;

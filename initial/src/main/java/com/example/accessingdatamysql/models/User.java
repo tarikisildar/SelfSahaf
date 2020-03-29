@@ -76,6 +76,20 @@ public class User {
     }
 
 
+    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<OrderDetail> orderdetails;
+
+
+    public Set<OrderDetail> getOrderDetails() {
+        return orderdetails;
+    }
+    public void setOrderDetails(Set<OrderDetail> orderdetails) {
+        this.orderdetails = orderdetails;
+    }
+
+
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "useraddress",
@@ -87,11 +101,6 @@ public class User {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-
-
-
-
-
 
 
     public Set<Address> getAddresses() {
