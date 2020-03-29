@@ -26,8 +26,10 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: BottomAppBar(
+          elevation: 7,
           child: Container(
             height: 50,
+            color: Color(0xffe65100),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -42,13 +44,13 @@ class _MainPageState extends State<MainPage> {
                           child: _index == 0
                               ? Icon(
                                   Icons.home,
-                                  size: 35,
-                                  color: Color(0xffe65100),
+                                  size: 25,
+                                  color: Colors.white,
                                 )
                               : Icon(
                                   Icons.home,
-                                  size: 40,
-                                  color: Color(0xffe65100),
+                                  size: 30,
+                                  color: Colors.white,
                                 ),
                           onTap: () => {},
                         ),
@@ -70,13 +72,13 @@ class _MainPageState extends State<MainPage> {
                           child: _index == 1
                               ? Icon(
                                   Icons.search,
-                                  size: 35,
-                                  color: Color(0xffe65100),
+                                  size: 25,
+                                  color: Colors.white,
                                 )
                               : Icon(
                                   Icons.search,
-                                  size: 40,
-                                  color: Color(0xffe65100),
+                                  size: 30,
+                                  color: Colors.white,
                                 ),
                           onTap: () => {},
                         ),
@@ -99,13 +101,13 @@ class _MainPageState extends State<MainPage> {
                           child: _index == 2
                               ? Icon(
                                   Icons.notifications,
-                                  size: 35,
-                                  color: Color(0xffe65100),
+                                  size: 25,
+                                  color: Colors.white,
                                 )
                               : Icon(
                                   Icons.notifications_none,
-                                  size: 40,
-                                  color: Color(0xffe65100),
+                                  size: 30,
+                                  color: Colors.white,
                                 ),
                           onTap: () => {},
                         ),
@@ -127,13 +129,13 @@ class _MainPageState extends State<MainPage> {
                           child: _index == 3
                               ? Icon(
                                   Icons.person,
-                                  size: 35,
-                                  color: Color(0xffe65100),
+                                  size: 25,
+                                  color: Colors.white,
                                 )
                               : Icon(
                                   Icons.person_outline,
-                                  size: 40,
-                                  color: Color(0xffe65100),
+                                  size: 30,
+                                  color: Colors.white,
                                 ),
                           onTap: () => {},
                         ),
@@ -158,20 +160,15 @@ class _MainPageState extends State<MainPage> {
         appBar: AppBar(
           title: Image.asset("images/logo_white/logo_white.png"),
           actions: <Widget>[
-            new IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  print("search");
-                }),
-            new IconButton(
+            IconButton(
                 icon: Icon(Icons.shopping_cart),
                 onPressed: () {
-                  print("shoping");
+                  print("shopping");
                 }),
           ],
         ),
         drawer: SahafDrawer(),
-        body:new ListView(
+        body:ListView(
           children: <Widget>[
             HomePageCarousel(),
             Padding(padding: EdgeInsets.all(0.1)),
