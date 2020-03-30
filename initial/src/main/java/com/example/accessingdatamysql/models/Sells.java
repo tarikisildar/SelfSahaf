@@ -15,13 +15,11 @@ public class Sells {
 
     private Integer quantity;
 
-
     @JsonIgnoreProperties("sells")
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("productID")
     @JoinColumn(name = "productID", referencedColumnName = "productID")
     private Product product;
-
 
     @JsonIgnoreProperties("sells")
     @ManyToOne(fetch = FetchType.LAZY)

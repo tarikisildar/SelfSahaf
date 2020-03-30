@@ -26,20 +26,6 @@ public class Product
 
     private String ISBN;
 
-
-
-    public Product() {
-    }
-
-    public Product(String description, String name, String language, String author, String publisher, String ISBN) {
-        this.description = description;
-        this.name = name;
-        this.language = language;
-        this.author = author;
-        this.publisher = publisher;
-        this.ISBN = ISBN;
-    }
-
     @JsonIgnoreProperties("products")
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(
@@ -56,27 +42,40 @@ public class Product
     private Set<Sells> sells;
 
 
-    public Set<Sells> getSells() {
-        return sells;
-    }
-    public void setSells(Set<Sells> sells) {
-        this.sells = sells;
-    }
-
-
     @JsonIgnoreProperties("product")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<OrderDetail> orderDetails;
 
 
+    public Product() {
+    }
+
+    public Product(String description, String name, String language, String author, String publisher, String ISBN) {
+        this.description = description;
+        this.name = name;
+        this.language = language;
+        this.author = author;
+        this.publisher = publisher;
+        this.ISBN = ISBN;
+    }
+
+
+
+    public Set<Sells> getSells() {
+        return sells;
+    }
+
+    public void setSells(Set<Sells> sells) {
+        this.sells = sells;
+    }
+
     public Set<OrderDetail> getOrderDetails() {
         return orderDetails;
     }
+
     public void setOrderDetails(Set<OrderDetail> orderDetails) {
         this.orderDetails = orderDetails;
     }
-
-
 
     public Set<Category> getCategories() {
         return categories;

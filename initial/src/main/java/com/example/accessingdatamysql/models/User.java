@@ -27,8 +27,39 @@ public class User {
 
     private String role;
 
-    public User(){
+    @OneToOne
+    @JoinColumn(name = "sellerAddressID")
+    private Address sellerAddressID;
 
+    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<Sells> sells;
+
+
+    @JsonIgnoreProperties("users")
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "cardowner",
+            joinColumns = @JoinColumn(name = "userID"),
+            inverseJoinColumns = @JoinColumn(name = "cardnumber")
+    )
+    private Set<CardInfo> cards;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "useraddress",
+            joinColumns = @JoinColumn(name = "userID"),
+            inverseJoinColumns = @JoinColumn(name = "addressID")
+    )
+    private Set<Address> addresses;
+
+
+    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<OrderDetail> orderdetails;
+
+
+    public User(){
     }
 
     public User(String name, String password, String surname, String dob, String phoneNumber, String email) {
@@ -40,18 +71,6 @@ public class User {
         this.email = email;
     }
 
-    @OneToOne
-    @JoinColumn(name = "sellerAddressID")
-    private Address sellerAddressID;
-
-    @JsonIgnoreProperties("users")
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "cardowner",
-            joinColumns = @JoinColumn(name = "userID"),
-            inverseJoinColumns = @JoinColumn(name = "cardnumber")
-    )
-    private Set<CardInfo> cards;
 
 
     public Set<CardInfo> getCards() {
@@ -63,40 +82,21 @@ public class User {
     }
 
 
-    @JsonIgnoreProperties("user")
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Set<Sells> sells;
-
-
     public Set<Sells> getSells() {
         return sells;
     }
+
     public void setSells(Set<Sells> sells) {
         this.sells = sells;
     }
 
-
-    @JsonIgnoreProperties("user")
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Set<OrderDetail> orderdetails;
-
-
     public Set<OrderDetail> getOrderDetails() {
         return orderdetails;
     }
+
     public void setOrderDetails(Set<OrderDetail> orderdetails) {
         this.orderdetails = orderdetails;
     }
-
-
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "useraddress",
-            joinColumns = @JoinColumn(name = "userID"),
-            inverseJoinColumns = @JoinColumn(name = "addressID")
-    )
-    private Set<Address> addresses;
 
     public void setSurname(String surname) {
         this.surname = surname;
@@ -119,7 +119,6 @@ public class User {
         this.sellerAddressID = sellerAddressID;
     }
 
-
     public Integer getUserID() {
         return userID;
     }
@@ -132,8 +131,6 @@ public class User {
         return name;
     }
 
-
-
     public void setName(String name) {
         this.name = name;
     }
@@ -141,9 +138,14 @@ public class User {
         return surname;
     }
 
-    public void setSurName(String surname) {
-        this.surname = surname;
+    public Set<OrderDetail> getOrderdetails() {
+        return orderdetails;
     }
+
+    public void setOrderdetails(Set<OrderDetail> orderdetails) {
+        this.orderdetails = orderdetails;
+    }
+
     public String getPassword() {
         return password;
     }

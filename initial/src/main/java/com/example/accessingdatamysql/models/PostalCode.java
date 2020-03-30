@@ -8,8 +8,6 @@ import javax.persistence.*;
 public class PostalCode {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
     private String postalCode;
 
     private String city;
@@ -23,15 +21,6 @@ public class PostalCode {
         this.city = city;
         this.country = country;
     }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
 
 
     public String getCountry() {

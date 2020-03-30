@@ -47,8 +47,6 @@ public class OrderDetail {
 
 
 
-
-
     public Integer getQuantity() {
         return quantity;
     }

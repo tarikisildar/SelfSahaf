@@ -64,31 +64,32 @@ public class UserController {
 
         if(user1 == null)
             return "Requested User not found";
-
-        for(Address a: user.getAddresses())
-        {
-            PostalCode postalCode = postalRepository.findByPostalCode(a.getPostalCode().getPostalCode());
-            if(postalCode != null)
-            {
-                a.setPostalCode(postalCode);
+        if(user.getAddresses() != null) {
+            for (Address a : user.getAddresses()) {
+                PostalCode postalCode = postalRepository.findByPostalCode(a.getPostalCode().getPostalCode());
+                if (postalCode != null) {
+                    a.setPostalCode(postalCode);
+                }
+                user1.getAddresses().add(a);
             }
-            user1.getAddresses().add(a);
         }
-
         Set<CardInfo> cards = new HashSet<>();
-        for(CardInfo c: user.getCards()){
+        if(user.getCards() != null) {
+            for (CardInfo c : user.getCards()) {
 
-            Set<User> s = new HashSet<User>();
-            s.add(user1);
-            c.setUsers(s);
-            cards.add(c);
+                Set<User> s = new HashSet<User>();
+                s.add(user1);
+                c.setUsers(s);
+                cards.add(c);
+            }
         }
         if(user.getPassword() != null)
         {
             String passSha = Hashing.sha256().hashString(user.getPassword(), StandardCharsets.UTF_8).toString();
             user1.setPassword(passSha);
         }
-        user1.setCards(cards);
+        if(!cards.isEmpty())
+            user1.setCards(cards);
         userRepository.save(user1);
         return "Saved";
     }
