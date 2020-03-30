@@ -82,18 +82,8 @@ public class User {
     }
 
 
-<<<<<<< HEAD
-=======
 
 
-
-
-    @JsonIgnoreProperties("user")
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Set<Sells> sells;
-
-
->>>>>>> origin/onur
     public Set<Sells> getSells() {
         return sells;
     }
