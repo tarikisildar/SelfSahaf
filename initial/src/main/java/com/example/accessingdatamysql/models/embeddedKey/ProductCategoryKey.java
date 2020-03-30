@@ -43,4 +43,8 @@ public class ProductCategoryKey {
         return Objects.equals(getProductID(), that.getUserID()) &&
                 Objects.equals(getCategoryID(), that.getAddressID());
     }
+    @Override
+    public int hashCode() {
+        return Objects.hash(getProductID(), getCategoryID());
+    }
 }

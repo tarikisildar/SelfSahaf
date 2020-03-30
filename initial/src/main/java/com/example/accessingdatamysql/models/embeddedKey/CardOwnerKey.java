@@ -43,4 +43,8 @@ public class CardOwnerKey {
         return Objects.equals(getUserID(), that.getUserID()) &&
                 Objects.equals(getCardNumber(), that.getAddressID());
     }
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserID(), getCardNumber());
+    }
 }
