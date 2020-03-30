@@ -27,6 +27,12 @@ public class Sells {
     @JoinColumn(name = "sellerID", referencedColumnName = "userID")
     private User user;
 
+
+
+    @JsonIgnoreProperties("seller")
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<Price> price;
+
     public SellsKey getSellerID() {
         return sellerID;
     }
@@ -41,6 +47,13 @@ public class Sells {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+    public Set<Price> getPrice() {
+        return price;
+    }
+
+    public void setPrice(Set<Price> price) {
+        this.price = price;
     }
 }
 

@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="b14e1a49-3848-42d0-8b79-88035ea5516d" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
+=======
+    <list default="true" id="9ded4162-a7ed-40cd-bd53-1f313ccad979" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/Sells.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/Sells.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/com/example/accessingdatamysql/models/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/com/example/accessingdatamysql/models/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/com/example/accessingdatamysql/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/com/example/accessingdatamysql/models/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/accessingdatamysql/models/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/accessingdatamysql/models/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/accessingdatamysql/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/accessingdatamysql/models/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+    </list>
+>>>>>>> origin/onur
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -412,12 +427,47 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+<<<<<<< HEAD
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
+=======
+  <component name="WindowStateProjectService">
+    <state x="765" y="203" key="#com.intellij.ide.util.MemberChooser" timestamp="1585563440470">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="765" y="203" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1585563440470" />
+    <state x="808" y="408" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1585512003815">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="808" y="408" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1585512003815" />
+    <state x="541" y="114" key="CommitChangelistDialog2" timestamp="1585496842222">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="541" y="114" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1585496842222" />
+    <state x="490" y="174" key="Maven.ArtifactSearchDialog" timestamp="1585513312115">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="490" y="174" key="Maven.ArtifactSearchDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1585513312115" />
+    <state x="655" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1585559715565">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="655" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1585559715565" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/embeddedKey/OrderDetailKey.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+>>>>>>> origin/onur
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/CityCountry.java">
