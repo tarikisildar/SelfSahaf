@@ -2,23 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9ded4162-a7ed-40cd-bd53-1f313ccad979" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/OrderDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accessing-data-mysql.iml" beforeDir="false" afterPath="$PROJECT_DIR$/accessing-data-mysql.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/CardInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/CardInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/Order.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/ShippingInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/ShippingInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/Sells.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/Sells.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/com/example/accessingdatamysql/models/CardInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/com/example/accessingdatamysql/models/CardInfo.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/com/example/accessingdatamysql/models/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/com/example/accessingdatamysql/models/Product.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/com/example/accessingdatamysql/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/accessing-data-mysql/WEB-INF/classes/com/example/accessingdatamysql/models/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/accessingdatamysql/models/CardInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/accessingdatamysql/models/CardInfo.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/accessingdatamysql/models/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/accessingdatamysql/models/Product.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/accessingdatamysql/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/accessingdatamysql/models/User.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
@@ -163,10 +152,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="765" y="203" key="#com.intellij.ide.util.MemberChooser" timestamp="1585518177965">
+    <state x="765" y="203" key="#com.intellij.ide.util.MemberChooser" timestamp="1585563440470">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="765" y="203" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1585518177965" />
+    <state x="765" y="203" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1585563440470" />
     <state x="808" y="408" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1585512003815">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -179,10 +168,21 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="490" y="174" key="Maven.ArtifactSearchDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1585513312115" />
-    <state x="655" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1585482485597">
+    <state x="655" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1585559715565">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="655" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1585482485597" />
+    <state x="655" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1585559715565" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/accessingdatamysql/models/embeddedKey/OrderDetailKey.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="masterDetails">
     <states>

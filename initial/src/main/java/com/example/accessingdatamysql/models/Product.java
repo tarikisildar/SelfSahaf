@@ -40,6 +40,10 @@ public class Product
         this.ISBN = ISBN;
     }
 
+
+
+
+
     @JsonIgnoreProperties("products")
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(
