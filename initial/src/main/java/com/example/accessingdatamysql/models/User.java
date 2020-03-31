@@ -36,6 +36,9 @@ public class User {
     private Set<Sells> sells;
 
 
+
+
+
     @JsonIgnoreProperties("users")
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(
@@ -51,7 +54,9 @@ public class User {
             joinColumns = @JoinColumn(name = "userID"),
             inverseJoinColumns = @JoinColumn(name = "addressID")
     )
-    private Set<Address> addresses;
+    private Set<Address> addresses;     
+
+
 
 
     @JsonIgnoreProperties("user")
@@ -73,6 +78,13 @@ public class User {
 
 
 
+    public Set<OrderDetail> getOrderdetails() {
+        return orderdetails;
+    }
+
+    public void setOrderdetails(Set<OrderDetail> orderdetails) {
+        this.orderdetails = orderdetails;
+    }
     public Set<CardInfo> getCards() {
         return cards;
     }
@@ -92,13 +104,6 @@ public class User {
         this.sells = sells;
     }
 
-    public Set<OrderDetail> getOrderDetails() {
-        return orderdetails;
-    }
-
-    public void setOrderDetails(Set<OrderDetail> orderdetails) {
-        this.orderdetails = orderdetails;
-    }
 
     public void setSurname(String surname) {
         this.surname = surname;
@@ -140,13 +145,6 @@ public class User {
         return surname;
     }
 
-    public Set<OrderDetail> getOrderdetails() {
-        return orderdetails;
-    }
-
-    public void setOrderdetails(Set<OrderDetail> orderdetails) {
-        this.orderdetails = orderdetails;
-    }
 
     public String getPassword() {
         return password;
