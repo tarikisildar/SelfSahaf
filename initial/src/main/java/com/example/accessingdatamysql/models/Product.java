@@ -27,7 +27,6 @@ public class Product
     private String ISBN;
 
 
-
     public Product() {
     }
 
@@ -39,6 +38,11 @@ public class Product
         this.publisher = publisher;
         this.ISBN = ISBN;
     }
+
+
+
+
+
 
     @JsonIgnoreProperties("products")
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -56,13 +60,26 @@ public class Product
     private Set<Sells> sells;
 
 
+    @JsonIgnoreProperties("product")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<OrderDetail> orderDetails;
+
+
     public Set<Sells> getSells() {
         return sells;
     }
+
     public void setSells(Set<Sells> sells) {
         this.sells = sells;
     }
 
+    public Set<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(Set<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
 
     public Set<Category> getCategories() {
         return categories;

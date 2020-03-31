@@ -45,5 +45,9 @@ public class SellsKey implements Serializable {
         return Objects.equals(getSellerID(), that.getSellerID()) &&
                 Objects.equals(getProductID(), that.getProductID());
     }
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSellerID(), getProductID());
+    }
 }
 

@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "address")
 public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer addressID;
