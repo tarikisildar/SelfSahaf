@@ -38,12 +38,6 @@ public class ProductController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping(path = "/addSells")
-    public @ResponseBody String addSells(@RequestBody Sells sells){
-        sellerRepository.save(sells);
-        return "sad";
-
-    }
 
     @ApiOperation("You can save the product. Selling table not yet implemented")
     @PostMapping(path ="/addBook")
