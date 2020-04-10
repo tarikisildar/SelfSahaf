@@ -19,13 +19,12 @@ class AdminDrawer extends StatelessWidget {
               child: Center(
                     child: Image.asset('images/selfadmin_logo/selfadmin.png'),
                   ),
-              
             ),
             InkWell(
               child: ListTile(
                   leading: Icon(Icons.search, color: Colors.white),
                   title: Text(
-                    "Search \nBooks/Customers",
+                    "Search \nBooks/Users",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
               onTap: () => {
@@ -34,15 +33,6 @@ class AdminDrawer extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => AdminSearch()),
                 )
               },
-            ),
-             InkWell(
-              child: ListTile(
-                  leading: Icon(Icons.search, color: Colors.white),
-                  title: Text(
-                    "Search Users",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  )),
-              onTap: () => {},
             ),
             InkWell(
               child: ListTile(
