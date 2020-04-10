@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/page_classes/BookCard.dart';
-import 'package:selfsahaf/page_classes/HomePageCarousel.dart';
-import 'package:selfsahaf/page_classes/account_profile.dart';
-import 'package:selfsahaf/page_classes/notifications.dart';
-import 'package:selfsahaf/page_classes/sahaf_drawer.dart';
-import 'package:selfsahaf/page_classes/search_page.dart';
+import 'package:selfsahaf/views/page_classes/BookCard.dart';
+import 'package:selfsahaf/views/page_classes/HomePageCarousel.dart';
+import 'package:selfsahaf/views/page_classes/account_profile.dart';
+import 'package:selfsahaf/views/page_classes/notifications.dart';
+import 'package:selfsahaf/views/page_classes/sahaf_drawer.dart';
+import 'package:selfsahaf/views/page_classes/search_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
