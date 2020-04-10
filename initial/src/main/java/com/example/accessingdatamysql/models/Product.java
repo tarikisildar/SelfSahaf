@@ -46,9 +46,8 @@ public class Product
 
 
 
-
     @JsonIgnoreProperties("products")
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     @JoinTable(
             name = "productcategory",
             joinColumns = @JoinColumn(name = "productID"),
