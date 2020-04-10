@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/registration/input_field.dart';
+import 'input_field.dart';
 
 import 'login.dart';
 
