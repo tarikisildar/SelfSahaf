@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,20 +35,19 @@ public class UserController {
     @ApiOperation("Don't post userID, address and card here. Use update for that")
     @PostMapping(path="/add")
     public @ResponseBody
-    String addNewUser (@RequestBody User user) {
+    String addNewUser (@RequestBody User user, HttpServletResponse response) {
 
 
         User user1 = userRepository.findUserByEmail(user.getEmail());
 
 
         if(user1!= null)
+        {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "This mail is already in use";
-
+        }
         String passSha;
-        String pass;
-        if(user.getPassword() != null)
-            pass = user.getPassword();
-        else return "pass";
+
 
         passSha = Hashing.sha256().hashString(user.getPassword(), StandardCharsets.UTF_8).toString();
         user.setPassword(passSha);
@@ -59,11 +59,14 @@ public class UserController {
 
     @ApiOperation("You can update any user variable, if mail is changed; give old mail as param")
     @PostMapping(path= "/update")
-    public @ResponseBody String updateUser (@RequestBody User user) {
+    public @ResponseBody String updateUser (@RequestBody User user, HttpServletResponse response) {
         User user1= userRepository.findUserByUserID(user.getUserID());
 
         if(user1 == null)
+        {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "Requested User not found";
+        }
         if(user.getAddresses() != null) {
             for (Address a : user.getAddresses()) {
                 PostalCode postalCode = postalRepository.findByPostalCode(a.getPostalCode().getPostalCode());
@@ -109,25 +112,28 @@ public class UserController {
     }
 
     @PostMapping(path="/login")
-    public @ResponseBody String login(@RequestParam String email, @RequestParam String password) {
+    public @ResponseBody String login(@RequestParam String email, @RequestParam String password, HttpServletResponse response) {
         User user;
         user = userRepository.findUserByEmail(email);
         if(user == null){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "There is no account with email ".concat(email);
         }
         if(user.getPassword().equals(Hashing.sha256().hashString(password,StandardCharsets.UTF_8).toString())){
             return "Logged In";
         }
         else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "Incorrect Password";
         }
     }
 
     @ApiOperation("Choose seller address from users addresses. Give the pre-saved addressName")
     @PostMapping(path= "/addSellerAddress")
-    public @ResponseBody String addSellerAddress(@RequestParam Integer userID, @RequestParam String addressName){
+    public @ResponseBody String addSellerAddress(@RequestParam Integer userID, @RequestParam String addressName,HttpServletResponse response){
         User user = userRepository.findUserByUserID(userID);
         if(user == null){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "Requested user not found";
         }
 
@@ -141,9 +147,10 @@ public class UserController {
                 found = true;
             }
         }
-        if(!found)
+        if(!found) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "address not found";
-
+        }
         user.setSellerAddressID(address);
 
         userRepository.save(user);
@@ -151,9 +158,10 @@ public class UserController {
     }
     @ApiOperation("w/ id for update")
     @PostMapping(path= "/addAddress")
-    public @ResponseBody String addAddress(@RequestParam Integer userID, @RequestBody Address address){
+    public @ResponseBody String addAddress(@RequestParam Integer userID, @RequestBody Address address, HttpServletResponse response){
         User user = userRepository.findUserByUserID(userID);
         if(user == null){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "Requested user not found";
         }
 

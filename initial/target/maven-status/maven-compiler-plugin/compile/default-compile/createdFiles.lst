@@ -29,4 +29,5 @@ com\example\accessingdatamysql\models\User.class
 com\example\accessingdatamysql\models\Ratings.class
 com\example\accessingdatamysql\dao\ProductRepository.class
 com\example\accessingdatamysql\models\embeddedKey\UserAddressKey.class
+com\example\accessingdatamysql\dao\SellerRepository.class
 com\example\accessingdatamysql\models\ShippingInfo.class
