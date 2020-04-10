@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/views/main_page/main_page.dart';
 import 'input_field.dart';
 import 'package:selfsahaf/views/registration/signup.dart';
 import 'package:dio/dio.dart';
 import 'package:selfsahaf/views/registration/input_field.dart';
-import 'package:http/http.dart' as http;
+import 'package:selfsahaf/models/user.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,17 +19,26 @@ class _LoginPageState extends State<LoginPage> {
   var _emailController = TextEditingController();
   final _passController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  Dio dio = new Dio();
   var response;
- void postUser() async{
-   var url='http://142.93.106.79:8080/accessing-data-mysql/demo/login';
-    this.response = await http.post(url, body: {"email":_emailController.text,"password":_passController.text});
-  print('Response status: ${response.statusCode}');
+
+  void _postUser() async{
+    String tempMail = _emailController.value.text;
+    String tempPassword = _passController.value.text;
+    final response = await dio.post("http://142.93.106.79:8080/accessing-data-mysql/user/login?email="+tempMail+"&password="+tempPassword);
+    if(response == "Logged In"){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+    }
+    else{
+      AlertDialog(
+        content: Text("Girerken Hata"),
+      );
+    }
  } 
   String emailValidation(String email) {
     //.tr .edu.tr eklenecek
     bool emailValid =
-        RegExp(r"^[a-zA-Z0-9.]+@([a-zA-Z0-9]+(\.))[a-zA-Z]+").hasMatch(email);
+        RegExp(r"^[a-zA-Z0-9.]+@([a-zA-Z0-9]+(\.))[a-zA-Z.]+").hasMatch(email);
     return emailValid ? null : 'not valid email.';
   }
 
@@ -70,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: InputField(
-                      controller: TextEditingController(),
+                      controller: _emailController,
                       inputType: TextInputType.emailAddress,
                       labelText: "Email",
                       suffixIcon: Icon(
@@ -91,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                         Icons.lock,
                         color: Colors.white,
                       ),
-                      validation: passwrdValidation,
+                      
                     ),
                   ),
                   Padding(
@@ -106,14 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                                 BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
                         onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MainPage()));
-                        } else {
-                          postUser();
-                        }
+                          _postUser();
                         },
                         child: Text(
                           "Giris Yap",
