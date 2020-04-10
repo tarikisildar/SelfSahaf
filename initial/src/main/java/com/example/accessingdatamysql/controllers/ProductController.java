@@ -10,6 +10,8 @@ import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,4 +81,13 @@ public class ProductController {
         categoryRepository.save(category);
         return "Category Saved";
     }
+
+    /*@ApiOperation("Get Products")
+    @GetMapping(path = "getBooks")
+    public @ResponseBody
+    Page<Product> getProducts(Pageable pageable)
+    {
+        return productRepository.findAll(pageable);
+    }*/
+
 }

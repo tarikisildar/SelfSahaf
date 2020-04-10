@@ -27,6 +27,9 @@ public class Product
     private String ISBN;
 
 
+    @Column(name = "allPath")
+    private ImagePath path;
+
     public Product() {
     }
 
@@ -64,6 +67,13 @@ public class Product
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<OrderDetail> orderDetails;
 
+    public ImagePath getPath() {
+        return path;
+    }
+
+    public void setPath(ImagePath path) {
+        this.path = path;
+    }
 
     public Set<Sells> getSells() {
         return sells;
