@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/views/admin_pages/admin_drawer.dart';
+
 class AdminMainPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -14,11 +15,11 @@ class _AdminMainPage extends State<AdminMainPage> {
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
-            title: Container(
-              height: 22,
-              alignment: Alignment.center,
-          child:Image.asset("images/selfadmin_logo/selfadmin.png"),
-        )),
+          title: Container(
+            height: 22,
+            child: Image.asset("images/selfadmin_logo/selfadmin.png"),
+          ),
+        ),
         drawer: AdminDrawer(),
         body: Center(
             child: Column(

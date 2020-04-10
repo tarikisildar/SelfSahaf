@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/views/main_page/main_page.dart';
+<<<<<<< HEAD
 import 'package:selfsahaf/views/registration/input_field.dart';
 import 'package:selfsahaf/views/registration/signup.dart';
+=======
+import 'input_field.dart';
+import 'package:selfsahaf/views/registration/signup.dart';
+import 'package:dio/dio.dart';
+import 'package:selfsahaf/views/registration/input_field.dart';
+>>>>>>> a63f7f22d50151eb1531daee7860254f9aa54fe6
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/views/admin_pages/admin_search.dart';
 
 class AdminDrawer extends StatelessWidget {
   @override
@@ -24,10 +25,15 @@ class AdminDrawer extends StatelessWidget {
               child: ListTile(
                   leading: Icon(Icons.search, color: Colors.white),
                   title: Text(
-                    "Search Books",
+                    "Search \nBooks/Customers",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
-              onTap: () => {},
+              onTap: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdminSearch()),
+                )
+              },
             ),
              InkWell(
               child: ListTile(
