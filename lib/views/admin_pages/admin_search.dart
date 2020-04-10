@@ -48,7 +48,11 @@ class _AdminSearchState extends State<AdminSearch> {
                     color: Colors.white,
                   )),
             ),
-            leading: Icon(Icons.arrow_back),
+            leading: GestureDetector(
+              child: Icon(Icons.arrow_back),
+              onTap: () => Navigator.pop(context),
+            ),
+
           ),
           body: TabBarView(
             children: [

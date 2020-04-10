@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/views/admin_pages/admin_main_page.dart';
 import 'package:selfsahaf/views/admin_pages/admin_search.dart';
+
+
 
 void main() => runApp(SelfSahaf());
 
@@ -40,11 +43,13 @@ class SelfSahaf extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: AdminSearch()
+      home: AdminMainPage()
       
       /*initialRoute: '/mainPage',
+      initialRoute: '/adminMainPage',
       routes: {
         '/': (context) => LoginPage(),
+        '/adminMainPage':(context)=> AdminMainPage(),
         '/mainPage' : (context) => MainPage(),
         '/addBook' : (context) => AddBook(),
          
