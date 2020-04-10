@@ -23,7 +23,7 @@ public class Price {
                     @JoinColumn(updatable=false,insertable=false, name="sellerID", referencedColumnName="sellerID"),
                     @JoinColumn(updatable=false,insertable=false, name="productID", referencedColumnName="productID"),
             })
-    private Sells seller;
+    private Sells sells;
 
 
 
@@ -48,12 +48,12 @@ public class Price {
         this.price = price;
     }
 
-    public Sells getSeller() {
-        return seller;
+    public Sells getSells() {
+        return sells;
     }
 
-    public void setSeller(Sells seller) {
-        this.seller = seller;
+    public void setSells(Sells sells) {
+        this.sells = sells;
     }
 
 
