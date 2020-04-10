@@ -43,6 +43,9 @@ flutter:
     - images/logo_white/3.0x/
     - images/carousel/
     - images/sell/
+    - images/selfadmin_logo/
+    - images/selfadmin_logo/2.0x/
+    - images/selfadmin_logo/3.0x/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
