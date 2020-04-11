@@ -64,6 +64,7 @@ public class User {
     private Set<OrderDetail> orderdetails;
 
 
+
     public User(){
     }
 
@@ -75,6 +76,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
+
 
 
 
