@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
-import 'package:selfsahaf/views/registration/input_field.dart';
-import 'package:selfsahaf/views/registration/signup.dart';
+import 'package:selfsahaf/views/main_page/main_page.dart';
 import 'input_field.dart';
+import 'package:selfsahaf/views/registration/signup.dart';
 import 'package:dio/dio.dart';
 import 'package:selfsahaf/views/registration/input_field.dart';
 import 'package:selfsahaf/models/user.dart';
@@ -17,23 +16,24 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _emailController = TextEditingController();
+  var _emailController = TextEditingController();
   final _passController = TextEditingController();
-  Response response;
- void postUser() async{
-   Dio dio = new Dio();
-   var url='http://142.93.106.79:8080/accessing-data-mysql/user/login';
-   FormData formdata=new FormData.fromMap({
-     "email ": _emailController, "password ": _passController
-   });
-   try{
-   response = await dio.post(url, data: formdata);
-   }catch(e){
-   print('Response status: ${response.statusCode}');
-   }
-   /*var url='http://142.93.106.79:8080/accessing-data-mysql/user/login';
-    this.response = await http.post(url, body: {"email":_emailController.text,"password":_passController.text});
-  print('Response status: ${response.statusCode}');*/
+  final _formKey = GlobalKey<FormState>();
+  Dio dio = new Dio();
+  var response;
+
+  void _postUser() async{
+    String tempMail = _emailController.value.text;
+    String tempPassword = _passController.value.text;
+    final response = await dio.post("http://142.93.106.79:8080/accessing-data-mysql/user/login?email="+tempMail+"&password="+tempPassword);
+    if(response == "Logged In"){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+    }
+    else{
+      AlertDialog(
+        content: Text("Girerken Hata"),
+      );
+    }
  } 
   String emailValidation(String email) {
     //.tr .edu.tr eklenecek
@@ -66,101 +66,104 @@ class _LoginPageState extends State<LoginPage> {
           child: Center(
               child: Padding(
             padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                ),
-                Container(
-                  width: 320,
-                  height: 300,
-                  child: Image.asset("images/logo_white/logo_white.png"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: InputField(
-                    controller: _emailController,
-                    inputType: TextInputType.emailAddress,
-                    labelText: "Email",
-                    suffixIcon: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-                    validation: emailValidation,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: InputField(
-                    isPassword: true,
-                    controller: _passController,
-                    inputType: TextInputType.emailAddress,
-                    labelText: "Sifre",
-                    suffixIcon: Icon(
-                      Icons.lock,
-                      color: Colors.white,
-                    ),
-                    validation: passwrdValidation,
+                  Container(
+                    width: 320,
+                    height: 300,
+                    child: Image.asset("images/logo_white/logo_white.png"),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 35.0),
-                  child: Container(
-                    width: 220,
-                    height: 45,
-                    child: FlatButton(
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(15.0),
-                          side:
-                              BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
-                      color: Colors.white,
-                      onPressed: ()  {
-                       postUser();
-                      },
-                      child: Text(
-                        "Giris Yap",
-                        style: TextStyle(
-                            color: Color.fromRGBO(230, 81, 0, 1), fontSize: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: InputField(
+                      controller: _emailController,
+                      inputType: TextInputType.emailAddress,
+                      labelText: "Email",
+                      suffixIcon: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                      validation: emailValidation,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: InputField(
+                      isPassword: true,
+                      controller: _passController,
+                      inputType: TextInputType.emailAddress,
+                      labelText: "Sifre",
+                      suffixIcon: Icon(
+                        Icons.lock,
+                        color: Colors.white,
+                      ),
+                      
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 35.0),
+                    child: Container(
+                      width: 220,
+                      height: 45,
+                      child: FlatButton(
+                        shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(15.0),
+                            side:
+                                BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
+                        color: Colors.white,
+                        onPressed: () {
+                          _postUser();
+                        },
+                        child: Text(
+                          "Giris Yap",
+                          style: TextStyle(
+                              color: Color.fromRGBO(230, 81, 0, 1), fontSize: 20),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Container(
-                    width: 220,
-                    height: 45,
-                    child: FlatButton(
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(15.0),
-                          side:
-                              BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
-                      color: Colors.white,
-                      onPressed: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Signup())),
-                      child: Text(
-                        "Kayit Ol",
-                        style: TextStyle(
-                            color: Color.fromRGBO(230, 81, 0, 1), fontSize: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Container(
+                      width: 220,
+                      height: 45,
+                      child: FlatButton(
+                        shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(15.0),
+                            side:
+                                BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
+                        color: Colors.white,
+                        onPressed: () => Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Signup())),
+                        child: Text(
+                          "Kayit Ol",
+                          style: TextStyle(
+                              color: Color.fromRGBO(230, 81, 0, 1), fontSize: 20),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 25.0),
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        print("Sifremi unuttum aq");
-                      },
-                      child: Text(
-                        "Sifremi Unuttum",
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25.0),
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          print("Sifremi unuttum aq");
+                        },
+                        child: Text(
+                          "Sifremi Unuttum",
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )),
         ),
