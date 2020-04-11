@@ -19,7 +19,6 @@ class AdminDrawer extends StatelessWidget {
               child: Center(
                     child: Image.asset('images/selfadmin_logo/selfadmin.png'),
                   ),
-              
             ),
             InkWell(
               child: ListTile(

@@ -1,11 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:selfsahaf/views/registration/input_field.dart';
 import 'package:selfsahaf/views/registration/signup.dart';
 import 'input_field.dart';
 import 'package:dio/dio.dart';
-
-import 'package:http/http.dart' as http;
+import 'package:selfsahaf/views/registration/input_field.dart';
+import 'package:selfsahaf/models/user.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -36,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
   String emailValidation(String email) {
     //.tr .edu.tr eklenecek
     bool emailValid =
-        RegExp(r"^[a-zA-Z0-9.]+@([a-zA-Z0-9]+(\.))[a-zA-Z]+").hasMatch(email);
+        RegExp(r"^[a-zA-Z0-9.]+@([a-zA-Z0-9]+(\.))[a-zA-Z.]+").hasMatch(email);
     return emailValid ? null : 'not valid email.';
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/views/page_classes/BookCard.dart';
-import 'package:selfsahaf/views/page_classes/HomePageCarousel.dart';
+import 'package:selfsahaf/views/page_classes/book_card.dart';
+import 'package:selfsahaf/views/page_classes/home_page_carousel.dart';
 import 'package:selfsahaf/views/page_classes/account_profile.dart';
 import 'package:selfsahaf/views/page_classes/notifications.dart';
 import 'package:selfsahaf/views/page_classes/sahaf_drawer.dart';
