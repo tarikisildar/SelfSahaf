@@ -12,6 +12,7 @@ com\example\accessingdatamysql\AccessingDataMysqlApplication.class
 com\example\accessingdatamysql\models\Sells.class
 com\example\accessingdatamysql\models\embeddedKey\OrderDetailKey.class
 com\example\accessingdatamysql\models\embeddedKey\PriceKey.class
+com\example\accessingdatamysql\models\embeddedKey\RatingKey.class
 com\example\accessingdatamysql\config\Swagger2Config.class
 com\example\accessingdatamysql\dao\AddressRepository.class
 com\example\accessingdatamysql\dao\CardRepository.class
@@ -24,7 +25,11 @@ com\example\accessingdatamysql\models\Product.class
 com\example\accessingdatamysql\models\Order.class
 com\example\accessingdatamysql\models\Price.class
 com\example\accessingdatamysql\controllers\UserController.class
+com\example\accessingdatamysql\models\ImagePath.class
 com\example\accessingdatamysql\models\User.class
+com\example\accessingdatamysql\models\Ratings.class
+com\example\accessingdatamysql\dao\ProductRepositoryWithoutPage.class
+com\example\accessingdatamysql\Services\ProductService.class
 com\example\accessingdatamysql\dao\ProductRepository.class
 com\example\accessingdatamysql\models\embeddedKey\UserAddressKey.class
 com\example\accessingdatamysql\dao\SellerRepository.class
