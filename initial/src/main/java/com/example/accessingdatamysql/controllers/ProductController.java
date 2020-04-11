@@ -1,9 +1,7 @@
 package com.example.accessingdatamysql.controllers;
 
-import com.example.accessingdatamysql.dao.CategoryRepository;
-import com.example.accessingdatamysql.dao.ProductRepository;
-import com.example.accessingdatamysql.dao.SellerRepository;
-import com.example.accessingdatamysql.dao.UserRepository;
+import com.example.accessingdatamysql.Services.ProductService;
+import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.embeddedKey.PriceKey;
 import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
@@ -21,6 +19,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -30,6 +29,12 @@ public class ProductController {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ProductRepositoryWithoutPage productRepositoryWithoutPage;
+
+    @Autowired
+    private ProductService service;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -82,12 +87,25 @@ public class ProductController {
         return "Category Saved";
     }
 
-    /*@ApiOperation("Get Products")
+    @ApiOperation("Get Products")
     @GetMapping(path = "getBooks")
     public @ResponseBody
-    Page<Product> getProducts(Pageable pageable)
+    Iterable<Product> getProducts(@RequestParam(defaultValue = "0") Integer pageNo,
+                                  @RequestParam(defaultValue = "2") Integer pageSize,
+                                  @RequestParam(defaultValue = "productID") String sortBy)
     {
-        return productRepository.findAll(pageable);
-    }*/
+        Iterable<Product> list = service.getAll(pageNo,pageSize,sortBy);
+        return list;
+        //return productRepository.findAll(pageable);
+    }
+
+    @GetMapping(path = "getSellerBooks")
+    public @ResponseBody
+    List<Product> getSellerProducts(@RequestParam String  name)
+    {
+        return productRepositoryWithoutPage.findProductBySellerID(name);
+        //return productRepository.findAll(pageable);
+    }
+
 
 }
