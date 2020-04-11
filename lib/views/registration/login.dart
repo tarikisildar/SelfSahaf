@@ -104,8 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
                         onPressed: () {
-                          api
-                              .loginWithEmail(_emailController.text,
+                          api.loginWithEmail(_emailController.text,
                                   _passwordController.text)
                               .then((val) {
                             if (val == 200) {
