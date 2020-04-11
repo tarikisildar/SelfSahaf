@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/controller/user_controller.dart';
+import 'package:selfsahaf/views/admin_pages/admin_main_page.dart';
 import 'package:selfsahaf/views/main_page/main_page.dart';
 import 'input_field.dart';
 import 'package:selfsahaf/views/registration/signup.dart';
@@ -17,26 +19,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   var _emailController = TextEditingController();
-  final _passController = TextEditingController();
+  final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Dio dio = new Dio();
-  var response;
+  AuthService api = new AuthService();
 
-  void _postUser() async{
-    String tempMail = _emailController.value.text;
-    String tempPassword = _passController.value.text;
-    final response = await dio.post("http://142.93.106.79:8080/accessing-data-mysql/user/login?email="+tempMail+"&password="+tempPassword);
-    if(response == "Logged In"){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
-    }
-    else{
-      AlertDialog(
-        content: Text("Girerken Hata"),
-      );
-    }
- } 
   String emailValidation(String email) {
-    //.tr .edu.tr eklenecek
     bool emailValid =
         RegExp(r"^[a-zA-Z0-9.]+@([a-zA-Z0-9]+(\.))[a-zA-Z.]+").hasMatch(email);
     return emailValid ? null : 'not valid email.';
@@ -46,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     String pattern =
         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.!@#\$&*~]).{8,24}$';
     RegExp regExp = new RegExp(pattern);
-    return regExp.hasMatch(passwrd) ? null : 'not valid password';
+    return regExp.hasMatch(passwrd) ? null : "not valid password";
   }
 
   String message(statusCode) {
@@ -94,15 +81,15 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: InputField(
+                      validation: passwrdValidation,
                       isPassword: true,
-                      controller: _passController,
+                      controller: _passwordController,
                       inputType: TextInputType.emailAddress,
                       labelText: "Sifre",
                       suffixIcon: Icon(
                         Icons.lock,
                         color: Colors.white,
                       ),
-                      
                     ),
                   ),
                   Padding(
@@ -113,16 +100,34 @@ class _LoginPageState extends State<LoginPage> {
                       child: FlatButton(
                         shape: new RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(15.0),
-                            side:
-                                BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
+                            side: BorderSide(
+                                color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
                         onPressed: () {
-                          _postUser();
+                          api
+                              .loginWithEmail(_emailController.text,
+                                  _passwordController.text)
+                              .then((val) {
+                            if (val == 200) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MainPage()),
+                                  ModalRoute.withName("/Home"));
+                            }
+                            else{
+                              AlertDialog(
+                                title: Text("hata"),
+                              );
+                            }
+                          });
                         },
                         child: Text(
                           "Giris Yap",
                           style: TextStyle(
-                              color: Color.fromRGBO(230, 81, 0, 1), fontSize: 20),
+                              color: Color.fromRGBO(230, 81, 0, 1),
+                              fontSize: 20),
                         ),
                       ),
                     ),
@@ -135,15 +140,16 @@ class _LoginPageState extends State<LoginPage> {
                       child: FlatButton(
                         shape: new RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(15.0),
-                            side:
-                                BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
+                            side: BorderSide(
+                                color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
                         onPressed: () => Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Signup())),
                         child: Text(
                           "Kayit Ol",
                           style: TextStyle(
-                              color: Color.fromRGBO(230, 81, 0, 1), fontSize: 20),
+                              color: Color.fromRGBO(230, 81, 0, 1),
+                              fontSize: 20),
                         ),
                       ),
                     ),

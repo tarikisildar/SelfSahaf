@@ -153,7 +153,7 @@ class _BookCardState extends State<BookCard> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      physics: ScrollPhysics(),
+        physics: ScrollPhysics(),
         itemCount: bookList.length,
         shrinkWrap: true,
         gridDelegate:
@@ -181,8 +181,7 @@ class Book extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Hero(
-      tag: bookName,
+        child: Container(
       child: Padding(
         child: InkWell(
           onTap: () {},
