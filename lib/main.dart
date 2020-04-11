@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:selfsahaf/views/admin_pages/admin_main_page.dart';
+import 'package:selfsahaf/views/main_page/main_page.dart';
+import 'package:selfsahaf/views/registration/login.dart';
 
 
 
@@ -45,7 +47,7 @@ class SelfSahaf extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       
-      home:AdminMainPage()
+      home: LoginPage()
     );
   }
 }

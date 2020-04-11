@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/views/main_page/main_page.dart';
-<<<<<<< HEAD
+
 import 'package:selfsahaf/views/registration/input_field.dart';
 import 'package:selfsahaf/views/registration/signup.dart';
-=======
 import 'input_field.dart';
-import 'package:selfsahaf/views/registration/signup.dart';
 import 'package:dio/dio.dart';
-import 'package:selfsahaf/views/registration/input_field.dart';
->>>>>>> a63f7f22d50151eb1531daee7860254f9aa54fe6
+
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
@@ -21,11 +17,21 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
-  var response;
+  Response response;
  void postUser() async{
-   var url='http://142.93.106.79:8080/accessing-data-mysql/demo/login';
+   Dio dio = new Dio();
+   var url='http://142.93.106.79:8080/accessing-data-mysql/user/login';
+   FormData formdata=new FormData.fromMap({
+     "email ": _emailController, "password ": _passController
+   });
+   try{
+   response = await dio.post(url, data: formdata);
+   }catch(e){
+   print('Response status: ${response.statusCode}');
+   }
+   /*var url='http://142.93.106.79:8080/accessing-data-mysql/user/login';
     this.response = await http.post(url, body: {"email":_emailController.text,"password":_passController.text});
-  print('Response status: ${response.statusCode}');
+  print('Response status: ${response.statusCode}');*/
  } 
   String emailValidation(String email) {
     //.tr .edu.tr eklenecek

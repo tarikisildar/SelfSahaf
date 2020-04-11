@@ -10,11 +10,11 @@ class AdminDrawer extends StatelessWidget {
         decoration: BoxDecoration(
           color: Color.fromRGBO(192, 72, 46, 1),
         ),
-        child: ListView(
+        child: Column(
           children: <Widget>[
             Container(
               height: 100,
-              padding: EdgeInsets.only(top: 10, bottom: 0),
+              padding: EdgeInsets.only(top: 50, bottom: 10),
               margin: EdgeInsets.only(left: 50, top: 0,right:50),
               child: Center(
                     child: Image.asset('images/selfadmin_logo/selfadmin.png'),
@@ -23,9 +23,10 @@ class AdminDrawer extends StatelessWidget {
             ),
             InkWell(
               child: ListTile(
+                contentPadding: EdgeInsets.only(top:10,left:20),
                   leading: Icon(Icons.search, color: Colors.white),
                   title: Text(
-                    "Search \nBooks/Customers",
+                    "Search \nBooks/Users",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
               onTap: () => {
@@ -35,17 +36,10 @@ class AdminDrawer extends StatelessWidget {
                 )
               },
             ),
-             InkWell(
-              child: ListTile(
-                  leading: Icon(Icons.search, color: Colors.white),
-                  title: Text(
-                    "Search Users",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  )),
-              onTap: () => {},
-            ),
+          
             InkWell(
               child: ListTile(
+                contentPadding: EdgeInsets.only(top:10,left:20),
                   leading: Icon(
                     Icons.local_shipping,
                     color: Colors.white,
@@ -57,7 +51,9 @@ class AdminDrawer extends StatelessWidget {
               onTap: () => {},
             ),
             InkWell(
+              
               child: ListTile(
+                contentPadding: EdgeInsets.only(top:10,left:20),
                   leading: Icon(Icons.edit, color: Colors.white),
                   title: Text(
                     "Edit Categories",
