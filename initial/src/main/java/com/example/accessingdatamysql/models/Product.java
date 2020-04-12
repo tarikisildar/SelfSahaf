@@ -3,6 +3,9 @@ package com.example.accessingdatamysql.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -57,7 +60,7 @@ public class Product
 
 
     @JsonIgnoreProperties("product")
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 
     private Set<Sells> sells;
 
@@ -74,8 +77,26 @@ public class Product
         this.path = path;
     }
 
-    public Set<Sells> getSells() {
-        return sells;
+    public Set<Sells> getSells()
+    {
+        Set<Sells> tempSell = sells;
+        for(Sells sell: tempSell)
+        {
+            String date = LocalDateTime.MIN.toString();
+            Price tempPrice = null;
+            for(Price p: sell.getPrice())
+            {
+                if(p.getPriceID().getDatetime().compareTo(date) > 0)
+                {
+                    tempPrice = p;
+                }
+            }
+            Set<Price> prices = new HashSet<>();
+            if(tempPrice != null)
+                prices.add(tempPrice);
+            sell.setPrice(prices);
+        }
+        return tempSell;
     }
 
     public void setSells(Set<Sells> sells) {

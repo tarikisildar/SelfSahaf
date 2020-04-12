@@ -28,6 +28,7 @@ dependency-reduced-pom.xml
 *.ipr
 *.iws
 *.idea
+.idea/
 
 # build files
 
