@@ -5,7 +5,7 @@ import 'package:selfsahaf/views/admin_pages/admin_search.dart';
 import 'package:selfsahaf/views/main_page/main_page.dart';
 import 'package:selfsahaf/views/page_classes/add_book.dart';
 import 'package:selfsahaf/views/registration/login.dart';
-
+import 'package:selfsahaf/views/profile_pages/profile.dart';
 
 
 void main() => runApp(SelfSahaf());
@@ -48,14 +48,14 @@ class SelfSahaf extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       
       
-      initialRoute: '/mainPage',
+      initialRoute: '/profil',
       
       routes: {
         '/': (context) => LoginPage(),
         '/adminMainPage':(context)=> AdminMainPage(),
         '/mainPage' : (context) => MainPage(),
         '/addBook' : (context) => AddBook(),
-         
+         '/profil':(context)=>ProfilePage(),
       },
     );
   }

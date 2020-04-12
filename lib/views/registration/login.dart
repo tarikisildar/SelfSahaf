@@ -26,8 +26,9 @@ class _LoginPageState extends State<LoginPage> {
     String tempMail = _emailController.value.text;
     String tempPassword = _passController.value.text;
     final response = await dio.post("http://142.93.106.79:8080/accessing-data-mysql/user/login?email="+tempMail+"&password="+tempPassword);
-    if(response == "Logged In"){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+    print("${response.statusCode}");
+    if(response.statusCode==200){
+      Navigator.push(context, MaterialPageRoute(builder: ( context) => MainPage()));
     }
     else{
       AlertDialog(

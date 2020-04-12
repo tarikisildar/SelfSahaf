@@ -5,6 +5,7 @@ import 'package:selfsahaf/views/page_classes/account_profile.dart';
 import 'package:selfsahaf/views/page_classes/notifications.dart';
 import 'package:selfsahaf/views/page_classes/sahaf_drawer.dart';
 import 'package:selfsahaf/views/page_classes/search_page.dart';
+import 'package:selfsahaf/views/profile_pages/profile.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -137,7 +138,9 @@ class _MainPageState extends State<MainPage> {
                                   size: 30,
                                   color: Colors.white,
                                 ),
-                          onTap: () => {},
+                          onTap: () => {
+                           Navigator.push(context, MaterialPageRoute(builder: ( context) => ProfilePage()))
+                          },
                         ),
                         _index == 3
                             ? Text(

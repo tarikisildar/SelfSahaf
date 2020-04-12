@@ -181,8 +181,7 @@ class Book extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Hero(
-      tag: bookName,
+        child: Container(
       child: Padding(
         child: InkWell(
           onTap: () {},
