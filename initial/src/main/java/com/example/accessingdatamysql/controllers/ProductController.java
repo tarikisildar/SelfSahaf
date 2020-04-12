@@ -101,9 +101,9 @@ public class ProductController {
 
     @GetMapping(path = "getSellerBooks")
     public @ResponseBody
-    List<Product> getSellerProducts(@RequestParam String  name)
+    List<Product> getSellerProducts(@RequestParam Integer  sellerID)
     {
-        return productRepositoryWithoutPage.findProductBySellerID(name);
+        return productRepositoryWithoutPage.findProductBySellerID(sellerID);
         //return productRepository.findAll(pageable);
     }
 
