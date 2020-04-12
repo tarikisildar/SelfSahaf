@@ -21,6 +21,7 @@ public class Sells {
     @JoinColumn(name = "productID", referencedColumnName = "productID")
     private Product product;
 
+
     @JsonIgnoreProperties("sells")
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("sellerID")
@@ -45,9 +46,7 @@ public class Sells {
         this.product = product;
     }
 
-    public User getUser() {
-        return user;
-    }
+    //public User getUser() {return user;}
 
     public void setUser(User user) {
         this.user = user;

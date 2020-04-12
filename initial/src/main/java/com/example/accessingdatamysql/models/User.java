@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.beans.Transient;
 import java.util.Set;
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -85,6 +86,7 @@ public class User {
     public void setOrderdetails(Set<OrderDetail> orderdetails) {
         this.orderdetails = orderdetails;
     }
+
     public Set<CardInfo> getCards() {
         return cards;
     }
