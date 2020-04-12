@@ -10,7 +10,7 @@ import java.util.Objects;
 @Embeddable
 public class ImagePath
 {
-    private static final String cons = "root/images";
+    private static final String cons = "root/images/";
 
     private String allPath;
 
@@ -23,10 +23,6 @@ public class ImagePath
     public ImagePath(String path) {
         this.path = path;
         this.allPath = cons + path;
-    }
-
-    public String getPath() {
-        return path;
     }
 
     public void setPath(String path) {
