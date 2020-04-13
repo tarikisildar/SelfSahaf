@@ -45,7 +45,7 @@ public class UserController {
 
         if(user1!= null)
         {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "This mail is already in use";
         }
         String passSha;
@@ -66,7 +66,7 @@ public class UserController {
 
         if(user1 == null)
         {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "Requested User not found";
         }
         if(user.getAddresses() != null) {
@@ -118,42 +118,33 @@ public class UserController {
         User user;
         user = userRepository.findUserByEmail(email);
         if(user == null){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "There is no account with email ".concat(email);
         }
         if(user.getPassword().equals(Hashing.sha256().hashString(password,StandardCharsets.UTF_8).toString())){
             return "Logged In";
         }
         else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "Incorrect Password";
         }
     }
 
     @ApiOperation("Choose seller address from users addresses. Give the pre-saved addressName")
     @PostMapping(path= "/addSellerAddress")
-    public @ResponseBody String addSellerAddress(@RequestParam Integer userID, @RequestParam String addressName,HttpServletResponse response){
+    public @ResponseBody String addSellerAddress(@RequestParam Integer userID, @RequestBody Address address,HttpServletResponse response){
         User user = userRepository.findUserByUserID(userID);
         if(user == null){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "Requested user not found";
         }
-
-        Address address = new Address();
-        //Address[] addresses = user.getAddresses();
-        boolean found = false;
-        for(Address a:user.getAddresses()){
-            if(addressName.equals(a.getAddressName()))
-            {
-                address.setAddressID(a.getAddressID());
-                found = true;
-            }
-        }
-        if(!found) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return "address not found";
+        PostalCode postalCode = postalRepository.findByPostalCode(address.getPostalCode().getPostalCode());
+        if (postalCode != null) {
+            address.setPostalCode(postalCode);
         }
         user.setSellerAddressID(address);
+
+        addressRepository.save(address);
 
         userRepository.save(user);
         return "saved";
@@ -163,13 +154,18 @@ public class UserController {
     public @ResponseBody String addAddress(@RequestParam Integer userID, @RequestBody Address address, HttpServletResponse response){
         User user = userRepository.findUserByUserID(userID);
         if(user == null){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "Requested user not found";
         }
-
+        if(user.getAddresses() != null) {
+                PostalCode postalCode = postalRepository.findByPostalCode(address.getPostalCode().getPostalCode());
+                if (postalCode != null) {
+                    address.setPostalCode(postalCode);
+                }
+                user.getAddresses().add(address);
+        }
         addressRepository.save(address);
 
-        user.getAddresses().add(address);
         userRepository.save(user);
         return "saved";
     }
