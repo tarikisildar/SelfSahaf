@@ -1,3 +1,4 @@
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/views/page_classes/book_card.dart';
 import 'package:selfsahaf/views/page_classes/home_page_carousel.dart';
@@ -16,13 +17,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _index = 0;
-  List<Widget> _pages = [
-    MainPage(),
-    SearchPage(),
-    NotificationsPage(),
-    AccountProfilePage()
-  ];
-
+  List<Widget> _pages = [MainPage(), SearchPage(), NotificationsPage(), AccountProfilePage()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +48,12 @@ class _MainPageState extends State<MainPage> {
                                   size: 30,
                                   color: Colors.white,
                                 ),
-                          onTap: () => {},
+                          onTap: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MainPage()))
+                          },
                         ),
                         _index == 0
                             ? Text(
@@ -81,7 +81,12 @@ class _MainPageState extends State<MainPage> {
                                   size: 30,
                                   color: Colors.white,
                                 ),
-                          onTap: () => {},
+                          onTap: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchPage()))
+                          },
                         ),
                         _index == 1
                             ? Text(
@@ -110,7 +115,12 @@ class _MainPageState extends State<MainPage> {
                                   size: 30,
                                   color: Colors.white,
                                 ),
-                          onTap: () => {},
+                          onTap: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NotificationsPage()))
+                          },
                         ),
                         _index == 2
                             ? Text(
@@ -171,13 +181,18 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
         drawer: SahafDrawer(),
-        body:ListView(
+        body: ListView(
           children: <Widget>[
             HomePageCarousel(),
-            Padding(padding: EdgeInsets.all(0.1)),
-            BookCard()
+            BookCard(),
           ],
-        )
-        );
+        ));
+  }
+
+  _changeIndex(int i) {
+    _index = i;
+    setState(() {
+
+    });
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/views/profile_pages/adressPage.dart';
 import 'package:selfsahaf/views/profile_pages/historyPage.dart';
+import 'package:selfsahaf/views/profile_pages/settingsPage.dart';
 
 class ProfilePage extends StatefulWidget {
   // ExamplePage({ Key key }) : super(key: key);
@@ -24,7 +25,10 @@ class _ProfilePage extends State<ProfilePage> {
           IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
-                print("settings");
+                Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SettingsPage()));
               }),
         ],
       ),
@@ -38,8 +42,8 @@ class _ProfilePage extends State<ProfilePage> {
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  height: 200,
-                  width: 200,
+                  height: 150,
+                  width: 150,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.rectangle,
@@ -53,6 +57,7 @@ class _ProfilePage extends State<ProfilePage> {
                     ),
                   ),
                 ),
+                Expanded(child: 
                 Container(
                   width: 150,
                   height: 50,
@@ -65,7 +70,7 @@ class _ProfilePage extends State<ProfilePage> {
                   child: Center(
                     child: Text(_name),
                   ),
-                ),
+                )),
               ],
             )),
              
