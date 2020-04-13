@@ -152,7 +152,30 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
                         onPressed: () {
+<<<<<<< HEAD
                           _login();
+=======
+                          api.loginWithEmail(_emailController.text,
+                                  _passwordController.text)
+                              .then((val) {
+                            if (val == 200) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MainPage()),
+                                  ModalRoute.withName("/Home"));
+                            }
+                            else{
+                              return showDialog(context: context, builder: (context){
+                                                    return AlertDialog(
+                                                      title: Text("Error"),
+                                                      content: Text("Email or password is wrong.")
+                                                    );
+                                                });
+                            }
+                          });
+>>>>>>> 056dffd3d954236422c2be1e336553a507468345
                         },
                         child: Text(
                           "Giris Yap",
