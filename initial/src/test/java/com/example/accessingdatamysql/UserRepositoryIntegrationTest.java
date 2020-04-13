@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,9 +42,9 @@ public class UserRepositoryIntegrationTest {
         entityManager.flush();
 
 
-        User found = userRepository.findUserByEmail(onur.getEmail());
+        Optional<User> found = userRepository.findUserByEmail(onur.getEmail());
 
 
-        assertThat(found.getEmail()).isEqualTo(onur.getEmail());
+        assertThat(found.get().getEmail()).isEqualTo(onur.getEmail());
     }
 }
