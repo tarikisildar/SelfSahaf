@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/views/profile_pages/adressPage.dart';
-import 'package:selfsahaf/views/profile_pages/historyPage.dart';
-import 'package:selfsahaf/views/profile_pages/settingsPage.dart';
+import 'package:selfsahaf/views/profile_pages/adress_page.dart';
+import 'package:selfsahaf/views/profile_pages/history_page.dart';
+import 'package:selfsahaf/views/profile_pages/settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
   // ExamplePage({ Key key }) : super(key: key);

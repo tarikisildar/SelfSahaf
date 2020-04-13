@@ -8,7 +8,6 @@ import 'package:selfsahaf/views/page_classes/add_book.dart';
 import 'package:selfsahaf/views/page_classes/notifications.dart';
 import 'package:selfsahaf/views/page_classes/search_page.dart';
 import 'package:selfsahaf/views/registration/login.dart';
-import 'package:selfsahaf/views/profile_pages/profile.dart';
 
 
 void main() => runApp(SelfSahaf());

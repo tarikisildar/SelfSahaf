@@ -6,7 +6,7 @@ import 'package:selfsahaf/views/page_classes/account_profile.dart';
 import 'package:selfsahaf/views/page_classes/notifications.dart';
 import 'package:selfsahaf/views/page_classes/sahaf_drawer.dart';
 import 'package:selfsahaf/views/page_classes/search_page.dart';
-import 'package:selfsahaf/views/profile_pages/profile.dart';
+import 'package:selfsahaf/views/profile_pages/profile_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
