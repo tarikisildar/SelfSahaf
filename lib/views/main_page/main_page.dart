@@ -6,7 +6,7 @@ import 'package:selfsahaf/views/page_classes/account_profile.dart';
 import 'package:selfsahaf/views/page_classes/notifications.dart';
 import 'package:selfsahaf/views/page_classes/sahaf_drawer.dart';
 import 'package:selfsahaf/views/page_classes/search_page.dart';
-import 'package:selfsahaf/views/profile_pages/profile.dart';
+import 'package:selfsahaf/views/profile_pages/profile_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -24,23 +24,20 @@ class _MainPageState extends State<MainPage> {
         bottomNavigationBar: BottomAppBar(
           elevation: 7,
           child: Container(
-            height: 50,
-            color: Color(0xffe65100),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
+            decoration: BoxDecoration(
+              color: Color(0xffe65100),
+            ),
+            height: 60,
+                child :Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    SizedBox(
-                      width: 30,
-                    ),
                     Column(
                       children: <Widget>[
                         InkWell(
                           child: _index == 0
                               ? Icon(
                                   Icons.home,
-                                  size: 25,
+                                  size: 35,
                                   color: Colors.white,
                                 )
                               : Icon(
@@ -63,9 +60,6 @@ class _MainPageState extends State<MainPage> {
                               )
                             : SizedBox(),
                       ],
-                    ),
-                    SizedBox(
-                      width: 30,
                     ),
                     Column(
                       children: <Widget>[
@@ -97,10 +91,6 @@ class _MainPageState extends State<MainPage> {
                             : SizedBox(),
                       ],
                     ),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
                     Column(
                       children: <Widget>[
                         InkWell(
@@ -131,9 +121,7 @@ class _MainPageState extends State<MainPage> {
                             : SizedBox(),
                       ],
                     ),
-                    SizedBox(
-                      width: 30,
-                    ),
+                    
                     Column(
                       children: <Widget>[
                         InkWell(
@@ -161,17 +149,12 @@ class _MainPageState extends State<MainPage> {
                             : SizedBox(),
                       ],
                     ),
-                    SizedBox(
-                      width: 30,
-                    ),
                   ],
-                )
-              ],
-            ),
+                ),
           ),
         ),
         appBar: AppBar(
-          title: Image.asset("images/logo_white/logo_white.png"),
+          title: Container(height: 50,child: Image.asset("images/logo_white/logo_white.png")),
           actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.shopping_cart),
