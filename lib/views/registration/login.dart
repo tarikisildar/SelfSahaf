@@ -23,6 +23,54 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   AuthService api = new AuthService();
 
+  _login() async {
+    api
+        .loginWithEmail(_emailController.text, _passwordController.text)
+        .then((val) {
+      if (val == 200) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => MainPage()),
+            ModalRoute.withName("/Home"));
+      } else {
+        return showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                backgroundColor: Color(0xffe65100),
+                title: Text(
+                  "Hata!",
+                  style: TextStyle(color: Colors.white),
+                ),
+                content: Text("Girdiğiniz E-Mail veya Şifre Hatalıdır.",
+                    style: TextStyle(color: Colors.white)),
+                actions: <Widget>[
+                  FlatButton(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: Text(
+                      "Tamam",
+                      style: TextStyle(color: Color(0xffe65100)),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                ],
+              );
+            });
+      }
+    });
+  }
+
   String emailValidation(String email) {
     bool emailValid =
         RegExp(r"^[a-zA-Z0-9.]+@([a-zA-Z0-9]+(\.))[a-zA-Z.]+").hasMatch(email);
@@ -104,23 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
                         onPressed: () {
-                          api.loginWithEmail(_emailController.text,
-                                  _passwordController.text)
-                              .then((val) {
-                            if (val == 200) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          MainPage()),
-                                  ModalRoute.withName("/Home"));
-                            }
-                            else{
-                              AlertDialog(
-                                title: Text("hata"),
-                              );
-                            }
-                          });
+                          _login();
                         },
                         child: Text(
                           "Giris Yap",

@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 
 
 class AuthService {
+
   final Dio _dio = Dio()
     ..options.baseUrl = 'http://142.93.106.79:8080/accessing-data-mysql/user/'
     ..options.connectTimeout = 5000
     ..options.receiveTimeout = 3000;
+
+    
 
   Future<int> loginWithEmail(String email, String password) async {
     try {

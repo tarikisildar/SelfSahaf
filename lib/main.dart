@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:selfsahaf/views/admin_pages/admin_main_page.dart';
 import 'package:selfsahaf/views/admin_pages/admin_search.dart';
 import 'package:selfsahaf/views/main_page/main_page.dart';
+import 'package:selfsahaf/views/page_classes/account_profile.dart';
 import 'package:selfsahaf/views/page_classes/add_book.dart';
+import 'package:selfsahaf/views/page_classes/notifications.dart';
+import 'package:selfsahaf/views/page_classes/search_page.dart';
 import 'package:selfsahaf/views/registration/login.dart';
 
 
@@ -53,8 +56,10 @@ class SelfSahaf extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/': (context) => LoginPage(),
         '/mainPage' : (context) => MainPage(),
-        '/adminMain' : (context) => AdminPage()
-         
+        '/adminMain' : (context) => AdminPage(),
+        '/searchPage' : (context) => SearchPage(),
+        '/notifications' : (context) => NotificationsPage(),
+        '/profilePage' : (context) => AccountProfilePage(),
       },
     );
   }
