@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/views/page_classes/productsDialog.dart';
+class SahafDrawer extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _SahafDrawer();
+  }
+}
 
-class SahafDrawer extends StatelessWidget {
+class _SahafDrawer extends State<SahafDrawer> {
+ 
+ 
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -49,21 +58,37 @@ class SahafDrawer extends StatelessWidget {
                   title: Text(
                     "Hesabim",
                     style: TextStyle(fontSize: 20, color: Colors.white),
-                  )
-                  ),
+                  )),
               onTap: () => {},
             ),
             InkWell(
+                child: ListTile(
+                    leading: Icon(
+                      Icons.category,
+                      color: Colors.white,
+                    ),
+                    title: Text(
+                      "Kategoriler",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    )),
+                onTap: () {}),
+            InkWell(
               child: ListTile(
                   leading: Icon(
-                    Icons.category,
+                    Icons.attach_money,
                     color: Colors.white,
                   ),
                   title: Text(
-                    "Kategoriler",
+                    "Products",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
-              onTap: () => {},
+              onTap: () { 
+                return showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ProductsDialog();
+                    });
+              },
             ),
             InkWell(
               child: ListTile(
@@ -73,7 +98,6 @@ class SahafDrawer extends StatelessWidget {
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
               onTap: () => {},
-              
             )
           ],
         ),

@@ -27,11 +27,11 @@ class AdminDrawer extends StatelessWidget {
                     "Search \nBooks/Users",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
-              onTap: () => {
+              onTap: (){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AdminSearch()),
-                )
+                );
               },
             ),
             InkWell(

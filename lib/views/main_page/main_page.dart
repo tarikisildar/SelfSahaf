@@ -45,11 +45,11 @@ class _MainPageState extends State<MainPage> {
                                   size: 30,
                                   color: Colors.white,
                                 ),
-                          onTap: () => {
+                          onTap: (){
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MainPage()))
+                                    builder: (context) => MainPage()));
                           },
                         ),
                         _index == 0
@@ -75,11 +75,11 @@ class _MainPageState extends State<MainPage> {
                                   size: 30,
                                   color: Colors.white,
                                 ),
-                          onTap: () => {
+                          onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SearchPage()))
+                                    builder: (context) => SearchPage()));
                           },
                         ),
                         _index == 1
@@ -105,11 +105,11 @@ class _MainPageState extends State<MainPage> {
                                   size: 30,
                                   color: Colors.white,
                                 ),
-                          onTap: () => {
+                          onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => NotificationsPage()))
+                                    builder: (context) => NotificationsPage()));
                           },
                         ),
                         _index == 2
@@ -136,8 +136,8 @@ class _MainPageState extends State<MainPage> {
                                   size: 30,
                                   color: Colors.white,
                                 ),
-                          onTap: () => {
-                           Navigator.push(context, MaterialPageRoute(builder: ( context) => ProfilePage()))
+                          onTap: ()  {
+                           Navigator.push(context, MaterialPageRoute(builder: ( context) => ProfilePage()));
                           },
                         ),
                         _index == 3

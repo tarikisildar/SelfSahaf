@@ -24,11 +24,13 @@ class _SignupState extends State<Signup> {
     if(fullname == ""){
       return "Isim kismi bos birakilamaz.";
     }
+    return "";
   }
   String surnameValidation(String fullname) {
     if(fullname == ""){
       return "Soyisim kismi bos birakilamaz.";
     }
+    return "";
   }
 
   String telephoneNumberValidation(String number) {
