@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/views/products_pages/products_page.dart';
+
 class ProductsDialog extends StatefulWidget {
   ProductsDialog({Key key}) : super(key: key);
 
@@ -8,17 +9,19 @@ class ProductsDialog extends StatefulWidget {
 }
 
 class _ProductsDialogState extends State<ProductsDialog> {
-  TextEditingController _addressController = TextEditingController();
+  TextEditingController _addresline = TextEditingController();
+  TextEditingController _postalcode=TextEditingController();
   bool _productsShowDialog = true;
   var _countries = ['Country', 'Turkey', 'England'];
   var _cities = {
-    'Country': ['City', 'sas'],
+    'Country': ['City'],
     'Turkey': ['Ankara', 'İstanbul', 'Yozgat'],
-    'England': ['Tahsim', 'London']
+    'England': ['Manchester', 'London']
   };
 
-  var _currentCountry = 'Country';
-  
+  var _country = 'Country';
+  var _city = 'City';
+  List<String> _citySelection=['City'];
 
   @override
   Widget build(BuildContext context) {
@@ -78,25 +81,26 @@ class _ProductsDialogState extends State<ProductsDialog> {
                     ],
                   ),
                 )
-              : Container(
-                  width: 250,
-                  height: 250,
+              : SingleChildScrollView(
+                
                   child: Column(
                     children: <Widget>[
                       Container(
                         width: 200,
                         child: TextFormField(
-                          controller: _addressController,
-                          maxLines: 4,
+                          controller: _addresline,
+                          maxLines: 3,
                           decoration: InputDecoration(
-                            hintText: "Address",
+                            labelText: 'Address',
+                            hintText: "write full address",
                             contentPadding: EdgeInsets.all(5.0),
                           ),
+                          autofocus: false,
+                        
                         ),
                       ),
                       Container(
                         child: DropdownButton(
-                          
                           items: _countries.map((String dropDownItem) {
                             return DropdownMenuItem<String>(
                               value: dropDownItem,
@@ -105,32 +109,60 @@ class _ProductsDialogState extends State<ProductsDialog> {
                           }).toList(),
                           onChanged: (String country) {
                             setState(() {
-                              this._currentCountry = country;
+                              this._country = country;
                     
+                              _citySelection = _cities[country];
+                              _city=_citySelection[0];
                             });
                           },
-                          value: this._currentCountry,
+                          value: this._country,
                         ),
                       ),
                       Container(
-                        child: DropdownButton(
-                          
-                          items:null,
-
-                          onChanged: null
+                          child: DropdownButton(
+                                  items:
+                                      _citySelection.map((String dropDownItem) {
+                                    return DropdownMenuItem<String>(
+                                      value: dropDownItem,
+                                      child: Text(dropDownItem),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String city) {
+                                    setState(() {
+                                      this._city=city;
+                                    });
+                                  },
+                                  value: this._city,
+                                )
+                              ),
+                              Container(
+                     
+                        child: TextFormField(
+                            controller: _postalcode,
+                             decoration: InputDecoration(
+                            hintText: "Ex: 06123",
+                            contentPadding: EdgeInsets.all(5.0),
+                            labelText: 'Postal Code'
+                          ),
+                          autofocus: false,
+                      
                         ),
                       ),
                       Container(
+                        padding: EdgeInsets.fromLTRB(0,15,10,0),
+           
                         alignment: Alignment.bottomRight,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             InkWell(
+                              
                               child: Icon(
                                 Icons.close,
                                 color: Theme.of(context).primaryColor,
                                 size: 40,
                               ),
+                              onTap: ()=>Navigator.pop(context),
                             ),
                             InkWell(
                               child: Icon(
@@ -138,10 +170,18 @@ class _ProductsDialogState extends State<ProductsDialog> {
                                 color: Theme.of(context).primaryColor,
                                 size: 50,
                               ),
+                              onTap: (){
+                                if(_postalcode.text!=''&&_addresline.text!=''&&_city!='City'&&_country!='Country')
+                                   Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProductsPage()));
+                              },
                             )
                           ],
                         ),
                       ),
+                  
                     ],
                   ),
                 );

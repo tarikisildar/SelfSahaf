@@ -21,7 +21,7 @@ class _SignupState extends State<Signup> {
     if (pickedDate != null && pickedDate != _date) {
       setState(() {
         _date = pickedDate;
-        dob = _date.toString().split(' ')[0].split('-').reversed.join();
+        dob = _date.toString().split(' ')[0].split('-').reversed.join('/');
       });
     }
   }
