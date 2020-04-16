@@ -1,3 +1,5 @@
+
+
 class User{
   int userID;
   String name;
@@ -9,14 +11,21 @@ class User{
   String role;
   int sellerAddressID;
 
-  User(email,password){
-    this.email=email;
+  User({mail, name,surname,password,dob}){
+    this.email=mail;
     this.password=password;
+    this.surname = surname;
+    this.name = name;
+    this.dateOfBirth = dob;
   }
 
-  Map<String,dynamic> toJson() =>{
+  Map<String,dynamic> toJsonsignup() =>{
     "email" : email,
     "password": password,
+    "surname" : surname,
+    "dob" : dateOfBirth,
+    "name" : name,
+    "phoneNumber" : phoneNumber,
   };
 
   User.fromJson(Map<String, dynamic> json)

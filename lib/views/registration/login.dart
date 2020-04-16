@@ -174,8 +174,10 @@ class _LoginPageState extends State<LoginPage> {
                             side: BorderSide(
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
-                        onPressed: () => Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Signup())),
+                        onPressed: () => Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => Signup()),
+                            ModalRoute.withName("/Home")),
                         child: Text(
                           "Kayit Ol",
                           style: TextStyle(

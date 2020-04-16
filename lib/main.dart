@@ -9,6 +9,8 @@ import 'package:selfsahaf/views/page_classes/notifications.dart';
 import 'package:selfsahaf/views/page_classes/search_page.dart';
 import 'package:selfsahaf/views/registration/login.dart';
 
+import 'views/registration/signup.dart';
+
 
 void main() => runApp(SelfSahaf());
 
@@ -54,6 +56,7 @@ class SelfSahaf extends StatelessWidget {
       
       routes: <String, WidgetBuilder>{
         '/': (context) => LoginPage(),
+        '/signup': (context) => Signup(),
         '/mainPage' : (context) => MainPage(),
         '/adminMain' : (context) => AdminPage(),
         '/searchPage' : (context) => SearchPage(),
