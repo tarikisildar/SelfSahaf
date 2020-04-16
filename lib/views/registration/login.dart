@@ -23,16 +23,16 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   AuthService api = new AuthService();
 
-  _login() async {
+ void _login() async {
     api
         .loginWithEmail(_emailController.text, _passwordController.text)
-        .then((val) {
+        .then((val){
       if (val == 200) {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => MainPage()),
             ModalRoute.withName("/Home"));
-      } else {
+      }
         return showDialog(
             context: context,
             builder: (context) {
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               );
             });
-      }
+      
     });
   }
 
