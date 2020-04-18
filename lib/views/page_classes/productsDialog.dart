@@ -12,6 +12,24 @@ class _ProductsDialogState extends State<ProductsDialog> {
   TextEditingController _addresline = TextEditingController();
   TextEditingController _postalcode=TextEditingController();
   bool _productsShowDialog = true;
+  var _countryDrop = ['Turkey', 'England'];
+  var currentSelected = null;
+  var _cityDrop = [];
+
+  void loadCities(input){
+    
+    if(input == 1){
+      for (var i = 0; i < _cities['Turkey'].length; i++) {
+        _cityDrop.add(DropdownMenuItem(child: Text(_cities['Turkey'][i]),value: i));
+      }
+    }
+    else{
+      for (var i = 0; i < _cities['England'].length; i++) {
+        _cityDrop.add(DropdownMenuItem(child: Text(_cities['England'][i]),value: i));
+      }
+      
+    }
+  }
   var _countries = ['Country', 'Turkey', 'England'];
   var _cities = {
     'Country': ['City'],
@@ -22,16 +40,17 @@ class _ProductsDialogState extends State<ProductsDialog> {
   var _country = 'Country';
   var _city = 'City';
   List<String> _citySelection=['City'];
-
+  
   @override
   Widget build(BuildContext context) {
+    
     return AlertDialog(
       content: StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return (_productsShowDialog)
               ? Container(
                   width: 250,
-                  height: 150,
+                  height: 180,
                   child: Column(
                     children: <Widget>[
                       Text(
@@ -40,41 +59,51 @@ class _ProductsDialogState extends State<ProductsDialog> {
                             color: Theme.of(context).primaryColor,
                             fontSize: 25),
                       ),
+                      SizedBox(
+                        height: 8,
+                      ),
                       Container(
                           padding: EdgeInsets.fromLTRB(20, 30, 10, 5),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              InkWell(
-                                child: Container(
-                                  color: Theme.of(context).primaryColor,
-                                  padding: EdgeInsets.all(5.0),
-                                  margin: EdgeInsets.all(5.0),
-                                  child: Text(
-                                    "Cancel",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: InkWell(
+                                  child: Container(
+                                    color: Theme.of(context).primaryColor,
+                                    padding: EdgeInsets.all(7.0),
+                                    margin: EdgeInsets.all(5.0),
+                                    child: Text(
+                                      "No",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 30),
+                                    ),
                                   ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
                                 ),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
                               ),
-                              InkWell(
-                                child: Container(
-                                  padding: EdgeInsets.all(5.0),
-                                  margin: EdgeInsets.all(5.0),
-                                  color: Theme.of(context).primaryColor,
-                                  child: Text(
-                                    "Yes",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30),
+                              Padding(
+                                padding: const EdgeInsets.only(left:8.0),
+                                child: InkWell(
+                                  child: Container(
+                                    padding: EdgeInsets.all(7.0),
+                                    margin: EdgeInsets.all(5.0),
+                                    color: Theme.of(context).primaryColor,
+                                    child: Text(
+                                      "Yes",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 30),
+                                    ),
                                   ),
+                                  onTap: () {
+                                    setState(() {
+                                      _productsShowDialog = false;
+                                    });
+                                  },
                                 ),
-                                onTap: () {
-                                  setState(() {
-                                    _productsShowDialog = false;
-                                  });
-                                },
                               )
                             ],
                           ))
@@ -100,22 +129,23 @@ class _ProductsDialogState extends State<ProductsDialog> {
                         ),
                       ),
                       Container(
-                        child: DropdownButton(
-                          items: _countries.map((String dropDownItem) {
+                        child: DropdownButton<String>(
+                          
+                          hint: Text("Country"),
+                          items: _countryDrop.map((String dropdownStringItem){
                             return DropdownMenuItem<String>(
-                              value: dropDownItem,
-                              child: Text(dropDownItem),
+                              value: dropdownStringItem,
+                              child: Text(dropdownStringItem),
                             );
                           }).toList(),
-                          onChanged: (String country) {
+                          onChanged: (String newValueSelected) {
                             setState(() {
-                              this._country = country;
-                    
-                              _citySelection = _cities[country];
-                              _city=_citySelection[0];
+                              this.currentSelected = newValueSelected;
+                              // loadCities(value);
                             });
                           },
-                          value: this._country,
+                          value: currentSelected,
+                          
                         ),
                       ),
                       Container(
@@ -160,7 +190,7 @@ class _ProductsDialogState extends State<ProductsDialog> {
                               child: Icon(
                                 Icons.close,
                                 color: Theme.of(context).primaryColor,
-                                size: 40,
+                                size: 30,
                               ),
                               onTap: ()=>Navigator.pop(context),
                             ),
@@ -168,7 +198,7 @@ class _ProductsDialogState extends State<ProductsDialog> {
                               child: Icon(
                                 Icons.check,
                                 color: Theme.of(context).primaryColor,
-                                size: 50,
+                                size: 30,
                               ),
                               onTap: (){
                                 if(_postalcode.text!=''&&_addresline.text!=''&&_city!='City'&&_country!='Country')
