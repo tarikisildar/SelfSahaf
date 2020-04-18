@@ -17,10 +17,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/product")
@@ -49,8 +46,7 @@ public class ProductController {
     @ApiOperation("You can save the product. Selling table not yet implemented")
     @PostMapping(path ="/addBook")
     public @ResponseBody
-    String addBook(@RequestParam Integer sellerID,@RequestParam Integer price, @RequestParam Integer quantity, @RequestBody Product product)
-    {
+    String addBook(@RequestParam Integer sellerID,@RequestParam Integer price, @RequestParam Integer quantity, @RequestBody Product product) {
         Product pr = productRepository.save(product);
 
         Sells sells = new Sells();
@@ -72,37 +68,34 @@ public class ProductController {
         sells.setQuantity(quantity);
 
         sells.setProduct(pr);
-        User user = userRepository.findUserByUserID(sellerID);
-        sells.setUser(user);
+        Optional<User> user = userRepository.findUserByUserID(sellerID);
+        sells.setUser(user.get());
         sellerRepository.save(sells);
         return "A new selling created";
     }
 
     @ApiOperation("add new category, this will have admin auth")
     @PostMapping(path = "/addCategory") // Admin
-    public @ResponseBody String addCategory(@RequestParam String name)
-    {
+    public @ResponseBody String addCategory(@RequestParam String name) {
         Category category = new Category(name);
         categoryRepository.save(category);
         return "Category Saved";
     }
 
     @ApiOperation("Get Products")
-    @GetMapping(path = "getBooks")
+    @GetMapping(path = "/getBooks")
     public @ResponseBody
     Iterable<Product> getProducts(@RequestParam(defaultValue = "0") Integer pageNo,
                                   @RequestParam(defaultValue = "2") Integer pageSize,
-                                  @RequestParam(defaultValue = "productID") String sortBy)
-    {
+                                  @RequestParam(defaultValue = "productID") String sortBy) {
         Iterable<Product> list = service.getAll(pageNo,pageSize,sortBy);
         return list;
         //return productRepository.findAll(pageable);
     }
 
-    @GetMapping(path = "getSellerBooks")
+    @GetMapping(path = "/getSellerBooks")
     public @ResponseBody
-    List<Product> getSellerProducts(@RequestParam Integer  sellerID)
-    {
+    List<Product> getSellerProducts(@RequestParam Integer  sellerID) {
         return productRepositoryWithoutPage.findProductBySellerID(sellerID);
         //return productRepository.findAll(pageable);
     }
