@@ -18,10 +18,7 @@ USING(productID, sellerID, datetime)) as this
   WHERE sellerID = 1
 
      */
-     */
-     */
-    */
-     */
+
     @Query("SELECT sell.product FROM Sells sell WHERE sellerID = ?1")
     List<Product> findProductBySellerID(Integer sellerID);
 }

@@ -37,9 +37,6 @@ public class User {
     private Set<Sells> sells;
 
 
-
-
-
     @JsonIgnoreProperties("users")
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(
@@ -65,6 +62,7 @@ public class User {
     private Set<OrderDetail> orderdetails;
 
 
+
     public User(){
     }
 
@@ -76,7 +74,6 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
-
 
 
     public Set<OrderDetail> getOrderdetails() {
