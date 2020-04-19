@@ -13,19 +13,19 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userID;
-
+    @Column(length = 45)
     private String name;
-
+    @Column(length = 64)
     private String password;
-
+    @Column(length = 45)
     private String surname;
 
     private String dob;
-
+    @Column(length = 45)
     private String phoneNumber;
-
+    @Column(length = 45)
     private String email;
-
+    @Column(length = 45)
     private String role;
 
     @OneToOne

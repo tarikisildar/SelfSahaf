@@ -6,12 +6,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import java.util.Objects;
+import javax.persistence.Column;
 
 @Embeddable
 public class ImagePath
 {
     private static final String cons = "root/images/";
-
+    @Column(length = 45)
     private String allPath;
 
 

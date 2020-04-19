@@ -10,10 +10,12 @@ import java.util.Set;
 @Table(name = "cardInfo")
 public class CardInfo {
     @Id
-
+    @Column(length = 16)
     private String cardNumber;
 
+    @Column(length = 45)
     private String ownerSurname;
+    @Column(length = 45)
     private String ownerName;
 
     @JsonIgnoreProperties("cards")

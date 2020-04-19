@@ -8,11 +8,11 @@ public class ShippingCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer shippingCompanyID;
-
+    @Column(length = 45)
     private String companyName;
 
     private double price;
-
+    @Column(length = 45)
     private String website;
 
     public ShippingCompany() {

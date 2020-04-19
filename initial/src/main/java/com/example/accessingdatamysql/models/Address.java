@@ -10,7 +10,9 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer addressID;
+    @Column(name = "addressName", length = 45)
     private String addressName;
+    @Column(name = "addressLine", length = 255)
     private String addressLine;
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "postalCode")

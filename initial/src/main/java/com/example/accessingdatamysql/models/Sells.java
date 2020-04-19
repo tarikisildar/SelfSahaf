@@ -52,8 +52,11 @@ public class Sells {
         this.user = user;
     }
 
-    public SellsKey getSellerID() {
-        return sellerID;
+    public Integer getSellerID() {
+        return sellerID.getSellerID();
+    }
+    public Integer getProductID() {
+        return sellerID.getProductID();
     }
 
     public void setSellerID(SellsKey sellerID) {
