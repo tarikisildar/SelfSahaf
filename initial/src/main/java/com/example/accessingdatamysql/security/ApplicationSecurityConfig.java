@@ -18,6 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.accessingdatamysql.security.UserRole.ADMIN;
+import static com.example.accessingdatamysql.security.UserRole.SELLER;
 import static com.example.accessingdatamysql.security.UserRole.USER;
 
 @Configuration
@@ -61,11 +62,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/swagger-ui.html/**").permitAll()
                     .antMatchers("/user/add").permitAll()
-//                    .antMatchers("/user/**").permitAll()
+                    //.antMatchers("/user/**").permitAll()
                     .antMatchers("/product/getBooks", "/product/getSellerBooks").permitAll()
                     .antMatchers("/product/addCategory").hasAnyRole("ROLE_ADMIN")
-                    .antMatchers("/product/**").hasAnyRole(USER.name(), ADMIN.name())
-                    .antMatchers("/user/**").hasAnyRole(USER.name(), ADMIN.name())
+                    .antMatchers("/product/**").hasAnyRole(USER.name(), ADMIN.name(), SELLER.name())
+                    .antMatchers("/user/**").hasAnyRole(USER.name(), ADMIN.name(), SELLER.name())
                     .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

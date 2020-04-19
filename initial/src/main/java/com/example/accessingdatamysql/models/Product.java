@@ -71,7 +71,11 @@ public class Product
     private Set<OrderDetail> orderDetails;
 
     public String getImagePath() {
-        return path.getAllPath();
+        if(path != null)
+            return path.getAllPath();
+        else{
+            return null;
+        }
     }
 
     public void setPath(ImagePath path) {

@@ -61,9 +61,9 @@ public class UserController {
             return "This mail is already in use";
         }
 
-        if (user.getRole().equals("ROLE_SELLER")) user.setRole(SELLER.name());
+        /*if (user.getRole().equals("ROLE_SELLER")) user.setRole(SELLER.name());
         else if (user.getRole().equals("ROLE_ADMIN")) user.setRole(ADMIN.name());
-        else user.setRole(USER.name());
+        else user.setRole(USER.name());*/
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
