@@ -7,8 +7,12 @@ import 'package:selfsahaf/views/page_classes/notifications.dart';
 import 'package:selfsahaf/views/page_classes/sahaf_drawer.dart';
 import 'package:selfsahaf/views/page_classes/search_page.dart';
 import 'package:selfsahaf/views/profile_pages/profile_page.dart';
+import 'package:meta/meta.dart';
+
 
 class MainPage extends StatefulWidget {
+  int userId;
+  MainPage({@required this.userId});
   @override
   State<StatefulWidget> createState() {
     return _MainPageState();
@@ -16,8 +20,15 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  int _userID;
   int _index = 0;
-  List<Widget> _pages = [MainPage(), SearchPage(), NotificationsPage(), AccountProfilePage()];
+  List<Widget> _pages;
+  @override
+  void initState() {
+    // TODO: implement initState
+   this._userID=widget.userId;
+  _pages  = [MainPage(userId: this._userID,), SearchPage(), NotificationsPage(), AccountProfilePage()];
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +60,7 @@ class _MainPageState extends State<MainPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MainPage()));
+                                    builder: (context) => MainPage(userId: this._userID,)));
                           },
                         ),
                         _index == 0

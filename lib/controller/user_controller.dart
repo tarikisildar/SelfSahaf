@@ -1,6 +1,8 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/models/user.dart';
+import 'package:selfsahaf/models/api_response.dart';
 
 
 class AuthService {

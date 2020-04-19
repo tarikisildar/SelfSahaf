@@ -14,34 +14,16 @@ class _ProductsDialogState extends State<ProductsDialog> {
   TextEditingController _addresline = TextEditingController();
   TextEditingController _postalcode=TextEditingController();
   bool _productsShowDialog = true;
-  var _countryDrop = ['Turkey', 'England'];
-  var currentSelected = null;
-  var _cityDrop = [];
-
-  void loadCities(input){
-    
-    if(input == 1){
-      for (var i = 0; i < _cities['Turkey'].length; i++) {
-        _cityDrop.add(DropdownMenuItem(child: Text(_cities['Turkey'][i]),value: i));
-      }
-    }
-    else{
-      for (var i = 0; i < _cities['England'].length; i++) {
-        _cityDrop.add(DropdownMenuItem(child: Text(_cities['England'][i]),value: i));
-      }
-      
-    }
-  }
   var _countries = ['Country', 'Turkey', 'England'];
   var _cities = {
     'Country': ['City'],
-    'Turkey': ['Ankara', 'İstanbul', 'Yozgat'],
-    'England': ['Manchester', 'London']
+    'Turkey': ['City','Ankara', 'İstanbul', 'Yozgat'],
+    'England': ['City','Manchester', 'London']
   };
 
   var _country = 'Country';
   var _city = 'City';
-  List<String> _citySelection=['City'];
+
   
   @override
   Widget build(BuildContext context) {
@@ -134,7 +116,7 @@ class _ProductsDialogState extends State<ProductsDialog> {
                         child: DropdownButton<String>(
                           
                           hint: Text("Country"),
-                          items: _countryDrop.map((String dropdownStringItem){
+                          items: _countries.map((String dropdownStringItem){
                             return DropdownMenuItem<String>(
                               value: dropdownStringItem,
                               child: Text(dropdownStringItem),
@@ -142,18 +124,18 @@ class _ProductsDialogState extends State<ProductsDialog> {
                           }).toList(),
                           onChanged: (String newValueSelected) {
                             setState(() {
-                              this.currentSelected = newValueSelected;
-                              // loadCities(value);
+                              _country=newValueSelected;
+                              _city=_cities[newValueSelected][0];
                             });
                           },
-                          value: currentSelected,
+                          value: _country,
                           
                         ),
                       ),
                       Container(
                           child: DropdownButton(
                                   items:
-                                      _citySelection.map((String dropDownItem) {
+                                      _cities[_country].map((String dropDownItem) {
                                     return DropdownMenuItem<String>(
                                       value: dropDownItem,
                                       child: Text(dropDownItem),

@@ -30,9 +30,10 @@ class _LoginPageState extends State<LoginPage> {
       if (val == 200) {
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => MainPage()),
+            MaterialPageRoute(builder: (context) => MainPage(userId: 1, )),
             ModalRoute.withName("/Home"));
       }
+      else
         return showDialog(
             context: context,
             builder: (context) {

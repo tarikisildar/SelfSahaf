@@ -1,5 +1,7 @@
 
 
+import 'package:selfsahaf/models/address.dart';
+
 class User{
   int userID;
   String name;
@@ -9,7 +11,9 @@ class User{
   String phoneNumber;
   String email;
   String role;
-  int sellerAddressID;
+  Address sellerAddressID;
+  List<Address> addresses;
+
 
   User({mail, name,surname,password,dob}){
     this.email=mail;
@@ -18,7 +22,9 @@ class User{
     this.name = name;
     this.dateOfBirth = dob;
   }
-
+  String getUserName(){
+    return this.name+" "+this.surname;
+  }
   Map<String,dynamic> toJsonsignup() =>{
     "email" : email,
     "password": password,
@@ -28,8 +34,16 @@ class User{
     "phoneNumber" : phoneNumber,
   };
 
+
   User.fromJson(Map<String, dynamic> json)
     : password = json['password'],
-    email = json['email'];
+    email = json['email'],
+    name=json["name"],
+    surname=json["surname"],
+    dateOfBirth=json["dob"],
+    phoneNumber=json["phoneNumber"],
+    sellerAddressID=json["sellerAddressID"],
+    addresses=json["addresses"]
+    ;
 
 }
