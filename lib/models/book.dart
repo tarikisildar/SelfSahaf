@@ -23,32 +23,26 @@ class Book {
       this.price,
       this.categoryID});
 
-  Map<String,dynamic> toJsonBook() {
+  Map<String, dynamic> toJsonBook() {
     return {
-  "author": authorName,
-  "categories": [
-    {
-      "categoryID": categoryID
-    }
-  ],
-  "description": description,
-  "isbn": isbn,
-  "language": language,
-  "name": name,
-  "path": {
-    "path": imagePath
-  },
-  "publisher": publisher
-};
+      "author": authorName,
+      "categories": [
+        {"categoryID": categoryID}
+      ],
+      "description": description,
+      "isbn": isbn,
+      "language": language,
+      "name": name,
+      "path": {"path": imagePath},
+      "publisher": publisher
+    };
   }
 
   Book.fromJson(Map<String, dynamic> json)
-    : authorName = json['author'],
-    productID = json['productID'],
-    name = json['name'],
-    description = json['description'],
-    publisher = json['publisher'],
-    price = json['price'];
-
-
+      : authorName = json['author'],
+        productID = json['productID'],
+        name = json['name'],
+        description = json['description'],
+        publisher = json['publisher'],
+        price = json['price'];
 }

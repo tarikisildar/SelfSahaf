@@ -4,6 +4,7 @@ import 'package:selfsahaf/views/admin_pages/admin_main_page.dart';
 import 'package:selfsahaf/views/admin_pages/admin_search.dart';
 import 'package:selfsahaf/views/main_page/main_page.dart';
 import 'package:selfsahaf/views/page_classes/account_profile.dart';
+import 'package:selfsahaf/views/page_classes/book_pages/add_book.dart';
 import 'package:selfsahaf/views/page_classes/notifications.dart';
 import 'package:selfsahaf/views/page_classes/search_page.dart';
 import 'package:selfsahaf/views/products_pages/products_page.dart';
@@ -53,7 +54,7 @@ class SelfSahaf extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       
-      home: ProductsPage()
+      home: AddBook()
       // initialRoute: '/mainPage',
       
       
