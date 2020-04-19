@@ -15,7 +15,7 @@ public class ShippingInfo {
     private Integer shippingInfoID;
 
     private boolean delivered;
-
+    @Column(length = 45)
     private String trackingNumber;
 
     @OneToOne

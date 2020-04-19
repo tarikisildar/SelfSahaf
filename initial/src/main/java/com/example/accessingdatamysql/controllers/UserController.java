@@ -55,8 +55,9 @@ public class UserController {
 
         Optional<User> findUser = userRepository.findUserByEmail(user.getEmail());
 
+
         if(findUser.isPresent()) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "This mail is already in use";
         }
 
@@ -74,10 +75,12 @@ public class UserController {
     @PostMapping(path= "/update")
     public @ResponseBody String updateUser (@RequestBody User user, HttpServletResponse response) {
 
+
         Optional<User> findUser = userRepository.findUserByUserID(user.getUserID());
 
         if(findUser.isPresent()) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
             return "Requested User not found";
         }
 
@@ -129,51 +132,46 @@ public class UserController {
         return userRepository.findAll();
     }
 
+
     @ApiOperation("Choose seller address from users addresses. Give the pre-saved addressName")
     @PostMapping(path= "/addSellerAddress")
-    public @ResponseBody String addSellerAddress(@RequestParam Integer userID, @RequestParam String addressName,HttpServletResponse response) {
-
+    public @ResponseBody String addSellerAddress(@RequestParam Integer userID, @RequestBody Address address,HttpServletResponse response){
         Optional<User> user = userRepository.findUserByUserID(userID);
-
         if(user.isPresent()){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "Requested user not found";
         }
+        PostalCode postalCode = postalRepository.findByPostalCode(address.getPostalCode().getPostalCode());
+        if (postalCode != null) {
+            address.setPostalCode(postalCode);
 
-        Address address = new Address();
-        //Address[] addresses = user.getAddresses();
-        boolean found = false;
 
-        for(Address a : user.get().getAddresses()) {
-            if(addressName.equals(a.getAddressName())) {
-                address.setAddressID(a.getAddressID());
-                found = true;
-            }
+            addressRepository.save(address);
+
+            userRepository.save(user.get());
         }
-
-        if(!found) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return "Address not found";
-        }
-
-        user.get().setSellerAddressID(address);
-
-        userRepository.save(user.get());
         return "saved";
 
     }
 
     @ApiOperation("w/ id for update")
     @PostMapping(path= "/addAddress")
+
     public @ResponseBody String addAddress(@RequestParam Integer userID, @RequestBody Address address, HttpServletResponse response) {
 
         Optional<User> user = userRepository.findUserByUserID(userID);
 
         if(user.isPresent()){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "Requested user not found";
         }
-
+        if(user.get().getAddresses() != null) {
+                PostalCode postalCode = postalRepository.findByPostalCode(address.getPostalCode().getPostalCode());
+                if (postalCode != null) {
+                    address.setPostalCode(postalCode);
+                }
+                user.get().getAddresses().add(address);
+        }
         addressRepository.save(address);
         user.get().getAddresses().add(address);
         userRepository.save(user.get());

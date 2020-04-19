@@ -32,7 +32,7 @@ public class Ratings {
 
     private String datetime;
     private Integer rating;
-
+    @Column(length = 255)
     private String comment;
 
 

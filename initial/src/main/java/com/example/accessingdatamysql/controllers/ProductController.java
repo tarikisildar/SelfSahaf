@@ -81,6 +81,12 @@ public class ProductController {
         categoryRepository.save(category);
         return "Category Saved";
     }
+    @ApiOperation("get categories")
+    @PostMapping(path = "/getCategories")
+    public @ResponseBody Iterable<Category> getCategories()
+    {
+        return categoryRepository.findAll();
+    }
 
     @ApiOperation("Get Products")
     @GetMapping(path = "/getBooks")

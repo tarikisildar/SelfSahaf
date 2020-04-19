@@ -8,7 +8,7 @@ import java.util.Objects;
 public class CardOwnerKey {
     @Column
     private Integer userID;
-    @Column
+    @Column(length = 45)
     private String  cardNumber;
 
     public CardOwnerKey() {
