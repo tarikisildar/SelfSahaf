@@ -19,7 +19,7 @@ class _AddBookState extends State<AddBook> {
       backgroundColor: Color(0xffe65100),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
-        child: Icon(Icons.picture_in_picture_alt,color: Color(0xffe65100),),
+        child: Icon(Icons.add,color: Color(0xffe65100),),
         onPressed: () {
           print("onayladim devam et");
         },
