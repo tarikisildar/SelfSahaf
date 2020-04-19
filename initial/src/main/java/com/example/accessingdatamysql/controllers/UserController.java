@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.controllers;
 
+import com.example.accessingdatamysql.auth.UserDetailsImp;
 import com.example.accessingdatamysql.dao.AddressRepository;
 import com.example.accessingdatamysql.dao.PostalRepository;
 import com.example.accessingdatamysql.dao.UserRepository;
@@ -7,12 +8,15 @@ import com.example.accessingdatamysql.models.Address;
 import com.example.accessingdatamysql.models.CardInfo;
 import com.example.accessingdatamysql.models.PostalCode;
 import com.example.accessingdatamysql.models.User;
+import com.example.accessingdatamysql.security.UserRole;
 import com.google.common.hash.Hashing;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +26,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import static com.example.accessingdatamysql.security.UserRole.*;
 
 @Controller
 @RequestMapping(path="/user")
@@ -53,6 +59,10 @@ public class UserController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "This mail is already in use";
         }
+
+        if (user.getRole().equals("ROLE_SELLER")) user.setRole(SELLER.name());
+        else if (user.getRole().equals("ROLE_ADMIN")) user.setRole(ADMIN.name());
+        else user.setRole(USER.name());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -108,8 +118,9 @@ public class UserController {
 
     @ApiOperation("Get user with id")
     @GetMapping(path="/get")
-    public @ResponseBody Optional<User> getUser(@RequestParam Integer userID) {
-        return userRepository.findUserByUserID(userID);
+    public @ResponseBody Optional<User> getUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findUserByUserID(((UserDetailsImp) auth.getPrincipal()).getUserID());
     }
 
     @ApiOperation("Get all users")

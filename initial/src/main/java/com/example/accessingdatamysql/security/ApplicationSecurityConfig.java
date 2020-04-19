@@ -17,6 +17,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.example.accessingdatamysql.security.UserRole.ADMIN;
+import static com.example.accessingdatamysql.security.UserRole.USER;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -58,10 +61,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/swagger-ui.html/**").permitAll()
                     .antMatchers("/user/add").permitAll()
+//                    .antMatchers("/user/**").permitAll()
                     .antMatchers("/product/getBooks", "/product/getSellerBooks").permitAll()
                     .antMatchers("/product/addCategory").hasAnyRole("ROLE_ADMIN")
-                    .antMatchers("/product/**").hasAnyRole("ROLE_SELLER", "ROLE_ADMIN")
-                    .antMatchers("/user/**").hasAnyRole("ROLE_USER", "ROLE_ADMIN")
+                    .antMatchers("/product/**").hasAnyRole(USER.name(), ADMIN.name())
+                    .antMatchers("/user/**").hasAnyRole(USER.name(), ADMIN.name())
                     .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -69,7 +73,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login").permitAll()
                     .defaultSuccessUrl("/product/getBooks", true)
                     .passwordParameter("password")
-                    .usernameParameter("username")
+                    .usernameParameter("email")
                     .failureHandler(authenticationFailureHandler())
                 .and()
                 .rememberMe()

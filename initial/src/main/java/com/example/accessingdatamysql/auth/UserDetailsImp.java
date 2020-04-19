@@ -14,15 +14,16 @@ public class UserDetailsImp implements UserDetails {
     private String password;
     private Set<GrantedAuthority> authorities;
     private boolean isEnabled;
+    private int userID;
 
     public UserDetailsImp(User user) {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.isEnabled = true;
+        this.userID = user.getUserID();
         this.authorities = Arrays.stream(user.getRole().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
-
     }
 
     @Override
@@ -58,5 +59,13 @@ public class UserDetailsImp implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public int getUserID() {
+        return userID;
     }
 }
