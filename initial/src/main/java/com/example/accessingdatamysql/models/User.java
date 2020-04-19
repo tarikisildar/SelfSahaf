@@ -15,7 +15,7 @@ public class User {
     private Integer userID;
     @Column(length = 45)
     private String name;
-    @Column(length = 64)
+    @Column(length = 82)
     private String password;
     @Column(length = 45)
     private String surname;
