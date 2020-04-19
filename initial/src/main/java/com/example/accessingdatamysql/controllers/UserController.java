@@ -135,10 +135,10 @@ public class UserController {
             address.setPostalCode(postalCode);
 
 
-        addressRepository.save(address);
+            addressRepository.save(address);
 
-        userRepository.save(user.get());
-
+            userRepository.save(user.get());
+        }
         return "saved";
 
     }
@@ -151,15 +151,15 @@ public class UserController {
         Optional<User> user = userRepository.findUserByUserID(userID);
 
         if(user.isPresent()){
-            response.setStatus(HttpServletResponse.SC_BAD_FORBIDDEN);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "Requested user not found";
         }
-        if(user.getAddresses() != null) {
+        if(user.get().getAddresses() != null) {
                 PostalCode postalCode = postalRepository.findByPostalCode(address.getPostalCode().getPostalCode());
                 if (postalCode != null) {
                     address.setPostalCode(postalCode);
                 }
-                user.getAddresses().add(address);
+                user.get().getAddresses().add(address);
         }
         addressRepository.save(address);
         user.get().getAddresses().add(address);

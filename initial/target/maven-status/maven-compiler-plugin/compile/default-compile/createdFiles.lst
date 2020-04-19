@@ -1,5 +1,7 @@
+com\example\accessingdatamysql\security\AuthenticationFailiureHandlerImp.class
 com\example\accessingdatamysql\models\CardInfo.class
 com\example\accessingdatamysql\controllers\MainController.class
+com\example\accessingdatamysql\security\PasswordConfig.class
 com\example\accessingdatamysql\models\embeddedKey\SellsKey.class
 com\example\accessingdatamysql\models\ShippingCompany.class
 com\example\accessingdatamysql\models\Address.class
@@ -11,12 +13,14 @@ com\example\accessingdatamysql\models\embeddedKey\ProductCategoryKey.class
 com\example\accessingdatamysql\AccessingDataMysqlApplication.class
 com\example\accessingdatamysql\models\Sells.class
 com\example\accessingdatamysql\models\embeddedKey\OrderDetailKey.class
+com\example\accessingdatamysql\security\UserPermission.class
 com\example\accessingdatamysql\models\embeddedKey\PriceKey.class
 com\example\accessingdatamysql\models\embeddedKey\RatingKey.class
 com\example\accessingdatamysql\config\Swagger2Config.class
 com\example\accessingdatamysql\dao\AddressRepository.class
 com\example\accessingdatamysql\dao\CardRepository.class
 com\example\accessingdatamysql\models\Category.class
+com\example\accessingdatamysql\security\UserRole.class
 com\example\accessingdatamysql\dao\UserRepository.class
 com\example\accessingdatamysql\controllers\ProductController.class
 com\example\accessingdatamysql\ServletInitializer.class
@@ -24,10 +28,14 @@ com\example\accessingdatamysql\models\PostalCode.class
 com\example\accessingdatamysql\models\Product.class
 com\example\accessingdatamysql\models\Order.class
 com\example\accessingdatamysql\models\Price.class
+com\example\accessingdatamysql\controllers\TemplateController.class
 com\example\accessingdatamysql\controllers\UserController.class
+com\example\accessingdatamysql\auth\UserDetailsImp.class
+com\example\accessingdatamysql\auth\UserDetailsServiceImp.class
 com\example\accessingdatamysql\models\ImagePath.class
 com\example\accessingdatamysql\models\User.class
 com\example\accessingdatamysql\models\Ratings.class
+com\example\accessingdatamysql\security\ApplicationSecurityConfig.class
 com\example\accessingdatamysql\dao\ProductRepositoryWithoutPage.class
 com\example\accessingdatamysql\Services\ProductService.class
 com\example\accessingdatamysql\dao\ProductRepository.class

@@ -4,7 +4,7 @@ import com.example.accessingdatamysql.models.embeddedKey.PriceKey;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "price")
 public class Price {
@@ -30,7 +30,7 @@ public class Price {
     private Integer price;
 
 
-
+    @JsonIgnore
     public PriceKey getPriceID() {
         return priceID;
     }
@@ -38,6 +38,7 @@ public class Price {
     public void setPriceID(PriceKey priceID) {
         this.priceID = priceID;
     }
+    public String getDate(){ return priceID.getDatetime();}
 
 
     public Integer getPrice() {

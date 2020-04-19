@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -16,17 +17,17 @@ public class Product
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer productID;
-
+    @Column(length = 255)
     private String description;
-
+    @Column(length = 45)
     private String name;
-
+    @Column(length = 15)
     private String language;
-
+    @Column(length = 45)
     private String author;
-
+    @Column(length = 45)
     private String publisher;
-
+    @Column(length = 45)
     private String ISBN;
 
 
@@ -69,8 +70,8 @@ public class Product
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<OrderDetail> orderDetails;
 
-    public ImagePath getPath() {
-        return path;
+    public String getImagePath() {
+        return path.getAllPath();
     }
 
     public void setPath(ImagePath path) {
@@ -102,7 +103,7 @@ public class Product
     public void setSells(Set<Sells> sells) {
         this.sells = sells;
     }
-
+    @JsonIgnore
     public Set<OrderDetail> getOrderDetails() {
         return orderDetails;
     }

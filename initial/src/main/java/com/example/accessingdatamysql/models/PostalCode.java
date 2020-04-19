@@ -8,9 +8,11 @@ import javax.persistence.*;
 public class PostalCode {
 
     @Id
+    @Column(length = 45)
     private String postalCode;
-
+    @Column(length = 45)
     private String city;
+    @Column(length = 45)
     private String country;
 
     public PostalCode() {
