@@ -4,10 +4,7 @@ import com.example.accessingdatamysql.auth.UserDetailsImp;
 import com.example.accessingdatamysql.dao.AddressRepository;
 import com.example.accessingdatamysql.dao.PostalRepository;
 import com.example.accessingdatamysql.dao.UserRepository;
-import com.example.accessingdatamysql.models.Address;
-import com.example.accessingdatamysql.models.CardInfo;
-import com.example.accessingdatamysql.models.PostalCode;
-import com.example.accessingdatamysql.models.User;
+import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.security.UserRole;
 import com.google.common.hash.Hashing;
 import io.swagger.annotations.Api;
@@ -135,9 +132,10 @@ public class UserController {
 
     @ApiOperation("Choose seller address from users addresses. Give the pre-saved addressName")
     @PostMapping(path= "/addSellerAddress")
-    public @ResponseBody String addSellerAddress(@RequestParam Integer userID, @RequestBody Address address,HttpServletResponse response){
-        Optional<User> user = userRepository.findUserByUserID(userID);
-        if(user.isPresent()){
+    public @ResponseBody String addSellerAddress(@RequestBody Address address,HttpServletResponse response){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findUserByUserID(((UserDetailsImp) auth.getPrincipal()).getUserID());
+        if(!user.isPresent()){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "Requested user not found";
         }
@@ -157,11 +155,11 @@ public class UserController {
     @ApiOperation("w/ id for update")
     @PostMapping(path= "/addAddress")
 
-    public @ResponseBody String addAddress(@RequestParam Integer userID, @RequestBody Address address, HttpServletResponse response) {
+    public @ResponseBody String addAddress(@RequestBody Address address, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findUserByUserID(((UserDetailsImp) auth.getPrincipal()).getUserID());
 
-        Optional<User> user = userRepository.findUserByUserID(userID);
-
-        if(user.isPresent()){
+        if(!user.isPresent()){
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "Requested user not found";
         }
@@ -178,5 +176,34 @@ public class UserController {
 
         return "Saved";
 
+    }
+    @ApiOperation("Get Addresses")
+    @GetMapping(path = "/getadress")
+    public @ResponseBody
+    Iterable<Address> getAddress()
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findUserByUserID(((UserDetailsImp) auth.getPrincipal()).getUserID());
+        return user.get().getAddresses();
+
+    }
+    @ApiOperation("Get SellerAdress")
+    @GetMapping(path = "/getselleradress")
+    public @ResponseBody
+    Address getSellerAddress()
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findUserByUserID(((UserDetailsImp) auth.getPrincipal()).getUserID());
+        return user.get().getSellerAddressID();
+    }
+
+    @ApiOperation("Get Sellings")
+    @GetMapping(path = "/getsells")
+    public @ResponseBody
+    Set<Sells> getSells()
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findUserByUserID(((UserDetailsImp) auth.getPrincipal()).getUserID());
+        return user.get().getSells();
     }
 }

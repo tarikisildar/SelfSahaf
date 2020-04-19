@@ -84,24 +84,7 @@ public class Product
 
     public Set<Sells> getSells()
     {
-        Set<Sells> tempSell = sells;
-        for(Sells sell: tempSell)
-        {
-            String date = LocalDateTime.MIN.toString();
-            Price tempPrice = null;
-            for(Price p: sell.getPrice())
-            {
-                if(p.getPriceID().getDatetime().compareTo(date) > 0)
-                {
-                    tempPrice = p;
-                }
-            }
-            Set<Price> prices = new HashSet<>();
-            if(tempPrice != null)
-                prices.add(tempPrice);
-            sell.setPrice(prices);
-        }
-        return tempSell;
+        return  sells;
     }
 
     public void setSells(Set<Sells> sells) {

@@ -2,9 +2,11 @@
 package com.example.accessingdatamysql.models;
 
 import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -70,8 +72,24 @@ public class Sells {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-    public Set<Price> getPrice() {
+    @JsonIgnore
+    public Set<Price> getPriceList() {
         return price;
+    }
+
+    public Integer getPrice() {
+        String date = LocalDateTime.MIN.toString();
+        Price tempPrice = null;
+        for (Price p : price) {
+
+            if (p.getPriceID().getDatetime().compareTo(date) > 0) {
+                tempPrice = p;
+            }
+        }
+        if(tempPrice != null)
+            return tempPrice.getPrice();
+        else
+            return null;
     }
 
     public void setPrice(Set<Price> price) {
