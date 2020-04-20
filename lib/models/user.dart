@@ -1,7 +1,5 @@
 
 
-import 'package:selfsahaf/models/address.dart';
-
 class User{
   int userID;
   String name;
@@ -11,8 +9,6 @@ class User{
   String phoneNumber;
   String email;
   String role;
-  Address sellerAddressID;
-  List<Address> addresses;
 
 
   User({mail, name,surname,password,dob}){
@@ -36,14 +32,14 @@ class User{
 
 
   User.fromJson(Map<String, dynamic> json)
-    : password = json['password'],
+    :role=json['role']
+    , userID=json['userID']
+    ,password = json['password'],
     email = json['email'],
     name=json["name"],
     surname=json["surname"],
     dateOfBirth=json["dob"],
-    phoneNumber=json["phoneNumber"],
-    sellerAddressID=json["sellerAddressID"],
-    addresses=json["addresses"]
+    phoneNumber=json["phoneNumber"]
     ;
 
 }

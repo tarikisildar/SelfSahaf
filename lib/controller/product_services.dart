@@ -1,21 +1,22 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:selfsahaf/controller/generalServices.dart';
 import 'package:selfsahaf/models/api_response.dart';
 import 'package:selfsahaf/models/book.dart';
 
-class ProductService {
-  static const API = 'http://142.93.106.79:8080/accessing-data-mysql/';
-  final Dio _dio = Dio()
-    ..options.connectTimeout = 5000
-    ..options.receiveTimeout = 3000;
+class ProductService extends GeneralServices {
+Dio _dio;
   Response response;
   APIResponse<int> apiresponse;
+   ProductService(){
+     this._dio=super.dio;
+  }
 
   Future<APIResponse<int>> addBook(Book book, int sellerID) async {
     try {
       return await _dio
-          .post(API+
+          .post(
               "product/addBook",
                   queryParameters:{
                     "price":book.price,
@@ -34,4 +35,5 @@ class ProductService {
       print(e.response.statusCode);
     }
   }
+  
 }

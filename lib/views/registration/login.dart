@@ -28,10 +28,10 @@ class _LoginPageState extends State<LoginPage> {
     api
         .loginWithEmail(_emailController.text, _passwordController.text)
         .then((val){
-      if (val.statusCode == 200||val.statusCode == 302 ) {
+      if (val == 200||val == 302 ) {
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => MainPage(jsessionID: val.headers["set-cookie"][0].toString().split(';')[0].split("=")[1], )),
+            MaterialPageRoute(builder: (context) => MainPage( )),
             ModalRoute.withName("/Home"));
       }
       else

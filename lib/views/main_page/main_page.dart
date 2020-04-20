@@ -1,5 +1,6 @@
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:selfsahaf/models/user.dart';
 import 'package:selfsahaf/views/page_classes/book_pages/book_card.dart';
 import 'package:selfsahaf/views/page_classes/home_page_carousel.dart';
 import 'package:selfsahaf/views/page_classes/account_profile.dart';
@@ -8,11 +9,10 @@ import 'package:selfsahaf/views/page_classes/sahaf_drawer.dart';
 import 'package:selfsahaf/views/page_classes/search_page.dart';
 import 'package:selfsahaf/views/profile_pages/profile_page.dart';
 import 'package:meta/meta.dart';
-
+import 'package:selfsahaf/controller/user_controller.dart';
+import 'package:selfsahaf/controller/product_services.dart';
 
 class MainPage extends StatefulWidget {
-  String  jsessionID;
-  MainPage({@required this.jsessionID});
   @override
   State<StatefulWidget> createState() {
     return _MainPageState();
@@ -20,15 +20,14 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  String  jsessionID;
   int _index = 0;
   List<Widget> _pages;
+  AuthService get userService=>GetIt.I<AuthService>(); 
   @override
   void initState() {
-    // TODO: implement initState
-   this.jsessionID=widget.jsessionID;
-   print(jsessionID);
-  _pages  = [MainPage(jsessionID: this.jsessionID,), SearchPage(), NotificationsPage(), AccountProfilePage()];
+
+   userService.initUser();
+  _pages  = [MainPage(), SearchPage(), NotificationsPage(), AccountProfilePage()];
   }
   @override
   Widget build(BuildContext context) {
@@ -61,7 +60,7 @@ class _MainPageState extends State<MainPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MainPage(jsessionID: this.jsessionID,)));
+                                    builder: (context) => MainPage()));
                           },
                         ),
                         _index == 0
