@@ -1,6 +1,5 @@
 com\example\accessingdatamysql\security\AuthenticationFailiureHandlerImp.class
 com\example\accessingdatamysql\models\CardInfo.class
-com\example\accessingdatamysql\controllers\MainController.class
 com\example\accessingdatamysql\security\PasswordConfig.class
 com\example\accessingdatamysql\models\embeddedKey\SellsKey.class
 com\example\accessingdatamysql\models\ShippingCompany.class

@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -75,7 +76,7 @@ public class User {
         this.email = email;
     }
 
-
+    @JsonIgnore
     public Set<OrderDetail> getOrderdetails() {
         return orderdetails;
     }
@@ -84,6 +85,7 @@ public class User {
         this.orderdetails = orderdetails;
     }
 
+    @JsonIgnore
     public Set<CardInfo> getCards() {
         return cards;
     }
@@ -94,7 +96,7 @@ public class User {
 
 
 
-
+    @JsonIgnore
     public Set<Sells> getSells() {
         return sells;
     }
@@ -108,7 +110,7 @@ public class User {
         this.surname = surname;
     }
 
-
+    @JsonIgnore
     public Set<Address> getAddresses() {
         return addresses;
     }
@@ -116,7 +118,7 @@ public class User {
     public void setAddresses(Set<Address> addresses) {
         this.addresses = addresses;
     }
-
+    @JsonIgnore
     public Address getSellerAddressID() {
         return sellerAddressID;
     }

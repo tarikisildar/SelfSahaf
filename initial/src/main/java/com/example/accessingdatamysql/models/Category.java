@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -27,7 +28,7 @@ public class Category {
 
 
 
-
+    @JsonIgnore
     public Set<Product> getProducts() {
         return products;
     }

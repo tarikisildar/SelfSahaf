@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.controllers;
 
 import com.example.accessingdatamysql.Services.ProductService;
+import com.example.accessingdatamysql.auth.UserDetailsImp;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.embeddedKey.PriceKey;
@@ -10,6 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,8 +49,10 @@ public class ProductController {
     @ApiOperation("You can save the product. Selling table not yet implemented")
     @PostMapping(path ="/addBook")
     public @ResponseBody
-    String addBook(@RequestParam Integer sellerID,@RequestParam Integer price, @RequestParam Integer quantity, @RequestBody Product product) {
+    String addBook(@RequestParam Integer price, @RequestParam Integer quantity, @RequestBody Product product) {
         Product pr = productRepository.save(product);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
         Sells sells = new Sells();
         SellsKey sellsKey = new SellsKey();
@@ -102,9 +107,18 @@ public class ProductController {
     @GetMapping(path = "/getSellerBooks")
     public @ResponseBody
     List<Product> getSellerProducts(@RequestParam Integer  sellerID) {
+
         return productRepositoryWithoutPage.findProductBySellerID(sellerID);
         //return productRepository.findAll(pageable);
     }
 
+    @GetMapping(path = "/getSelfBooks")
+    public @ResponseBody
+    List<Product> getSelfProducts() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+        return productRepositoryWithoutPage.findProductBySellerID(sellerID);
+        //return productRepository.findAll(pageable);
+    }
 
 }
