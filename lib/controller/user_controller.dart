@@ -12,6 +12,8 @@ class AuthService {
     ..options.connectTimeout = 5000
     ..options.receiveTimeout = 3000;
 
+    
+
   Future<Response> loginWithEmail(String email, String password) async {
     try {
       print(email);
@@ -20,12 +22,11 @@ class AuthService {
           await _dio.post("login?email=" + email + "&password=" + password,  options: Options(
         followRedirects: true,
         validateStatus: (status) { return status < 500;},
-
-
-      
-    ),);       
+    ),);
+          
       //_token = response.data["token"];
-      print(response.headers["set-cookie"][0].toString().split(';')[0].split("=")[1]);
+
+      print(response.headers["set-cookie"].toString().split(';')[0].split('=')[1]);
        print(response.statusCode);
       return response;
     } on DioError catch (e) {

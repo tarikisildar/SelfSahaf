@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/views/products_pages/product_card.dart';
 
 class ProductsPage extends StatefulWidget {
   ProductsPage({Key key}) : super(key: key);
@@ -51,48 +52,64 @@ class _ProductsPageState extends State<ProductsPage> {
                   color: Colors.white,
                 )),
           ),
+          
         ),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.add_box), onPressed: () {}),
+        ],
+
       ),
       body: Container(
         color: Color(0xffe65100),
-        child:
-            Center(child: Text("sasa"),),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              ProductCard(bookName: "Binbir Turlu Aglama Sekilleri",authorName: "Ali Osman Kocaman",publisherName: "AOK Yayinlari",price: "60",),
+              ProductCard(bookName: "Binbir Turlu Aglama Sekilleri",authorName: "Ali Osman Kocaman",publisherName: "AOK Yayinlari",price: "60",),
+            ],
+          ),
+        ),
       ),
-      floatingActionButton: FilterFloating(
-        
-      ),
+      floatingActionButton: FilterFloating(),
     );
   }
 }
 
-class FilterFloating extends StatefulWidget{
-  @override 
+class FilterFloating extends StatefulWidget {
+  @override
   _FilterFloatingState createState() => _FilterFloatingState();
 }
 
-class _FilterFloatingState extends State<FilterFloating>{
+class _FilterFloatingState extends State<FilterFloating> {
   bool _show = true;
   @override
-  Widget build(BuildContext context){
-    return _show ? FloatingActionButton(
-      backgroundColor: Colors.white,
-      child: Icon(Icons.lightbulb_outline,color: Color(0xffe65100),),
-      onPressed: () {
-          var sheetController = showBottomSheet(
-            context: context,
-            builder: (context) => Container(
-              height: 450,
-              color: Colors.white,
+  Widget build(BuildContext context) {
+    return _show
+        ? FloatingActionButton(
+            backgroundColor: Colors.white,
+            child: Icon(
+              Icons.lightbulb_outline,
+              color: Color(0xffe65100),
             ),
-          );
-          _showButton(false);
-          sheetController.closed.then((value){
-            _showButton(true);
-          });
-        },
-    ): Container();
+            onPressed: () {
+              var sheetController = showBottomSheet(
+                context: context,
+                builder: (context) => Container(
+                  height: 450, 
+                  color: Colors.white,
+                ),
+              );
+              _showButton(false);
+              sheetController.closed.then((value) {
+                _showButton(true);
+              });
+            },
+          )
+        : Container();
   }
-  void _showButton(bool value){
+
+  void _showButton(bool value) {
     setState(() {
       _show = value;
     });

@@ -11,7 +11,7 @@ import 'package:meta/meta.dart';
 
 
 class MainPage extends StatefulWidget {
-  String jsessionID;
+  String  jsessionID;
   MainPage({@required this.jsessionID});
   @override
   State<StatefulWidget> createState() {
@@ -20,13 +20,14 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  String jsessionID;
+  String  jsessionID;
   int _index = 0;
   List<Widget> _pages;
   @override
   void initState() {
     // TODO: implement initState
-   this.jsessionID= widget.jsessionID;
+   this.jsessionID=widget.jsessionID;
+   print(jsessionID);
   _pages  = [MainPage(jsessionID: this.jsessionID,), SearchPage(), NotificationsPage(), AccountProfilePage()];
   }
   @override

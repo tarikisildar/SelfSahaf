@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:selfsahaf/views/admin_pages/admin_main_page.dart';
 import 'package:selfsahaf/views/main_page/main_page.dart';
 import 'package:selfsahaf/controller/product_services.dart';
 import 'package:selfsahaf/views/page_classes/book_pages/add_book.dart';
@@ -55,19 +56,20 @@ class SelfSahaf extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       
-      home: LoginPage()
-      // initialRoute: '/mainPage',
+      home: ProductsPage(),
+      // initialRoute: '/productsPage',
       
       
       //  routes: <String, WidgetBuilder>{
       //    '/': (context) => LoginPage(),
       //    '/signup': (context) => Signup(),
-      //    '/mainPage': (context) => MainPage(userId: 1,),
+      //    '/mainPage': (context) => MainPage(jsessionID: "",),
       //    '/adminMain': (context) => AdminPage(),
       //    '/searchPage': (context) => SearchPage(),
       //    '/notifications': (context) => NotificationsPage(),
       //    '/profilePage': (context) => AccountProfilePage(),
       //    '/addbooks':(context)=> AddBook(),
+      //    'productsPage':(context) => ProductsPage(),
       //  },
     );
   }
