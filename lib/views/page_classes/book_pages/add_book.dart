@@ -29,7 +29,6 @@ class _AddBookState extends State<AddBook> {
     if(description.length >= 20) descValid = true;
     return descValid ? null : 'not valid description';
   }
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

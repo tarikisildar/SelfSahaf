@@ -2,13 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
-import 'package:selfsahaf/views/admin_pages/admin_main_page.dart';
 import 'package:selfsahaf/views/main_page/main_page.dart';
 import 'input_field.dart';
 import 'package:selfsahaf/views/registration/signup.dart';
 import 'package:dio/dio.dart';
 import 'package:selfsahaf/views/registration/input_field.dart';
-import 'package:selfsahaf/models/user.dart';
+import 'package:http/http.dart' as http; 
 
 class LoginPage extends StatefulWidget {
   @override
@@ -27,12 +26,14 @@ class _LoginPageState extends State<LoginPage> {
     api
         .loginWithEmail(_emailController.text, _passwordController.text)
         .then((val){
-      if (val == 200) {
+      if (val.statusCode == 200 || val.statusCode == 302) {
+        var kuki = val.headers["set-cookie"][0].toString().split(';')[0].split("=")[1];
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => MainPage()),
+            MaterialPageRoute(builder: (context) => MainPage(jsessionID: kuki, )),
             ModalRoute.withName("/Home"));
       }
+      else
         return showDialog(
             context: context,
             builder: (context) {
@@ -151,8 +152,10 @@ class _LoginPageState extends State<LoginPage> {
                             side: BorderSide(
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
-                        onPressed: () {
-                          _login();
+                        onPressed: () async {
+                         _login();
+                   
+                        
                         },
                         child: Text(
                           "Giris Yap",
