@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/views/main_page/main_page.dart';
 import 'package:selfsahaf/controller/product_services.dart';
 import 'package:selfsahaf/views/page_classes/book_pages/add_book.dart';
+import 'package:selfsahaf/views/registration/login.dart';
 
 import 'views/registration/signup.dart';
 
@@ -47,7 +48,7 @@ class SelfSahaf extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       
-      home: AddBook()
+      home: LoginPage()
       // initialRoute: '/mainPage',
       
       

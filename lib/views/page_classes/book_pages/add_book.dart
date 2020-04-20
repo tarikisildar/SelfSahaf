@@ -13,6 +13,23 @@ class _AddBookState extends State<AddBook> {
   TextEditingController _categoryController = new TextEditingController();
   TextEditingController _descriptionController = new TextEditingController();
   TextEditingController _priceController = new TextEditingController();
+
+  String _booknameValidation(String email) {
+    bool emailValid = false;
+    if(email.length >= 5) emailValid = true;
+    return emailValid ? null : 'not valid email.';
+  }
+  String _authorValidation(String author){
+    bool authorValid = false;
+    if(author.length >= 2) authorValid = true;
+    return authorValid ? null : 'not valid author name';
+  }
+  String _descriptionValidation(String description){
+    bool descValid = false;
+    if(description.length >= 20) descValid = true;
+    return descValid ? null : 'not valid description';
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +69,7 @@ class _AddBookState extends State<AddBook> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.0, top: 12.0),
                   child: InputField(
+                    validation: _booknameValidation,
                     controller: _booknameController,
                     labelText: "Book's Name",
                   ),
@@ -59,6 +77,7 @@ class _AddBookState extends State<AddBook> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: InputField(
+                    validation: _authorValidation,
                     controller: _authorController,
                     labelText: "Author's Name",
                   ),
@@ -73,6 +92,7 @@ class _AddBookState extends State<AddBook> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: InputField(
+                    validation: _descriptionValidation,
                     controller: _descriptionController,
                     labelText: "Description",
                   ),
