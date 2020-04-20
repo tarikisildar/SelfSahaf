@@ -85,7 +85,7 @@ class _AddBookState extends State<AddBook> {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: InputField(
                     controller: _categoryController,
-                    labelText: "Category",
+                    labelText: "Category", validation: null,
                   ),
                 ),
                 Padding(
@@ -100,7 +100,7 @@ class _AddBookState extends State<AddBook> {
                   padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
                   child: InputField(
                     controller: _priceController,
-                    labelText: "Price",
+                    labelText: "Price", validation: null,
                   ),
                 ),
                 Container(
