@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:selfsahaf/views/page_classes/productsDialog.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
+import 'package:selfsahaf/views/products_pages/productsDialog.dart';
 import 'package:selfsahaf/views/products_pages/products_page.dart';
 class SahafDrawer extends StatefulWidget {
   @override

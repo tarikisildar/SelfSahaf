@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/views/products_pages/add_book.dart';
 import 'package:selfsahaf/views/products_pages/product_card.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -55,7 +56,9 @@ class _ProductsPageState extends State<ProductsPage> {
           
         ),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.add_box), onPressed: () {}),
+          IconButton(icon: Icon(Icons.add_box), onPressed: () {
+            Navigator.push(context,MaterialPageRoute(builder:(context)=> AddBook()));
+          }),
         ],
 
       ),

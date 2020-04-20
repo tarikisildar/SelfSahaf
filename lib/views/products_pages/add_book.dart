@@ -41,7 +41,7 @@ class _AddBookState extends State<AddBook> {
         },
       ),
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back),
+        leading: InkWell(child: Icon(Icons.arrow_back), onTap:() {Navigator.pop(context);} ) ,
         title: Container(
           height: 50,
           child: Image.asset("images/logo_white/logo_white.png"),
