@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/views/profile_pages/adress_page.dart';
 import 'package:selfsahaf/views/profile_pages/history_page.dart';
 import 'package:selfsahaf/views/profile_pages/settings_page.dart';
+import 'package:selfsahaf/controller/user_controller.dart';
 
 class ProfilePage extends StatefulWidget {
   // ExamplePage({ Key key }) : super(key: key);
@@ -10,7 +12,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePage extends State<ProfilePage> {
-  String _name = "Yavuz Güler";
+  AuthService userService= GetIt.I<AuthService>();
+  String _name;
+@override
+void initState() { 
+  _name=userService.getUser().name+" "+ userService.getUser().surname;
+  
+}
   List<Widget> _pages = [AdressesPage(), HistoryPage()];
   var controller=PageController(
     initialPage: 0,

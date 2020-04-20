@@ -12,11 +12,13 @@ import 'package:selfsahaf/views/products_pages/products_page.dart';
 import 'package:selfsahaf/views/registration/login.dart';
 import 'package:selfsahaf/controller/product_services.dart';
 import 'package:selfsahaf/views/page_classes/book_pages/add_book.dart';
+import 'package:selfsahaf/controller/user_controller.dart';
 
 import 'views/registration/signup.dart';
 
 void setupServiseLocator() {
   GetIt.I.registerLazySingleton(() => ProductService());
+  GetIt.I.registerLazySingleton(()=>AuthService());
 }
 
 void main() {
@@ -56,21 +58,20 @@ class SelfSahaf extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       
-      home: ProductsPage(),
-      // initialRoute: '/productsPage',
+     
+      initialRoute: '/',
       
       
-      //  routes: <String, WidgetBuilder>{
-      //    '/': (context) => LoginPage(),
-      //    '/signup': (context) => Signup(),
-      //    '/mainPage': (context) => MainPage(jsessionID: "",),
-      //    '/adminMain': (context) => AdminPage(),
-      //    '/searchPage': (context) => SearchPage(),
-      //    '/notifications': (context) => NotificationsPage(),
-      //    '/profilePage': (context) => AccountProfilePage(),
-      //    '/addbooks':(context)=> AddBook(),
-      //    'productsPage':(context) => ProductsPage(),
-      //  },
+       routes: <String, WidgetBuilder>{
+         '/': (context) => LoginPage(),
+         '/signup': (context) => Signup(),
+         '/mainPage': (context) => MainPage(),
+         '/adminMain': (context) => AdminPage(),
+         '/searchPage': (context) => SearchPage(),
+         '/notifications': (context) => NotificationsPage(),
+         '/profilePage': (context) => AccountProfilePage(),
+         '/addbooks':(context)=> AddBook(),
+       },
     );
   }
 }

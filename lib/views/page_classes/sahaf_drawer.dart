@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/views/page_classes/productsDialog.dart';
+import 'package:selfsahaf/controller/user_controller.dart';
+import 'package:selfsahaf/views/products_pages/products_page.dart';
 class SahafDrawer extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -8,7 +11,13 @@ class SahafDrawer extends StatefulWidget {
 }
 
 class _SahafDrawer extends State<SahafDrawer> {
- 
+ AuthService userService=GetIt.I<AuthService>();
+ bool seller=false;
+ @override
+  void initState() {
+    if(userService.getUser().role=="ROLE_ADMIN")
+      seller=true;
+  }
  
   @override
   Widget build(BuildContext context) {
@@ -35,7 +44,7 @@ class _SahafDrawer extends State<SahafDrawer> {
                               Image.asset('images/logo_white/logo_white.png'),
                           height: 150,
                           width: 200),
-                      Text('İsim Soyisim',
+                      Text(userService.getUser().name +" "+ userService.getUser().surname ,
                           style: Theme.of(context)
                               .textTheme
                               .body2
@@ -83,7 +92,7 @@ class _SahafDrawer extends State<SahafDrawer> {
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
               onTap: () { 
-                return showDialog(
+                return (seller)? Navigator.push(context, MaterialPageRoute(builder:(context)=>ProductsPage() )) :showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return ProductsDialog();

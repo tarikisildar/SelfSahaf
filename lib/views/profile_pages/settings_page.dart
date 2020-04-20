@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:selfsahaf/controller/user_controller.dart';
 
 class SettingsPage extends StatefulWidget {
   // ExamplePage({ Key key }) : super(key: key);
@@ -7,10 +9,18 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPage extends State<SettingsPage> {
-  String _name="Yavuz",_surname="Güler",_email="asd",_phoneNumber="2314546654";
+  String _name,_surname,_email,_phoneNumber;
   final _sellerController=TextEditingController();
   bool _checkSeller=false;
-
+  AuthService userService= GetIt.I<AuthService>();
+  @override
+  void initState() { 
+    this._name=userService.getUser().name;
+    this._surname=userService.getUser().surname;
+    this._email=userService.getUser().email;
+    this._phoneNumber=userService.getUser().phoneNumber;
+    
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +93,7 @@ class _SettingsPage extends State<SettingsPage> {
                   margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
                   width: 250,
                   color: Colors.white,
-                  child: Center( child: Text("Change Email",style:TextStyle(color: Theme.of(context).primaryColor ,fontSize: 25 ) , )),
+                  child: Center( child: Text(_email,style:TextStyle(color: Theme.of(context).primaryColor ,fontSize: 25 ) , )),
                  )),
                Expanded(
                  flex: 1,
