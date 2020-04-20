@@ -9,6 +9,7 @@ import 'package:selfsahaf/views/registration/signup.dart';
 import 'package:dio/dio.dart';
 import 'package:selfsahaf/views/registration/input_field.dart';
 import 'package:selfsahaf/models/user.dart';
+import 'package:http/http.dart' as http; 
 
 class LoginPage extends StatefulWidget {
   @override
@@ -152,8 +153,10 @@ class _LoginPageState extends State<LoginPage> {
                             side: BorderSide(
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
-                        onPressed: () {
-                          _login();
+                        onPressed: () async {
+                         _login();
+                   
+                        
                         },
                         child: Text(
                           "Giris Yap",
