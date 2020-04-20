@@ -11,8 +11,8 @@ import 'package:meta/meta.dart';
 
 
 class MainPage extends StatefulWidget {
-  int userId;
-  MainPage({@required this.userId});
+  String  jsessionID;
+  MainPage({@required this.jsessionID});
   @override
   State<StatefulWidget> createState() {
     return _MainPageState();
@@ -20,14 +20,15 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _userID;
+  String  jsessionID;
   int _index = 0;
   List<Widget> _pages;
   @override
   void initState() {
     // TODO: implement initState
-   this._userID=widget.userId;
-  _pages  = [MainPage(userId: this._userID,), SearchPage(), NotificationsPage(), AccountProfilePage()];
+   this.jsessionID=widget.jsessionID;
+   print(jsessionID);
+  _pages  = [MainPage(jsessionID: this.jsessionID,), SearchPage(), NotificationsPage(), AccountProfilePage()];
   }
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class _MainPageState extends State<MainPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MainPage(userId: this._userID,)));
+                                    builder: (context) => MainPage(jsessionID: this.jsessionID,)));
                           },
                         ),
                         _index == 0

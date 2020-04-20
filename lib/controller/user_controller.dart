@@ -16,7 +16,7 @@ class AuthService {
 
     
 
-  Future<int> loginWithEmail(String email, String password) async {
+  Future<Response> loginWithEmail(String email, String password) async {
     try {
       print(email);
       print(password);
@@ -24,22 +24,19 @@ class AuthService {
           await _dio.post("login?email=" + email + "&password=" + password,  options: Options(
         followRedirects: true,
         validateStatus: (status) { return status < 500;},
-
-
-      
     ),);
           
       //_token = response.data["token"];
 
-      print(response.headers["JSESSIONID"] );
+      print(response.headers["set-cookie"].toString().split(';')[0].split('=')[1]);
        print(response.statusCode);
-      return response.statusCode;
+      return response;
     } on DioError catch (e) {
       if (e.response != null) {
         print(e.response.data);
         print(e.response.headers);
         print(e.response.statusCode );
-        return e.response.statusCode;
+        return e.response;
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         print(e.request);

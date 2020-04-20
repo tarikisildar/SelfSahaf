@@ -60,7 +60,7 @@ class SelfSahaf extends StatelessWidget {
        routes: <String, WidgetBuilder>{
          '/': (context) => LoginPage(),
          '/signup': (context) => Signup(),
-         '/mainPage': (context) => MainPage(userId: 1,),
+         '/mainPage': (context) => MainPage(jsessionID: "",),
          '/adminMain': (context) => AdminPage(),
          '/searchPage': (context) => SearchPage(),
          '/notifications': (context) => NotificationsPage(),
