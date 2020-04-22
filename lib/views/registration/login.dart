@@ -105,8 +105,10 @@ class _LoginPageState extends State<LoginPage> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                    ),
                   ),
                   Container(
                     height: 150,
@@ -204,7 +206,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  
                 ],
               ),
             ),
