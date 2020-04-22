@@ -25,9 +25,6 @@ class _ProductsPageState extends State<ProductsPage> {
     _productService.getSelfBooks().then((e) {
       bookList = e;
     });
-    _productService.getCategories().then((e){
-      print(e[0].categoryName);
-    });
   }
 
   @override
