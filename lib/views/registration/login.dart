@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(230, 81, 0, 1),
-      body: Container(
+      body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
               child: Padding(
@@ -109,8 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.only(top: 30),
                   ),
                   Container(
-                    width: 320,
-                    height: 300,
+                    height: 150,
                     child: Image.asset("images/logo_white/logo_white.png"),
                   ),
                   Padding(
@@ -205,6 +204,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
+                  
                 ],
               ),
             ),
