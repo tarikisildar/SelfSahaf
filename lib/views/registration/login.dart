@@ -116,6 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: InputField(
+                      lines: 1,
                       controller: _emailController,
                       inputType: TextInputType.emailAddress,
                       labelText: "Email",
@@ -129,6 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: InputField(
+                      lines: 1,
                       validation: passwrdValidation,
                       isPassword: true,
                       controller: _passwordController,

@@ -71,6 +71,7 @@ class _AddBookState extends State<AddBook> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.0, top: 12.0),
                   child: InputField(
+                    lines: 1,
                     validation: _booknameValidation,
                     controller: _booknameController,
                     labelText: "Book's Name",
@@ -79,6 +80,7 @@ class _AddBookState extends State<AddBook> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: InputField(
+                    lines: 1,
                     validation: _authorValidation,
                     controller: _authorController,
                     labelText: "Author's Name",
@@ -87,6 +89,7 @@ class _AddBookState extends State<AddBook> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: InputField(
+                    lines: 1,
                     controller: _categoryController,
                     labelText: "Category", validation: null,
                   ),
@@ -94,6 +97,7 @@ class _AddBookState extends State<AddBook> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: InputField(
+                    lines: 5,
                     validation: _descriptionValidation,
                     controller: _descriptionController,
                     labelText: "Description",
@@ -103,6 +107,7 @@ class _AddBookState extends State<AddBook> {
                 Padding(
                   padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
                   child: InputField(
+                    lines: 1,
                     controller: _priceController,
                     labelText: "Price", validation: null,
                   ),
