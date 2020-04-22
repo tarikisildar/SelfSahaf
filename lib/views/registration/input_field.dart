@@ -26,7 +26,7 @@ class _InputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
+
       controller: widget.controller,
       validator: widget.validation,
       cursorColor: Colors.orange,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/views/registration/input_field.dart';
+import 'package:selfsahaf/controller/product_services.dart';
 
 class AddBook extends StatefulWidget {
   @override
@@ -8,6 +10,7 @@ class AddBook extends StatefulWidget {
 }
 
 class _AddBookState extends State<AddBook> {
+  ProductService get productService=> GetIt.I<ProductService>();
   TextEditingController _booknameController = new TextEditingController();
   TextEditingController _authorController = new TextEditingController();
   TextEditingController _categoryController = new TextEditingController();
@@ -94,6 +97,7 @@ class _AddBookState extends State<AddBook> {
                     validation: _descriptionValidation,
                     controller: _descriptionController,
                     labelText: "Description",
+                    
                   ),
                 ),
                 Padding(

@@ -13,7 +13,7 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
-  ProductService get _productService=> GetIt.I<ProductService>() ;
+  ProductService get _productService => GetIt.I<ProductService>();
   List<Book> bookList;
   final TextEditingController _filter = new TextEditingController();
   List names = new List();
@@ -22,10 +22,14 @@ class _ProductsPageState extends State<ProductsPage> {
   void initState() {
     // TODO: implement initState
     print("sa");
- _productService.getSelfBooks().then((e){
-   bookList=e;
- } );
+    _productService.getSelfBooks().then((e) {
+      bookList = e;
+    });
+    _productService.getCategories().then((e){
+      print(e[0].categoryName);
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,27 +69,35 @@ class _ProductsPageState extends State<ProductsPage> {
                   color: Colors.white,
                 )),
           ),
-          
         ),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.add_box), onPressed: () {
-            Navigator.push(context,MaterialPageRoute(builder:(context)=> AddBook()));
-          }),
+          IconButton(
+              icon: Icon(Icons.add_box),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddBook()));
+              }),
         ],
-
       ),
       body: Container(
         color: Color(0xffe65100),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child:(bookList!=[null])? Center(child: Text("No book"),): ListView.builder(
-            itemCount: bookList.length,
-            itemBuilder: (BuildContext context, int index) {
-            return 
-              ProductCard(bookName: bookList[index].name,authorName:  bookList[index].authorName,publisherName: bookList[index].publisher,price:  "${bookList[index].price}",);
-            
-           },
-          ),
+          child: (bookList != [null])
+              ? Center(
+                  child: Text("No book"),
+                )
+              : ListView.builder(
+                  itemCount: bookList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ProductCard(
+                      bookName: bookList[index].name,
+                      authorName: bookList[index].authorName,
+                      publisherName: bookList[index].publisher,
+                      price: "${bookList[index].price}",
+                    );
+                  },
+                ),
         ),
       ),
       floatingActionButton: FilterFloating(),
@@ -113,7 +125,7 @@ class _FilterFloatingState extends State<FilterFloating> {
               var sheetController = showBottomSheet(
                 context: context,
                 builder: (context) => Container(
-                  height: 450, 
+                  height: 450,
                   color: Colors.white,
                 ),
               );
