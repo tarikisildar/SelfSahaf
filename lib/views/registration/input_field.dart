@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class InputField extends StatefulWidget {
   final TextInputType inputType;
+  final int lines;
   final String labelText;
   final Icon suffixIcon;
   final bool isPassword;
@@ -10,6 +11,7 @@ class InputField extends StatefulWidget {
 
   InputField(
       {this.inputType,
+      this.lines,
       @required this.controller,
       this.labelText,
       this.suffixIcon,
@@ -27,6 +29,7 @@ class _InputFieldState extends State<InputField> {
   Widget build(BuildContext context) {
     return TextFormField(
       
+      maxLines: widget.lines,
       controller: widget.controller,
       validator: widget.validation,
       cursorColor: Colors.orange,

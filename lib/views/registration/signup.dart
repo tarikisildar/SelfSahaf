@@ -174,6 +174,7 @@ class _SignupState extends State<Signup> {
                     ),
                     SizedBox(height: 20.0),
                     InputField(
+                      lines: 1,
                       controller: _fnameController,
                       inputType: TextInputType.text,
                       validation: fnameValidation,
@@ -185,6 +186,7 @@ class _SignupState extends State<Signup> {
                     ),
                     SizedBox(height: 12.0),
                     InputField(
+                      lines: 1,
                       controller: _surnameController,
                       inputType: TextInputType.text,
                       validation: surnameValidation,
@@ -196,6 +198,7 @@ class _SignupState extends State<Signup> {
                     ),
                     SizedBox(height: 12.0),
                     InputField(
+                      lines: 1,
                       controller: _emailController,
                       inputType: TextInputType.emailAddress,
                       validation: emailValidation,
@@ -207,6 +210,7 @@ class _SignupState extends State<Signup> {
                     ),
                     SizedBox(height: 12.0),
                     InputField(
+                      lines: 1,
                       controller: _phoneController,
                       inputType: TextInputType.phone,
                       validation: telephoneNumberValidation,
@@ -218,6 +222,7 @@ class _SignupState extends State<Signup> {
                     ),
                     SizedBox(height: 12.0),
                     InputField(
+                      lines: 1,
                       controller: _passController,
                       inputType: TextInputType.visiblePassword,
                       validation: passwrdValidation,
@@ -230,6 +235,7 @@ class _SignupState extends State<Signup> {
                     ),
                     SizedBox(height: 12.0),
                     InputField(
+                      lines: 1,
                       controller: _passCheckController,
                       inputType: TextInputType.visiblePassword,
                       validation: passwrdValidation,
@@ -260,25 +266,31 @@ class _SignupState extends State<Signup> {
                     ),
                     SizedBox(height: 10.0),
                     Row(children: <Widget>[
-                      Checkbox(
-                        activeColor: Colors.white,
-                        checkColor: Colors.white,
-                        onChanged: (bool value) {
-                          setState(() => this._kvkk = value);
-                        },
-                        value: this._kvkk,
+                      Expanded(
+                        flex: 2,
+                        child: Checkbox(
+                          activeColor: Colors.white,
+                          checkColor: Colors.white,
+                          onChanged: (bool value) {
+                            setState(() => this._kvkk = value);
+                          },
+                          value: this._kvkk,
+                        ),
                       ),
-                      Text(
-                        "KVKK kapsamı doğrultusundaki aydınlatma\n metnini okuyup kabul ettim.",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                            fontStyle: FontStyle.italic),
+                      Expanded(
+                        flex: 18,
+                        child: Text(
+                          "KVKK kapsamı doğrultusundaki aydınlatma metnini okuyup kabul ettim.",
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontStyle: FontStyle.italic),
+                        ),
                       ),
                     ]),
                     SizedBox(height: 12.0),
                     Container(
-                        width: 80.0,
+                        width: 50.0,
                         height: 50.0,
                         child: FlatButton(
                           shape: new RoundedRectangleBorder(
@@ -336,6 +348,7 @@ class _SignupState extends State<Signup> {
                                   MaterialPageRoute(
                                       builder: (context) => LoginPage()));
                             })),
+                            SizedBox(height: 30,)
                   ],
                 ),
               ),
