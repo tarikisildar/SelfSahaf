@@ -12,16 +12,8 @@ _dio= super.dio;
   }
   Future<int> loginWithEmail(String email, String password) async {
     try {
-
-     
       Response response = await _dio.post(
         "login?email=" + email + "&password=" + password,
-        options: Options(
-          followRedirects: true,
-          validateStatus: (status) {
-            return status < 500;
-          },
-        ),
       );
       return response.statusCode;
     } on DioError catch (e) {

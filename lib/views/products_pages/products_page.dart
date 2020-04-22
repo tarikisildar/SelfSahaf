@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/views/products_pages/add_book.dart';
 import 'package:selfsahaf/views/products_pages/product_card.dart';
+import 'package:selfsahaf/controller/product_services.dart';
+import "package:selfsahaf/models/book.dart";
 
 class ProductsPage extends StatefulWidget {
   ProductsPage({Key key}) : super(key: key);
@@ -10,10 +13,19 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
+  ProductService get _productService=> GetIt.I<ProductService>() ;
+  List<Book> bookList;
   final TextEditingController _filter = new TextEditingController();
   List names = new List();
   List books = new List();
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    print("sa");
+ _productService.getSelfBooks().then((e){
+   bookList=e;
+ } );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,11 +78,13 @@ class _ProductsPageState extends State<ProductsPage> {
         color: Color(0xffe65100),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              ProductCard(bookName: "Binbir Turlu Aglama Sekilleri",authorName: "Ali Osman Kocaman",publisherName: "AOK Yayinlari",price: "60",),
-              ProductCard(bookName: "Binbir Turlu Aglama Sekilleri",authorName: "Ali Osman Kocaman",publisherName: "AOK Yayinlari",price: "60",),
-            ],
+          child:(bookList!=[null])? Center(child: Text("No book"),): ListView.builder(
+            itemCount: bookList.length,
+            itemBuilder: (BuildContext context, int index) {
+            return 
+              ProductCard(bookName: bookList[index].name,authorName:  bookList[index].authorName,publisherName: bookList[index].publisher,price:  "${bookList[index].price}",);
+            
+           },
           ),
         ),
       ),

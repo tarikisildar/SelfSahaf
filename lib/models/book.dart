@@ -11,6 +11,7 @@ class Book {
   int quantity;
   int price;
   int categoryID;
+  int sellerID;
   Book(
       {this.authorName,
       this.name,
@@ -44,5 +45,13 @@ class Book {
         name = json['name'],
         description = json['description'],
         publisher = json['publisher'],
-        price = json['price'];
+        price = json["sells"]['price'],
+        quantity = json["sells"][0]['quantity'],
+        isbn = json["isbn"],
+        categoryName=json["categories"][0]["name"],
+        imagePath=json["imagePath"],
+        language=json["language"],
+        sellerID=json["sells"][0]["sellerID"],
+        categoryID=json["categories"][0]["categoryID"]
+        ;
 }

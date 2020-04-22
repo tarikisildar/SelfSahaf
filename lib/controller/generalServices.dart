@@ -5,7 +5,10 @@ class GeneralServices{
   final Dio _dio = Dio()
     ..options.baseUrl = 'http://165.22.19.197:8080/accessing-data-mysql/'
     ..options.connectTimeout = 5000
-    ..options.receiveTimeout = 3000;
+    ..options.receiveTimeout = 3000
+    ..options.validateStatus= (status) {
+            return status < 500;
+          };
   final cookieJar=CookieJar();
   GeneralServices(){
  _dio.interceptors.add(CookieManager(cookieJar));
