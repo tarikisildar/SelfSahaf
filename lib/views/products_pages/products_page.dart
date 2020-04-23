@@ -18,15 +18,23 @@ class _ProductsPageState extends State<ProductsPage> {
   final TextEditingController _filter = new TextEditingController();
   List names = new List();
   List books = new List();
+  bool _isloading=false;
   @override
   void initState() {
-    // TODO: implement initState
-    print("sa");
-    _productService.getSelfBooks().then((e) {
-      bookList = e;
-    });
-  }
+    _getSelfBooks();
 
+  }
+_getSelfBooks() async{
+  setState(() {
+    _isloading=true;
+  });
+  bookList= await _productService.getSelfBooks();
+  setState(() {
+    _isloading=false;
+  });
+  print(bookList.length);
+
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,11 +84,11 @@ class _ProductsPageState extends State<ProductsPage> {
               }),
         ],
       ),
-      body: Container(
+      body: (_isloading)? CircularProgressIndicator() :Container(
         color: Color(0xffe65100),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: (bookList != [null])
+          child: (bookList == [null])
               ? Center(
                   child: Text("No book"),
                 )
