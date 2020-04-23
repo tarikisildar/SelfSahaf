@@ -13,28 +13,19 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
   ProductService get _productService => GetIt.I<ProductService>();
-  List<Book> bookList;
+  List<Book> bookList = [null];
   final TextEditingController _filter = new TextEditingController();
-  List names = new List();
-  List books = new List();
-  bool _isloading=false;
+  bool _isloading = false;
+
   @override
   void initState() {
-    _getSelfBooks();
-
+    super.initState();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
-_getSelfBooks() async{
-  setState(() {
-    _isloading=true;
-  });
-  bookList= await _productService.getSelfBooks();
-  setState(() {
-    _isloading=false;
-  });
-  print(bookList.length);
-
-}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,30 +72,95 @@ _getSelfBooks() async{
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => AddBook()));
+                
               }),
         ],
       ),
-      body: (_isloading)? CircularProgressIndicator() :Container(
-        color: Color(0xffe65100),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: (bookList == [null])
-              ? Center(
-                  child: Text("No book"),
-                )
-              : ListView.builder(
-                  itemCount: bookList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ProductCard(
-                      bookName: bookList[index].name,
-                      authorName: bookList[index].authorName,
-                      publisherName: bookList[index].publisher,
-                      price: "${bookList[index].price}",
-                    );
-                  },
-                ),
+      body: Container(
+              color: Color(0xffe65100),
+               padding: const EdgeInsets.all(16.0),
+              child:RefreshIndicator(
+        onRefresh: () {
+          return _productService.getSelfBooks().then((e) {
+            setState(() {
+              this.bookList = e;
+            });
+          });
+        },
+        key: _refreshIndicatorKey,
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            
+            if (bookList[0] == null) {
+              return Center(child: Text("No Books"));
+            } else {
+              return ProductCard(
+                bookName: bookList[index].name,
+                authorName: bookList[index].authorName,
+                publisherName: bookList[index].publisher,
+                price: "${bookList[index].price}",
+              );
+            }
+          },
+          itemCount: (bookList[0] == null) ? 1 : bookList.length,
+
         ),
-      ),
+      ))
+      
+      
+      
+      /*RefreshIndicator(
+        onRefresh: () {
+          return _productService.getSelfBooks().then((e) {
+            setState(() {
+              this.bookList = e;
+            });
+          });
+        },
+        key: _refreshIndicatorKey,
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            
+            if (bookList[0] == null) {
+              return Center(child: Text("No Books"));
+            } else {
+              return ProductCard(
+                bookName: bookList[index].name,
+                authorName: bookList[index].authorName,
+                publisherName: bookList[index].publisher,
+                price: "${bookList[index].price}",
+              );
+            }
+          },
+          itemCount: (bookList[0] == null) ? 1 : bookList.length,
+
+        ),
+      )*/
+      /* (_isloading)
+          ? CircularProgressIndicator()
+          : Container(
+              color: Color(0xffe65100),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: (bookList[0]==null)
+                    ? Center(
+                        child: listvie
+                      )
+                    : ListView.builder(
+                      
+                        itemCount: bookList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ProductCard(
+                            bookName: bookList[index].name,
+                            authorName: bookList[index].authorName,
+                            publisherName: bookList[index].publisher,
+                            price: "${bookList[index].price}",
+                          );
+                        },
+                      ),
+              ),
+            )*/
+      ,
       floatingActionButton: FilterFloating(),
     );
   }
