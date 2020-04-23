@@ -31,6 +31,7 @@ class SelfSahaf extends StatelessWidget {
         primaryColor: Color(0xffe65100),
         accentColor: Color(0xff833a),
         textSelectionColor: Color(0xffac1900),
+        
 
         // Butun uygulamadaki font ailesi
         fontFamily: 'Roboto',
@@ -54,20 +55,20 @@ class SelfSahaf extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       
-     
-      initialRoute: '/',
+      home: AddBook(),
+      // initialRoute: '/',
       
       
-       routes: <String, WidgetBuilder>{
-         '/': (context) => LoginPage(),
-         '/signup': (context) => Signup(),
-         '/mainPage': (context) => MainPage(),
-         '/adminMain': (context) => AdminPage(),
-         '/searchPage': (context) => SearchPage(),
-         '/notifications': (context) => NotificationsPage(),
-         '/profilePage': (context) => AccountProfilePage(),
-         '/addbooks':(context)=> AddBook(),
-       },
+      //  routes: <String, WidgetBuilder>{
+      //    '/': (context) => LoginPage(),
+      //    '/signup': (context) => Signup(),
+      //    '/mainPage': (context) => MainPage(),
+      //    '/adminMain': (context) => AdminPage(),
+      //    '/searchPage': (context) => SearchPage(),
+      //    '/notifications': (context) => NotificationsPage(),
+      //    '/profilePage': (context) => AccountProfilePage(),
+      //    '/addbooks':(context)=> AddBook(),
+      //  },
     );
   }
 }

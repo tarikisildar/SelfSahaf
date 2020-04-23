@@ -92,6 +92,7 @@ class _ProductsPageState extends State<ProductsPage> {
                       authorName: bookList[index].authorName,
                       publisherName: bookList[index].publisher,
                       price: "${bookList[index].price}",
+                      
                     );
                   },
                 ),
@@ -122,11 +123,34 @@ class _FilterFloatingState extends State<FilterFloating> {
               var sheetController = showBottomSheet(
                 context: context,
                 builder: (context) => Container(
-                  height: 450,
-                  color: Colors.white,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(20),
+                          topRight: const Radius.circular(20))),
+                  child: Container(
+                    height: 450,
+                    child: Center(
+                      child: Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: FlatButton(
+                              onPressed: () {},
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                              ),
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               );
               _showButton(false);
+
               sheetController.closed.then((value) {
                 _showButton(true);
               });
