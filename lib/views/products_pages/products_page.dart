@@ -18,7 +18,7 @@ class _ProductsPageState extends State<ProductsPage> {
   ProductService get _productService => GetIt.I<ProductService>();
   List<Book> bookList = [null];
   final TextEditingController _filter = new TextEditingController();
-  bool _isloading = false;
+  bool _isloading = true;
 
   @override
   void initState() {
@@ -26,6 +26,7 @@ class _ProductsPageState extends State<ProductsPage> {
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,43 +73,94 @@ class _ProductsPageState extends State<ProductsPage> {
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => AddBook()));
-                
               }),
         ],
       ),
       body: Container(
-              color: Color(0xffe65100),
-               padding: const EdgeInsets.all(16.0),
-              child:RefreshIndicator(
-        onRefresh: () {
-          return _productService.getSelfBooks().then((e) {
-            setState(() {
-              this.bookList = e;
-            });
-          });
-        },
-        key: _refreshIndicatorKey,
-        child: ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            
-            if (bookList[0] == null) {
-              return Center(child: Text("No Books"));
-            } else {
-              return ProductCard(
-                bookName: bookList[index].name,
-                authorName: bookList[index].authorName,
-                publisherName: bookList[index].publisher,
-                price: "${bookList[index].price}",
-              );
-            }
-          },
-          itemCount: (bookList[0] == null) ? 1 : bookList.length,
+          color: Color(0xffe65100),
+          padding: const EdgeInsets.all(16.0),
+          child: RefreshIndicator(
+            onRefresh: () {
+              return _productService.getSelfBooks().then((e) {
+                setState(() {
+                  _isloading = false;
+                  this.bookList = e;
+                });
+              });
+            },
+            key: _refreshIndicatorKey,
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                if (_isloading) {
+                  return CircularProgressIndicator();
+                }
+                if (bookList[0] == null) {
+                  return Center(child: Text("No Books"));
+                } else {
+                  return Dismissible(
+                    key: ValueKey(bookList[index].productID),
+                    child: ProductCard(
+                      bookName: bookList[index].name,
+                      authorName: bookList[index].authorName,
+                      publisherName: bookList[index].publisher,
+                      price: "${bookList[index].price}",
+                    ),
+                    direction: DismissDirection.horizontal,
+                    onDismissed: (direction) {
+                      print("sa");
+                    },
+                    confirmDismiss: (direction) async {
+                      if (direction == DismissDirection.startToEnd) {
+                        print("soldan sağa");
+                      } else if (direction == DismissDirection.endToStart) {
+                        print("sağdan dola");
+                      }
+                      final result = await showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              content: Text("sa"),
+                            );
+                          });
+                      print(result);
+                      return result;
+                    },
+                    //sağdan sola
+                    secondaryBackground: Container(
+                     
+                        padding: EdgeInsets.all(12),
+                        margin: EdgeInsets.all(8),
+                        child: Align(
+                            child: Icon(Icons.edit,
+                                color:Colors.white, size:50),
+                            alignment: Alignment.centerRight),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(20.0),
+                        )),
+                    //soldan sağa
+                    background: Container(
+                      margin: EdgeInsets.all(8),
+                      padding: EdgeInsets.only(left: 16),
+                      child: Align(
+                        child: Icon(Icons.delete,
+                            color: Colors.white, size: 50,),
+                        alignment: Alignment.centerLeft,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  );
+                }
+              },
+              itemCount: (bookList[0] == null) ? 1 : bookList.length,
+            ),
+          ))
 
-        ),
-      ))
-      
-      
-      
       /*RefreshIndicator(
         onRefresh: () {
           return _productService.getSelfBooks().then((e) {
