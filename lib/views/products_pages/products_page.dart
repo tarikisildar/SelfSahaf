@@ -88,7 +88,7 @@ _getSelfBooks() async{
         color: Color(0xffe65100),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: (bookList == [null])
+          child: (bookList[0] == null)
               ? Center(
                   child: Text("No book"),
                 )
