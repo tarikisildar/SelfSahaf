@@ -1,12 +1,16 @@
 
 package com.example.accessingdatamysql.models;
 
+import com.example.accessingdatamysql.models.embeddedKey.PriceKey;
 import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -16,6 +20,8 @@ public class Sells {
     private SellsKey sellerID;
 
     private Integer quantity;
+
+
 
     @JsonIgnoreProperties("sells")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -61,9 +67,13 @@ public class Sells {
         return sellerID.getProductID();
     }
 
+
     public void setSellerID(SellsKey sellerID) {
         this.sellerID = sellerID;
     }
+
+
+
 
     public Integer getQuantity() {
         return quantity;
@@ -95,5 +105,7 @@ public class Sells {
     public void setPrice(Set<Price> price) {
         this.price = price;
     }
+
+
 }
 

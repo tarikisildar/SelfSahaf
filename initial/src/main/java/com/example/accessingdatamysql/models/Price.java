@@ -29,6 +29,13 @@ public class Price {
 
     private Integer price;
 
+    public Price(){}
+
+    public Price(PriceKey priceID, Sells sells, Integer price) {
+        this.priceID = priceID;
+        this.sells = sells;
+        this.price = price;
+    }
 
     @JsonIgnore
     public PriceKey getPriceID() {
