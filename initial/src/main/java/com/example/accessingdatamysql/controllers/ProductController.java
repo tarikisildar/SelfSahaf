@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -46,7 +47,7 @@ public class ProductController {
     private UserRepository userRepository;
 
 
-    @ApiOperation("You can save the product. Selling table not yet implemented")
+    @ApiOperation("add new selling")
     @PostMapping(path ="/addBook")
     public @ResponseBody
     String addBook(@RequestParam Integer price, @RequestParam Integer quantity, @RequestBody Product product) {
@@ -78,6 +79,62 @@ public class ProductController {
         sellerRepository.save(sells);
         return "A new selling created";
     }
+    @ApiOperation("update Product")
+    @PostMapping(path ="/updateBook")
+    public @ResponseBody
+    String updateBook( @RequestBody Product product,@RequestParam Integer price, @RequestParam Integer quantity,HttpServletResponse response)
+    {
+        boolean flag = false;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+        if(product.getProductID() == null){
+            response.setStatus( HttpServletResponse.SC_FORBIDDEN);
+            return "there is no such book";
+        }
+        Product pr  =productRepositoryWithoutPage.findById(product.getProductID()).get();
+
+        for (Sells sell : pr.getSells())
+        {
+            if(sell.getSellerID() == sellerID)
+            {
+                LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
+                String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
+                PriceKey priceKey = new PriceKey(product.getProductID(),sell.getSellerID(),formatted);
+                Set<Price> prices = new HashSet<>();
+                prices.add(new Price(priceKey,sell,price));
+                sell.setPrice(prices);
+                sell.setQuantity(quantity);
+                flag = true;
+            }
+        }
+
+        if(!flag)
+        {
+            response.setStatus( HttpServletResponse.SC_FORBIDDEN);
+            return "Product you want to update is either not your product or nonexistent";
+        }
+        productRepositoryWithoutPage.save(product);
+        return "saved";
+
+    }
+
+    @ApiOperation("delete book by id")
+    @DeleteMapping("/deleteBook")
+    public @ResponseBody String deleteBook(@RequestParam Integer productId, HttpServletResponse response)
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+        List<Product> prs = productRepositoryWithoutPage.findProductBySellerID(sellerID);
+        for (Product pr:prs) {
+            if(pr.getProductID() == productId){
+                productRepositoryWithoutPage.deleteById(productId);
+                return "deleted";
+            }
+        }
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        return "Product you want to delete is either not your product or nonexistent";
+    }
+
 
     @ApiOperation("add new category, this will have admin auth")
     @PostMapping(path = "/addCategory") // Admin
