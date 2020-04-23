@@ -5,6 +5,9 @@ import 'package:selfsahaf/views/registration/input_field.dart';
 import 'package:selfsahaf/controller/product_services.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:selfsahaf/models/category.dart';
+import 'package:selfsahaf/models/book.dart';
+import 'package:selfsahaf/controller/user_controller.dart';
+import 'dart:convert';
 
 class AddBook extends StatefulWidget {
   @override
@@ -13,19 +16,30 @@ class AddBook extends StatefulWidget {
 
 class _AddBookState extends State<AddBook> {
   ProductService get productService => GetIt.I<ProductService>();
+  AuthService get userService => GetIt.I<AuthService>();
   TextEditingController _booknameController = new TextEditingController();
   TextEditingController _authorController = new TextEditingController();
   TextEditingController _categoryController = new TextEditingController();
   TextEditingController _descriptionController = new TextEditingController();
   TextEditingController _priceController = new TextEditingController();
   List<Category> categories;
-  Category currentValue;
+  List<Category> findedCategories;
+  Category selectedCategory;
+  bool _isLoading = false;
   @override
   void initState() {
-    currentValue.categoryName="Select";
-    currentValue.categoryID=-1;
-    categories.add(currentValue);
+    _getCategories();
+  }
+
+  _getCategories() async {
+    setState(() {
+      _isLoading = true;
+    });
+    categories = await productService.getCategories();
     print(categories);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   String _booknameValidation(String email) {
@@ -57,7 +71,26 @@ class _AddBookState extends State<AddBook> {
             color: Color(0xffe65100),
           ),
           onPressed: () {
-            print("onayladim devam et");
+            if (_priceController.text != '' &&
+                _descriptionController.text != '' &&
+                selectedCategory != null &&
+                _booknameController.text != '' &&
+                _authorController.text != '') {
+              productService.addBook(
+                  Book(
+                      categoryID: selectedCategory.categoryID,
+                      authorName: _authorController.text,
+                      description: _descriptionController.text,
+                      imagePath: "/part1",
+                      isbn: "1111-111-1111",
+                      quantity: 1,
+                      language: "TR",
+                      name: _booknameController.text,
+                      price: int.parse(_priceController.text),
+                      publisher: userService.getUser().getUserName()),
+                  userService.getUser().userID);
+              Navigator.pop(context);
+            }
           },
         ),
         appBar: AppBar(
@@ -78,114 +111,102 @@ class _AddBookState extends State<AddBook> {
                 }),
           ],
         ),
-        body: FutureBuilder(
-          future: productService.getCategories().then((e) {
-            this.categories = e;
-          }),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: 12.0, top: 12.0),
-                          child: Text(
-                            "Add New Book",
-                            style: TextStyle(color: Colors.white, fontSize: 25),
-                          ),
+        body: Builder(builder: (_) {
+          if (_isLoading) {
+            return CircularProgressIndicator();
+          } else
+            return Container(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0, top: 12.0),
+                        child: Text(
+                          "Add New Book",
+                          style: TextStyle(color: Colors.white, fontSize: 25),
                         ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: 12.0, top: 12.0),
-                          child: InputField(
-                            lines: 1,
-                            validation: _booknameValidation,
-                            controller: _booknameController,
-                            labelText: "Book's Name",
-                          ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0, top: 12.0),
+                        child: InputField(
+                          lines: 1,
+                          validation: _booknameValidation,
+                          controller: _booknameController,
+                          labelText: "Book's Name",
                         ),
-                        Padding(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: InputField(
+                          lines: 1,
+                          validation: _authorValidation,
+                          controller: _authorController,
+                          labelText: "Author's Name",
+                        ),
+                      ),
+                      Padding(
                           padding: const EdgeInsets.only(bottom: 12.0),
-                          child: InputField(
-                            lines: 1,
-                            validation: _authorValidation,
-                            controller: _authorController,
-                            labelText: "Author's Name",
-                          ),
+                          child: DropdownButton<Category>(
+                            hint: Text("Categories"),
+                            items: categories.map((Category dropdownItem) {
+                              return DropdownMenuItem<Category>(
+                                value: dropdownItem,
+                                child: Text(dropdownItem.categoryName),
+                              );
+                            }).toList(),
+                            onChanged: (Category newValueSelected) {
+                              setState(() {
+                                this.selectedCategory = newValueSelected;
+                              });
+                            },
+                            value: this.selectedCategory,
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: InputField(
+                          lines: 5,
+                          validation: _descriptionValidation,
+                          controller: _descriptionController,
+                          labelText: "Description",
                         ),
-                        Padding(
-                            padding: const EdgeInsets.only(bottom: 12.0),
-                            child: SearchableDropdown.single(
-                              items: categories.map((Category i) {
-                                return DropdownMenuItem<Category>(
-                                  child: Text(i.categoryName),
-                                  value: i,
-                                );
-                              }).toList(),
-                          
-                           value: currentValue,
-                              hint: "Select Category",
-                              searchHint: "Select Category",
-                              onChanged: (e) {
-                                setState(() {
-                                  currentValue = e;
-                                });
-                                
-                              },
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0),
-                          child: InputField(
-                            lines: 5,
-                            validation: _descriptionValidation,
-                            controller: _descriptionController,
-                            labelText: "Description",
-                          ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+                        child: InputField(
+                          lines: 1,
+                          controller: _priceController,
+                          labelText: "Price",
+                          validation: null,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
-                          child: InputField(
-                            lines: 1,
-                            controller: _priceController,
-                            labelText: "Price",
-                            validation: null,
-                          ),
-                        ),
-                        Container(
-                          height: 55,
-                          width: 220,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 7.0, bottom: 3.0),
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  side: BorderSide(
-                                      color: Color.fromRGBO(230, 81, 0, 1))),
-                              child: Text(
-                                "Add Photo",
-                                style: TextStyle(color: Color(0xffe65100)),
-                              ),
-                              color: Colors.white,
-                              onPressed: () {
-                                print("resim cekme islemi");
-                              },
+                      ),
+                      Container(
+                        height: 55,
+                        width: 220,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 7.0, bottom: 3.0),
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                side: BorderSide(
+                                    color: Color.fromRGBO(230, 81, 0, 1))),
+                            child: Text(
+                              "Add Photo",
+                              style: TextStyle(color: Color(0xffe65100)),
                             ),
+                            color: Colors.white,
+                            onPressed: () {
+                              print("resim cekme islemi");
+                            },
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              );
-            } else {
-              return CircularProgressIndicator();
-            }
-          },
-        ));
+              ),
+            );
+        }));
   }
 }

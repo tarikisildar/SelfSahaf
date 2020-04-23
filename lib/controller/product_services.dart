@@ -75,7 +75,7 @@ Future<List<Category>> getCategories() async {
  try {
       Response response =
           await _dio.get("product/getCategories");
-          List<Category> result;
+          List<Category> result=[null];
         if (response.statusCode == 200) {
             print("if");
              print(response.statusCode);
@@ -86,7 +86,6 @@ Future<List<Category>> getCategories() async {
         }
         print(response.statusCode);
         print(response.data.length);
-      result = [null];
       return result;
     } on DioError catch (e) {
       if (e.response != null) {

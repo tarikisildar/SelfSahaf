@@ -45,7 +45,7 @@ class Book {
         name = json['name'],
         description = json['description'],
         publisher = json['publisher'],
-        price = json["sells"]['price'],
+        price = json["sells"][0]['price'],
         quantity = json["sells"][0]['quantity'],
         isbn = json["isbn"],
         categoryName=json["categories"][0]["name"],
