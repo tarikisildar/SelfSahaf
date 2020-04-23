@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:selfsahaf/views/products_pages/products_page.dart';
 import 'package:selfsahaf/views/registration/input_field.dart';
 import 'package:selfsahaf/controller/product_services.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
@@ -89,6 +90,7 @@ class _AddBookState extends State<AddBook> {
                       price: int.parse(_priceController.text),
                       publisher: userService.getUser().getUserName()),
                   userService.getUser().userID);
+               productService.getSelfBooks();
               Navigator.pop(context);
             }
           },

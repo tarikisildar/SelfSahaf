@@ -9,6 +9,9 @@ class HomePageCarousel extends StatelessWidget {
     return Container(
       height: 200,
       child: new Carousel(
+        autoplayDuration: Duration(seconds: 3),
+        dotSize: 3.8,
+        dotBgColor: Colors.transparent,
         boxFit: BoxFit.cover,
         images: [
           AssetImage("images/carousel/kitap1.png"),
