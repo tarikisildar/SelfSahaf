@@ -91,7 +91,9 @@ class _ProductsPageState extends State<ProductsPage> {
                             builder: (context) => AddBook(),
                             maintainState: true))
                     .then((e) {
+                     
                   setState(() {
+                    if(e!=null)
                     bookList.add(e);
                     WidgetsBinding.instance.addPostFrameCallback(
                         (_) => _refreshIndicatorKey.currentState.show());
