@@ -28,6 +28,15 @@ class _ProductsPageState extends State<ProductsPage> {
         .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
 
+  Future<Null> _refresh() {
+    return _productService.getSelfBooks().then((e) {
+      setState(() {
+        _isloading = false;
+        this.bookList = e;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,8 +81,13 @@ class _ProductsPageState extends State<ProductsPage> {
           IconButton(
               icon: Icon(Icons.add_box),
               onPressed: () {
+                setState(() {
+                  _isloading=false;
+                });
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddBook()));
+                    MaterialPageRoute(builder: (context) => AddBook())).then((e){
+                      _refresh();
+                    });
               }),
         ],
       ),
@@ -81,14 +95,7 @@ class _ProductsPageState extends State<ProductsPage> {
           color: Color(0xffe65100),
           padding: const EdgeInsets.all(16.0),
           child: RefreshIndicator(
-            onRefresh: () {
-              return _productService.getSelfBooks().then((e) {
-                setState(() {
-                  _isloading = false;
-                  this.bookList = e;
-                });
-              });
-            },
+            onRefresh: () => _refresh(),
             key: _refreshIndicatorKey,
             child: ListView.builder(
               itemBuilder: (BuildContext context, int index) {
@@ -119,6 +126,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                     builder: (context) => BookProfile(
                                         selectedBook: bookList[index])))
                             .then((onValue) {
+                       
                           WidgetsBinding.instance.addPostFrameCallback(
                               (_) => _refreshIndicatorKey.currentState.show());
                         });
@@ -145,12 +153,19 @@ class _ProductsPageState extends State<ProductsPage> {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   color: Theme.of(context).primaryColor,
-                                  onPressed: () async {
-                                    bool delete = await _productService
+                                  onPressed: () {
+                                    _productService
                                         .deleteBook(bookList[index].productID)
                                         .then((e) {
                                       if (e) {
                                         print("deleted");
+                                        bookList.removeAt(index);
+                                        if(bookList.length==0){
+                                          setState(() {
+                                            bookList=[null];
+                                          });
+                                        }
+                                          
                                         Navigator.of(context).pop(true);
                                       } else
                                         Navigator.of(context).pop(false);

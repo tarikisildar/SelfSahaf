@@ -91,7 +91,7 @@ class _AddBookState extends State<AddBook> {
                       publisher: userService.getUser().getUserName()),
                   userService.getUser().userID);
                productService.getSelfBooks();
-              Navigator.pop(context);
+              Navigator.of(context).pop();
             }
           },
         ),
