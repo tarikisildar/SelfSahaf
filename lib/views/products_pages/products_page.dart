@@ -149,7 +149,7 @@ class _ProductsPageState extends State<ProductsPage> {
                           builder: (_) {
                             return AlertDialog(
                               content: Text(
-                                  "Confirm if you want to delete  ${bookList[index].name}"),
+                                  "Confirm if you want to delete ${bookList[index].name}"),
                               title: Text("Do yo want to delete the book?"),
                               actions: <Widget>[
                                 FlatButton(

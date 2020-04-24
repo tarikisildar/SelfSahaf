@@ -15,7 +15,6 @@ class _BookProfileState extends State<BookProfile> {
     return Scaffold(
       appBar: AppBar(
         elevation: 12,
-       
         title: Container(
             height: 50, child: Image.asset("images/logo_white/logo_white.png")),
         actions: <Widget>[
@@ -29,39 +28,41 @@ class _BookProfileState extends State<BookProfile> {
             children: <Widget>[
               HomePageCarousel(),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 20,
-                      child: Container(
-                        width: double.maxFinite,
-                        height: 45,
-                        child: Center(
-                            child: Text(
-                          widget.selectedBook.name,
-                          style: TextStyle(color: Colors.white),
-                        )),
+                padding: const EdgeInsets.all(6.0),
+                child: SafeArea(
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 20,
+                        child: Container(
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Center(
+                              child: Text(
+                            widget.selectedBook.name,
+                            style: TextStyle(color: Colors.white, fontSize: 25),
+                          )),
+                        ),
                       ),
-                    ),
-                    Expanded(flex: 2, child: SizedBox()),
-                    Expanded(
-                      flex: 6,
-                      child: Container(
-                        width: double.maxFinite,
-                        height: 45,
-                        child: Center(
-                            child: Text(
-                         " ${widget.selectedBook.price} TL",
-                          style: TextStyle(color: Colors.white),
-                        )),
-                      ),
-                    )
-                  ],
+                      Expanded(flex: 2, child: SizedBox()),
+                      Expanded(
+                        flex: 6,
+                        child: Container(
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Center(
+                              child: Text(
+                            " ${widget.selectedBook.price} TL",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               Divider(
-                thickness: 3.0,
+                thickness: 2.2,
                 color: Colors.white,
               ),
               Expanded(
@@ -83,7 +84,8 @@ class _BookProfileState extends State<BookProfile> {
                                   "Yazar Adi: ",
                                   style: TextStyle(color: Colors.white),
                                 ),
-                                Text(widget.selectedBook.authorName,style: TextStyle(color: Colors.white))
+                                Text(widget.selectedBook.authorName,
+                                    style: TextStyle(color: Colors.white))
                               ],
                             ),
                           ),
@@ -92,26 +94,68 @@ class _BookProfileState extends State<BookProfile> {
                           height: 5,
                         ),
                         Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
                           width: double.maxFinite,
                           height: 45,
                           child: Center(
-                              child: Text(
-                            "Yayinevi Adi",
-                            style: TextStyle(color: Color(0xffe65100)),
-                          )),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  "Kitap Dili: ",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                Text(widget.selectedBook.language,
+                                    style: TextStyle(color: Colors.white))
+                              ],
+                            ),
+                          ),
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Center(
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  "ISBN: ",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                Text(widget.selectedBook.isbn,
+                                    style: TextStyle(color: Colors.white))
+                              ],
+                            ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Center(
+                              child: Row(
+                            children: <Widget>[
+                              Text(
+                                "Yayinevi: ",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                widget.selectedBook.publisher,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          )),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Divider(
+                          thickness: 1.2,
+                          color: Colors.white,
+                        ),
+                        Container(
                           width: double.maxFinite,
                           height: 120,
                           child: Padding(
@@ -124,7 +168,7 @@ class _BookProfileState extends State<BookProfile> {
                                         child: Text(
                                       widget.selectedBook.description,
                                       style:
-                                          TextStyle(color: Color(0xffe65100)),
+                                          TextStyle(color: Colors.white),
                                     )),
                                   ),
                                 ],
