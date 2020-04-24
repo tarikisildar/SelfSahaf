@@ -77,21 +77,24 @@ class _AddBookState extends State<AddBook> {
                 selectedCategory != null &&
                 _booknameController.text != '' &&
                 _authorController.text != '') {
-              productService.addBook(
-                  Book(
-                      categoryID: selectedCategory.categoryID,
-                      authorName: _authorController.text,
-                      description: _descriptionController.text,
-                      imagePath: "/part1",
-                      isbn: "1111-111-1111",
-                      quantity: 1,
-                      language: "TR",
-                      name: _booknameController.text,
-                      price: int.parse(_priceController.text),
-                      publisher: userService.getUser().getUserName()),
-                  userService.getUser().userID);
-               productService.getSelfBooks();
-              Navigator.of(context).pop();
+                  Book addedBook=Book(
+                          categoryID: selectedCategory.categoryID,
+                          authorName: _authorController.text,
+                          description: _descriptionController.text,
+                          imagePath: "/part1",
+                          isbn: "1111-111-1111",
+                          quantity: 1,
+                          language: "TR",
+                          name: _booknameController.text,
+                          price: int.parse(_priceController.text),
+                          publisher: userService.getUser().getUserName());
+              productService
+                  .addBook(
+                      addedBook,
+                      userService.getUser().userID)
+                  .then((e) {
+                Navigator.of(context).pop(addedBook);
+              });
             }
           },
         ),
