@@ -4,6 +4,7 @@ import 'package:selfsahaf/views/products_pages/add_book.dart';
 import 'package:selfsahaf/views/products_pages/product_card.dart';
 import 'package:selfsahaf/controller/product_services.dart';
 import "package:selfsahaf/models/book.dart";
+import 'package:selfsahaf/views/products_pages/book_profile.dart';
 
 class ProductsPage extends StatefulWidget {
   ProductsPage({Key key}) : super(key: key);
@@ -110,29 +111,81 @@ class _ProductsPageState extends State<ProductsPage> {
                       print("sa");
                     },
                     confirmDismiss: (direction) async {
-                      if (direction == DismissDirection.startToEnd) {
-                        print("soldan sağa");
-                      } else if (direction == DismissDirection.endToStart) {
-                        print("sağdan dola");
+                      //right to left for information
+                      if (direction == DismissDirection.endToStart) {
+                        Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BookProfile(
+                                        selectedBook: bookList[index])))
+                            .then((onValue) {
+                          WidgetsBinding.instance.addPostFrameCallback(
+                              (_) => _refreshIndicatorKey.currentState.show());
+                        });
+
+                        return false;
                       }
+                      //left to right for delete
                       final result = await showDialog(
                           context: context,
                           builder: (_) {
                             return AlertDialog(
-                              content: Text("sa"),
+                              content: Text(
+                                  "Confirm if you want to delete  ${bookList[index].name}"),
+                              title: Text("Do yo want to delete the book?"),
+                              actions: <Widget>[
+                                FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      side: BorderSide(
+                                          color:
+                                              Color.fromRGBO(230, 81, 0, 1))),
+                                  child: Text(
+                                    "DELETE",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  color: Theme.of(context).primaryColor,
+                                  onPressed: () async {
+                                    bool delete = await _productService
+                                        .deleteBook(bookList[index].productID)
+                                        .then((e) {
+                                      if (e) {
+                                        print("deleted");
+                                        Navigator.of(context).pop(true);
+                                      } else
+                                        Navigator.of(context).pop(false);
+                                    });
+                                  },
+                                ),
+                                FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      side: BorderSide(
+                                          color:
+                                              Color.fromRGBO(230, 81, 0, 1))),
+                                  child: Text(
+                                    "CANCEL",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  color: Theme.of(context).primaryColor,
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                ),
+                              ],
                             );
                           });
+                      if (result == null) return false;
                       print(result);
                       return result;
                     },
                     //sağdan sola
                     secondaryBackground: Container(
-                     
                         padding: EdgeInsets.all(12),
                         margin: EdgeInsets.all(8),
                         child: Align(
-                            child: Icon(Icons.edit,
-                                color:Colors.white, size:50),
+                            child:
+                                Icon(Icons.edit, color: Colors.white, size: 50),
                             alignment: Alignment.centerRight),
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
@@ -144,8 +197,11 @@ class _ProductsPageState extends State<ProductsPage> {
                       margin: EdgeInsets.all(8),
                       padding: EdgeInsets.only(left: 16),
                       child: Align(
-                        child: Icon(Icons.delete,
-                            color: Colors.white, size: 50,),
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                          size: 50,
+                        ),
                         alignment: Alignment.centerLeft,
                       ),
                       decoration: BoxDecoration(

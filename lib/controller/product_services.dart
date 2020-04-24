@@ -101,28 +101,29 @@ Future<List<Category>> getCategories() async {
       }
     }
 }
-/*
-  Future<APIResponse<int>> addBook(Book book, int sellerID) async {
-    try {
-      return await _dio
-          .post(
-              "product/addBook",
-                  queryParameters:{
-                    "price":book.price,
-                    "quantity":book.quantity,
-                    "sellerID":sellerID
-                  } ,
-              data: json.encode(book.toJsonBook()) )
-          .then((r) {
-        if (r.statusCode == 200) {
-       return apiresponse=APIResponse<int>(data: r.statusCode);
-        }
-        return apiresponse=APIResponse<int>(data: r.statusCode,error: true,eroorMessage: "selamın aleykum");
-      });
-   
-    } on DioError catch (e) {
-      print(e.response.statusCode);
-    }
-  }*/
+Future<bool> deleteBook(int bookID) async{
+  try{
+    Response response = await _dio.delete("product/deleteBook",
+    queryParameters: {
+      "productId":bookID
+    });
+    print(response.statusCode);
+      return (response.statusCode==200)?true:false;
+
+  } on DioError catch(e){
+         if (e.response != null) {
+        print(e.response.data);
+        print(e.response.headers);
+        print(e.response.request);
+        return false;
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+        return false;
+      }
+  }
+
+}
 
 }
