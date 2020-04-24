@@ -82,12 +82,21 @@ class _ProductsPageState extends State<ProductsPage> {
               icon: Icon(Icons.add_box),
               onPressed: () {
                 setState(() {
-                  _isloading=false;
+                  _isloading = false;
                 });
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddBook())).then((e){
-                      _refresh();
-                    });
+         
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddBook(),
+                            maintainState: true))
+                    .then((e) {
+                  setState(() {
+                    bookList.add(e);
+                    WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => _refreshIndicatorKey.currentState.show());
+                  });
+                });
               }),
         ],
       ),
@@ -126,7 +135,6 @@ class _ProductsPageState extends State<ProductsPage> {
                                     builder: (context) => BookProfile(
                                         selectedBook: bookList[index])))
                             .then((onValue) {
-                       
                           WidgetsBinding.instance.addPostFrameCallback(
                               (_) => _refreshIndicatorKey.currentState.show());
                         });
@@ -159,13 +167,16 @@ class _ProductsPageState extends State<ProductsPage> {
                                         .then((e) {
                                       if (e) {
                                         print("deleted");
-                                        bookList.removeAt(index);
-                                        if(bookList.length==0){
+                                        setState(() {
+                                            bookList.removeAt(index);
+                                        });
+                                      
+                                        if (bookList.length == 0) {
                                           setState(() {
-                                            bookList=[null];
+                                            bookList = [null];
                                           });
                                         }
-                                          
+
                                         Navigator.of(context).pop(true);
                                       } else
                                         Navigator.of(context).pop(false);
