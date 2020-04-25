@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/views/page_classes/main_page/home_page_carousel.dart';
 import 'package:selfsahaf/models/book.dart';
+import 'package:selfsahaf/views/products_pages/book_settings.dart';
 
 class BookProfile extends StatefulWidget {
   Book selectedBook;
@@ -10,6 +11,7 @@ class BookProfile extends StatefulWidget {
 }
 
 class _BookProfileState extends State<BookProfile> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +20,14 @@ class _BookProfileState extends State<BookProfile> {
         title: Container(
             height: 50, child: Image.asset("images/logo_white/logo_white.png")),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.settings), onPressed: () {})
+          IconButton(icon: Icon(Icons.settings), onPressed: () {
+            print("object");
+             Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BookSettingsPage(selectedBook: widget.selectedBook,),));
+            
+          })
         ],
       ),
       body: Center(
@@ -52,7 +61,7 @@ class _BookProfileState extends State<BookProfile> {
                           height: 45,
                           child: Center(
                               child: Text(
-                            " ${widget.selectedBook.price} TL",
+                            "${widget.selectedBook.price} TL",
                             style: TextStyle(color: Colors.white),
                           )),
                         ),
@@ -81,7 +90,7 @@ class _BookProfileState extends State<BookProfile> {
                             child: Row(
                               children: <Widget>[
                                 Text(
-                                  "Yazar Adi: ",
+                                  "Author: ",
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 Text(widget.selectedBook.authorName,
@@ -100,7 +109,7 @@ class _BookProfileState extends State<BookProfile> {
                             child: Row(
                               children: <Widget>[
                                 Text(
-                                  "Kitap Dili: ",
+                                  "Language: ",
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 Text(widget.selectedBook.language,
@@ -138,7 +147,7 @@ class _BookProfileState extends State<BookProfile> {
                               child: Row(
                             children: <Widget>[
                               Text(
-                                "Yayinevi: ",
+                                "Publisher: ",
                                 style: TextStyle(color: Colors.white),
                               ),
                               Text(
@@ -159,13 +168,14 @@ class _BookProfileState extends State<BookProfile> {
                           width: double.maxFinite,
                           height: 120,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.only(top: 8.0),
                             child: Center(
                               child: Column(
                                 children: <Widget>[
                                   Expanded(
                                     child: SingleChildScrollView(
                                         child: Text(
+                                          "More About Book:\n " +
                                       widget.selectedBook.description,
                                       style:
                                           TextStyle(color: Colors.white),
