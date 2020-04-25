@@ -35,7 +35,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
       return null;
   }
   String priceValidation(String price){
-    if(price.length == 0 || !price.contains(RegExp(r'[A-Za-z]'))) return "Invalid Price";
+    if(price.length == 0 || !price.contains(RegExp(r'[A-Za-z]'))) return "Invalid Price Krdsm.";
     else return null;
   }
 
