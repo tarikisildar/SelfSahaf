@@ -12,7 +12,9 @@ public enum UserRole {
 
     USER(Sets.newHashSet(PRODUCT_READ, SELLER_READ)),
     ADMIN(Sets.newHashSet(PRODUCT_READ, PRODUCT_WRITE, USER_READ, USER_WRITE, SELLER_READ, SELLER_WRITE)),
-    SELLER(Sets.newHashSet(PRODUCT_READ, SELLER_READ, PRODUCT_WRITE));
+    SELLER(Sets.newHashSet(PRODUCT_READ, SELLER_READ, PRODUCT_WRITE)),
+    ANON(Sets.newHashSet());
+
 
     private final Set<UserPermission> permissions;
 

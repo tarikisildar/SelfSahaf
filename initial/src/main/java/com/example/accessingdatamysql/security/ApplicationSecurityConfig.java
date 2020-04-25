@@ -5,25 +5,31 @@ import com.example.accessingdatamysql.auth.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.accessingdatamysql.security.UserRole.ADMIN;
-import static com.example.accessingdatamysql.security.UserRole.SELLER;
-import static com.example.accessingdatamysql.security.UserRole.USER;
+import static com.example.accessingdatamysql.security.UserRole.*;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
@@ -34,6 +40,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                                      UserDetailsServiceImp userDetailsServiceImp) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsServiceImp = userDetailsServiceImp;
+
     }
 
     @Override
@@ -55,19 +62,33 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // TODO : edit antMatchers for all apis
 
         http
                 .csrf().disable()
                 .authorizeRequests()
+                    .antMatchers("/").permitAll()
+                    .antMatchers("/login").hasAnyRole(ANON.name())
                     .antMatchers("/swagger-ui.html/**").permitAll()
-                    .antMatchers("/user/add").permitAll()
-                    //.antMatchers("/user/**").permitAll()
-                    .antMatchers("/product/getBooks", "/product/getSellerBooks").permitAll()
+                     // USER CONTROLLERS
+                    .antMatchers("/user/add").hasAnyRole(ADMIN.name(), SELLER.name(), USER.name(), ANON.name())
+                    .antMatchers("/user/update").hasAnyRole(ADMIN.name(), SELLER.name(), USER.name())
+                    .antMatchers("/user/get").hasAnyRole(ADMIN.name(), SELLER.name(), USER.name())
+                    .antMatchers("/user/all").hasAnyRole(ADMIN.name())
+                    .antMatchers("/user/addSellerAddress").hasAnyRole(ADMIN.name(), SELLER.name(), USER.name())
+                    .antMatchers("/user/addAddress").hasAnyRole(ADMIN.name(), SELLER.name(), USER.name())
+                    .antMatchers("/user/getAddress").hasAnyRole(ADMIN.name(), SELLER.name(), USER.name())
+                    .antMatchers("/user/getSellerAddress").hasAnyRole(ADMIN.name(), SELLER.name(), USER.name())
+                    .antMatchers("/user/getSells").hasAnyRole(ADMIN.name(), SELLER.name(), USER.name())
+                    // PRODUCT CONTROLLERS
+                    .antMatchers("/product/getBooks").hasAnyRole(ADMIN.name(), SELLER.name())
+                    .antMatchers("/product/updateBook").hasAnyRole(ADMIN.name(), SELLER.name())
+                    .antMatchers("/product/deleteBook").hasAnyRole(ADMIN.name(), SELLER.name())
                     .antMatchers("/product/addCategory").hasAnyRole(ADMIN.name())
-                    .antMatchers("/product/**").hasAnyRole(USER.name(), ADMIN.name(), SELLER.name())
-                    .antMatchers("/user/**").hasAnyRole(USER.name(), ADMIN.name(), SELLER.name())
-                    .antMatchers("/**").permitAll()
+                    .antMatchers("/product/getCategories").hasAnyRole(ADMIN.name(), SELLER.name(), USER.name(), ANON.name())
+                    .antMatchers("/product/getBooks").hasAnyRole(ADMIN.name(), SELLER.name(), USER.name(), ANON.name())
+                    .antMatchers("/product/getSellerBooks").hasAnyRole(ADMIN.name(), SELLER.name(), USER.name(), ANON.name())
+                    .antMatchers("/product/getSelfBooks").hasAnyRole(ADMIN.name(), SELLER.name())
+                    .antMatchers("/**").hasAnyRole(ANON.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -81,6 +102,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
                     .key("somethingverysecured")
                     .rememberMeParameter("remember-me")
+                    .alwaysRemember(true)
+                .and()
+                .anonymous()
+                    .authorities(ANON.name())
+                .and()
+                    .exceptionHandling()
+                    .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.NOT_ACCEPTABLE))
                 .and()
                 .logout()
                     .logoutUrl("/logout")
