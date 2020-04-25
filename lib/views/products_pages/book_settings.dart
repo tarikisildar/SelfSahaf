@@ -16,13 +16,14 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   final _sellerController=TextEditingController();
   bool _checkSeller=false;
   AuthService userService= GetIt.I<AuthService>();
-  final _bookNameController = new TextEditingController();
+  TextEditingController _bookNameController;
   @override
   void initState() { 
     this._name=userService.getUser().name;
     this._surname=userService.getUser().surname;
     this._email=userService.getUser().email;
     this._phoneNumber=userService.getUser().phoneNumber;
+    _bookNameController= new TextEditingController(text: widget.selectedBook.name);
     
   }
   String bookNameValidation(String bookName){
@@ -49,7 +50,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                   Expanded(
                     flex: 5,
                     child: InputField(
-                      initval: widget.selectedBook.name,
+                      controller: _bookNameController,
                       
                     ),
                     ),
