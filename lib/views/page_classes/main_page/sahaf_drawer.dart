@@ -15,7 +15,7 @@ class _SahafDrawer extends State<SahafDrawer> {
  bool seller=false;
  @override
   void initState() {
-    if(userService.getUser().role=="ROLE_ADMIN")
+    if(userService.getUser().role=="ROLE_ADMIN" || userService.getUser().role=="ROLE_SELLER")
       seller=true;
   }
  

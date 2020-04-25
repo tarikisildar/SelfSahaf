@@ -71,7 +71,7 @@ class _ProductsPageState extends State<ProductsPage> {
                   Icons.search,
                   color: Colors.white,
                 )),
-                hintText: 'Ara...',
+                hintText: 'Search...',
                 hintStyle: TextStyle(
                   color: Colors.white,
                 )),
@@ -114,7 +114,10 @@ class _ProductsPageState extends State<ProductsPage> {
                   return CircularProgressIndicator();
                 }
                 if (bookList[0] == null) {
-                  return Center(child: Text("No Books"));
+                  return Padding(
+                    padding: const EdgeInsets.all(35.0),
+                    child: Center(child: Text("No Books on Sale", style: TextStyle(color: Colors.white),)),
+                  );
                 } else {
                   return Dismissible(
                     key: ValueKey(bookList[index].productID),

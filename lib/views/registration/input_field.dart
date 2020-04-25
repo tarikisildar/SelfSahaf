@@ -8,9 +8,11 @@ class InputField extends StatefulWidget {
   final bool isPassword;
   final TextEditingController controller;
   final Function validation;
+  final String initval;
 
   InputField(
       {this.inputType,
+      this.initval,
       this.lines,
       @required this.controller,
       this.labelText,
@@ -28,6 +30,7 @@ class _InputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: widget.initval,
       controller: widget.controller,
       validator: widget.validation,
       cursorColor: Colors.orange,
