@@ -88,7 +88,7 @@ class _AddBookState extends State<AddBook> {
                           name: _booknameController.text,
                           price: int.parse(_priceController.text),
                           sellerName:userService.getUser().getUserName() ,
-                          publisher: "Anasının publiseri" );
+                          publisher: "Anasının publisheri" );
               productService
                   .addBook(
                       addedBook,
@@ -154,25 +154,20 @@ class _AddBookState extends State<AddBook> {
                       ),
                       Padding(
                           padding: const EdgeInsets.only(bottom: 12.0),
-                          child: Theme(
-                            data: ThemeData(
-                              canvasColor: Color.fromRGBO(255, 144, 77,1)
-                            ),
-                            child: DropdownButton<Category>(
-                              hint: Text("Select a Category",style: TextStyle(color: Colors.white),),
-                              items: categories.map((Category dropdownItem) {
-                                return DropdownMenuItem<Category>(
-                                  value: dropdownItem,
-                                  child: Text(dropdownItem.categoryName, style: TextStyle(color: Colors.white),),
-                                );
-                              }).toList(),
-                              onChanged: (Category newValueSelected) {
-                                setState(() {
-                                  this.selectedCategory = newValueSelected;
-                                });
-                              },
-                              value: this.selectedCategory,
-                            ),
+                          child: DropdownButton<Category>(
+                            hint: Text("Categories"),
+                            items: categories.map((Category dropdownItem) {
+                              return DropdownMenuItem<Category>(
+                                value: dropdownItem,
+                                child: Text(dropdownItem.categoryName),
+                              );
+                            }).toList(),
+                            onChanged: (Category newValueSelected) {
+                              setState(() {
+                                this.selectedCategory = newValueSelected;
+                              });
+                            },
+                            value: this.selectedCategory,
                           )),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 12.0),

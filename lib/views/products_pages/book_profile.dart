@@ -25,7 +25,11 @@ class _BookProfileState extends State<BookProfile> {
              Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => BookSettingsPage(selectedBook: widget.selectedBook,),));
+                            builder: (context) => BookSettingsPage(selectedBook: widget.selectedBook,),)).then((e){
+                              if(e!=null){
+                                Navigator.of(context).pop(e);
+                              }
+                            });
             
           })
         ],

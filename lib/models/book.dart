@@ -25,6 +25,21 @@ class Book {
       this.price,
       this.categoryID,
       this.sellerName});
+  Book.bookForUpdate({
+this.authorName,
+      this.name,
+      this.description,
+      this.language,
+      this.publisher,
+      this.imagePath,
+      this.isbn,
+      this.quantity,
+      this.price,
+      this.categoryID,
+      this.sellerName,
+      this.productID,
+      this.categoryName,
+  });
 
   Map<String, dynamic> toJsonBook() {
     return {
@@ -55,9 +70,8 @@ class Book {
       "imagePath": imagePath,
       "publisher": publisher,
       "productID":productID,
-      "sells":[
-
-      ]
+      "sells":[]
+      
     };
   }
 
