@@ -88,7 +88,7 @@ class _AddBookState extends State<AddBook> {
                           name: _booknameController.text,
                           price: int.parse(_priceController.text),
                           sellerName:userService.getUser().getUserName() ,
-                          publisher: "Anasının publiseri" );
+                          publisher: "Anasının publisheri" );
               productService
                   .addBook(
                       addedBook,
@@ -155,12 +155,11 @@ class _AddBookState extends State<AddBook> {
                       Padding(
                           padding: const EdgeInsets.only(bottom: 12.0),
                           child: DropdownButton<Category>(
-                        
                             hint: Text("Categories"),
                             items: categories.map((Category dropdownItem) {
                               return DropdownMenuItem<Category>(
                                 value: dropdownItem,
-                                child: Text(dropdownItem.categoryName, style: TextStyle(color: Theme.of(context).primaryColor),),
+                                child: Text(dropdownItem.categoryName),
                               );
                             }).toList(),
                             onChanged: (Category newValueSelected) {

@@ -2,14 +2,12 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:selfsahaf/controller/generalServices.dart';
-import 'package:selfsahaf/models/api_response.dart';
+
 import 'package:selfsahaf/models/book.dart';
 import 'package:selfsahaf/models/category.dart';
 
 class ProductService extends GeneralServices {
   Dio _dio;
-  Response response;
-  APIResponse<int> apiresponse;
   ProductService() {
     this._dio = super.dio;
   }
@@ -128,7 +126,7 @@ Future<bool> deleteBook(int bookID) async{
 }
 Future<int> updateBook(Book book) async{
    try{
-    Response response = await _dio.delete("product/deleteBook",
+    Response response = await _dio.post("product/updateBook",
     queryParameters: {
       "price":book.price,
       "quantity":book.quantity

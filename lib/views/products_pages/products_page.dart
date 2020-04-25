@@ -29,6 +29,7 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   Future<Null> _refresh() {
+    print(bookList[0].productID);
     return _productService.getSelfBooks().then((e) {
       setState(() {
         _isloading = false;
@@ -140,6 +141,15 @@ class _ProductsPageState extends State<ProductsPage> {
                                     builder: (context) => BookProfile(
                                         selectedBook: bookList[index])))
                             .then((onValue) {
+                          
+                                print(onValue);
+                                setState(() {
+                                  if(onValue!=null){
+                                  bookList.removeAt(index);
+                                  bookList.add(onValue);
+                                  }
+                                });
+                              
                           WidgetsBinding.instance.addPostFrameCallback(
                               (_) => _refreshIndicatorKey.currentState.show());
                         });
