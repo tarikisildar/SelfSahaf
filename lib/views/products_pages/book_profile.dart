@@ -39,13 +39,14 @@ class _BookProfileState extends State<BookProfile> {
               Padding(
                 padding: const EdgeInsets.all(6.0),
                 child: SafeArea(
+                  
                   child: Row(
                     children: <Widget>[
                       Expanded(
                         flex: 20,
                         child: Container(
                           width: double.maxFinite,
-                          height: 45,
+                          height: 70,
                           child: Center(
                               child: Text(
                             widget.selectedBook.name,
@@ -58,7 +59,7 @@ class _BookProfileState extends State<BookProfile> {
                         flex: 6,
                         child: Container(
                           width: double.maxFinite,
-                          height: 45,
+                          height: 70,
                           child: Center(
                               child: Text(
                             "${widget.selectedBook.price} TL",
@@ -113,6 +114,25 @@ class _BookProfileState extends State<BookProfile> {
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 Text(widget.selectedBook.language,
+                                    style: TextStyle(color: Colors.white))
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Center(
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  "Category: ",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                Text(widget.selectedBook.categoryName,
                                     style: TextStyle(color: Colors.white))
                               ],
                             ),
