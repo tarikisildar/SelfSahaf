@@ -155,11 +155,12 @@ class _AddBookState extends State<AddBook> {
                       Padding(
                           padding: const EdgeInsets.only(bottom: 12.0),
                           child: DropdownButton<Category>(
+                        
                             hint: Text("Categories"),
                             items: categories.map((Category dropdownItem) {
                               return DropdownMenuItem<Category>(
                                 value: dropdownItem,
-                                child: Text(dropdownItem.categoryName),
+                                child: Text(dropdownItem.categoryName, style: TextStyle(color: Theme.of(context).primaryColor),),
                               );
                             }).toList(),
                             onChanged: (Category newValueSelected) {
