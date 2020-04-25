@@ -26,18 +26,35 @@ class _BookSettingsPage extends State<BookSettingsPage> {
     _bookNameController= new TextEditingController(text: widget.selectedBook.name);
     
   }
-  String bookNameValidation(String bookName){
+
+  String bookNameValidation(String bookName) {
     bool booknameValid;
-    if(bookName == "" || bookName == " ") return "Invalid Book Name";
+    if (bookName == "" || bookName == " ")
+      return "Invalid Book Name";
+    else
+      return null;
+  }
+  String priceValidation(String price){
+    if(price.length == 0 || !price.contains(RegExp(r'[A-Za-z]'))) return "Invalid Price";
     else return null;
   }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        onPressed: () {},
+        child: Icon(
+          Icons.save,
+          color: Theme.of(context).primaryColor,
+        ),
+      ),
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Image.asset("images/logo_white/logo_white.png"),
-     
+        title: Container(
+            height: 50, child: Image.asset("images/logo_white/logo_white.png")),
       ),
       body: Container(
         color: Theme.of(context).primaryColor,
@@ -51,7 +68,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                     flex: 5,
                     child: InputField(
                       controller: _bookNameController,
-                      
+                      validation: null,
                     ),
                     ),
                  Expanded(
