@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -154,7 +155,6 @@ public class UserController {
 
     @ApiOperation("w/ id for update")
     @PostMapping(path= "/addAddress")
-
     public @ResponseBody String addAddress(@RequestBody Address address, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> user = userRepository.findUserByUserID(((UserDetailsImp) auth.getPrincipal()).getUserID());
