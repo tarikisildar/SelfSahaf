@@ -6,7 +6,6 @@ import 'package:selfsahaf/controller/product_services.dart';
 import 'package:selfsahaf/views/page_classes/notification_pages/notifications.dart';
 import 'package:selfsahaf/views/page_classes/search_pages/search_page.dart';
 import 'package:selfsahaf/views/products_pages/add_book.dart';
-import 'package:selfsahaf/views/products_pages/book_profile.dart';
 import 'package:selfsahaf/views/profile_pages/account_profile.dart';
 import 'package:selfsahaf/views/registration/login.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
