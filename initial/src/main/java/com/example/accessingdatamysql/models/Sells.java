@@ -94,6 +94,7 @@ public class Sells {
 
             if (p.getPriceID().getDatetime().compareTo(date) > 0) {
                 tempPrice = p;
+                date = tempPrice.getDate();
             }
         }
         if(tempPrice != null)
