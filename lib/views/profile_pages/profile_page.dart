@@ -28,7 +28,7 @@ void initState() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset("images/logo_white/logo_white.png"),
+        title: Container(height: 50,child: Image.asset("images/logo_white/logo_white.png")),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.settings),
@@ -70,13 +70,9 @@ void initState() {
                   width: 150,
                   height: 50,
                   margin: EdgeInsets.fromLTRB(20, 20, 20, 100),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                  ),
+                  
                   child: Center(
-                    child: Text(_name),
+                    child: Text(_name,style: TextStyle(color: Colors.white, fontSize: 18),),
                   ),
                 )),
               ],

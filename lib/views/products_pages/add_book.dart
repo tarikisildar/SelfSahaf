@@ -116,7 +116,7 @@ class _AddBookState extends State<AddBook> {
                 }),
           ],
         ),
-        body: Builder(builder: (_) {
+        body: Builder(builder: (context) {
           if (_isLoading) {
             return CircularProgressIndicator();
           } else
@@ -155,25 +155,22 @@ class _AddBookState extends State<AddBook> {
                           padding: const EdgeInsets.only(bottom: 12.0),
                           child: Theme(
                             data: ThemeData(
-                              
                               canvasColor: Color.fromRGBO(255, 144, 77,1)
                             ),
-                            child: SafeArea(
-                              child: DropdownButton<Category>(
-                                hint: Text("Select a Category",style: TextStyle(color: Colors.white),),
-                                items: categories.map((Category dropdownItem) {
-                                  return DropdownMenuItem<Category>(
-                                    value: dropdownItem,
-                                    child: Text(dropdownItem.categoryName, style: TextStyle(color: Colors.white),),
-                                  );
-                                }).toList(),
-                                onChanged: (Category newValueSelected) {
-                                  setState(() {
-                                    this.selectedCategory = newValueSelected;
-                                  });
-                                },
-                                value: this.selectedCategory,
-                              ),
+                            child: DropdownButton<Category>(
+                              hint: Text("Select a Category",style: TextStyle(color: Colors.white),),
+                              items: categories.map((Category dropdownItem) {
+                                return DropdownMenuItem<Category>(
+                                  value: dropdownItem,
+                                  child: Text(dropdownItem.categoryName, style: TextStyle(color: Colors.white),),
+                                );
+                              }).toList(),
+                              onChanged: (Category newValueSelected) {
+                                setState(() {
+                                  this.selectedCategory = newValueSelected;
+                                });
+                              },
+                              value: this.selectedCategory,
                             ),
                           )),
                       Padding(
@@ -191,7 +188,7 @@ class _AddBookState extends State<AddBook> {
                           lines: 1,
                           controller: _priceController,
                           labelText: "Price",
-                          validation: null,
+                          validation: _booknameValidation,
                         ),
                       ),
                       Container(
