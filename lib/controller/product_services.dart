@@ -53,15 +53,17 @@ Future<List<Book>> getSelfBooks() async {
           return result;
           }
         }
+        print("satatus code");
         print(response.statusCode);
-        print(response.data.length);
+        print(response.data);
       result = [null];
       return result;
     } on DioError catch (e) {
       if (e.response != null) {
         print(e.response.data);
         print(e.response.headers);
-        print(e.response.request);
+        print("statuscode");
+        print(e.response.statusCode);
         return [null];
       } else {
         // Something happened in setting up or sending the request that triggered an Error
@@ -123,7 +125,30 @@ Future<bool> deleteBook(int bookID) async{
         return false;
       }
   }
+}
+Future<int> updateBook(Book book) async{
+   try{
+    Response response = await _dio.delete("product/deleteBook",
+    queryParameters: {
+      "price":book.price,
+      "quantity":book.quantity
+    },data: jsonEncode(book.toJsonBookUpdate()));
+    print(response.statusCode);
+      return response.statusCode;
 
+  } on DioError catch(e){
+         if (e.response != null) {
+        print(e.response.data);
+        print(e.response.headers);
+        print(e.response.request);
+        return e.response.statusCode;
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+        return 406;
+      }
+  }
 }
 
 }

@@ -20,11 +20,20 @@ class _MainPageState extends State<MainPage> {
   int _index = 0;
   List<Widget> _pages;
   AuthService get userService=>GetIt.I<AuthService>(); 
+  bool _loading=true;
   @override
   void initState() {
 
-   userService.initUser();
+_fetchData();
   _pages  = [MainPage(), SearchPage(), NotificationsPage(), AccountProfilePage()];
+  }
+  _fetchData()async{
+   userService.initUser().then((e){
+     setState(() {
+       _loading=false;
+     });
+   });
+  
   }
   @override
   Widget build(BuildContext context) {
@@ -171,8 +180,8 @@ class _MainPageState extends State<MainPage> {
                 }),
           ],
         ),
-        drawer: SahafDrawer(),
-        body: ListView(
+        drawer:(_loading)? CircularProgressIndicator() : SahafDrawer(),
+        body:(_loading)? CircularProgressIndicator() : ListView(
           children: <Widget>[
             HomePageCarousel(),
             BookCard(),

@@ -7,6 +7,7 @@ class Book {
   String imagePath;
   String categoryName;
   String isbn;
+  String sellerName;
   int productID;
   int quantity;
   int price;
@@ -22,7 +23,8 @@ class Book {
       this.isbn,
       this.quantity,
       this.price,
-      this.categoryID});
+      this.categoryID,
+      this.sellerName});
 
   Map<String, dynamic> toJsonBook() {
     return {
@@ -34,8 +36,28 @@ class Book {
       "isbn": isbn,
       "language": language,
       "name": name,
-      "path": {"path": imagePath},
+      "imagePath": imagePath,
       "publisher": publisher
+    };
+  }
+    Map<String, dynamic> toJsonBookUpdate() {
+    return {
+      "author": authorName,
+      "categories": [
+        {"categoryID": categoryID,
+          "name": categoryName
+        }
+      ],
+      "description": description,
+      "isbn": isbn,
+      "language": language,
+      "name": name,
+      "imagePath": imagePath,
+      "publisher": publisher,
+      "productID":productID,
+      "sells":[
+
+      ]
     };
   }
 

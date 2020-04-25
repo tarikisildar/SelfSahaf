@@ -87,7 +87,8 @@ class _AddBookState extends State<AddBook> {
                           language: "TR",
                           name: _booknameController.text,
                           price: int.parse(_priceController.text),
-                          publisher: userService.getUser().getUserName());
+                          sellerName:userService.getUser().getUserName() ,
+                          publisher: "Anasının publiseri" );
               productService
                   .addBook(
                       addedBook,
