@@ -52,7 +52,7 @@ class _ProductsCardState extends State<ProductCard> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(2.5),
                                     child: Text(
-                                      "Book Name:  ${widget.bookName}"
+                                      "Name: ${widget.bookName}"
                                       ,
                                       style: TextStyle(
                                         color: Color(0xffe65100),

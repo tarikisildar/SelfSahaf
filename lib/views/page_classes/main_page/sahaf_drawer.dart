@@ -67,7 +67,7 @@ class _SahafDrawer extends State<SahafDrawer> {
               child: ListTile(
                   leading: Icon(Icons.person, color: Colors.white),
                   title: Text(
-                    "Hesabim",
+                    "My Account",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
               onTap: () => {},
@@ -79,7 +79,7 @@ class _SahafDrawer extends State<SahafDrawer> {
                       color: Colors.white,
                     ),
                     title: Text(
-                      "Kategoriler",
+                      "Categories",
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     )),
                 onTap: () {}),
@@ -105,7 +105,7 @@ class _SahafDrawer extends State<SahafDrawer> {
               child: ListTile(
                   leading: Icon(Icons.settings, color: Colors.white),
                   title: Text(
-                    "Ayarlar",
+                    "Settings",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
               onTap: () => {},

@@ -34,7 +34,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   bool _edit = false;
   List<Category> categories;
   Category selectedCategory;
-  List<String> languages = ["TR", "EN", "DE", "FR", "AZ", "IT", "HE", "LA"];
+  List<String> languages = ["TR", "EN", "DE", "FR", "AZ", "IT", "HE", "LA","RU"];
   String selectedLanguage;
   bool _isLoading = true;
 
@@ -153,7 +153,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                           Expanded(
                             flex: 5,
                             child: InputField(
-                              labelText: "Book's Name",
+                              labelText: "Name",
                               controller: _bookNameController,
                               validation: bookNameValidation,
                             ),

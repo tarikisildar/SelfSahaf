@@ -168,6 +168,25 @@ class _BookProfileState extends State<BookProfile> {
                           width: double.maxFinite,
                           height: 45,
                           child: Center(
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  "Quantity: ",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                Text(widget.selectedBook.quantity.toString(),
+                                    style: TextStyle(color: Colors.white))
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Center(
                               child: Row(
                             children: <Widget>[
                               Text(

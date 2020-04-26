@@ -28,7 +28,7 @@ class _AddBookState extends State<AddBook> {
   TextEditingController _quantityController = new TextEditingController();
   List<Category> categories;
   Category selectedCategory;
-  List<String> languages = ["TR", "EN", "DE", "FR", "AZ", "IT", "HE", "LA"];
+  List<String> languages = ["TR", "EN", "DE", "FR", "AZ", "IT", "HE", "LA","RU"];
   String selectedLanguage;
   bool _isLoading = false;
   @override
