@@ -29,7 +29,17 @@ class _AddBookState extends State<AddBook> {
   TextEditingController _quantityController = new TextEditingController();
   List<Category> categories;
   Category selectedCategory;
-  List<String> languages = ["TR", "EN", "DE", "FR", "AZ", "IT", "HE", "LA","RU"];
+  List<String> languages = [
+    "TR",
+    "EN",
+    "DE",
+    "FR",
+    "AZ",
+    "IT",
+    "HE",
+    "LA",
+    "RU"
+  ];
   String selectedLanguage;
   bool _isLoading = false;
   @override
@@ -66,21 +76,30 @@ class _AddBookState extends State<AddBook> {
     return descValid ? null : 'not valid description';
   }
 
-  String _priceValidation(String price) {
-   
-    bool priceValid = false;
-    if (price.length > 0&&price.length<4) {priceValid = true;
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
+  }
 
-    if( price.contains(" ")) return "price has empty space";
-    if(int.parse(price)<=0) return "price can not be less then or equal zero";}
-    if(price.length>=4) return "price is max 3 character";
+  String _priceValidation(String price) {
+    bool priceValid = false;
+    if (!isNumeric(price)) return "price should be number";
+    if (price.length > 0 && price.length < 4) {
+      priceValid = true;
+      if (int.parse(price) <= 0)
+        return "price can not be less then or equal zero";
+    }
+    if (price.length >= 4) return "price is max 3 character";
+
     return priceValid ? null : 'not valid price';
   }
 
   String _isbnValidation(String isbn) {
     bool isbnValid = false;
     if (isbn.length > 10) isbnValid = true;
-    
+
     return isbnValid ? null : 'not valid isbn number';
   }
 
@@ -91,12 +110,16 @@ class _AddBookState extends State<AddBook> {
   }
 
   String _quantityValidation(String quantity) {
-    bool qValid = false;
-    if (quantity.length>0&&quantity.length<3){ qValid = true;
 
-    if( quantity.contains(" ")) return "quantitiy has empty space";
-    if(int.parse(quantity)<=0) return "quantitiy can not be less then or equal zero";}
-    if(quantity.length>=3) return "quantity is max 2 character";
+     if (!isNumeric(quantity)) return "quantity should be number";
+    bool qValid = false;
+    if (quantity.length > 0 && quantity.length < 3) {
+      qValid = true;
+
+      if (int.parse(quantity) <= 0)
+        return "quantitiy can not be less then or equal zero";
+    }
+    if (quantity.length >= 3) return "quantity is max 2 character";
     return qValid ? null : 'not valid quantity';
   }
 
@@ -111,7 +134,9 @@ class _AddBookState extends State<AddBook> {
             color: Color(0xffe65100),
           ),
           onPressed: () {
-            if (_formKey.currentState.validate()&& selectedCategory!=null&&selectedLanguage!=null) {
+            if (_formKey.currentState.validate() &&
+                selectedCategory != null &&
+                selectedLanguage != null) {
               Book addedBook = Book(
                   categoryID: selectedCategory.categoryID,
                   authorName: _authorController.text,
@@ -129,45 +154,42 @@ class _AddBookState extends State<AddBook> {
                   .then((e) {
                 Navigator.of(context).pop(addedBook);
               });
-             
-            }
-             else if(selectedLanguage==null|| selectedCategory==null){
-               showDialog(
-             context: context,
-             builder: (context) {
-               return AlertDialog(
-                 shape: RoundedRectangleBorder(
-                   borderRadius: BorderRadius.circular(30.0),
-                 ),
-                 backgroundColor: Color(0xffe65100),
-                 title: Text(
-                   "Error!",
-                   style: TextStyle(color: Colors.white),
-                 ),
-                 content: Text("Please select category or language.",
-                     style: TextStyle(color: Colors.white)),
-                 actions: <Widget>[
-                   FlatButton(
-                     color: Colors.white,
-                     shape: RoundedRectangleBorder(
-                       borderRadius: BorderRadius.circular(30.0),
-                     ),
-                     child: Text(
-                       "Tamam",
-                       style: TextStyle(color: Color(0xffe65100)),
-                     ),
-                     onPressed: () {
-                       Navigator.of(context).pop();
-                     },
-                   ),
-                   SizedBox(
-                     width: 5,
-                   ),
-                 ],
-               );
-             });
-             }
-            else{
+            } else if (selectedLanguage == null || selectedCategory == null) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      backgroundColor: Color(0xffe65100),
+                      title: Text(
+                        "Error!",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      content: Text("Please select category or language.",
+                          style: TextStyle(color: Colors.white)),
+                      actions: <Widget>[
+                        FlatButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Text(
+                            "Tamam",
+                            style: TextStyle(color: Color(0xffe65100)),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                      ],
+                    );
+                  });
+            } else {
               print("bu olmaz");
             }
           },
@@ -203,14 +225,16 @@ class _AddBookState extends State<AddBook> {
                     child: Column(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0, top: 12.0),
+                          padding:
+                              const EdgeInsets.only(bottom: 12.0, top: 12.0),
                           child: Text(
                             "Add New Book",
                             style: TextStyle(color: Colors.white, fontSize: 25),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0, top: 12.0),
+                          padding:
+                              const EdgeInsets.only(bottom: 12.0, top: 12.0),
                           child: InputField(
                             lines: 1,
                             validation: _booknameValidation,
@@ -285,7 +309,8 @@ class _AddBookState extends State<AddBook> {
                                     "Select a Category",
                                     style: TextStyle(color: Colors.white),
                                   ),
-                                  items: categories.map((Category dropdownItem) {
+                                  items:
+                                      categories.map((Category dropdownItem) {
                                     return DropdownMenuItem<Category>(
                                       value: dropdownItem,
                                       child: Text(
@@ -336,7 +361,8 @@ class _AddBookState extends State<AddBook> {
                           height: 55,
                           width: 220,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 7.0, bottom: 3.0),
+                            padding:
+                                const EdgeInsets.only(top: 7.0, bottom: 3.0),
                             child: FlatButton(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0),

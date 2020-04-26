@@ -35,7 +35,17 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   bool _edit = false;
   List<Category> categories;
   Category selectedCategory;
-  List<String> languages = ["TR", "EN", "DE", "FR", "AZ", "IT", "HE", "LA","RU"];
+  List<String> languages = [
+    "TR",
+    "EN",
+    "DE",
+    "FR",
+    "AZ",
+    "IT",
+    "HE",
+    "LA",
+    "RU"
+  ];
   String selectedLanguage;
   bool _isLoading = true;
 
@@ -55,9 +65,10 @@ class _BookSettingsPage extends State<BookSettingsPage> {
         TextEditingController(text: widget.selectedBook.description);
     _quantityController =
         TextEditingController(text: "${widget.selectedBook.quantity}");
-      _descController = TextEditingController(text: widget.selectedBook.description);
-     
-      selectedLanguage=widget.selectedBook.language;
+    _descController =
+        TextEditingController(text: widget.selectedBook.description);
+
+    selectedLanguage = widget.selectedBook.language;
     _getCategories();
   }
 
@@ -67,14 +78,21 @@ class _BookSettingsPage extends State<BookSettingsPage> {
     });
     categories = await productService.getCategories();
     setState(() {
-      for(int i =0;i<categories.length;i++){
-        if(categories[i].categoryID==widget.selectedBook.categoryID){
-          selectedCategory=categories[i];
+      for (int i = 0; i < categories.length; i++) {
+        if (categories[i].categoryID == widget.selectedBook.categoryID) {
+          selectedCategory = categories[i];
           break;
         }
       }
       _isLoading = false;
     });
+  }
+
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
   }
 
   String _booknameValidation(String email) {
@@ -96,11 +114,14 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   }
 
   String _priceValidation(String price) {
+    if (!isNumeric(price)) return "price should be number";
     bool priceValid = false;
-    if (price.length > 0 && price.length<4) {priceValid = true;
-    if( price.contains(" ")) return "price has empty space";
-    if(int.parse(price)<=0) return "price can not be less then or equal zero";}
-        if(price.length>=4) return "quantity is max 3 character";
+    if (price.length > 0 && price.length < 4) {
+      priceValid = true;
+      if (int.parse(price) <= 0)
+        return "price can not be less then or equal zero";
+    }
+    if (price.length >= 4) return "price is max 3 character";
     return priceValid ? null : 'not valid price';
   }
 
@@ -117,13 +138,14 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   }
 
   String _quantityValidation(String quantity) {
+    if (!isNumeric(quantity)) return "quantity should be number";
     bool qValid = false;
-    if (quantity.length>0 &&quantity.length<3) {qValid = true;
-
-    if( quantity.contains(" ")) return "price has empty space";
-    if(int.parse(quantity)<=0) return "price can not be less then or equal zero";
+    if (quantity.length > 0 && quantity.length < 3) {
+      qValid = true;
+      if (int.parse(quantity) <= 0)
+        return "quantity can not be less then or equal zero";
     }
-    if(quantity.length>=3) return "quantity is max 2 character";
+    if (quantity.length >= 3) return "quantity is max 2 character";
     return qValid ? null : 'not valid quantity';
   }
 
@@ -133,13 +155,13 @@ class _BookSettingsPage extends State<BookSettingsPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         onPressed: () {
-        
           if (_formKey.currentState.validate()) {
+            print("sa");
             Book oldBook = widget.selectedBook;
             Book updatedBook = Book.bookForUpdate(
                 authorName: _authorController.text,
                 description: _descController.text,
-                categoryID:selectedCategory.categoryID,
+                categoryID: selectedCategory.categoryID,
                 categoryName: selectedCategory.categoryName,
                 imagePath: oldBook.imagePath,
                 isbn: _isbnController.text,
@@ -312,7 +334,6 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                           ],
                         ),
                       ),
-                     
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -329,13 +350,14 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(50, 0, 15,12),
+                          padding: const EdgeInsets.fromLTRB(50, 0, 15, 12),
                           child: Theme(
                             data: ThemeData(
                                 canvasColor: Color.fromRGBO(255, 144, 77, 1)),
                             child: SafeArea(
                               child: DropdownButton<Category>(
-                              hint: Text(widget.selectedBook.categoryName, style: TextStyle(color: Colors.white) ),
+                                hint: Text(widget.selectedBook.categoryName,
+                                    style: TextStyle(color: Colors.white)),
                                 items: categories.map((Category dropdownItem) {
                                   return DropdownMenuItem<Category>(
                                     value: dropdownItem,
@@ -355,13 +377,12 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                             ),
                           )),
                       Padding(
-                          padding: const EdgeInsets.fromLTRB(50, 0, 15,12),
+                          padding: const EdgeInsets.fromLTRB(50, 0, 15, 12),
                           child: Theme(
                             data: ThemeData(
                                 canvasColor: Color.fromRGBO(255, 144, 77, 1)),
                             child: SafeArea(
                               child: DropdownButton<String>(
-                                
                                 items: languages.map((String dropdownItem) {
                                   return DropdownMenuItem<String>(
                                     value: dropdownItem,
