@@ -67,14 +67,20 @@ class _AddBookState extends State<AddBook> {
   }
 
   String _priceValidation(String price) {
+   
     bool priceValid = false;
-    if (price.length >= 0) priceValid = true;
+    if (price.length > 0&&price.length<4) {priceValid = true;
+
+    if( price.contains(" ")) return "price has empty space";
+    if(int.parse(price)<=0) return "price can not be less then or equal zero";}
+    if(price.length>=4) return "price is max 3 character";
     return priceValid ? null : 'not valid price';
   }
 
   String _isbnValidation(String isbn) {
     bool isbnValid = false;
     if (isbn.length > 10) isbnValid = true;
+    
     return isbnValid ? null : 'not valid isbn number';
   }
 
@@ -86,7 +92,11 @@ class _AddBookState extends State<AddBook> {
 
   String _quantityValidation(String quantity) {
     bool qValid = false;
-    if (quantity.length>0) qValid = true;
+    if (quantity.length>0&&quantity.length<3){ qValid = true;
+
+    if( quantity.contains(" ")) return "quantitiy has empty space";
+    if(int.parse(quantity)<=0) return "quantitiy can not be less then or equal zero";}
+    if(quantity.length>=3) return "quantity is max 2 character";
     return qValid ? null : 'not valid quantity';
   }
 
@@ -101,7 +111,7 @@ class _AddBookState extends State<AddBook> {
             color: Color(0xffe65100),
           ),
           onPressed: () {
-            if (_formKey.currentState.validate()) {
+            if (_formKey.currentState.validate()&& selectedCategory!=null&&selectedLanguage!=null) {
               Book addedBook = Book(
                   categoryID: selectedCategory.categoryID,
                   authorName: _authorController.text,
@@ -121,42 +131,42 @@ class _AddBookState extends State<AddBook> {
               });
              
             }
-            // else{
-            //   showDialog(
-            // context: context,
-            // builder: (context) {
-            //   return AlertDialog(
-            //     shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(30.0),
-            //     ),
-            //     backgroundColor: Color(0xffe65100),
-            //     title: Text(
-            //       "Error!",
-            //       style: TextStyle(color: Colors.white),
-            //     ),
-            //     content: Text("You cannot give any field empty.",
-            //         style: TextStyle(color: Colors.white)),
-            //     actions: <Widget>[
-            //       FlatButton(
-            //         color: Colors.white,
-            //         shape: RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(30.0),
-            //         ),
-            //         child: Text(
-            //           "Tamam",
-            //           style: TextStyle(color: Color(0xffe65100)),
-            //         ),
-            //         onPressed: () {
-            //           Navigator.of(context).pop();
-            //         },
-            //       ),
-            //       SizedBox(
-            //         width: 5,
-            //       ),
-            //     ],
-            //   );
-            // });
-            // }
+             else if(selectedLanguage==null|| selectedCategory==null){
+               showDialog(
+             context: context,
+             builder: (context) {
+               return AlertDialog(
+                 shape: RoundedRectangleBorder(
+                   borderRadius: BorderRadius.circular(30.0),
+                 ),
+                 backgroundColor: Color(0xffe65100),
+                 title: Text(
+                   "Error!",
+                   style: TextStyle(color: Colors.white),
+                 ),
+                 content: Text("Please select category or language.",
+                     style: TextStyle(color: Colors.white)),
+                 actions: <Widget>[
+                   FlatButton(
+                     color: Colors.white,
+                     shape: RoundedRectangleBorder(
+                       borderRadius: BorderRadius.circular(30.0),
+                     ),
+                     child: Text(
+                       "Tamam",
+                       style: TextStyle(color: Color(0xffe65100)),
+                     ),
+                     onPressed: () {
+                       Navigator.of(context).pop();
+                     },
+                   ),
+                   SizedBox(
+                     width: 5,
+                   ),
+                 ],
+               );
+             });
+             }
             else{
               print("bu olmaz");
             }

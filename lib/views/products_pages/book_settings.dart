@@ -97,7 +97,10 @@ class _BookSettingsPage extends State<BookSettingsPage> {
 
   String _priceValidation(String price) {
     bool priceValid = false;
-    if (price.length >= 0) priceValid = true;
+    if (price.length > 0 && price.length<4) {priceValid = true;
+    if( price.contains(" ")) return "price has empty space";
+    if(int.parse(price)<=0) return "price can not be less then or equal zero";}
+        if(price.length>=4) return "quantity is max 3 character";
     return priceValid ? null : 'not valid price';
   }
 
@@ -115,7 +118,12 @@ class _BookSettingsPage extends State<BookSettingsPage> {
 
   String _quantityValidation(String quantity) {
     bool qValid = false;
-    if (quantity.length>0) qValid = true;
+    if (quantity.length>0 &&quantity.length<3) {qValid = true;
+
+    if( quantity.contains(" ")) return "price has empty space";
+    if(int.parse(quantity)<=0) return "price can not be less then or equal zero";
+    }
+    if(quantity.length>=3) return "quantity is max 2 character";
     return qValid ? null : 'not valid quantity';
   }
 
@@ -125,7 +133,6 @@ class _BookSettingsPage extends State<BookSettingsPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         onPressed: () {
-          print("sa");
         
           if (_formKey.currentState.validate()) {
             Book oldBook = widget.selectedBook;
