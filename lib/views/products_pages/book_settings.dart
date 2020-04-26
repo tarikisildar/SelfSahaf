@@ -14,6 +14,7 @@ class BookSettingsPage extends StatefulWidget {
 }
 
 class _BookSettingsPage extends State<BookSettingsPage> {
+  final _formKey = GlobalKey<FormState>();
   String _name, _surname, _email, _phoneNumber;
 
   AuthService userService = GetIt.I<AuthService>();
@@ -54,6 +55,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
         TextEditingController(text: widget.selectedBook.description);
     _quantityController =
         TextEditingController(text: "${widget.selectedBook.quantity}");
+      _descController = TextEditingController(text: widget.selectedBook.description);
      
       selectedLanguage=widget.selectedBook.language;
     _getCategories();
@@ -71,19 +73,46 @@ class _BookSettingsPage extends State<BookSettingsPage> {
     });
   }
 
-  String bookNameValidation(String bookName) {
-    bool booknameValid;
-    if (bookName == "" || bookName == " ")
-      return "Invalid Book Name";
-    else
-      return null;
+  String _booknameValidation(String email) {
+    bool emailValid = false;
+    if (email.length >= 5) emailValid = true;
+    return emailValid ? null : 'not valid email.';
   }
 
-  String priceValidation(String price) {
-    if (price.length == 0 || !price.contains(RegExp(r'[A-Za-z]')))
-      return "Invalid Price";
-    else
-      return null;
+  String _authorValidation(String author) {
+    bool authorValid = false;
+    if (author.length >= 2) authorValid = true;
+    return authorValid ? null : 'not valid author name';
+  }
+
+  String _descriptionValidation(String description) {
+    bool descValid = false;
+    if (description.length >= 20) descValid = true;
+    return descValid ? null : 'not valid description';
+  }
+
+  String _priceValidation(String price) {
+    bool priceValid = false;
+    if (price.length >= 0) priceValid = true;
+    return priceValid ? null : 'not valid price';
+  }
+
+  String _isbnValidation(String isbn) {
+    bool isbnValid = false;
+    if (isbn.length > 10) isbnValid = true;
+    return isbnValid ? null : 'not valid isbn number';
+  }
+
+  String _publisherValidation(String pub) {
+    bool pubValid = false;
+    if (pub.length < 30 && pub.length > 1) pubValid = true;
+    return pubValid ? null : 'not valid publisher name';
+  }
+
+  String _quantityValidation(String quantity) {
+    bool qValid = false;
+    if (quantity.length>0) qValid = true;
+    return qValid ? null : 'not valid quantity';
   }
 
   @override
@@ -94,12 +123,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
         onPressed: () {
           print("sa");
         
-          if (_bookNameController.text != null &&
-              _isbnController.text != null &&
-              _langController.text != null &&
-              _priceController.text != null &&
-              _publisherController.text != null &&
-              _descController.text != null) {
+          if (_formKey.currentState.validate()) {
             Book oldBook = widget.selectedBook;
             Book updatedBook = Book.bookForUpdate(
                 authorName: _authorController.text,
@@ -142,156 +166,175 @@ class _BookSettingsPage extends State<BookSettingsPage> {
             )
           : Container(
               color: Theme.of(context).primaryColor,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 5,
-                            child: InputField(
-                              labelText: "Name",
-                              controller: _bookNameController,
-                              validation: bookNameValidation,
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 5,
+                              child: InputField(
+                                labelText: "Name",
+                                controller: _bookNameController,
+                                validation: _booknameValidation,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 5,
-                            child: InputField(
-                              labelText: "Price",
-                              controller: _priceController,
-                              inputType: TextInputType.number,
-                              validation: bookNameValidation,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 5,
+                              child: InputField(
+                                labelText: "Price",
+                                controller: _priceController,
+                                inputType: TextInputType.number,
+                                validation: _priceValidation,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 5,
-                            child: InputField(
-                              labelText: "Quantitiy",
-                              controller: _quantityController,
-                              inputType: TextInputType.number,
-                              validation: null,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 5,
+                              child: InputField(
+                                labelText: "Quantitiy",
+                                controller: _quantityController,
+                                inputType: TextInputType.number,
+                                validation: _quantityValidation,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 5,
-                            child: InputField(
-                              labelText: "Author",
-                              controller: _authorController,
-                              validation: bookNameValidation,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 5,
+                              child: InputField(
+                                labelText: "Author",
+                                controller: _authorController,
+                                validation: _authorValidation,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 5,
-                            child: InputField(
-                              labelText: "ISBN",
-                              controller: _isbnController,
-                              validation: bookNameValidation,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 5,
+                              child: InputField(
+                                lines: 5,
+                                labelText: "Description",
+                                controller: _descController,
+                                validation: _descriptionValidation,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                   
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 5,
-                            child: InputField(
-                              labelText: "Publisher",
-                              controller: _publisherController,
-                              validation: bookNameValidation,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 5,
+                              child: InputField(
+                                labelText: "ISBN",
+                                controller: _isbnController,
+                                validation: _isbnValidation,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(50, 0, 15,12),
-                        child: Theme(
-                          data: ThemeData(
-                              canvasColor: Color.fromRGBO(255, 144, 77, 1)),
-                          child: SafeArea(
-                            child: DropdownButton<Category>(
-                            hint: Text(widget.selectedBook.categoryName, style: TextStyle(color: Colors.white) ),
-                              items: categories.map((Category dropdownItem) {
-                                return DropdownMenuItem<Category>(
-                                  value: dropdownItem,
-                                  child: Text(
-                                    dropdownItem.categoryName,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (Category newValueSelected) {
-                                setState(() {
-                                  this.selectedCategory = newValueSelected;
-                                });
-                              },
-                              value: this.selectedCategory,
+                     
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 5,
+                              child: InputField(
+                                labelText: "Publisher",
+                                controller: _publisherController,
+                                validation: _publisherValidation,
+                              ),
                             ),
-                          ),
-                        )),
-                    Padding(
+                          ],
+                        ),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.fromLTRB(50, 0, 15,12),
-                        child: Theme(
-                          data: ThemeData(
-                              canvasColor: Color.fromRGBO(255, 144, 77, 1)),
-                          child: SafeArea(
-                            child: DropdownButton<String>(
-                              
-                              items: languages.map((String dropdownItem) {
-                                return DropdownMenuItem<String>(
-                                  value: dropdownItem,
-                                  child: Text(
-                                    dropdownItem,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (String newValueSelected) {
-                                setState(() {
-                                  this.selectedLanguage = newValueSelected;
-                                });
-                              },
-                              value: this.selectedLanguage,
+                          child: Theme(
+                            data: ThemeData(
+                                canvasColor: Color.fromRGBO(255, 144, 77, 1)),
+                            child: SafeArea(
+                              child: DropdownButton<Category>(
+                              hint: Text(widget.selectedBook.categoryName, style: TextStyle(color: Colors.white) ),
+                                items: categories.map((Category dropdownItem) {
+                                  return DropdownMenuItem<Category>(
+                                    value: dropdownItem,
+                                    child: Text(
+                                      dropdownItem.categoryName,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (Category newValueSelected) {
+                                  setState(() {
+                                    this.selectedCategory = newValueSelected;
+                                  });
+                                },
+                                value: this.selectedCategory,
+                              ),
                             ),
-                          ),
-                        )),
-                  ],
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(50, 0, 15,12),
+                          child: Theme(
+                            data: ThemeData(
+                                canvasColor: Color.fromRGBO(255, 144, 77, 1)),
+                            child: SafeArea(
+                              child: DropdownButton<String>(
+                                
+                                items: languages.map((String dropdownItem) {
+                                  return DropdownMenuItem<String>(
+                                    value: dropdownItem,
+                                    child: Text(
+                                      dropdownItem,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String newValueSelected) {
+                                  setState(() {
+                                    this.selectedLanguage = newValueSelected;
+                                  });
+                                },
+                                value: this.selectedLanguage,
+                              ),
+                            ),
+                          )),
+                    ],
+                  ),
                 ),
               )),
     );

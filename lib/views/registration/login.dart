@@ -7,7 +7,7 @@ import 'input_field.dart';
 import 'package:selfsahaf/views/registration/signup.dart';
 import 'package:dio/dio.dart';
 import 'package:selfsahaf/views/registration/input_field.dart';
-import 'package:http/http.dart' as http; 
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,17 +22,16 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   AuthService api = new AuthService();
 
- void _login() async {
+  void _login() async {
     api
         .loginWithEmail(_emailController.text, _passwordController.text)
-        .then((val){
-      if (val == 200||val == 302 ) {
+        .then((val) {
+      if (val == 200 || val == 302) {
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => MainPage( )),
+            MaterialPageRoute(builder: (context) => MainPage()),
             ModalRoute.withName("/Home"));
-      }
-      else
+      } else
         return showDialog(
             context: context,
             builder: (context) {
@@ -67,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               );
             });
-      
     });
   }
 
@@ -154,10 +152,13 @@ class _LoginPageState extends State<LoginPage> {
                             side: BorderSide(
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
-                        onPressed: () async {
-                         _login();
-                   
-                        
+                        onPressed: ()async { //@TODO : degistir bunu 
+                          _login();
+                          /*if (_formKey.currentState.validate()) {
+                            
+                          } else {
+                            print("not valid.");
+                          }*/
                         },
                         child: Text(
                           "Giris Yap",
@@ -179,10 +180,12 @@ class _LoginPageState extends State<LoginPage> {
                             side: BorderSide(
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
-                        onPressed: () => Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => Signup()),
-                            ModalRoute.withName("/Home")),
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => Signup()),
+                              ModalRoute.withName("/Home"));
+                        },
                         child: Text(
                           "Kayit Ol",
                           style: TextStyle(
