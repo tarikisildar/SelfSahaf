@@ -44,9 +44,6 @@ Future<List<Book>> getSelfBooks() async {
           List<Book> result;
         if (response.statusCode == 200) {
           if(response.data.length!=0){
-            print("if");
-             print(response.statusCode);
-        print(response.data);
           List<dynamic> i = response.data;
           result = i.map((p) => Book.fromJson(p)).toList();
           return result;
@@ -55,7 +52,9 @@ Future<List<Book>> getSelfBooks() async {
         print("satatus code");
         print(response.statusCode);
         print(response.data);
-      result = [null];
+
+      result=[null];
+ 
       return result;
     } on DioError catch (e) {
       if (e.response != null) {
@@ -63,12 +62,14 @@ Future<List<Book>> getSelfBooks() async {
         print(e.response.headers);
         print("statuscode");
         print(e.response.statusCode);
-        return [null];
+        return [];
       } else {
+       
         // Something happened in setting up or sending the request that triggered an Error
         print(e.request);
         print(e.message);
-        return [null];
+        
+        return [];
       }
     }
 }
