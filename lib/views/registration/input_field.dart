@@ -11,7 +11,7 @@ class InputField extends StatefulWidget {
   final String initval;
 
   InputField(
-      {this.inputType,
+      {this.inputType=TextInputType.text,
       this.initval,
       this.lines,
       @required this.controller,
@@ -34,6 +34,7 @@ class _InputFieldState extends State<InputField> {
       controller: widget.controller,
       validator: widget.validation,
       cursorColor: Colors.orange,
+      keyboardType: widget.inputType,
       obscureText: widget.isPassword,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(

@@ -193,6 +193,7 @@ class _AddBookState extends State<AddBook> {
                           lines: 1,
                           controller: _priceController,
                           labelText: "Price",
+                          inputType: TextInputType.number,
                           validation: _booknameValidation,
                         ),
                       ),
@@ -221,6 +222,7 @@ class _AddBookState extends State<AddBook> {
                           controller: _quantityController,
                           labelText: "Quantity",
                           validation: _quantityValidation,
+                          inputType: TextInputType.number,
                         ),
                       ),
                       Padding(
