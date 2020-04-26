@@ -54,7 +54,6 @@ class _BookSettingsPage extends State<BookSettingsPage> {
         TextEditingController(text: widget.selectedBook.description);
     _quantityController =
         TextEditingController(text: "${widget.selectedBook.quantity}");
-     
       selectedLanguage=widget.selectedBook.language;
     _getCategories();
   }
@@ -64,9 +63,13 @@ class _BookSettingsPage extends State<BookSettingsPage> {
       _isLoading = true;
     });
     categories = await productService.getCategories();
-    print(categories);
     setState(() {
-      
+      for(int i =0;i<categories.length;i++){
+        if(categories[i].categoryID==widget.selectedBook.categoryID){
+          selectedCategory=categories[i];
+          break;
+        }
+      }
       _isLoading = false;
     });
   }
@@ -92,14 +95,13 @@ class _BookSettingsPage extends State<BookSettingsPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         onPressed: () {
-          print("sa");
-        
-          if (_bookNameController.text != null &&
-              _isbnController.text != null &&
-              _langController.text != null &&
-              _priceController.text != null &&
-              _publisherController.text != null &&
-              _descController.text != null) {
+            print(_bookNameController.text);
+          if (_bookNameController.text != "" &&
+              _isbnController.text != "" &&
+              _langController.text != "" &&
+              _priceController.text != "" &&
+              _publisherController.text != "" &&
+              _descController.text != "" && selectedCategory!=null && selectedLanguage!=null) {
             Book oldBook = widget.selectedBook;
             Book updatedBook = Book.bookForUpdate(
                 authorName: _authorController.text,
@@ -119,6 +121,41 @@ class _BookSettingsPage extends State<BookSettingsPage> {
               if (e == 200) {
                 Navigator.of(context).pop(updatedBook);
               }
+            });
+          }else{
+            showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                backgroundColor: Color(0xffe65100),
+                title: Text(
+                  "Error!",
+                  style: TextStyle(color: Colors.white),
+                ),
+                content: Text("You can not give any field empty.",
+                    style: TextStyle(color: Colors.white)),
+                actions: <Widget>[
+                  FlatButton(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: Text(
+                      "Tamam",
+                      style: TextStyle(color: Color(0xffe65100)),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                ],
+              );
             });
           }
         },
@@ -246,7 +283,6 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                               canvasColor: Color.fromRGBO(255, 144, 77, 1)),
                           child: SafeArea(
                             child: DropdownButton<Category>(
-                            hint: Text(widget.selectedBook.categoryName, style: TextStyle(color: Colors.white) ),
                               items: categories.map((Category dropdownItem) {
                                 return DropdownMenuItem<Category>(
                                   value: dropdownItem,
