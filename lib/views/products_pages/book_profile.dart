@@ -21,7 +21,7 @@ class _BookProfileState extends State<BookProfile> {
             height: 50, child: Image.asset("images/logo_white/logo_white.png")),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.settings), onPressed: () {
-            print("object");
+          
              Navigator.push(
                         context,
                         MaterialPageRoute(

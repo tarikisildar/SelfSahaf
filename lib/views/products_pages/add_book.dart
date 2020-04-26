@@ -27,8 +27,9 @@ class _AddBookState extends State<AddBook> {
   TextEditingController _publisherController = new TextEditingController();
   TextEditingController _quantityController = new TextEditingController();
   List<Category> categories;
-  List<Category> findedCategories;
   Category selectedCategory;
+  List<String> languages = ["TR", "EN", "DE", "FR", "AZ", "IT", "HE", "LA"];
+  String selectedLanguage;
   bool _isLoading = false;
   @override
   void initState() {
@@ -63,19 +64,24 @@ class _AddBookState extends State<AddBook> {
     if (description.length >= 20) descValid = true;
     return descValid ? null : 'not valid description';
   }
-  String _isbnValidation(String isbn){
+
+  String _isbnValidation(String isbn) {
     bool isbnValid = false;
-    if(isbn.length>30 || isbn.length< 10) isbnValid = true;
+    if (isbn.length > 30 || isbn.length < 10) isbnValid = true;
     return isbnValid ? null : 'not valid isbn number';
   }
-  String _publisherValidation(String pub){
+
+  String _publisherValidation(String pub) {
     bool pubValid = false;
-    if(pub.length< 30 && pub.length>1) pubValid = true;
+    if (pub.length < 30 && pub.length > 1) pubValid = true;
     return pubValid ? null : 'not valid publisher name';
   }
-  String _quantityValidation(String quantity){
+
+  String _quantityValidation(String quantity) {
     bool qValid = false;
-    if(quantity.length> 3 && quantity.length<1 && !quantity.contains(RegExp(r'[A-Za-z]'))) qValid = true;
+    if (quantity.length > 3 &&
+        quantity.length < 1 &&
+        !quantity.contains(RegExp(r'[A-Za-z]'))) qValid = true;
     return qValid ? null : 'not valid quantity';
   }
 
@@ -94,19 +100,23 @@ class _AddBookState extends State<AddBook> {
                 _descriptionController.text != '' &&
                 selectedCategory != null &&
                 _booknameController.text != '' &&
-                _authorController.text != '') {
+                _authorController.text != '' &&
+                selectedLanguage != null &&
+                _publisherController.text != null &&
+                _quantityController.text != null &&
+                _isbnController.text != null) {
               Book addedBook = Book(
                   categoryID: selectedCategory.categoryID,
                   authorName: _authorController.text,
                   description: _descriptionController.text,
                   imagePath: "/part1",
-                  isbn: "1111-111-1111",
-                  quantity: 1,
-                  language: "TR",
+                  isbn: _isbnController.text,
+                  quantity: int.parse(_quantityController.text),
+                  language: selectedLanguage,
                   name: _booknameController.text,
                   price: int.parse(_priceController.text),
                   sellerName: userService.getUser().getUserName(),
-                  publisher: "Anasının publisheri");
+                  publisher: _publisherController.text);
               productService
                   .addBook(addedBook, userService.getUser().userID)
                   .then((e) {
@@ -169,35 +179,6 @@ class _AddBookState extends State<AddBook> {
                         ),
                       ),
                       Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0),
-                          child: Theme(
-                            data: ThemeData(
-                                canvasColor: Color.fromRGBO(255, 144, 77, 1)),
-                            child: SafeArea(
-                              child: DropdownButton<Category>(
-                                hint: Text(
-                                  "Select a Category",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                items: categories.map((Category dropdownItem) {
-                                  return DropdownMenuItem<Category>(
-                                    value: dropdownItem,
-                                    child: Text(
-                                      dropdownItem.categoryName,
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (Category newValueSelected) {
-                                  setState(() {
-                                    this.selectedCategory = newValueSelected;
-                                  });
-                                },
-                                value: this.selectedCategory,
-                              ),
-                            ),
-                          )),
-                      Padding(
                         padding: const EdgeInsets.only(bottom: 12.0),
                         child: InputField(
                           lines: 5,
@@ -250,7 +231,7 @@ class _AddBookState extends State<AddBook> {
                             child: SafeArea(
                               child: DropdownButton<Category>(
                                 hint: Text(
-                                  "Select Book Language",
+                                  "Select a Category",
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 items: categories.map((Category dropdownItem) {
@@ -268,6 +249,35 @@ class _AddBookState extends State<AddBook> {
                                   });
                                 },
                                 value: this.selectedCategory,
+                              ),
+                            ),
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Theme(
+                            data: ThemeData(
+                                canvasColor: Color.fromRGBO(255, 144, 77, 1)),
+                            child: SafeArea(
+                              child: DropdownButton<String>(
+                                hint: Text(
+                                  "Select Book Language",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                items: languages.map((String dropdownItem) {
+                                  return DropdownMenuItem<String>(
+                                    value: dropdownItem,
+                                    child: Text(
+                                      dropdownItem,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String newValueSelected) {
+                                  setState(() {
+                                    this.selectedLanguage = newValueSelected;
+                                  });
+                                },
+                                value: this.selectedLanguage,
                               ),
                             ),
                           )),
