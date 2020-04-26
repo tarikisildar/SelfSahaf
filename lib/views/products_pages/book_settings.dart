@@ -170,6 +170,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                             child: InputField(
                               labelText: "Price",
                               controller: _priceController,
+                              inputType: TextInputType.number,
                               validation: bookNameValidation,
                             ),
                           ),
@@ -185,6 +186,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                             child: InputField(
                               labelText: "Quantitiy",
                               controller: _quantityController,
+                              inputType: TextInputType.number,
                               validation: null,
                             ),
                           ),
