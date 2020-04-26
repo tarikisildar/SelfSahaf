@@ -37,6 +37,7 @@ class ProductService extends GeneralServices {
     }
   }
 Future<List<Book>> getSelfBooks() async {
+  print("get books");
  try {
       Response response =
           await _dio.get("product/getSelfBooks");

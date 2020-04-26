@@ -29,7 +29,6 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   Future<Null> _refresh() {
-    print(bookList[0].productID);
     return _productService.getSelfBooks().then((e) {
       setState(() {
         _isloading = false;

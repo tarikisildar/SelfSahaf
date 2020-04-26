@@ -52,7 +52,8 @@ class _ProductsCardState extends State<ProductCard> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(2.5),
                                     child: Text(
-                                      widget.bookName,
+                                      "Book Name:  ${widget.bookName}"
+                                      ,
                                       style: TextStyle(
                                         color: Color(0xffe65100),
                                         fontSize: 15,
@@ -64,8 +65,8 @@ class _ProductsCardState extends State<ProductCard> {
                                   flex: 2,
                                   child: Padding(
                                     padding: const EdgeInsets.all(2.5),
-                                    child: Text(
-                                      widget.authorName,
+                                    child: Text("Author: ${widget.authorName}"
+                                      ,
                                       style: TextStyle(
                                         color: Color(0xffe65100),
                                         fontSize: 15,
@@ -77,8 +78,8 @@ class _ProductsCardState extends State<ProductCard> {
                                   flex: 2,
                                   child: Padding(
                                     padding: const EdgeInsets.all(2.5),
-                                    child: Text(
-                                      widget.publisherName,
+                                    child: Text("Publisher:${widget.publisherName} "
+                                      ,
                                       style: TextStyle(
                                         color: Color(0xffe65100),
                                         fontSize: 15,
