@@ -17,8 +17,14 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  int _prevIndex;
   int _index = 0;
-  List<Widget> _pages;
+  List<Widget> _pages = [
+      MainPage(),
+      SearchPage(),
+      NotificationsPage(),
+      AccountProfilePage(),
+    ];
   AuthService get userService=>GetIt.I<AuthService>(); 
   bool _loading=true;
   @override
@@ -38,138 +44,7 @@ _fetchData();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: BottomAppBar(
-          elevation: 7,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Color(0xffe65100),
-            ),
-            height: 60,
-                child :Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        InkWell(
-                          child: _index == 0
-                              ? Icon(
-                                  Icons.home,
-                                  size: 35,
-                                  color: Colors.white,
-                                )
-                              : Icon(
-                                  Icons.home,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                          onTap: (){
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MainPage()));
-                          },
-                        ),
-                        _index == 0
-                            ? Text(
-                                "Ana Sayfa",
-                                style: TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
-                              )
-                            : SizedBox(),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        InkWell(
-                          child: _index == 1
-                              ? Icon(
-                                  Icons.search,
-                                  size: 25,
-                                  color: Colors.white,
-                                )
-                              : Icon(
-                                  Icons.search,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchPage()));
-                          },
-                        ),
-                        _index == 1
-                            ? Text(
-                                "Arama",
-                                style: TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
-                              )
-                            : SizedBox(),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        InkWell(
-                          child: _index == 2
-                              ? Icon(
-                                  Icons.notifications,
-                                  size: 25,
-                                  color: Colors.white,
-                                )
-                              : Icon(
-                                  Icons.notifications_none,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => NotificationsPage()));
-                          },
-                        ),
-                        _index == 2
-                            ? Text(
-                                "Bildirimler",
-                                style: TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
-                              )
-                            : SizedBox(),
-                      ],
-                    ),
-                    
-                    Column(
-                      children: <Widget>[
-                        InkWell(
-                          child: _index == 3
-                              ? Icon(
-                                  Icons.person,
-                                  size: 25,
-                                  color: Colors.white,
-                                )
-                              : Icon(
-                                  Icons.person_outline,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                          onTap: ()  {
-                           Navigator.push(context, MaterialPageRoute(builder: ( context) => ProfilePage()));
-                          },
-                        ),
-                        _index == 3
-                            ? Text(
-                                "Profilim",
-                                style: TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
-                              )
-                            : SizedBox(),
-                      ],
-                    ),
-                  ],
-                ),
-          ),
-        ),
+        
         appBar: AppBar(
           title: Container(height: 50,child: Image.asset("images/logo_white/logo_white.png")),
           actions: <Widget>[
@@ -190,9 +65,8 @@ _fetchData();
   }
 
   _changeIndex(int i) {
+    _prevIndex = _index;
     _index = i;
-    setState(() {
-
-    });
+    setState(() {});
   }
 }
