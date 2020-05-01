@@ -26,7 +26,7 @@ class _SignupState extends State<Signup> {
     }
   }
 
-  var dob = "Doğum Tarihinizi Seçiniz";
+  var dob = "Please Select Your Birthday";
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -178,7 +178,7 @@ class _SignupState extends State<Signup> {
                       controller: _fnameController,
                       inputType: TextInputType.text,
                       validation: fnameValidation,
-                      labelText: "Adiniz",
+                      labelText: "Name",
                       suffixIcon: Icon(
                         Icons.person,
                         color: Colors.white,
@@ -190,7 +190,7 @@ class _SignupState extends State<Signup> {
                       controller: _surnameController,
                       inputType: TextInputType.text,
                       validation: surnameValidation,
-                      labelText: "Soyadiniz",
+                      labelText: "Surname",
                       suffixIcon: Icon(
                         Icons.person,
                         color: Colors.white,
@@ -214,7 +214,7 @@ class _SignupState extends State<Signup> {
                       controller: _phoneController,
                       inputType: TextInputType.phone,
                       validation: telephoneNumberValidation,
-                      labelText: "Telefon Numarasi",
+                      labelText: "Phone Number",
                       suffixIcon: Icon(
                         Icons.phone,
                         color: Colors.white,
@@ -226,7 +226,7 @@ class _SignupState extends State<Signup> {
                       controller: _passController,
                       inputType: TextInputType.visiblePassword,
                       validation: passwrdValidation,
-                      labelText: "Sifre",
+                      labelText: "Password",
                       isPassword: true,
                       suffixIcon: Icon(
                         Icons.lock,
@@ -240,7 +240,7 @@ class _SignupState extends State<Signup> {
                       inputType: TextInputType.visiblePassword,
                       validation: passwrdValidation,
                       isPassword: true,
-                      labelText: "Sifrenizi Yeniden Yazınız",
+                      labelText: "Validate Password",
                       suffixIcon: Icon(
                         Icons.verified_user,
                         color: Colors.white,
@@ -280,7 +280,7 @@ class _SignupState extends State<Signup> {
                       Expanded(
                         flex: 18,
                         child: Text(
-                          "KVKK kapsamı doğrultusundaki aydınlatma metnini okuyup kabul ettim.",
+                          "I accept terms including my information according to this app.",
                           style: TextStyle(
                               fontSize: 15,
                               color: Colors.white,
@@ -298,7 +298,7 @@ class _SignupState extends State<Signup> {
                               side: BorderSide(color: Colors.white)),
                           color: Colors.white,
                           child: Text(
-                            "Kayıt Ol",
+                            "Signup",
                             style: TextStyle(
                                 color: Color.fromRGBO(230, 81, 0, 1),
                                 fontSize: 20.0),
@@ -316,7 +316,7 @@ class _SignupState extends State<Signup> {
                               _scaffoldKey.currentState.showSnackBar(SnackBar(
                                 backgroundColor: Colors.white,
                                 content: Text(
-                                  "Lütfen KVKK sözleşmesini kabul ediniz!",
+                                  "Please Accept Terms",
                                   style: TextStyle(
                                       color: Color.fromRGBO(230, 81, 0, 1),
                                       fontSize: 18),
@@ -327,7 +327,7 @@ class _SignupState extends State<Signup> {
                               _scaffoldKey.currentState.showSnackBar(SnackBar(
                                 backgroundColor: Colors.white,
                                 content: Text(
-                                  "Şifreler Uyuşmuyor!",
+                                  "Passwords Not Matching.",
                                   style: TextStyle(
                                       color: Color.fromRGBO(230, 81, 0, 1),
                                       fontSize: 18),
@@ -339,7 +339,7 @@ class _SignupState extends State<Signup> {
                     SizedBox(height: 30.0),
                     Center(
                         child: GestureDetector(
-                            child: Text("Zaten üye misiniz? Giriş Yap",
+                            child: Text("Already Have an Account? Login",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20)),
                             onTap: () {
