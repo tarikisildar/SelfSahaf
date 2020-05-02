@@ -23,12 +23,12 @@ public class ImagePath
 
     public ImagePath(String path) {
         this.path = path;
-        this.allPath = cons + path;
+        this.allPath = path;
     }
 
     public void setPath(String path) {
         this.path = path;
-        this.allPath = cons + path;
+        this.allPath = path;
     }
 
     public String getAllPath() {

@@ -32,7 +32,7 @@ public class Product
 
 
     @Column(name = "allPath")
-    private ImagePath path;
+    private String path;
 
     public Product() {
     }
@@ -72,13 +72,13 @@ public class Product
 
     public String getImagePath() {
         if(path != null)
-            return path.getAllPath();
+            return path;
         else{
             return null;
         }
     }
 
-    public void setPath(ImagePath path) {
+    public void setPath(String path) {
         this.path = path;
     }
 
