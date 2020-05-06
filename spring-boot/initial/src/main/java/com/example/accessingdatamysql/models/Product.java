@@ -32,7 +32,7 @@ public class Product
 
 
     @Column(name = "allPath")
-    private ImagePath path;
+    private String path;
 
     public Product() {
     }
@@ -45,7 +45,6 @@ public class Product
         this.publisher = publisher;
         this.ISBN = ISBN;
     }
-
 
 
 
@@ -70,15 +69,15 @@ public class Product
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<OrderDetail> orderDetails;
 
-    public String getImagePath() {
+    public String getPath() {
         if(path != null)
-            return path.getAllPath();
+            return path;
         else{
             return null;
         }
     }
 
-    public void setPath(ImagePath path) {
+    public void setPath(String path) {
         this.path = path;
     }
 
