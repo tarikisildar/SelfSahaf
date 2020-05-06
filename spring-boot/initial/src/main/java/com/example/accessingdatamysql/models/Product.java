@@ -49,7 +49,6 @@ public class Product
 
 
 
-
     @JsonIgnoreProperties("products")
     @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     @JoinTable(
@@ -70,7 +69,7 @@ public class Product
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<OrderDetail> orderDetails;
 
-    public String getImagePath() {
+    public String getPath() {
         if(path != null)
             return path;
         else{

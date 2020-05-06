@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -32,15 +33,17 @@ public class FileSystemStorageService implements StorageService {
     @PostConstruct
     public void init() {
         try {
-            Files.createDirectories(rootLocation);
-        } catch (IOException e) {
-            throw new StorageException("Could not initialize storage location", e);
+            File dir = new File(rootLocation.toAbsolutePath().toString());
+            boolean isCreated = dir.mkdirs();
+        } catch (Exception e) {
+            throw new StorageException("Could not initialize storage location" + rootLocation.toAbsolutePath().toString(), e);
         }
     }
 
     @Override
-    public String store(MultipartFile file) {
+    public String store(MultipartFile file,String name) {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        filename = name;
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + filename);

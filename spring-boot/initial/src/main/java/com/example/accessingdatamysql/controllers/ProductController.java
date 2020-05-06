@@ -6,6 +6,7 @@ import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.embeddedKey.PriceKey;
 import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
+import com.example.accessingdatamysql.storage.StorageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import org.springframework.core.io.Resource;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
@@ -46,6 +51,9 @@ public class ProductController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private StorageService storageService;
 
 
     @ApiOperation("add new selling")
@@ -177,6 +185,44 @@ public class ProductController {
         Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
         return productRepositoryWithoutPage.findProductBySellerID(sellerID);
         //return productRepository.findAll(pageable);
+    }
+    @PostMapping("/uploadImage")
+    @ResponseBody
+    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam Integer productID,HttpServletResponse response) {
+
+
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        User user = userRepository.findUserByUserID(sellerID).get();
+        boolean flag = false;
+        for (Sells sells :user.getSells())
+        {
+            if(sells.getProductID() == productID)
+            {
+                flag = true;
+            }
+        }
+        if(!flag){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "Wrong product ID";
+        }
+        String name = storageService.store(file,productRepositoryWithoutPage.findById(productID).get().getImagePath());
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/images/")
+                .path(productRepositoryWithoutPage.findById(productID).get().getImagePath())
+                .toUriString();
+
+        return new FileResponse(name, uri, file.getContentType(), file.getSize()).toString();
+    }
+
+    @GetMapping("/images/{filename:.+}")
+    public @ResponseBody Resource downloadFile(@PathVariable String filename) {
+
+        Resource resource = storageService.loadAsResource(filename);
+
+        return resource;
     }
 
 }
