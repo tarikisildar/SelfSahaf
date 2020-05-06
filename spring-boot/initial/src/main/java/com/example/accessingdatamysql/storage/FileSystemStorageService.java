@@ -17,11 +17,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
 public class FileSystemStorageService implements StorageService {
-
+    static final String[] EXTENSIONS = new String[]{
+            "gif", "png", "bmp", "jpg" // and other formats you need
+    };
     private final Path rootLocation;
 
     @Autowired
@@ -32,30 +36,33 @@ public class FileSystemStorageService implements StorageService {
     @Override
     @PostConstruct
     public void init() {
-        try {
+        try
+        {
             File dir = new File(rootLocation.toAbsolutePath().toString());
             boolean isCreated = dir.mkdirs();
-        } catch (Exception e) {
-            throw new StorageException("Could not initialize storage location" + rootLocation.toAbsolutePath().toString(), e);
         }
+        catch (Exception e)
+        {
+            System.out.println("Directory already exists");
+        }
+
     }
 
+
+
     @Override
-    public String store(MultipartFile file,String name) {
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        filename = name;
+    public String store(MultipartFile file,String filename) {
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + filename);
             }
             if (filename.contains("..")) {
-                // This is a security check
                 throw new StorageException(
                         "Cannot store file with relative path outside current directory "
                                 + filename);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, this.rootLocation.resolve(filename),
+                Files.copy(inputStream, this.rootLocation.resolve(Paths.get(filename)),
                         StandardCopyOption.REPLACE_EXISTING);
             }
         }
@@ -65,6 +72,7 @@ public class FileSystemStorageService implements StorageService {
 
         return filename;
     }
+
 
     @Override
     public Stream<Path> loadAll() {
@@ -103,7 +111,66 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
+    public String storeAll(List<MultipartFile> files, Integer productID, Integer sellerID){
+
+        Path dir_path = Paths.get(sellerID.toString()).resolve(productID.toString());
+
+
+        // Create a directory in the format of root/sellerID/productID
+        try
+        {
+            File dir = new File(this.rootLocation.resolve(dir_path.toString()).toString());
+            boolean isCreated = dir.mkdirs();
+        }
+        catch (Exception e)
+        {
+            System.out.println("Directory already exists");
+        }
+        Integer enumerate = 1;
+
+        for (MultipartFile file :  files)
+        {
+            this.store(file, enumerate.toString());
+
+            enumerate += 1;
+        }
+        return dir_path.toString();
+
+    }
+
+    @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
+    }
+
+    @Override
+    public List<Resource> loadAllResources(String productID, String sellerID){
+        File folder = new File(this.rootLocation.resolve(sellerID.toString()).resolve(productID.toString()).toString());
+
+        File[] listOfFiles = folder.listFiles();
+
+        List<Resource> resourceList = new ArrayList<Resource>();
+
+        for (File file : listOfFiles) {
+            if (acceptExtension(file)) {
+                resourceList.add(loadAsResource(file.toString()));
+            }
+        }
+
+        return resourceList;
+    }
+
+
+
+    public boolean acceptExtension(final File dir) {
+
+        String name = dir.toString();
+
+        for (final String ext : EXTENSIONS) {
+            if (name.endsWith("." + ext)) {
+                return (true);
+            }
+        }
+        return (false);
     }
 }

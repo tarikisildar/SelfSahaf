@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -85,6 +86,7 @@ public class ProductController {
         sells.setProduct(pr);
         Optional<User> user = userRepository.findUserByUserID(sellerID);
         sells.setUser(user.get());
+
         sellerRepository.save(sells);
         return "A new selling created";
     }
@@ -186,12 +188,12 @@ public class ProductController {
         return productRepositoryWithoutPage.findProductBySellerID(sellerID);
         //return productRepository.findAll(pageable);
     }
-    @PostMapping("/uploadImage")
+    @PostMapping(path = "/uploadImage",consumes = {"multipart/form-data"})
+
+    //@RequestMapping(method = RequestMethod.POST, path = "/uploadImage")
     @ResponseBody
-    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam Integer productID,HttpServletResponse response) {
-
-
-
+    public String uploadFile(@RequestParam("files") List<MultipartFile> files, @RequestParam Integer productID,HttpServletResponse response)
+    {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
@@ -208,21 +210,24 @@ public class ProductController {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "Wrong product ID";
         }
-        String name = storageService.store(file,productRepositoryWithoutPage.findById(productID).get().getImagePath());
+        String name = storageService.storeAll(files,productID,sellerID);
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/images/")
-                .path(productRepositoryWithoutPage.findById(productID).get().getImagePath())
+                .path(productRepositoryWithoutPage.findById(productID).get().getPath())
                 .toUriString();
 
-        return new FileResponse(name, uri, file.getContentType(), file.getSize()).toString();
+        return name + "\n" + uri;
     }
 
     @GetMapping("/images/{filename:.+}")
-    public @ResponseBody Resource downloadFile(@PathVariable String filename) {
+    public @ResponseBody List<Resource> downloadFile(@RequestParam Integer productID)
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
-        Resource resource = storageService.loadAsResource(filename);
+        List<Resource> resources = storageService.loadAllResources(productID.toString(),sellerID.toString());
 
-        return resource;
+        return resources;
     }
 
 }
