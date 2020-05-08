@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/controller/user_controller.dart';
 import 'package:selfsahaf/models/user.dart';
+import 'package:selfsahaf/views/main_page/main_page.dart';
 import 'package:selfsahaf/views/registration/input_field.dart';
 
 import 'login.dart';
@@ -10,13 +12,15 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  AuthService api = new AuthService();
   DateTime _date = DateTime.now();
   Future<Null> selectDate(BuildContext context) async {
     final DateTime pickedDate = await showDatePicker(
-        context: context,
-        initialDate: _date,
-        firstDate: DateTime(1923),
-        lastDate: _date);
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime(1923),
+      lastDate: _date,
+    );
 
     if (pickedDate != null && pickedDate != _date) {
       setState(() {
@@ -26,7 +30,7 @@ class _SignupState extends State<Signup> {
     }
   }
 
-  var dob = "Doğum Tarihinizi Seçiniz";
+  var dob = "Please Select Your Birthday";
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -38,18 +42,6 @@ class _SignupState extends State<Signup> {
   final _passController = TextEditingController();
   final _passCheckController = TextEditingController();
   bool _kvkk = false;
-
-  signup(mail, name, surname, phonenumber, password, dob) {
-    User user = new User();
-    user.dateOfBirth = dob;
-    user.surname = surname;
-    user.email = mail;
-    user.phoneNumber = phonenumber;
-    user.password = password;
-    user.name = name;
-
-
-  }
 
   String fnameValidation(String fullname) {
     if (fullname.length < 2) {
@@ -66,8 +58,8 @@ class _SignupState extends State<Signup> {
   }
 
   String telephoneNumberValidation(String number) {
-    bool numberValid =
-        RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$').hasMatch(number);
+    bool numberValid = RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$')
+        .hasMatch(number);
     return numberValid ? null : "Lütfen geçerli bir telefon numarası giriniz.";
   }
 
@@ -129,20 +121,53 @@ class _SignupState extends State<Signup> {
         });
   }*/
 
-  // Checks if the state has any error
-  // if not it navigates the user to the user profile
-  /*void afterBuild(state) {
-    if (state is SignupLoading && !state.signupError) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Welcome()),
-          (Route<dynamic> route) => false);
-    } else if (state.signupError) {
-      //_showDialog(state.statusCode);
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Welcome()),
-          (Route<dynamic> route) => false);
-    }
-  }*/
+  void _signup(data) async {
+    var message = "";
+    api.signup(data).then((val) {
+      if (val == 200 || val == 302) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => MainPage()),
+            ModalRoute.withName("/Home"));
+      } else
+        print(val.toString());
+        message = "This e-mail is linked to different account";
+        return showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                backgroundColor: Color(0xffe65100),
+                title: Text(
+                  "Hata!",
+                  style: TextStyle(color: Colors.white),
+                ),
+                content: Text(val.toString(),
+                    style: TextStyle(color: Colors.white)),
+                actions: <Widget>[
+                  FlatButton(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: Text(
+                      "Tamam",
+                      style: TextStyle(color: Color(0xffe65100)),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                ],
+              );
+            });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +203,7 @@ class _SignupState extends State<Signup> {
                       controller: _fnameController,
                       inputType: TextInputType.text,
                       validation: fnameValidation,
-                      labelText: "Adiniz",
+                      labelText: "Name",
                       suffixIcon: Icon(
                         Icons.person,
                         color: Colors.white,
@@ -190,7 +215,7 @@ class _SignupState extends State<Signup> {
                       controller: _surnameController,
                       inputType: TextInputType.text,
                       validation: surnameValidation,
-                      labelText: "Soyadiniz",
+                      labelText: "Surname",
                       suffixIcon: Icon(
                         Icons.person,
                         color: Colors.white,
@@ -214,7 +239,7 @@ class _SignupState extends State<Signup> {
                       controller: _phoneController,
                       inputType: TextInputType.phone,
                       validation: telephoneNumberValidation,
-                      labelText: "Telefon Numarasi",
+                      labelText: "Phone Number",
                       suffixIcon: Icon(
                         Icons.phone,
                         color: Colors.white,
@@ -226,7 +251,7 @@ class _SignupState extends State<Signup> {
                       controller: _passController,
                       inputType: TextInputType.visiblePassword,
                       validation: passwrdValidation,
-                      labelText: "Sifre",
+                      labelText: "Password",
                       isPassword: true,
                       suffixIcon: Icon(
                         Icons.lock,
@@ -240,7 +265,7 @@ class _SignupState extends State<Signup> {
                       inputType: TextInputType.visiblePassword,
                       validation: passwrdValidation,
                       isPassword: true,
-                      labelText: "Sifrenizi Yeniden Yazınız",
+                      labelText: "Validate Password",
                       suffixIcon: Icon(
                         Icons.verified_user,
                         color: Colors.white,
@@ -280,7 +305,7 @@ class _SignupState extends State<Signup> {
                       Expanded(
                         flex: 18,
                         child: Text(
-                          "KVKK kapsamı doğrultusundaki aydınlatma metnini okuyup kabul ettim.",
+                          "I accept terms including my information according to this app.",
                           style: TextStyle(
                               fontSize: 15,
                               color: Colors.white,
@@ -298,25 +323,47 @@ class _SignupState extends State<Signup> {
                               side: BorderSide(color: Colors.white)),
                           color: Colors.white,
                           child: Text(
-                            "Kayıt Ol",
+                            "Signup",
                             style: TextStyle(
                                 color: Color.fromRGBO(230, 81, 0, 1),
                                 fontSize: 20.0),
                           ),
                           onPressed: () {
                             CircularProgressIndicator();
-                            
+                            User newuser = new User();
+
                             if (doppelValidation(_passController.value.text,
                                     _passCheckController.value.text) &&
                                 _kvkk) {
                               if (_formKey.currentState.validate()) {
-                                print("kayitoldum");
+                                newuser.name = _fnameController.value.text;
+                                newuser.surname = _surnameController.value.text;
+                                newuser.password = _passController.value.text;
+                                newuser.email = _emailController.value.text;
+                                newuser.phoneNumber = _phoneController.value.text;
+                                if (dob.compareTo(
+                                        "Please Select Your Birthday") != 0) {
+                                  newuser.dateOfBirth = dob;
+                                  var userjson = newuser.toJsonsignup();
+                                  _signup(userjson);
+                                } else {
+                                  _scaffoldKey.currentState
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.white,
+                                    content: Text(
+                                      "Please Select Your Birthday",
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(230, 81, 0, 1),
+                                          fontSize: 18),
+                                    ),
+                                  ));
+                                }
                               }
                             } else if (!_kvkk) {
                               _scaffoldKey.currentState.showSnackBar(SnackBar(
                                 backgroundColor: Colors.white,
                                 content: Text(
-                                  "Lütfen KVKK sözleşmesini kabul ediniz!",
+                                  "Please Accept Terms",
                                   style: TextStyle(
                                       color: Color.fromRGBO(230, 81, 0, 1),
                                       fontSize: 18),
@@ -327,7 +374,7 @@ class _SignupState extends State<Signup> {
                               _scaffoldKey.currentState.showSnackBar(SnackBar(
                                 backgroundColor: Colors.white,
                                 content: Text(
-                                  "Şifreler Uyuşmuyor!",
+                                  "Passwords Not Matching.",
                                   style: TextStyle(
                                       color: Color.fromRGBO(230, 81, 0, 1),
                                       fontSize: 18),
@@ -339,7 +386,7 @@ class _SignupState extends State<Signup> {
                     SizedBox(height: 30.0),
                     Center(
                         child: GestureDetector(
-                            child: Text("Zaten üye misiniz? Giriş Yap",
+                            child: Text("Already Have an Account? Login",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20)),
                             onTap: () {
@@ -348,7 +395,9 @@ class _SignupState extends State<Signup> {
                                   MaterialPageRoute(
                                       builder: (context) => LoginPage()));
                             })),
-                            SizedBox(height: 30,)
+                    SizedBox(
+                      height: 30,
+                    )
                   ],
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/views/admin_pages/admin_main_page.dart';
+import 'package:selfsahaf/views/app_guide.dart';
 import 'package:selfsahaf/views/main_page/main_page.dart';
 import 'package:selfsahaf/controller/product_services.dart';
 import 'package:selfsahaf/views/page_classes/notification_pages/notifications.dart';
@@ -31,6 +32,8 @@ class SelfSahaf extends StatelessWidget {
         primaryColor: Color(0xffe65100),
         accentColor: Color(0xff833a),
         textSelectionColor: Color(0xffac1900),
+        canvasColor: Color(0xffe65100),
+        cardColor: Color(0xffe65100),
         
 
         // Butun uygulamadaki font ailesi
@@ -62,6 +65,7 @@ class SelfSahaf extends StatelessWidget {
        routes: <String, WidgetBuilder>{
          '/': (context) => LoginPage(),
          '/signup': (context) => Signup(),
+         '/guider': (context) => Guide(),
          '/mainPage': (context) => MainPage(),
          '/adminMain': (context) => AdminPage(),
          '/searchPage': (context) => SearchPage(),

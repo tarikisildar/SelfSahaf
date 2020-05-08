@@ -8,7 +8,7 @@ class AuthService extends GeneralServices {
   Dio _dio;
   User _user;
   AuthService(){
-_dio= super.dio;
+  _dio= super.dio;
   }
   Future<int> loginWithEmail(String email, String password) async {
     try {
@@ -31,19 +31,18 @@ _dio= super.dio;
     }
   }
 
-  Future<int> signup(data) async {
+  Future<String> signup(data) async {
     try {
-      Response response = await _dio.post("login/?email", data: data);
+      Response response = await _dio.post("user/add", data: data);
 
-      return response.statusCode;
+      return response.data.toString();
     } on DioError catch (e) {
       if (e.response != null) {
         print(e.response.data);
         print(e.response.headers);
         print(e.response.request);
-        return e.response.statusCode;
+        return e.response.statusMessage;
       } else {
-        // Something happened in setting up or sending the request that triggered an Error
         print(e.request);
         print(e.message);
         return null;
@@ -54,7 +53,7 @@ _dio= super.dio;
   Future<int> initUser() async {
     try {
       Response response = await _dio.get("user/get");
-  _user=new User.fromJson(response.data);
+      _user=new User.fromJson(response.data);
       return response.statusCode;
     } on DioError catch (e) {
       if (e.response != null) {

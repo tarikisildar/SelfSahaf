@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                       isPassword: true,
                       controller: _passwordController,
                       inputType: TextInputType.emailAddress,
-                      labelText: "Sifre",
+                      labelText: "Password",
                       suffixIcon: Icon(
                         Icons.lock,
                         color: Colors.white,
@@ -161,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                           }*/
                         },
                         child: Text(
-                          "Giris Yap",
+                          "Login",
                           style: TextStyle(
                               color: Color.fromRGBO(230, 81, 0, 1),
                               fontSize: 20),
@@ -181,13 +181,12 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
                         onPressed: () {
-                          Navigator.pushAndRemoveUntil(
+                          Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Signup()),
-                              ModalRoute.withName("/Home"));
+                              MaterialPageRoute(builder: (context) => Signup()),);
                         },
                         child: Text(
-                          "Kayit Ol",
+                          "Signup",
                           style: TextStyle(
                               color: Color.fromRGBO(230, 81, 0, 1),
                               fontSize: 20),
@@ -203,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                           print("Sifremi unuttum aq");
                         },
                         child: Text(
-                          "Sifremi Unuttum",
+                          "Forgot My Password",
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                       ),

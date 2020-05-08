@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:selfsahaf/views/app_guide.dart';
 import 'package:selfsahaf/views/page_classes/main_page/book_card.dart';
 import 'package:selfsahaf/views/page_classes/main_page/home_page_carousel.dart';
 import 'package:selfsahaf/views/page_classes/main_page/sahaf_drawer.dart';
@@ -17,8 +18,14 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  int _prevIndex;
   int _index = 0;
-  List<Widget> _pages;
+  List<Widget> _pages = [
+      MainPage(),
+      SearchPage(),
+      NotificationsPage(),
+      AccountProfilePage(),
+    ];
   AuthService get userService=>GetIt.I<AuthService>(); 
   bool _loading=true;
   @override
@@ -190,9 +197,8 @@ _fetchData();
   }
 
   _changeIndex(int i) {
+    _prevIndex = _index;
     _index = i;
-    setState(() {
-
-    });
+    setState(() {});
   }
 }
