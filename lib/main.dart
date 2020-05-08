@@ -9,10 +9,11 @@ import 'package:selfsahaf/views/products_pages/add_book.dart';
 import 'package:selfsahaf/views/profile_pages/account_profile.dart';
 import 'package:selfsahaf/views/registration/login.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
-
 import 'views/registration/signup.dart';
+import 'package:selfsahaf/controller/book_controller.dart';
 
 void setupServiseLocator() {
+  GetIt.I.registerLazySingleton(() => BookService());
   GetIt.I.registerLazySingleton(() => ProductService());
   GetIt.I.registerLazySingleton(()=>AuthService());
 }

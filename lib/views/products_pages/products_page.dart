@@ -17,8 +17,8 @@ class _ProductsPageState extends State<ProductsPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   ProductService get _productService => GetIt.I<ProductService>();
-  List<Book> bookList = [null];
   final TextEditingController _filter = new TextEditingController();
+  List<Book> bookList = [null];
   bool _isloading = true;
 
   @override
