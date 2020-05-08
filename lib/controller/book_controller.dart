@@ -1,25 +1,36 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:selfsahaf/models/book.dart';
+import 'package:selfsahaf/controller/generalServices.dart';
 
+class BookService extends GeneralServices {
+  Dio _dio;
+  BookService() {
+    this._dio = super.dio;
+  }
 
-class AuthService {
-  final Dio _dio = Dio()
-    ..options.baseUrl = 'http://142.93.106.79:8080/accessing-data-mysql/product/'
-    ..options.connectTimeout = 5000
-    ..options.receiveTimeout = 3000;
-
-    Future<List<Book>> getBooks(String email, String password) async {
+  Future<List<Book>> getBooks(int pageNo, int pageSize,
+      {String sortBy = "productID"}) async {
     try {
-      Response response =
-          await _dio.get("getBooks");
-          List<Book> result;
-        if (response.statusCode == 200) {
+      Response response = await _dio.get("product/getBooks", queryParameters: {
+        "pageNo": pageNo,
+        "pageSize": pageSize,
+        "sortBy": sortBy
+      });
+      List<Book> result;
+      if (response.statusCode == 200) {
+        if (response.data.length != 0) {
           List<dynamic> i = response.data;
           result = i.map((p) => Book.fromJson(p)).toList();
+          print("gelen veri uzunluıgu");
+          print(result.length);
           return result;
         }
-          
+        else{
+          print("boş liste");
+         return [];
+         }
+      }
+
       //_token = response.data["token"];
       result = [null];
       return result;
@@ -37,7 +48,4 @@ class AuthService {
       }
     }
   }
-
 }
-
-
