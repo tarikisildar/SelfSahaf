@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:selfsahaf/views/app_guide.dart';
 import 'package:selfsahaf/views/page_classes/main_page/book_card.dart';
 import 'package:selfsahaf/views/page_classes/main_page/home_page_carousel.dart';
 import 'package:selfsahaf/views/page_classes/main_page/sahaf_drawer.dart';

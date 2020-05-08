@@ -181,10 +181,9 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
                         onPressed: () {
-                          Navigator.pushAndRemoveUntil(
+                          Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Signup()),
-                              ModalRoute.withName("/guider"));
+                              MaterialPageRoute(builder: (context) => Signup()),);
                         },
                         child: Text(
                           "Signup",

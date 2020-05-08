@@ -49,8 +49,7 @@ class _GuideState extends State<Guide> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomAppBar(
+    return BottomAppBar(
         elevation: 7,
         child: Container(
           decoration: BoxDecoration(
@@ -163,21 +162,9 @@ class _GuideState extends State<Guide> {
             ],
           ),
         ),
-      ),
-      appBar: AppBar(
-        title: Container(
-            height: 50, child: Image.asset("images/logo_white/logo_white.png")),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.shopping_cart),
-              onPressed: () {
-                print("shopping");
-              }),
-        ],
-      ),
-      drawer: (_loading) ? CircularProgressIndicator() : SahafDrawer(),
-      body: _pages[_index],
-    );
+      );
+      
+    
   }
 
   _changeIndex(int i) {

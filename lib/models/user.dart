@@ -9,6 +9,7 @@ class User{
   String phoneNumber;
   String email;
   String role;
+  String address;
 
 
   User({mail, name,surname,password,dob}){
@@ -28,18 +29,19 @@ class User{
     "dob" : dateOfBirth,
     "name" : name,
     "phoneNumber" : phoneNumber,
+    "role" : "ROLE_USER",
   };
 
 
   User.fromJson(Map<String, dynamic> json)
-    :role=json['role']
-    , userID=json['userID']
-    ,password = json['password'],
+    :role=json['role'],
+    userID=json['userID'],
+    password = json['password'],
     email = json['email'],
     name=json["name"],
     surname=json["surname"],
     dateOfBirth=json["dob"],
-    phoneNumber=json["phoneNumber"]
-    ;
+    phoneNumber=json["phoneNumber"],
+    address = json["address"];
 
 }

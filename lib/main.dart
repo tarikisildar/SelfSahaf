@@ -32,6 +32,8 @@ class SelfSahaf extends StatelessWidget {
         primaryColor: Color(0xffe65100),
         accentColor: Color(0xff833a),
         textSelectionColor: Color(0xffac1900),
+        canvasColor: Color(0xffe65100),
+        cardColor: Color(0xffe65100),
         
 
         // Butun uygulamadaki font ailesi
