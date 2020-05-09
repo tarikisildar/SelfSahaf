@@ -13,7 +13,9 @@ public interface StorageService {
     void init();
 
     String storeAll(List<MultipartFile> files, Integer productID, Integer sellerID);
+
     String storeMain(MultipartFile file, Integer productID, Integer sellerID);
+
 
 
     String store(MultipartFile file, String path);

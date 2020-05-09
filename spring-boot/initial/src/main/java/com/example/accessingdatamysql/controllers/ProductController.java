@@ -195,6 +195,7 @@ public class ProductController {
         return productRepositoryWithoutPage.findProductBySellerID(sellerID);
         //return productRepository.findAll(pageable);
     }
+
 //    @PostMapping(path = "/uploadImage", consumes = {"multipart/form-data" })
     @RequestMapping(path= "/uploadImages", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     @ResponseBody
@@ -238,6 +239,10 @@ public class ProductController {
 
 
 
+    //@RequestMapping(method = RequestMethod.POST, path = "/uploadImage")
+    @ResponseBody
+    public String uploadFile(@RequestParam("files") List<MultipartFile> files, @RequestParam Integer productID,HttpServletResponse response)
+    {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
@@ -256,7 +261,9 @@ public class ProductController {
         }
 
 
+
         String name = storageService.storeMain(file,productID,sellerID);
+
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/images/")
                 .path(productRepositoryWithoutPage.findById(productID).get().getPath())

@@ -28,6 +28,7 @@ public class FileSystemStorageService implements StorageService {
     };
 
     static final String EXTENSION = ".jpg";
+
     private final Path rootLocation;
 
     @Autowired
@@ -64,8 +65,10 @@ public class FileSystemStorageService implements StorageService {
                                 + filename);
             }
             try (InputStream inputStream = file.getInputStream()) {
+
                 System.out.println(this.rootLocation);
                 Files.copy(inputStream, this.rootLocation.resolve(filename),
+
                         StandardCopyOption.REPLACE_EXISTING);
             }
 
@@ -139,6 +142,7 @@ public class FileSystemStorageService implements StorageService {
 
             this.store(file, dir_path.resolve(enumerate.toString() + EXTENSION).toString());
 
+
             enumerate += 1;
         }
         return dir_path.toString();
@@ -146,6 +150,7 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
+
     public String storeMain(MultipartFile file, Integer productID, Integer sellerID){
 
         Path dir_path = Paths.get(sellerID.toString()).resolve(productID.toString());
