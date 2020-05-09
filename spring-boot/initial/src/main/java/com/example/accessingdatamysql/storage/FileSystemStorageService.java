@@ -26,6 +26,9 @@ public class FileSystemStorageService implements StorageService {
     static final String[] EXTENSIONS = new String[]{
             "gif", "png", "bmp", "jpg" // and other formats you need
     };
+
+    static final String EXTENSION = ".jpg";
+
     private final Path rootLocation;
 
     @Autowired
@@ -62,9 +65,13 @@ public class FileSystemStorageService implements StorageService {
                                 + filename);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, this.rootLocation.resolve(Paths.get(filename)),
+
+                System.out.println(this.rootLocation);
+                Files.copy(inputStream, this.rootLocation.resolve(filename),
+
                         StandardCopyOption.REPLACE_EXISTING);
             }
+
         }
         catch (IOException e) {
             throw new StorageException("Failed to store file " + filename, e);
@@ -95,7 +102,8 @@ public class FileSystemStorageService implements StorageService {
     @Override
     public Resource loadAsResource(String filename) {
         try {
-            Path file = load(filename);
+//            Path file = load(filename);
+            Path file = Paths.get(filename);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
@@ -128,12 +136,42 @@ public class FileSystemStorageService implements StorageService {
         }
         Integer enumerate = 1;
 
+
         for (MultipartFile file :  files)
         {
-            this.store(file, enumerate.toString());
+
+            this.store(file, dir_path.resolve(enumerate.toString() + EXTENSION).toString());
+
 
             enumerate += 1;
         }
+        return dir_path.toString();
+
+    }
+
+    @Override
+
+    public String storeMain(MultipartFile file, Integer productID, Integer sellerID){
+
+        Path dir_path = Paths.get(sellerID.toString()).resolve(productID.toString());
+
+
+        // Create a directory in the format of root/sellerID/productID
+        try
+        {
+            File dir = new File(this.rootLocation.resolve(dir_path.toString()).toString());
+            boolean isCreated = dir.mkdirs();
+        }
+        catch (Exception e)
+        {
+            System.out.println("Directory already exists");
+        }
+        Integer enumerate = 1;
+
+
+
+        this.store(file, dir_path.resolve("main" + EXTENSION).toString());
+
         return dir_path.toString();
 
     }
