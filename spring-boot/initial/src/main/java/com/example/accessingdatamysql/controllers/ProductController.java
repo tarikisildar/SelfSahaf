@@ -6,6 +6,7 @@ import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.embeddedKey.PriceKey;
 import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
+import com.example.accessingdatamysql.storage.StorageException;
 import com.example.accessingdatamysql.storage.StorageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +29,7 @@ import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
@@ -239,10 +241,6 @@ public class ProductController {
 
 
 
-    //@RequestMapping(method = RequestMethod.POST, path = "/uploadImage")
-    @ResponseBody
-    public String uploadFile(@RequestParam("files") List<MultipartFile> files, @RequestParam Integer productID,HttpServletResponse response)
-    {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
@@ -261,9 +259,7 @@ public class ProductController {
         }
 
 
-
         String name = storageService.storeMain(file,productID,sellerID);
-
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/images/")
                 .path(productRepositoryWithoutPage.findById(productID).get().getPath())
@@ -272,16 +268,27 @@ public class ProductController {
         return name + "\n" + uri;
     }
 
-
-    @GetMapping("/images/{filename:.+}")
-    public @ResponseBody List<Resource> downloadFile(@RequestParam Integer productID)
-    {
+    @GetMapping("/getImagePaths")
+    public @ResponseBody List<String> GetImagePaths(@RequestParam Integer productID) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
-        List<Resource> resources = storageService.loadAllResources(productID.toString(),sellerID.toString());
-
-        return resources;
+        List<Resource> resources = storageService.loadAllResources(productID.toString(), sellerID.toString());
+        List<String> resourcesS = new ArrayList<>();
+        for (Resource res :
+                resources) {
+            try {
+                resourcesS.add(res.getURL().toString());
+            }
+            catch (IOException e){
+                continue;
+            }
+        }
+        return resourcesS;
+    }
+    @GetMapping("/images")
+    public @ResponseBody Resource getImage(@RequestParam String path){
+        return storageService.loadAsResource(path);
     }
 
 }
