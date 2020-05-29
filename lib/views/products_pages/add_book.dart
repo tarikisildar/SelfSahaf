@@ -60,8 +60,8 @@ class _AddBookState extends State<AddBook> {
 
   String _booknameValidation(String email) {
     bool emailValid = false;
-    if (email.length >= 5) emailValid = true;
-    return emailValid ? null : 'not valid email.';
+    if (email.length >= 2) emailValid = true;
+    return emailValid ? null : 'not valid book name.';
   }
 
   String _authorValidation(String author) {
