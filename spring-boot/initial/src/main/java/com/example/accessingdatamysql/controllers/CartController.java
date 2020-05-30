@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package com.example.accessingdatamysql.controllers;
+=======
+/*package com.example.accessingdatamysql.controllers;
+>>>>>>> 73967a14e6f6b71fa5466af2ece44dfed48d0e96
 
 
 import com.example.accessingdatamysql.Services.ProductService;
@@ -31,8 +35,12 @@ public class CartController {
     @Autowired
     private ProductRepositoryWithoutPage productRepositoryWithoutPage;
 
+<<<<<<< HEAD
     @Autowired
     private CartRepository cartRepository;
+=======
+
+>>>>>>> 73967a14e6f6b71fa5466af2ece44dfed48d0e96
 
     @Autowired
     private UserRepository userRepository;
@@ -125,3 +133,7 @@ public class CartController {
 
 
 }
+<<<<<<< HEAD
+=======
+*/
+>>>>>>> 73967a14e6f6b71fa5466af2ece44dfed48d0e96
