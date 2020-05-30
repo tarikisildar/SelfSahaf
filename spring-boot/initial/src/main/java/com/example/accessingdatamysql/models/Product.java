@@ -30,6 +30,14 @@ public class Product
     @Column(length = 45)
     private String ISBN;
 
+    enum productType {
+        SECONDHAND,
+        NEW,
+    }
+
+    @Column(length=45)
+    private productType condition;
+
 
     @Column(name = "allPath")
     private String path;
