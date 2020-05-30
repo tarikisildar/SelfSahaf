@@ -10,6 +10,7 @@ import 'package:selfsahaf/views/products_pages/add_book.dart';
 import 'package:selfsahaf/views/profile_pages/account_profile.dart';
 import 'package:selfsahaf/views/registration/login.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
+import 'package:selfsahaf/views/shopping_cart/order_address.dart';
 import 'views/registration/signup.dart';
 import 'package:selfsahaf/controller/book_controller.dart';
 
@@ -59,21 +60,21 @@ class SelfSahaf extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       
-      // home: BookProfile(),
-      initialRoute: '/',
+      home: OrderAddress(),
+      // initialRoute: '/',
       
       
-       routes: <String, WidgetBuilder>{
-         '/': (context) => LoginPage(),
-         '/signup': (context) => Signup(),
-         '/guider': (context) => Guide(),
-         '/mainPage': (context) => MainPage(),
-         '/adminMain': (context) => AdminPage(),
-         '/searchPage': (context) => SearchPage(),
-         '/notifications': (context) => NotificationsPage(),
-         '/profilePage': (context) => AccountProfilePage(),
-         '/addbooks':(context)=> AddBook(),
-       },
+      //  routes: <String, WidgetBuilder>{
+      //    '/': (context) => LoginPage(),
+      //    '/signup': (context) => Signup(),
+      //    '/guider': (context) => Guide(),
+      //    '/mainPage': (context) => MainPage(),
+      //    '/adminMain': (context) => AdminPage(),
+      //    '/searchPage': (context) => SearchPage(),
+      //    '/notifications': (context) => NotificationsPage(),
+      //    '/profilePage': (context) => AccountProfilePage(),
+      //    '/addbooks':(context)=> AddBook(),
+      //  },
     );
   }
 }
