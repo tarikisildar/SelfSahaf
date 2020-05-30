@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.models;
 
+import com.example.accessingdatamysql.models.embeddedKey.CartItemKey;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.ManyToAny;
 import org.springframework.data.annotation.Id;
@@ -12,16 +13,26 @@ import java.util.Set;
 public class CartItem {
 
 
+
+    @EmbeddedId
+    private CartItemKey cartItemID;
+
+    @Column
+    private Integer amount;
+
+
+
     @JsonIgnoreProperties("cart")
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("cartUserID")
     @JoinColumn(name = "cartUserID", referencedColumnName = "userID")
-    @Id
     private User user;
 
-    @Column
-    private Integer amount;
-    @Column
+
+    @JsonIgnoreProperties("cart")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("productID")
+    @JoinColumn(name = "productID", referencedColumnName = "productID")
     private Product product;
 
 

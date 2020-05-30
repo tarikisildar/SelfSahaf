@@ -69,6 +69,11 @@ public class Product
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<OrderDetail> orderDetails;
 
+
+    @JsonIgnoreProperties("product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<CartItem> cart;
+
     public String getPath() {
         if(path != null)
             return path;
