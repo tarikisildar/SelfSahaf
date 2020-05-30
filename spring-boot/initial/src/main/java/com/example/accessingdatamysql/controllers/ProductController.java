@@ -6,16 +6,11 @@ import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.embeddedKey.PriceKey;
 import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
-import com.example.accessingdatamysql.storage.StorageException;
 import com.example.accessingdatamysql.storage.StorageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.example.accessingdatamysql.models.FilterObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -230,7 +225,7 @@ public class ProductController {
                 .path(productRepositoryWithoutPage.findById(productID).get().getPath())
                 .toUriString();
 
-        return name + "\n" + uri;
+        return name;
     }
 
 
@@ -278,7 +273,7 @@ public class ProductController {
         for (Resource res :
                 resources) {
             try {
-                resourcesS.add(res.getURL().toString());
+                resourcesS.add(res.getURL().toString().substring(5)); //cut "file:" part from url
             }
             catch (IOException e){
                 continue;
@@ -290,5 +285,7 @@ public class ProductController {
     public @ResponseBody Resource getImage(@RequestParam String path){
         return storageService.loadAsResource(path);
     }
+
+
 
 }

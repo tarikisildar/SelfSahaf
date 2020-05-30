@@ -42,11 +42,12 @@ public class FileSystemStorageService implements StorageService {
         try
         {
             File dir = new File(rootLocation.toAbsolutePath().toString());
-            boolean isCreated = dir.mkdirs();
+            if(!dir.exists())
+                dir.mkdirs();
         }
         catch (Exception e)
         {
-            System.out.println("Directory already exists");
+            throw new StorageException("Can't make directory",e);
         }
 
     }
@@ -67,14 +68,13 @@ public class FileSystemStorageService implements StorageService {
             try (InputStream inputStream = file.getInputStream()) {
 
                 System.out.println(this.rootLocation);
-                Files.copy(inputStream, this.rootLocation.resolve(filename),
-
+                Files.copy(inputStream, this.rootLocation.resolve(filename).toAbsolutePath(),
                         StandardCopyOption.REPLACE_EXISTING);
             }
 
         }
         catch (IOException e) {
-            throw new StorageException("Failed to store file " + filename, e);
+            throw new StorageException("Failed to store file " + this.rootLocation.resolve(filename).toAbsolutePath(), e);
         }
 
         return filename;
@@ -128,11 +128,12 @@ public class FileSystemStorageService implements StorageService {
         try
         {
             File dir = new File(this.rootLocation.resolve(dir_path.toString()).toString());
-            boolean isCreated = dir.mkdirs();
+            if(!dir.exists())
+                dir.mkdirs();
         }
         catch (Exception e)
         {
-            System.out.println("Directory already exists");
+            throw new StorageException("Can't make directory",e);
         }
         Integer enumerate = 1;
 
@@ -145,7 +146,7 @@ public class FileSystemStorageService implements StorageService {
 
             enumerate += 1;
         }
-        return dir_path.toString();
+        return this.rootLocation.resolve(dir_path.toString()).toAbsolutePath().toString();
 
     }
 
@@ -186,7 +187,6 @@ public class FileSystemStorageService implements StorageService {
         File folder = new File(this.rootLocation.resolve(sellerID.toString()).resolve(productID.toString()).toString());
 
         File[] listOfFiles = folder.listFiles();
-
         List<Resource> resourceList = new ArrayList<Resource>();
 
         for (File file : listOfFiles) {
