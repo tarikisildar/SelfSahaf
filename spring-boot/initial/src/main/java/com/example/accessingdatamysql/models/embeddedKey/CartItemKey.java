@@ -22,9 +22,9 @@ public class CartItemKey implements Serializable {
 
     }
 
-    public CartItemKey(Integer userID, Integer productID){
+    public CartItemKey(Integer cartUserID, Integer productID){
 
-        this.cartUserID = userID;
+        this.cartUserID = cartUserID;
         this.productID = productID;
 
     }
@@ -45,13 +45,12 @@ public class CartItemKey implements Serializable {
     }
 
 
-
     public Integer getCartUserID() {
         return cartUserID;
     }
 
-    public void setCartUserID(Integer userID) {
-        this.cartUserID = userID;
+    public void setCartUserID(Integer cartUserID) {
+        this.cartUserID = cartUserID;
     }
 
     public Integer getProductID() {

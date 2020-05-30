@@ -15,7 +15,7 @@ public class CartItem {
 
 
     @EmbeddedId
-    private CartItemKey cartItemID;
+    private CartItemKey cartItemID = new CartItemKey();
 
     @Column
     private Integer amount;
@@ -35,6 +35,14 @@ public class CartItem {
     @JoinColumn(name = "productID", referencedColumnName = "productID")
     private Product product;
 
+    public CartItem() {
+    }
+
+    public CartItem(Integer amount, User user, Product product) {
+        this.amount = amount;
+        this.setUser(user);
+        this.setProduct(product);
+    }
 
     public User getUser() {
         return user;
@@ -42,6 +50,14 @@ public class CartItem {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public CartItemKey getCartItemID() {
+        return cartItemID;
+    }
+
+    public void setCartItemID(CartItemKey cartItemID) {
+        this.cartItemID = cartItemID;
     }
 
     public Integer getAmount() {
