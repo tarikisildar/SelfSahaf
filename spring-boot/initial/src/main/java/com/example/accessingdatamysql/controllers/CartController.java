@@ -57,7 +57,7 @@ public class CartController {
     @ApiOperation("Add item to Cart")
     @PostMapping(path = "/addItemToCart")
     public @ResponseBody
-    String addItemToCart(@RequestParam Integer productID,@RequestParam Integer amount, HttpServletResponse response){
+    String addItemToCart(@RequestParam Integer productID,@RequestParam Integer sellerID ,@RequestParam Integer amount, HttpServletResponse response){
 
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -71,6 +71,7 @@ public class CartController {
             if(productID != null){
 
                 Product product = productRepositoryWithoutPage.findById(productID).get();
+
                 CartItem item = new CartItem(amount,user,product);
 
                 cart.add(item);
@@ -82,13 +83,44 @@ public class CartController {
                 return "saved";
             }
             else{
+                response.setStatus( HttpServletResponse.SC_FORBIDDEN);
                 return "Cart Item is set to null";
             }
         }
-
+        response.setStatus( HttpServletResponse.SC_FORBIDDEN);
         return "User is not found";
 
     }
+
+    @ApiOperation("Remove Item From Cart")
+    @DeleteMapping("/removeFromCart")
+    public @ResponseBody String removeFromCart(@RequestParam Integer productID, HttpServletResponse response)
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        User user = userRepository.findUserByUserID(userID).get();
+
+        Set<CartItem> cart = user.getCart();
+
+        for (CartItem item: cart)
+        {
+            if(item.getProduct().getProductID() == productID)
+            {
+                cart.remove(item);
+                user.setCart(cart);
+                userRepository.save(user);
+                return "deleted";
+            }
+
+
+        }
+        response.setStatus( HttpServletResponse.SC_FORBIDDEN);
+        return "no product with given id";
+
+    }
+
+
 
 
 
