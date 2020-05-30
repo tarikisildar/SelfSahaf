@@ -15,7 +15,7 @@ public class CartItem {
 
 
     @EmbeddedId
-    private CartItemKey cartItemID = new CartItemKey();
+    private CartItemKey cartItemID;
 
     @Column
     private Integer amount;
@@ -31,18 +31,14 @@ public class CartItem {
 
     @JsonIgnoreProperties("cart")
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("productID")
-    @JoinColumn(name = "productID", referencedColumnName = "productID")
-    private Product product;
+    @MapsId
+    @JoinColumns( {
+            @JoinColumn(name = "sellerID", referencedColumnName = "sellerID"),
+            @JoinColumn(name = "productID", referencedColumnName = "productID"),
 
-    public CartItem() {
-    }
+    })
+    private Sells sells;
 
-    public CartItem(Integer amount, User user, Product product) {
-        this.amount = amount;
-        this.setUser(user);
-        this.setProduct(product);
-    }
 
     public User getUser() {
         return user;
@@ -50,14 +46,6 @@ public class CartItem {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public CartItemKey getCartItemID() {
-        return cartItemID;
-    }
-
-    public void setCartItemID(CartItemKey cartItemID) {
-        this.cartItemID = cartItemID;
     }
 
     public Integer getAmount() {
@@ -68,11 +56,5 @@ public class CartItem {
         this.amount = amount;
     }
 
-    public Product getProduct() {
-        return product;
-    }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
 }

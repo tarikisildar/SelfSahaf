@@ -37,6 +37,10 @@ public class Sells {
     private User user;
 
 
+    @JsonIgnoreProperties("sells")
+    @OneToMany(mappedBy = "sells", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<CartItem> cart;
+
 
     @JsonIgnoreProperties("sells")
     @OneToMany(mappedBy = "sells", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
