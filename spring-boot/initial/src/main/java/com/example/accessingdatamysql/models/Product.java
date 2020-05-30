@@ -77,9 +77,7 @@ public class Product
     private Set<OrderDetail> orderDetails;
 
 
-    @JsonIgnoreProperties("product")
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Set<CartItem> cart;
+
 
     public String getPath() {
         if(path != null)
@@ -183,13 +181,7 @@ public class Product
         this.condition = condition;
     }
 
-    public Set<CartItem> getCart() {
-        return cart;
-    }
 
-    public void setCart(Set<CartItem> cart) {
-        this.cart = cart;
-    }
 
 
 }

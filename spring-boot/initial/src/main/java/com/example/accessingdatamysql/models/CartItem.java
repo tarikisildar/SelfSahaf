@@ -31,9 +31,13 @@ public class CartItem {
 
     @JsonIgnoreProperties("cart")
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("productID")
-    @JoinColumn(name = "productID", referencedColumnName = "productID")
-    private Product product;
+    @MapsId
+    @JoinColumns( {
+            @JoinColumn(name = "sellerID", referencedColumnName = "sellerID"),
+            @JoinColumn(name = "productID", referencedColumnName = "productID"),
+
+    })
+    private Sells sells;
 
 
     public User getUser() {
@@ -52,11 +56,5 @@ public class CartItem {
         this.amount = amount;
     }
 
-    public Product getProduct() {
-        return product;
-    }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
 }
