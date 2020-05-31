@@ -1,4 +1,4 @@
-/*
+
 package com.example.accessingdatamysql.controllers;
 
 
@@ -76,11 +76,8 @@ public class CartController {
                 Sells sells = sellerRepository.findBySellerIDAndProductID(sellerID,productID);
 
 
-                CartItem item = new CartItem();
-                item.setCartItemID(new CartItemKey(userID,productID,sellerID));
-                item.setSells(sells);
-                item.setAmount(amount);
-                item.setUser(user);
+                CartItem item = new CartItem(amount, user, sells);
+
 
                 if(amount> sells.getQuantity()){
                     response.setStatus( HttpServletResponse.SC_FORBIDDEN);
@@ -139,4 +136,3 @@ public class CartController {
 
 }
 
-*/

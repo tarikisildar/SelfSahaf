@@ -45,6 +45,7 @@ public class CartItem {
     }
 
     public CartItem(Integer amount,User user, Sells sells) {
+        this.amount = amount;
         this.user = user;
         this.sells = sells;
     }
