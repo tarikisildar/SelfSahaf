@@ -1,8 +1,6 @@
-<<<<<<< HEAD
+
 package com.example.accessingdatamysql.controllers;
-=======
-/*package com.example.accessingdatamysql.controllers;
->>>>>>> 73967a14e6f6b71fa5466af2ece44dfed48d0e96
+
 
 
 import com.example.accessingdatamysql.Services.ProductService;
@@ -10,7 +8,9 @@ import com.example.accessingdatamysql.auth.UserDetailsImp;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.CartItem;
 import com.example.accessingdatamysql.models.Product;
+import com.example.accessingdatamysql.models.Sells;
 import com.example.accessingdatamysql.models.User;
+import com.example.accessingdatamysql.models.embeddedKey.CartItemKey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +35,9 @@ public class CartController {
     @Autowired
     private ProductRepositoryWithoutPage productRepositoryWithoutPage;
 
-<<<<<<< HEAD
     @Autowired
-    private CartRepository cartRepository;
-=======
+    private SellerRepository sellerRepository;
 
->>>>>>> 73967a14e6f6b71fa5466af2ece44dfed48d0e96
 
     @Autowired
     private UserRepository userRepository;
@@ -56,9 +53,6 @@ public class CartController {
         Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
         return userRepository.findUserByUserID(userID).get().getCart();
-
-
-
     }
 
 
@@ -79,8 +73,19 @@ public class CartController {
             if(productID != null){
 
                 Product product = productRepositoryWithoutPage.findById(productID).get();
+                Sells sells = sellerRepository.findBySellerIDAndProductID(sellerID,productID);
 
-                CartItem item = new CartItem(amount,user,product);
+
+                CartItem item = new CartItem();
+                item.setCartItemID(new CartItemKey(userID,productID,sellerID));
+                item.setSells(sells);
+                item.setAmount(amount);
+                item.setUser(user);
+
+                if(amount> sells.getQuantity()){
+                    response.setStatus( HttpServletResponse.SC_FORBIDDEN);
+                    return "There are only "+ sells.getQuantity().toString() + "item(s)";
+                }
 
                 cart.add(item);
 
@@ -113,7 +118,7 @@ public class CartController {
 
         for (CartItem item: cart)
         {
-            if(item.getProduct().getProductID() == productID)
+            if(item.getSells().getProduct().getProductID() == productID)
             {
                 cart.remove(item);
                 user.setCart(cart);
@@ -133,7 +138,4 @@ public class CartController {
 
 
 }
-<<<<<<< HEAD
-=======
-*/
->>>>>>> 73967a14e6f6b71fa5466af2ece44dfed48d0e96
+

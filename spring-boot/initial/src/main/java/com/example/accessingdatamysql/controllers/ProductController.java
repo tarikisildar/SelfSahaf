@@ -70,11 +70,11 @@ public class ProductController {
         Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
         Sells sells = new Sells();
-        SellsKey sellsKey = new SellsKey();
-        sellsKey.setProductID(pr.getProductID());
-        sellsKey.setSellerID(sellerID);
 
-        sells.setSellerID(sellsKey);
+        sells.setProductID(pr.getProductID());
+        sells.setSellerID(sellerID);
+
+
 
         Price price1 = new Price();
         LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
