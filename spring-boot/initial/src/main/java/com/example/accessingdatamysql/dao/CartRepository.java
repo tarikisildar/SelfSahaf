@@ -11,4 +11,10 @@ public interface CartRepository extends CrudRepository<CartItem,Integer>{
 
     @Query("SELECT cart FROM CartItem cart WHERE cart.cartItemID.cartUserID = ?1")
     List<CartItem> findCartItemsByUserID(Integer userID);
+
+    @Query("SELECT cart FROM CartItem cart WHERE cart.cartItemID.cartUserID = ?1 AND cart.cartItemID.sellID = ?2")
+    CartItem findCartItemByUserIDAndSellID(Integer userID, Integer sellID);
+
+    @Query("DELETE FROM CartItem cart WHERE cartUserID = ?1 and sellID = ?2")
+    void deleteByUserIDAndSellID(Integer userID, Integer selllID);
 }

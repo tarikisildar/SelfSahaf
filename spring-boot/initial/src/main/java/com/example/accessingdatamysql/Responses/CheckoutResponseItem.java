@@ -8,6 +8,8 @@ public class CheckoutResponseItem {
     private Integer wanted;
     private ProductStatus status;
 
+    private boolean flag = false;
+
     public CheckoutResponseItem(String itemName, Integer total, Integer wanted, ProductStatus active) {
         this.itemName = itemName;
         this.total = total;
@@ -21,11 +23,17 @@ public class CheckoutResponseItem {
         String rt = itemName + " is ok";
         if(status == ProductStatus.DEACTIVE){
             rt = itemName +" is not on sale anymore";
+            flag = true;
         }
         else if(total < wanted){
             rt = "there is total "+ total.toString()+ " " + itemName + "on sale";
+            flag = true;
         }
         return rt;
+    }
+
+    public boolean isFlag() {
+        return flag;
     }
 
     public String getItemName() {
