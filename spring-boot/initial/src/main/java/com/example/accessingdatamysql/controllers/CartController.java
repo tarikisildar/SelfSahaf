@@ -182,7 +182,7 @@ public class CartController {
                 c.getSells().setQuantity( c.getSells().getQuantity() - c.getAmount());
                 if(c.getSells().getQuantity() == 0)
                     c.getSells().getProduct().setStatus(ProductStatus.DEACTIVE);
-                cartRepository.delete(c);
+                cartRepository.deleteByUserIDAndSellID(userID,c.getCartItemID().getSellID());
             }
         }
         return responses;
