@@ -30,10 +30,99 @@ class _ShoppingCartState extends State<ShoppingCart> {
       body: Container(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(top:16,left:16,right: 16,bottom: 64),
             child: ListView(
               children: <Widget>[
-                Text("SDASD"),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
+                ProductCard(
+                  authorName: "Alios Kocaman",
+                  bookName: "Alios Kocaman ile...",
+                  price: "20TL",
+                  publisherName: "Alios Yayincilik",
+                ),
               ],
             ),
           ),
@@ -43,6 +132,16 @@ class _ShoppingCartState extends State<ShoppingCart> {
         child: Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  spreadRadius: 8,
+                  blurRadius: 9,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
             width: MediaQuery.of(context).size.width - 32,
             height: 60,
             child: FlatButton(
