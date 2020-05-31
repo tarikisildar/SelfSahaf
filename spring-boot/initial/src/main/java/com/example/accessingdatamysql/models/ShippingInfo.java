@@ -23,6 +23,13 @@ public class ShippingInfo {
     private ShippingCompany shippingCompanyID;
 
 
+    public ShippingInfo(Integer shippingInfoID, boolean delivered, String trackingNumber, ShippingCompany shippingCompanyID) {
+        this.shippingInfoID = shippingInfoID;
+        this.delivered = delivered;
+        this.trackingNumber = trackingNumber;
+        this.shippingCompanyID = shippingCompanyID;
+    }
+
     public Integer getShippingInfoID() {
         return shippingInfoID;
     }
@@ -46,4 +53,13 @@ public class ShippingInfo {
     public void setTrackingNumber(String trackingNumber) {
         this.trackingNumber = trackingNumber;
     }
+
+    public ShippingCompany getShippingCompanyID() {
+        return shippingCompanyID;
+    }
+
+    public void setShippingCompanyID(ShippingCompany shippingCompanyID) {
+        this.shippingCompanyID = shippingCompanyID;
+    }
+
 }

@@ -28,6 +28,7 @@ public class Order {
     private String datetime;
 
 
+
     @OneToOne
     @JoinColumn(name = "receiverAddressID", referencedColumnName = "addressID")
     private Address receiverAddressID;

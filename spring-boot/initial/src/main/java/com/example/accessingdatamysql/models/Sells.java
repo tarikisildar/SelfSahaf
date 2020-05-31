@@ -67,7 +67,7 @@ public class Sells implements Serializable{
         this.product = product;
     }
 
-    //public User getUser() {return user;}
+    public User getUser() {return user;}
 
     public void setUser(User user) {
         this.user = user;
