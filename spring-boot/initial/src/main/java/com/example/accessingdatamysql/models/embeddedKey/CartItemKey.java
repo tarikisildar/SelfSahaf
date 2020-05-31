@@ -11,6 +11,7 @@ public class CartItemKey implements Serializable {
 
 
 
+
     @Column
     private Integer cartUserID;
 

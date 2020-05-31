@@ -16,7 +16,7 @@ public class CartItem {
 
 
     @EmbeddedId
-    private CartItemKey cartItemID;
+    private CartItemKey cartItemID = new CartItemKey();
 
     @Column
     private Integer amount;
