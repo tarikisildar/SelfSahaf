@@ -130,6 +130,33 @@ public class CartController {
 
     }
 
+    @ApiOperation("Update Cart Item")
+    @PostMapping("Update Cart")
+    public @ResponseBody String updateCart(@RequestParam Integer productID, @RequestParam Integer amount, HttpServletResponse response)
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        User user = userRepository.findUserByUserID(userID).get();
+
+        Set<CartItem> cart = user.getCart();
+
+        for (CartItem item: cart)
+        {
+            if(item.getSells().getProduct().getProductID() == productID)
+            {
+                item.setAmount(amount);
+                user.setCart(cart);
+                userRepository.save(user);
+                return "updated";
+            }
+
+
+        }
+        response.setStatus( HttpServletResponse.SC_FORBIDDEN);
+        return "no product with given id";
+    }
+
 
 
 
