@@ -14,13 +14,9 @@ public class CartItemKey implements Serializable {
     @Column
     private Integer cartUserID;
 
-
     @Column
-    private Integer productID;
+    private Integer sellID;
 
-
-    @Column
-    private Integer sellerID;
 
 
 
@@ -28,11 +24,10 @@ public class CartItemKey implements Serializable {
 
     }
 
-    public CartItemKey(Integer userID, Integer productID, Integer sellerID){
+    public CartItemKey(Integer userID, Integer sellID){
 
         this.cartUserID = userID;
-        this.productID = productID;
-        this.sellerID = sellerID;
+        this.sellID = sellID;
 
     }
 
@@ -43,22 +38,22 @@ public class CartItemKey implements Serializable {
         if (!(o instanceof CartItemKey)) return false;
         CartItemKey that = (CartItemKey) o;
         return Objects.equals(getCartUserID(), that.getCartUserID()) &&
-                Objects.equals(getProductID(), that.getProductID()) &&
-                Objects.equals(getSellerID(), that.getSellerID());
+                Objects.equals(getSellID(), that.getSellID());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCartUserID(), getProductID(), getSellerID());
+        return Objects.hash(getCartUserID(), getSellID());
     }
 
 
-    public Integer getSellerID() {
-        return sellerID;
+
+    public Integer getSellID() {
+        return sellID;
     }
 
-    public void setSellerID(Integer sellerID) {
-        this.sellerID = sellerID;
+    public void setSellID(Integer sellID) {
+        this.sellID = sellID;
     }
 
     public Integer getCartUserID() {
@@ -69,13 +64,6 @@ public class CartItemKey implements Serializable {
         this.cartUserID = cartUserID;
     }
 
-    public Integer getProductID() {
-        return productID;
-    }
-
-    public void setProductID(Integer productID) {
-        this.productID = productID;
-    }
 
 
 }

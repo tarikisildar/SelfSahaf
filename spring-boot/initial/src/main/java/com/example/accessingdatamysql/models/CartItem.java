@@ -36,8 +36,8 @@ public class CartItem {
 
     @JsonIgnoreProperties("cart")
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("sells")
-    @JoinColumn(name = "sellerID",referencedColumnName = "sellingID")
+    @MapsId("sellID")
+    @JoinColumn(name = "sellID",referencedColumnName = "sellingID")
     private Sells sells;
 
     public CartItem() {
