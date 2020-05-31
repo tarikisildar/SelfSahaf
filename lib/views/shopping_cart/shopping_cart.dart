@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/models/book.dart';
 import 'package:selfsahaf/views/products_pages/product_card.dart';
+import 'package:selfsahaf/views/shopping_cart/order_address.dart';
 
 class ShoppingCart extends StatefulWidget {
   @override
@@ -51,12 +52,10 @@ class _ShoppingCartState extends State<ShoppingCart> {
               color: Colors.white,
               onPressed: () async {
                 //@TODO : degistir bunu
-                print("floating accept button");
-                /*if (_formKey.currentState.validate()) {
-                              
-                            } else {
-                              print("not valid.");
-                            }*/
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OrderAddress()),
+                );
               },
               child: Row(
                 children: <Widget>[

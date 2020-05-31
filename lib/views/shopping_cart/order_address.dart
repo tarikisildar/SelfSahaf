@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/views/shopping_cart/card_information.dart';
 
 class OrderAddress extends StatefulWidget {
   @override
@@ -74,14 +75,17 @@ class _OrderAddressState extends State<OrderAddress> {
                       side: BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
                   color: Colors.white,
                   onPressed: () async {
-                    print("floating accept button");
+                    Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CardInformation()),
+                );
                   },
                   child: Row(
                     children: <Widget>[
                       Expanded(
                         flex: 15,
                         child: Text(
-                          "Proceed",
+                          "Card Information",
                           style: TextStyle(
                               color: Color.fromRGBO(230, 81, 0, 1),
                               fontSize: 20),
@@ -145,35 +149,43 @@ class _AddressElementState extends State<AddressElement>{
     return Container(
       height: 150,
       color: Colors.transparent,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: Checkbox(
-                    activeColor: Colors.white,
-                    checkColor: Colors.white,
-                    onChanged: (bool value) {
-                      setState(() => this.selected = value);
-                    },
-                    value: selected,),
-              ),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    child: Checkbox(
+                        activeColor: Colors.white,
+                        checkColor: Colors.white,
+                        onChanged: (bool value) {
+                          setState(() => this.selected = value);
+                        },
+                        value: selected,),
+                  ),
+                ),
+                Expanded(
+                  flex: 18,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Address 1",style: TextStyle(color: Colors.white,fontSize: 16),),
+                      Text("EV",style: TextStyle(color: Colors.white,fontSize: 20),),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              flex: 18,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Address 1",style: TextStyle(color: Colors.white,fontSize: 16),),
-                  Text("EV",style: TextStyle(color: Colors.white,fontSize: 20),),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+          Divider(
+            thickness: 2.5,
+            color: Colors.white,
+          ),
+        ],
       ),
     );
   }
