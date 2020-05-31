@@ -3,6 +3,8 @@ package com.example.accessingdatamysql.controllers;
 
 
 
+import com.example.accessingdatamysql.Responses.CheckoutResponse;
+import com.example.accessingdatamysql.Responses.CheckoutResponseItem;
 import com.example.accessingdatamysql.Services.ProductService;
 import com.example.accessingdatamysql.auth.UserDetailsImp;
 import com.example.accessingdatamysql.dao.*;
@@ -21,6 +23,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -30,14 +34,13 @@ public class CartController {
 
 
     @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
     private ProductRepositoryWithoutPage productRepositoryWithoutPage;
 
     @Autowired
     private SellerRepository sellerRepository;
 
+    @Autowired
+    private CartRepository cartRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -131,7 +134,7 @@ public class CartController {
     }
 
     @ApiOperation("Update Cart Item")
-    @PostMapping("Update Cart")
+    @PostMapping("/updateCart")
     public @ResponseBody String updateCart(@RequestParam Integer productID, @RequestParam Integer amount, HttpServletResponse response)
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -157,7 +160,21 @@ public class CartController {
         return "no product with given id";
     }
 
+    @ApiOperation("Checkout cart")
+    @PostMapping("/checkout")
+    public @ResponseBody List<String> checkout()
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
+        List<CartItem> cart = cartRepository.findCartItemsByUserID(userID);
+        List<String> responses = new ArrayList<>();
+        for (CartItem c : cart)
+        {
+            responses.add(new CheckoutResponseItem(c.getSells().getProduct().getName(),c.getSells().getQuantity(),c.getAmount(),c.getSells().getProduct().getStatus()).toString());
+        }
+        return responses;
+    }
 
 
 

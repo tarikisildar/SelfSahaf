@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.Responses;
 
-public class CheckoutResponse {
+import java.util.List;
 
+public class CheckoutResponse {
+    public List<CheckoutResponse> responses;
 }
