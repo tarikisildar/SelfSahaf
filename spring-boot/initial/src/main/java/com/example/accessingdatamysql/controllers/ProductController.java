@@ -6,23 +6,36 @@ import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.embeddedKey.PriceKey;
 import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
+import com.example.accessingdatamysql.storage.StorageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import org.springframework.core.io.Resource;
+
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 @Controller
 @RequestMapping("/product")
@@ -46,6 +59,9 @@ public class ProductController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private StorageService storageService;
 
 
     @ApiOperation("add new selling")
@@ -77,6 +93,7 @@ public class ProductController {
         sells.setProduct(pr);
         Optional<User> user = userRepository.findUserByUserID(sellerID);
         sells.setUser(user.get());
+
         sellerRepository.save(sells);
         return "A new selling created";
     }
@@ -177,6 +194,94 @@ public class ProductController {
         Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
         return productRepositoryWithoutPage.findProductBySellerID(sellerID);
         //return productRepository.findAll(pageable);
+    }
+
+//    @PostMapping(path = "/uploadImage", consumes = {"multipart/form-data" })
+    @RequestMapping(path= "/uploadImages", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    @ResponseBody
+    public String uploadFile(@RequestParam("file")  List<MultipartFile> file, @RequestParam Integer productID, HttpServletResponse response)
+    {
+
+//        List<MultipartFile> files = uploadFiles.getFiles();
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        User user = userRepository.findUserByUserID(sellerID).get();
+        boolean flag = false;
+        for (Sells sells :user.getSells())
+        {
+            if(sells.getProductID() == productID)
+            {
+                flag = true;
+            }
+        }
+        if(!flag){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "Wrong product ID";
+        }
+
+
+        String name = storageService.storeAll(file,productID,sellerID);
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/images/")
+                .path(productRepositoryWithoutPage.findById(productID).get().getPath())
+                .toUriString();
+
+        return name + "\n" + uri;
+    }
+
+
+    @RequestMapping(path= "/uploadMainImage", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    @ResponseBody
+    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam Integer productID, HttpServletResponse response)
+    {
+
+
+
+    //@RequestMapping(method = RequestMethod.POST, path = "/uploadImage")
+    @ResponseBody
+    public String uploadFile(@RequestParam("files") List<MultipartFile> files, @RequestParam Integer productID,HttpServletResponse response)
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        User user = userRepository.findUserByUserID(sellerID).get();
+        boolean flag = false;
+        for (Sells sells :user.getSells())
+        {
+            if(sells.getProductID() == productID)
+            {
+                flag = true;
+            }
+        }
+        if(!flag){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "Wrong product ID";
+        }
+
+
+
+        String name = storageService.storeMain(file,productID,sellerID);
+
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/images/")
+                .path(productRepositoryWithoutPage.findById(productID).get().getPath())
+                .toUriString();
+
+        return name + "\n" + uri;
+    }
+
+
+    @GetMapping("/images/{filename:.+}")
+    public @ResponseBody List<Resource> downloadFile(@RequestParam Integer productID)
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        List<Resource> resources = storageService.loadAllResources(productID.toString(),sellerID.toString());
+
+        return resources;
     }
 
 }
