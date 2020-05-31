@@ -23,6 +23,10 @@ public class OrderController {
     private OrderRepository orderRepository;
 
 
+    @ApiOperation("Confirm Order")
+
+
+
     @ApiOperation("Get given orders")
     @GetMapping(path="/givenOrders")
     public @ResponseBody Iterable<Order> getGivenOrders()
