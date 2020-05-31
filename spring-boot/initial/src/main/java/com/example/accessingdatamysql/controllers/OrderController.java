@@ -5,11 +5,14 @@ import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.enums.ProductStatus;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
+import io.swagger.annotations.Api;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.time.Instant;
@@ -19,6 +22,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
+
+@Controller
+@RequestMapping("/order")
+@Api(value = "order", description = "Controller about order")
 public class OrderController {
     @Autowired
     private ProductRepository productRepository;
@@ -38,6 +45,16 @@ public class OrderController {
     @Autowired
     private SellerRepository sellerRepository;
 
+    @Autowired
+    private ShippingRepository shippingRepository;
+
+    @Autowired
+    private ShippingInfoRepository shippingInfoRepository;
+
+
+    @Autowired
+    private UserRepository userRepository;
+
 
     @ApiOperation("Confirm Order")
     @PostMapping(path="/confirmOrder")
@@ -50,6 +67,9 @@ public class OrderController {
 
         User user = userRepository.findUserByUserID(userID).get();
         Address address = addressRepository.findAddressByAddressID(addressID).get();
+        ShippingCompany shippingCompany = shippingRepository.findShippingCompanyByShippingCompanyID(shippingCompanyID).get();
+
+
         Set<CartItem> cart = user.getCart();
         LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
         String formattedDatetime = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
@@ -67,6 +87,8 @@ public class OrderController {
             ShippingInfo shippingInfo = new ShippingInfo();
             shippingInfo.setShippingCompanyID(shippingCompany);
 
+            shippingInfoRepository.save(shippingInfo);
+
 
             Order order = new Order();
             order.setBuyerID(user);
@@ -80,7 +102,7 @@ public class OrderController {
                 Product product = sells.getProduct();
                 Integer newQuantity = sells.getQuantity() - item.getAmount();
 
-                if(product.status != ProductStatus.ACTIVE){
+                if(product.getStatus() != ProductStatus.ACTIVE){
                     throw new RuntimeException("Product is not active,  transaction rollback");
                 }
                 else if (newQuantity < 0)
@@ -101,7 +123,8 @@ public class OrderController {
                 orderDetail.setOrder(order);
                 orderDetail.setProduct(product);
                 orderDetail.setUser(sells.getUser());
-                orderDetail.setShippingInfo();
+                orderDetail.setShippingInfo(shippingInfo);
+
 
 
                 /*Change refund to enum
@@ -123,6 +146,7 @@ public class OrderController {
 
         }
 
+        return "Card could not be confirmed";
 
     }
 
@@ -133,7 +157,7 @@ public class OrderController {
             Sells sells = item.getSells();
             Integer amount = item.getAmount();
 
-            if(sells.getProduct().status != ProductStatus.ACTIVE){
+            if(sells.getProduct().getStatus() != ProductStatus.ACTIVE){
                 return false;
             }
             else if (sells.getQuantity() < amount)

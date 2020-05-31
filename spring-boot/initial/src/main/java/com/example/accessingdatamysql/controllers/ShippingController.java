@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/shipping")
-@Api(value = "product", description = "Controller about shipment")
+@Api(value = "shipping", description = "Controller about shipment")
 public class ShippingController {
 
     @Autowired
@@ -20,15 +22,17 @@ public class ShippingController {
     @PostMapping("/addCompany")
     public @ResponseBody String addShippingCompany(@RequestParam String companyName, @RequestParam String website, @RequestParam float price)
     {
-        ShippingCompany comp = shippingRepository.findShippingCompanyByCompanyName(companyName);
-        if(comp == null)
-            comp = new ShippingCompany(companyName,price,website);
+        Optional<ShippingCompany> comp = shippingRepository.findShippingCompanyByCompanyName(companyName);
+        ShippingCompany shippingCompany;
+        if(!comp.isPresent())
+            shippingCompany = new ShippingCompany(companyName,price,website);
         else{
-            comp.setCompanyName(companyName);
-            comp.setWebsite(website);
-            comp.setPrice(price);
+            shippingCompany = comp.get();
+            shippingCompany.setCompanyName(companyName);
+            shippingCompany.setWebsite(website);
+            shippingCompany.setPrice(price);
         }
-        shippingRepository.save(comp);
+        shippingRepository.save(shippingCompany);
         return "saved";
     }
 
@@ -36,7 +40,7 @@ public class ShippingController {
     @DeleteMapping("/removeCompany")
     public @ResponseBody String removeShippingCompany(@RequestParam String companyName)
     {
-        ShippingCompany comp = shippingRepository.findShippingCompanyByCompanyName(companyName);
+        ShippingCompany comp = shippingRepository.findShippingCompanyByCompanyName(companyName).get();
         shippingRepository.delete(comp);
         return "deleted";
     }

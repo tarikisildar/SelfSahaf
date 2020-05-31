@@ -22,6 +22,9 @@ public class ShippingInfo {
     @JoinColumn(name = "shippingCompanyID")
     private ShippingCompany shippingCompanyID;
 
+    public ShippingInfo(){
+
+    }
 
     public ShippingInfo(Integer shippingInfoID, boolean delivered, String trackingNumber, ShippingCompany shippingCompanyID) {
         this.shippingInfoID = shippingInfoID;
