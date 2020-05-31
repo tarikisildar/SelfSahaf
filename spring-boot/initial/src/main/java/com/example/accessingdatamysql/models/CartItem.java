@@ -24,6 +24,12 @@ public class CartItem {
     @Transient
     private float price;
 
+    @Transient
+    private Integer productID;
+
+    @Transient
+    private Integer sellerID;
+
 
 
     @JsonIgnoreProperties("cart")
@@ -63,6 +69,14 @@ public class CartItem {
     @JsonIgnore
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Integer getProductID() {
+        return this.sells.getProductID();
+    }
+
+    public Integer getSellerID() {
+        return this.sells.getSellerID();
     }
 
     public Integer getAmount() {

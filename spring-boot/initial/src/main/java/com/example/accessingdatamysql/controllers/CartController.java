@@ -1,4 +1,4 @@
-/*
+
 package com.example.accessingdatamysql.controllers;
 
 
@@ -77,7 +77,7 @@ public class CartController {
 
 
                 CartItem item = new CartItem();
-                item.setCartItemID(new CartItemKey(userID,productID,sellerID));
+                item.setCartItemID(new CartItemKey(userID,sells.getSellingID()));
                 item.setSells(sells);
                 item.setAmount(amount);
                 item.setUser(user);
@@ -139,4 +139,3 @@ public class CartController {
 
 }
 
-*/
