@@ -22,6 +22,11 @@ public class ShippingInfo {
     @JoinColumn(name = "shippingCompanyID")
     private ShippingCompany shippingCompanyID;
 
+    @OneToOne(mappedBy = "shippingInfo")
+    @JoinColumn(name = "shippingCompanyID")
+    private OrderDetail orderDetail;
+
+
     public ShippingInfo(){
 
     }

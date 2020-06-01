@@ -75,7 +75,7 @@ public class CartItem {
     public Integer getAmount() {
         return amount;
     }
-    public Integer getPrice()
+    public Double getPrice()
     {
         return this.sells.getPrice();
     }

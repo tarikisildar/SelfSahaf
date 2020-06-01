@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.models;
 
 
 import com.example.accessingdatamysql.models.embeddedKey.OrderDetailKey;
+import com.example.accessingdatamysql.models.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
@@ -13,14 +14,17 @@ public class OrderDetail {
 
 
     @EmbeddedId
-    private OrderDetailKey orderDetailID;
+    private OrderDetailKey orderDetailID = new OrderDetailKey();
 
     private Integer quantity;
-    private Integer refund;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length=45)
+    private OrderStatus refund;
 
 
 
-    @OneToOne
+    @OneToOne()
     @MapsId("orderID")
     @JoinColumn(name = "orderID")
     private Order order;
@@ -28,7 +32,7 @@ public class OrderDetail {
 
     @OneToOne
     @MapsId("shippingInfoID")
-    @JoinColumn(name = "shippingInfoID")
+    @JoinColumn(name = "shippingInfoID", referencedColumnName = "shippingInfoID")
     private ShippingInfo shippingInfo;
 
 
@@ -85,11 +89,11 @@ public class OrderDetail {
         this.quantity = quantity;
     }
 
-    public Integer getRefund() {
+    public OrderStatus getRefund() {
         return refund;
     }
 
-    public void setRefund(Integer refund) {
+    public void setRefund(OrderStatus refund) {
         this.refund = refund;
     }
 

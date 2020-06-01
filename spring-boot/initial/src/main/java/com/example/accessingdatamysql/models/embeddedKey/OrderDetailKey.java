@@ -9,7 +9,7 @@ import java.util.Objects;
 @Embeddable
 public class OrderDetailKey implements Serializable{
 
-    @Column
+    @Column(unique = false)
     private Integer orderID;
 
     @Column
@@ -18,7 +18,7 @@ public class OrderDetailKey implements Serializable{
     @Column
     private Integer productID;
 
-    @Column
+    @Column(unique = false)
     private Integer shippingInfoID;
 
 
