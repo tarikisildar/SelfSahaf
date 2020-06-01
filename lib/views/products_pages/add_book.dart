@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+
 import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/views/registration/input_field.dart';
 import 'package:selfsahaf/controller/product_services.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:selfsahaf/models/category.dart';
 import 'package:selfsahaf/models/book.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
-import 'dart:convert';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+
 
 class AddBook extends StatefulWidget {
   @override
@@ -31,9 +27,6 @@ class _AddBookState extends State<AddBook> {
   TextEditingController _quantityController = new TextEditingController();
   List<Category> categories;
   Category selectedCategory;
-  File _image;
-  final picker = ImagePicker();
-
   List<String> languages = [
     "TR",
     "EN",
@@ -65,8 +58,8 @@ class _AddBookState extends State<AddBook> {
 
   String _booknameValidation(String email) {
     bool emailValid = false;
-    if (email.length >= 2) emailValid = true;
-    return emailValid ? null : 'not valid book name.';
+    if (email.length >= 5) emailValid = true;
+    return emailValid ? null : 'not valid email.';
   }
 
   String _authorValidation(String author) {
@@ -115,7 +108,8 @@ class _AddBookState extends State<AddBook> {
   }
 
   String _quantityValidation(String quantity) {
-    if (!isNumeric(quantity)) return "quantity should be number";
+
+     if (!isNumeric(quantity)) return "quantity should be number";
     bool qValid = false;
     if (quantity.length > 0 && quantity.length < 3) {
       qValid = true;
@@ -127,64 +121,76 @@ class _AddBookState extends State<AddBook> {
     return qValid ? null : 'not valid quantity';
   }
 
-  Future getImage(ImageSource source) async {
-    final pickedFile =
-        await picker.getImage(source: source, maxHeight: 640, maxWidth: 640);
-    setState(() {
-      pickedFile != null ? _image = File(pickedFile.path) : _image = null;
-    });
-  }
-
-  void clearImage() {
-    setState(() {
-      _image = null;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xffe65100),
-        floatingActionButton: SpeedDial(
-          elevation: 8.0,
+        floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.white,
-          closeManually: false,
-          overlayOpacity: 0,
-          curve: Curves.bounceIn,
-          shape: CircleBorder(),
-          tooltip: 'Speed Dial',
-          heroTag: 'speed-dial-hero-tag',
           child: Icon(
-            Icons.add_a_photo,
+            Icons.add,
             color: Color(0xffe65100),
           ),
-          children: [
-            SpeedDialChild(
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.photo_camera,
-                  color: Color(0xffe65100),
-                ),
-                label: "Camera",
-                labelStyle: TextStyle(
-                  fontSize: 15.0,
-                ),
-                onTap: () => getImage(ImageSource.camera),
-                
-                ),
-            SpeedDialChild(
-              elevation: 8.0,
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.photo_album,
-                  color: Color(0xffe65100),
-                ),
-                label: "Gallery",
-                labelStyle: TextStyle(
-                  fontSize: 15.0,
-                ),
-                onTap: () => getImage(ImageSource.gallery)),
-          ],
+          onPressed: () {
+            if (_formKey.currentState.validate() &&
+                selectedCategory != null &&
+                selectedLanguage != null) {
+              Book addedBook = Book(
+                  categoryID: selectedCategory.categoryID,
+                  authorName: _authorController.text,
+                  description: _descriptionController.text,
+                  imagePath: "/part1",
+                  isbn: _isbnController.text,
+                  quantity: int.parse(_quantityController.text),
+                  language: selectedLanguage,
+                  name: _booknameController.text,
+                  price: int.parse(_priceController.text),
+                  sellerName: userService.getUser().getUserName(),
+                  publisher: _publisherController.text);
+              productService
+                  .addBook(addedBook, userService.getUser().userID)
+                  .then((e) {
+                Navigator.of(context).pop(addedBook);
+              });
+            } else if (selectedLanguage == null || selectedCategory == null) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      backgroundColor: Color(0xffe65100),
+                      title: Text(
+                        "Error!",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      content: Text("Please select category or language.",
+                          style: TextStyle(color: Colors.white)),
+                      actions: <Widget>[
+                        FlatButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Text(
+                            "Tamam",
+                            style: TextStyle(color: Color(0xffe65100)),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                      ],
+                    );
+                  });
+            } else {
+              print("bu olmaz");
+            }
+          },
         ),
         appBar: AppBar(
           leading: InkWell(
@@ -349,34 +355,6 @@ class _AddBookState extends State<AddBook> {
                                 ),
                               ),
                             )),
-                        (_image == null)
-                            ? Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                                child: Text(
-                                  "No photo selected",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
-                                ),
-                              )
-                            : Center(
-                                child: Stack(
-                                children: <Widget>[
-                                  Container(
-                                    child: Image.file(_image),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(
-                                        icon: Icon(
-                                          Icons.cancel,
-                                          size: 35,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        onPressed: () => clearImage()),
-                                  ),
-                                ],
-                              )),
                         Container(
                           height: 55,
                           width: 220,
@@ -384,87 +362,19 @@ class _AddBookState extends State<AddBook> {
                             padding:
                                 const EdgeInsets.only(top: 7.0, bottom: 3.0),
                             child: FlatButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    side: BorderSide(
-                                        color: Color.fromRGBO(230, 81, 0, 1))),
-                                child: Text(
-                                  "Add Book",
-                                  style: TextStyle(color: Color(0xffe65100)),
-                                ),
-                                color: Colors.white,
-                                onPressed: () {
-                                  if (_formKey.currentState.validate() &&
-                                      selectedCategory != null &&
-                                      selectedLanguage != null) {
-                                    Book addedBook = Book(
-                                        categoryID: selectedCategory.categoryID,
-                                        authorName: _authorController.text,
-                                        description:
-                                            _descriptionController.text,
-                                        imagePath: "/part1",
-                                        isbn: _isbnController.text,
-                                        quantity:
-                                            int.parse(_quantityController.text),
-                                        language: selectedLanguage,
-                                        name: _booknameController.text,
-                                        price: int.parse(_priceController.text),
-                                        sellerName:
-                                            userService.getUser().getUserName(),
-                                        publisher: _publisherController.text);
-                                    productService
-                                        .addBook(addedBook,
-                                            userService.getUser().userID)
-                                        .then((e) {
-                                      Navigator.of(context).pop(addedBook);
-                                    });
-                                  } else if (selectedLanguage == null ||
-                                      selectedCategory == null) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(30.0),
-                                            ),
-                                            backgroundColor: Color(0xffe65100),
-                                            title: Text(
-                                              "Error!",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            content: Text(
-                                                "Please select category or language.",
-                                                style: TextStyle(
-                                                    color: Colors.white)),
-                                            actions: <Widget>[
-                                              FlatButton(
-                                                color: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30.0),
-                                                ),
-                                                child: Text(
-                                                  "Tamam",
-                                                  style: TextStyle(
-                                                      color: Color(0xffe65100)),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  } else {
-                                    print("bu olmaz");
-                                  }
-                                }),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  side: BorderSide(
+                                      color: Color.fromRGBO(230, 81, 0, 1))),
+                              child: Text(
+                                "Add Photo",
+                                style: TextStyle(color: Color(0xffe65100)),
+                              ),
+                              color: Colors.white,
+                              onPressed: () {
+                                print("resim cekme islemi");
+                              },
+                            ),
                           ),
                         ),
                       ],
