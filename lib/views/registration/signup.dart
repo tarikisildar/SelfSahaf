@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
 import 'package:selfsahaf/models/user.dart';
-import 'package:selfsahaf/views/main_page/main_page.dart';
+import 'package:selfsahaf/views/customer_view/main_view/main_page.dart';
 import 'package:selfsahaf/views/registration/input_field.dart';
 
 import 'login.dart';

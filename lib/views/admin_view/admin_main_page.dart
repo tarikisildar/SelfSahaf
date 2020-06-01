@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/views/admin_pages/admin_drawer.dart';
+import 'package:selfsahaf/views/admin_view/admin_drawer.dart';
 
 class AdminPage extends StatefulWidget {
   @override

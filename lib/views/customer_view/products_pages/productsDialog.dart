@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/views/products_pages/products_page.dart';
+import 'package:selfsahaf/views/customer_view/products_pages/products_page.dart';
 import 'package:selfsahaf/controller/product_services.dart';
 
 class ProductsDialog extends StatefulWidget {

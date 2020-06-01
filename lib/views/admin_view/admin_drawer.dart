@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/views/admin_pages/admin_search.dart';
+import 'package:selfsahaf/views/admin_view/admin_search.dart';
 
 class AdminDrawer extends StatelessWidget {
   @override

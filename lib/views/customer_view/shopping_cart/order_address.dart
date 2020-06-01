@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/views/shopping_cart/card_information.dart';
+import 'package:selfsahaf/views/customer_view/shopping_cart/card_information.dart';
 
 class OrderAddress extends StatefulWidget {
   @override

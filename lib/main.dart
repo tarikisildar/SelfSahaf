@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:selfsahaf/views/admin_pages/admin_main_page.dart';
+import 'package:selfsahaf/views/admin_view/admin_main_page.dart';
 import 'package:selfsahaf/views/app_guide.dart';
-import 'package:selfsahaf/views/main_page/main_page.dart';
+import 'package:selfsahaf/views/customer_view/main_view/main_page.dart';
+import 'package:selfsahaf/views/customer_view/main_view/page_classes/notification_pages/notifications.dart';
+import 'package:selfsahaf/views/customer_view/main_view/page_classes/search_pages/search_page.dart';
+import 'package:selfsahaf/views/customer_view/products_pages/add_book.dart';
+import 'package:selfsahaf/views/customer_view/profile_pages/account_profile.dart';
+import 'package:selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
 import 'package:selfsahaf/controller/product_services.dart';
-import 'package:selfsahaf/views/page_classes/notification_pages/notifications.dart';
-import 'package:selfsahaf/views/page_classes/search_pages/search_page.dart';
-import 'package:selfsahaf/views/products_pages/add_book.dart';
-import 'package:selfsahaf/views/profile_pages/account_profile.dart';
 import 'package:selfsahaf/views/registration/login.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
-import 'package:selfsahaf/views/shopping_cart/order_address.dart';
 import 'views/registration/signup.dart';
 import 'package:selfsahaf/controller/book_controller.dart';
-import 'package:selfsahaf/views/shopping_cart/shopping_cart.dart';
 
 void setupServiseLocator() {
   GetIt.I.registerLazySingleton(() => BookService());
@@ -68,17 +67,17 @@ class SelfSahaf extends StatelessWidget {
       // initialRoute: '/',
       
       
-      //  routes: <String, WidgetBuilder>{
-      //    '/': (context) => LoginPage(),
-      //    '/signup': (context) => Signup(),
-      //    '/guider': (context) => Guide(),
-      //    '/mainPage': (context) => MainPage(),
-      //    '/adminMain': (context) => AdminPage(),
-      //    '/searchPage': (context) => SearchPage(),
-      //    '/notifications': (context) => NotificationsPage(),
-      //    '/profilePage': (context) => AccountProfilePage(),
-      //    '/addbooks':(context)=> AddBook(),
-      //  },
+       routes: <String, WidgetBuilder>{
+         '/': (context) => LoginPage(),
+         '/signup': (context) => Signup(),
+         '/guider': (context) => Guide(),
+         '/mainPage': (context) => MainPage(),
+         '/adminMain': (context) => AdminPage(),
+         '/searchPage': (context) => SearchPage(),
+         '/notifications': (context) => NotificationsPage(),
+         '/profilePage': (context) => AccountProfilePage(),
+         '/addbooks':(context)=> AddBook(),
+       },
     );
   }
 }
