@@ -104,6 +104,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.1"
+<<<<<<< HEAD
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -111,6 +112,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.8"
+=======
+>>>>>>> e5d9bd4f1830486ed72f1eceb5000f31ba8be583
   flutter_speed_dial:
     dependency: "direct main"
     description:
