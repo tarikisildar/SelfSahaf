@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:selfsahaf/views/customer_view/category_view/category_card.dart';
 
 class EditCategories extends StatefulWidget{
   @override
@@ -32,10 +33,14 @@ class _EditCategoriesState extends State<EditCategories>{
                 ),
               ),
               Divider(thickness: 2, color: Colors.white,),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: ListView(
-                  
+              SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    CategoryCard(categoryName: "Sci-Fi",),
+                    CategoryCard(categoryName: "Novel",),
+                    CategoryCard(categoryName: "Fantasy",),
+                    CategoryCard(categoryName: "Dictionary",),
+                  ],
                 ),
               ),
             ],
