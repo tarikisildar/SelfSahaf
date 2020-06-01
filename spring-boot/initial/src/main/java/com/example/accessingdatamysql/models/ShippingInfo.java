@@ -22,17 +22,16 @@ public class ShippingInfo {
     @JoinColumn(name = "shippingCompanyID")
     private ShippingCompany shippingCompanyID;
 
-    @OneToOne(mappedBy = "shippingInfo")
+    /*@OneToOne(mappedBy = "shippingInfo")
     @JoinColumn(name = "shippingCompanyID")
-    private OrderDetail orderDetail;
+    private OrderDetail orderDetail;*/
 
 
     public ShippingInfo(){
 
     }
 
-    public ShippingInfo(Integer shippingInfoID, boolean delivered, String trackingNumber, ShippingCompany shippingCompanyID) {
-        this.shippingInfoID = shippingInfoID;
+    public ShippingInfo(boolean delivered, String trackingNumber, ShippingCompany shippingCompanyID) {
         this.delivered = delivered;
         this.trackingNumber = trackingNumber;
         this.shippingCompanyID = shippingCompanyID;

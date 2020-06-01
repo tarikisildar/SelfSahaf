@@ -24,15 +24,15 @@ public class OrderDetail {
 
 
 
-    @OneToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("orderID")
     @JoinColumn(name = "orderID")
     private Order order;
 
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("shippingInfoID")
-    @JoinColumn(name = "shippingInfoID", referencedColumnName = "shippingInfoID")
+    @JoinColumn(name = "shippingInfoID")
     private ShippingInfo shippingInfo;
 
 
