@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -26,6 +27,12 @@ public class User {
     private String email;
     @Column(length = 45)
     private String role;
+
+    @ColumnDefault("0")
+    private float rating;
+
+    @ColumnDefault("0")
+    private Integer ratedCount;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CartItem> cart;
@@ -196,4 +203,19 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public Integer getRatedCount() {
+        return ratedCount;
+    }
+
+    public void setRatedCount(Integer ratedCount) {
+        this.ratedCount = ratedCount;
+    }
 }

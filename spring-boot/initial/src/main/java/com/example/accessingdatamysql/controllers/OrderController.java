@@ -206,8 +206,40 @@ public class OrderController {
     }
 
 
+    @ApiOperation("Rate Order")
+    @PostMapping(path = "/rateSeller")
+    public @ResponseBody String rateSeller(@RequestParam Integer orderID,@RequestParam Integer rating, HttpServletResponse response)
+    {
+        if(rating < 1 || rating > 5)
+        {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "rating must be between 1 and 5";
+        }
+        Order order = orderRepository.findById(orderID).get();
+        OrderDetail orderDetail = orderDetailRepository.findById(orderID).get();
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
+        if(order.getBuyerID().getUserID() != userID)
+        {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "You can only rate your order";
+        }
+
+        User seller = userRepository.findById(orderDetail.getOrderDetailID().getSellerID()).get();
+        seller.setRatedCount(seller.getRatedCount()+1);
+        seller.setRating(seller.getRating()+rating);
+        return "You gave " + rating + " stars to " + seller.getName();
+    }
+
+    @ApiOperation("Get Rating of seller")
+    @GetMapping(path = "/getRating")
+    public @ResponseBody Integer getRating(@RequestParam Integer sellerID)
+    {
+        User seller = userRepository.findById(sellerID).get();
+        return Math.round(seller.getRating()/seller.getRatedCount());
+    }
 
     @ApiOperation("Get given orders")
     @GetMapping(path="/givenOrders")
