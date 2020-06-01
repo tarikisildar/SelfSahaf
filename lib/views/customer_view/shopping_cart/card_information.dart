@@ -17,7 +17,7 @@ class _CardInformationState extends State<CardInformation> {
   String cardHolderName = '';
   String cvvCode = '';
   bool isCvvFocused = false;
-  
+
   TextEditingController _cardholdernameController;
   TextEditingController _cardnumberController;
   TextEditingController _cvcController;
@@ -27,8 +27,6 @@ class _CardInformationState extends State<CardInformation> {
     if (name.length >= 5) emailValid = true;
     return emailValid ? null : 'not valid name.';
   }
-  
-  
 
   @override
   Widget build(BuildContext widget) {
@@ -46,52 +44,12 @@ class _CardInformationState extends State<CardInformation> {
           },
         ),
       ),
-      floatingActionButton: GestureDetector(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-            width: MediaQuery.of(context).size.width - 220,
-            height: 60,
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                  side: BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
-              color: Colors.white,
-              onPressed: () async {
-                //@TODO : degistir bunu
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OrderSummary()),
-                );
-              },
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 15,
-                    child: Text(
-                      "Summary",
-                      style: TextStyle(
-                          color: Color.fromRGBO(230, 81, 0, 1), fontSize: 20),
-                    ),
-                  ),
-                  Expanded(
-                    child: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color.fromRGBO(230, 81, 0, 1),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
       body: Center(
         child: Container(
           child: Column(
             children: <Widget>[
               Container(
-                height: 100,
+                height: 40,
                 child: Center(
                     child: Text(
                   "Card Information",
@@ -115,13 +73,15 @@ class _CardInformationState extends State<CardInformation> {
                     onCreditCardModelChange: onCreditCardModelChange,
                   ),
                 ),
-              )
+              ),
+              
             ],
           ),
         ),
       ),
     );
   }
+
   void onCreditCardModelChange(CreditCardModel creditCardModel) {
     setState(() {
       cardNumber = creditCardModel.cardNumber;

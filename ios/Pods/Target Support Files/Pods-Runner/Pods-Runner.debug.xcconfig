@@ -1,9 +1,9 @@
 ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/searchable_dropdown" "${PODS_ROOT}/../Flutter"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/flutter_plugin_android_lifecycle" "${PODS_CONFIGURATION_BUILD_DIR}/image_picker" "${PODS_CONFIGURATION_BUILD_DIR}/searchable_dropdown" "${PODS_ROOT}/../Flutter"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/searchable_dropdown/searchable_dropdown.framework/Headers"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/flutter_plugin_android_lifecycle/flutter_plugin_android_lifecycle.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/image_picker/image_picker.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/searchable_dropdown/searchable_dropdown.framework/Headers"
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_LDFLAGS = $(inherited) -framework "Flutter" -framework "searchable_dropdown"
+OTHER_LDFLAGS = $(inherited) -framework "Flutter" -framework "flutter_plugin_android_lifecycle" -framework "image_picker" -framework "searchable_dropdown"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
