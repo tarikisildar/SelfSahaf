@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/views/admin_view/admin_drawer.dart';
 
-class AdminPage extends StatefulWidget {
+class AdminMainPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _AdminPage();
+    return _AdminMainPageState();
   }
 }
 
-class _AdminPage extends State<AdminPage> {
+class _AdminMainPageState extends State<AdminMainPage> {
   int _userCount = 2000, _ordersCount = 3000, _sellerCount = 1000;
   @override
   Widget build(BuildContext context) {
