@@ -10,8 +10,10 @@ import 'package:selfsahaf/views/products_pages/add_book.dart';
 import 'package:selfsahaf/views/profile_pages/account_profile.dart';
 import 'package:selfsahaf/views/registration/login.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
+import 'package:selfsahaf/views/shopping_cart/order_address.dart';
 import 'views/registration/signup.dart';
 import 'package:selfsahaf/controller/book_controller.dart';
+import 'package:selfsahaf/views/shopping_cart/shopping_cart.dart';
 
 void setupServiseLocator() {
   GetIt.I.registerLazySingleton(() => BookService());
@@ -30,6 +32,7 @@ class SelfSahaf extends StatelessWidget {
     return MaterialApp(
       title: 'SelfSahaf',
       theme: ThemeData(
+        
         primaryColor: Color(0xffe65100),
         accentColor: Color(0xff833a),
         textSelectionColor: Color(0xffac1900),
@@ -44,6 +47,7 @@ class SelfSahaf extends StatelessWidget {
         // Bunlari istedigin bir font size ile kullanmak icin copyWith metodunu kullanabilirsin, meselam:
         // Theme.of(context).textTheme.title.copyWith(fontSize: 18.0)
         textTheme: TextTheme(
+          
           title: TextStyle(
               color: Color.fromRGBO(47, 19, 8, 1),
               fontWeight: FontWeight.w700), // Montserrat bold
@@ -54,26 +58,27 @@ class SelfSahaf extends StatelessWidget {
               color: Color.fromRGBO(47, 19, 8, 1), fontWeight: FontWeight.w600),
           body2: TextStyle(
               color: Colors.white,
-              fontWeight: FontWeight.w600), //white body elements
+              fontWeight: FontWeight.w600),
+               //white body elements
         ),
       ),
       debugShowCheckedModeBanner: false,
       
-      // home: BookProfile(),
-      initialRoute: '/',
+  
+       initialRoute: '/',
       
       
-       routes: <String, WidgetBuilder>{
-         '/': (context) => LoginPage(),
-         '/signup': (context) => Signup(),
+        routes: <String, WidgetBuilder>{
+          '/': (context) => LoginPage(),
+          '/signup': (context) => Signup(),
          '/guider': (context) => Guide(),
          '/mainPage': (context) => MainPage(),
          '/adminMain': (context) => AdminPage(),
-         '/searchPage': (context) => SearchPage(),
-         '/notifications': (context) => NotificationsPage(),
-         '/profilePage': (context) => AccountProfilePage(),
-         '/addbooks':(context)=> AddBook(),
-       },
+          '/searchPage': (context) => SearchPage(),
+          '/notifications': (context) => NotificationsPage(),
+          '/profilePage': (context) => AccountProfilePage(),
+          '/addbooks':(context)=> AddBook(),
+        },
     );
   }
 }

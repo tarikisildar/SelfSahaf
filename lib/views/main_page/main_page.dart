@@ -11,6 +11,7 @@ import 'package:selfsahaf/views/profile_pages/profile_page.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
 import 'package:selfsahaf/models/book.dart';
 import 'package:selfsahaf/controller/book_controller.dart';
+import 'package:selfsahaf/views/shopping_cart/shopping_cart.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -36,7 +37,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     _fetchData();
-    _refresh();
+   
     _pages = [
       MainPage(),
       SearchPage(),
@@ -92,6 +93,7 @@ setState(() {
         _loading = false;
       });
     });
+     _refresh();
   }
 
   Future<Null> _refresh() {
@@ -257,7 +259,10 @@ setState(() {
             IconButton(
                 icon: Icon(Icons.shopping_cart),
                 onPressed: () {
-                  print("shopping");
+                  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => ShoppingCart()),
+  );
                 }),
           ],
         ),
