@@ -27,11 +27,11 @@ public class Price {
 
 
 
-    private Integer price;
+    private Double price;
 
     public Price(){}
 
-    public Price(PriceKey priceID, Sells sells, Integer price) {
+    public Price(PriceKey priceID, Sells sells, Double price) {
         this.priceID = priceID;
         this.sells = sells;
         this.price = price;
@@ -48,11 +48,11 @@ public class Price {
     public String getDate(){ return priceID.getDatetime();}
 
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

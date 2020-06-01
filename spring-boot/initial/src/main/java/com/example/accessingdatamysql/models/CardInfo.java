@@ -31,6 +31,11 @@ public class CardInfo {
     @ManyToMany(mappedBy = "cards",fetch = FetchType.LAZY)
     private Set<User> users;
 
+    @JsonIgnoreProperties("cardNumber")
+    @OneToMany(mappedBy = "cardNumber",fetch = FetchType.LAZY)
+    private Set<Order> orders;
+
+
     public CardInfo(){
 
     }

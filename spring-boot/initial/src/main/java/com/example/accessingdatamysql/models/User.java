@@ -63,6 +63,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<OrderDetail> orderdetails;
 
+    @JsonIgnoreProperties("buyerID")
+    @OneToMany(mappedBy = "buyerID", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<Order> orders;
 
 
     public User(){

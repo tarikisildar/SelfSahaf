@@ -16,11 +16,11 @@ public class Order {
 
 
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "buyerID", referencedColumnName = "userID")
     private User buyerID;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "cardNumber")
     private CardInfo cardNumber;
 

@@ -64,7 +64,7 @@ public class ProductController {
     @ApiOperation("add new selling")
     @PostMapping(path ="/addBook")
     public @ResponseBody
-    String addBook(@RequestParam Integer price, @RequestParam Integer quantity, @RequestBody Product product) {
+    String addBook(@RequestParam Double price, @RequestParam Integer quantity, @RequestBody Product product) {
         Product pr = productRepository.save(product);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
@@ -97,7 +97,7 @@ public class ProductController {
     @ApiOperation("update Product")
     @PostMapping(path ="/updateBook")
     public @ResponseBody
-    String updateBook( @RequestBody Product product,@RequestParam Integer price, @RequestParam Integer quantity,HttpServletResponse response)
+    String updateBook( @RequestBody Product product,@RequestParam Double price, @RequestParam Integer quantity,HttpServletResponse response)
     {
         boolean flag = false;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

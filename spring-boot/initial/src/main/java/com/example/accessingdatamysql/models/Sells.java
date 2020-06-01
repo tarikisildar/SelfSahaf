@@ -110,7 +110,7 @@ public class Sells implements Serializable{
         return price;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         String date = LocalDateTime.MIN.toString();
         Price tempPrice = null;
         for (Price p : price) {
