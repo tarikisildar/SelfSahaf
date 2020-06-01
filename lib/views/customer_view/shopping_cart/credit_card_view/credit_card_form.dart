@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:selfsahaf/views/customer_view/shopping_cart/order_summary.dart';
 
 import 'credit_card_model.dart';
 
@@ -323,6 +324,45 @@ class _CreditCardFormState extends State<CreditCardForm> {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Container(
+                  width: MediaQuery.of(context).size.width - 220,
+                  height: 60,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        side: BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
+                    color: Colors.white,
+                    onPressed: () async {
+                      //@TODO : degistir bunu
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => OrderSummary()),
+                      );
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 15,
+                          child: Text(
+                            "Summary",
+                            style: TextStyle(
+                                color: Color.fromRGBO(230, 81, 0, 1),
+                                fontSize: 20),
+                          ),
+                        ),
+                        Expanded(
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Color.fromRGBO(230, 81, 0, 1),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
             ),
           ],
         ),
