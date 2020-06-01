@@ -45,7 +45,37 @@ public class OrderDetail {
     private Product product;
 
 
+    public Order getOrder() {
+        return order;
+    }
 
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public ShippingInfo getShippingInfo() {
+        return shippingInfo;
+    }
+
+    public void setShippingInfo(ShippingInfo shippingInfo) {
+        this.shippingInfo = shippingInfo;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     public Integer getQuantity() {
         return quantity;

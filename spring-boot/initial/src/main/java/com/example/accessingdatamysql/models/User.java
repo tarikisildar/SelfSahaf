@@ -2,10 +2,8 @@ package com.example.accessingdatamysql.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.beans.Transient;
 import java.util.Set;
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -28,6 +26,9 @@ public class User {
     private String email;
     @Column(length = 45)
     private String role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<CartItem> cart;
 
     @OneToOne
     @JoinColumn(name = "sellerAddressID")
@@ -146,6 +147,13 @@ public class User {
         return surname;
     }
 
+    public Set<CartItem> getCart() {
+        return cart;
+    }
+
+    public void setCart(Set<CartItem> cart) {
+        this.cart = cart;
+    }
 
     public String getPassword() {
         return password;

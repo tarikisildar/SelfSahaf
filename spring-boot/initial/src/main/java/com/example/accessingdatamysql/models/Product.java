@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.models;
 
+import com.example.accessingdatamysql.models.enums.ProductCondition;
+import com.example.accessingdatamysql.models.enums.ProductStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -31,19 +33,33 @@ public class Product
     private String ISBN;
 
 
+
+    @Enumerated(EnumType.STRING)
+    @Column(length=45)
+    private ProductCondition condition;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length=45)
+    private ProductStatus status;
+
+
+
     @Column(name = "allPath")
     private String path;
 
     public Product() {
     }
 
-    public Product(String description, String name, String language, String author, String publisher, String ISBN) {
+    public Product(String description, String name, String language, String author,
+                   String publisher, String ISBN, ProductCondition condition, ProductStatus status) {
         this.description = description;
         this.name = name;
         this.language = language;
         this.author = author;
         this.publisher = publisher;
         this.ISBN = ISBN;
+        this.condition = condition;
+        this.status = status;
     }
 
 
@@ -68,6 +84,9 @@ public class Product
     @JsonIgnoreProperties("product")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<OrderDetail> orderDetails;
+
+
+
 
     public String getPath() {
         if(path != null)
@@ -161,4 +180,24 @@ public class Product
     public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
+
+
+    public ProductCondition getCondition() {
+        return condition;
+    }
+
+    public void setCondition(ProductCondition condition) {
+        this.condition = condition;
+    }
+
+    public ProductStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProductStatus status) {
+        this.status = status;
+    }
+
+
+
 }

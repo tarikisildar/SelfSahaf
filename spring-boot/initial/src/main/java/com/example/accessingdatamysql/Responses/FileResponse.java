@@ -1,4 +1,4 @@
-package com.example.accessingdatamysql.models;
+package com.example.accessingdatamysql.Responses;
 
 public class FileResponse {
     private String name;

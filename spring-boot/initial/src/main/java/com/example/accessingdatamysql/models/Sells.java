@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -15,11 +16,19 @@ import java.util.Set;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "sells")
-public class Sells {
-    @EmbeddedId
-    private SellsKey sellerID;
+public class Sells implements Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer sellingID;
+
+
 
     private Integer quantity;
+
+    private Integer sellerID;
+
+
+    private Integer productID;
 
 
 
@@ -36,6 +45,10 @@ public class Sells {
     @JoinColumn(name = "sellerID", referencedColumnName = "userID")
     private User user;
 
+
+    @JsonIgnoreProperties("sells")
+    @OneToMany(mappedBy = "sells", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<CartItem> cart;
 
 
     @JsonIgnoreProperties("sells")
@@ -54,25 +67,35 @@ public class Sells {
         this.product = product;
     }
 
-    //public User getUser() {return user;}
+    public User getUser() {return user;}
 
     public void setUser(User user) {
         this.user = user;
     }
 
     public Integer getSellerID() {
-        return sellerID.getSellerID();
+        return sellerID;
     }
     public Integer getProductID() {
-        return sellerID.getProductID();
+        return productID;
     }
 
 
-    public void setSellerID(SellsKey sellerID) {
+    public Integer getSellingID() {
+        return sellingID;
+    }
+
+    public void setSellingID(Integer sellingID) {
+        this.sellingID = sellingID;
+    }
+
+    public void setSellerID(Integer sellerID) {
         this.sellerID = sellerID;
     }
 
-
+    public void setProductID(Integer productID) {
+        this.productID = productID;
+    }
 
 
     public Integer getQuantity() {
@@ -101,6 +124,14 @@ public class Sells {
             return tempPrice.getPrice();
         else
             return null;
+    }
+
+    public Set<CartItem> getCart() {
+        return cart;
+    }
+
+    public void setCart(Set<CartItem> cart) {
+        this.cart = cart;
     }
 
     public void setPrice(Set<Price> price) {

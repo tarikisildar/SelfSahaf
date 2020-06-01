@@ -177,6 +177,14 @@ public class UserController {
         return "Saved";
 
     }
+    @ApiOperation("Set Address")
+    @PostMapping(path = "/updateAddress")
+    public @ResponseBody String updateAddress(@RequestBody Address address, HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        return "Not implemented";
+    }
+
+
     @ApiOperation("Get Addresses")
     @GetMapping(path = "/getadress")
     public @ResponseBody
