@@ -32,7 +32,7 @@ public class User {
     private float rating;
 
     @ColumnDefault("0")
-    private Integer ratedCount;
+    private float ratedCount;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CartItem> cart;
@@ -156,11 +156,12 @@ public class User {
     public String getSurname() {
         return surname;
     }
-
+    @JsonIgnore
     public Set<CartItem> getCart() {
         return cart;
     }
 
+    @JsonIgnore
     public void setCart(Set<CartItem> cart) {
         this.cart = cart;
     }
@@ -211,11 +212,11 @@ public class User {
         this.rating = rating;
     }
 
-    public Integer getRatedCount() {
+    public float getRatedCount() {
         return ratedCount;
     }
 
-    public void setRatedCount(Integer ratedCount) {
+    public void setRatedCount(float ratedCount) {
         this.ratedCount = ratedCount;
     }
 }

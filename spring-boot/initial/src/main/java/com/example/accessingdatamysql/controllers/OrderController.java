@@ -199,10 +199,7 @@ public class OrderController {
             }
 
         }
-
-
         return true;
-
     }
 
 
@@ -216,7 +213,7 @@ public class OrderController {
             return "rating must be between 1 and 5";
         }
         Order order = orderRepository.findById(orderID).get();
-        OrderDetail orderDetail = orderDetailRepository.findById(orderID).get();
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderID(orderID);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
@@ -230,6 +227,7 @@ public class OrderController {
         User seller = userRepository.findById(orderDetail.getOrderDetailID().getSellerID()).get();
         seller.setRatedCount(seller.getRatedCount()+1);
         seller.setRating(seller.getRating()+rating);
+        userRepository.save(seller);
         return "You gave " + rating + " stars to " + seller.getName();
     }
 
@@ -243,16 +241,20 @@ public class OrderController {
 
     @ApiOperation("Get given orders")
     @GetMapping(path="/givenOrders")
-    public @ResponseBody Iterable<Order> getGivenOrders()
+    public @ResponseBody List<Order> givenOrders()
     {
-        throw new NotImplementedException();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+        return orderRepository.findOrderByUserID(userID);
     }
 
     @ApiOperation("Get taken orders")
     @GetMapping(path="/takenOrders")
-    public @ResponseBody Iterable<Order> getTakenOrders()
+    public @ResponseBody List<Order> getTakenOrders()
     {
-        throw new NotImplementedException();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+        return  orderDetailRepository.findOrdersBySellerID(userID);
     }
 
     @ApiOperation("Cancel Order")

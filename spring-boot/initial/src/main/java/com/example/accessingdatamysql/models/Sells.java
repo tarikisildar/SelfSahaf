@@ -125,11 +125,11 @@ public class Sells implements Serializable{
         else
             return null;
     }
-
+    @JsonIgnore
     public Set<CartItem> getCart() {
         return cart;
     }
-
+    @JsonIgnore
     public void setCart(Set<CartItem> cart) {
         this.cart = cart;
     }

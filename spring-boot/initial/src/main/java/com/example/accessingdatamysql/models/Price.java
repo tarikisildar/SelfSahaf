@@ -13,8 +13,6 @@ public class Price {
     private PriceKey priceID;
 
 
-
-
     @JsonIgnoreProperties("prices")
     @ManyToOne
 

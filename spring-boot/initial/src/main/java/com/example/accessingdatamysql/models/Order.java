@@ -27,6 +27,8 @@ public class Order {
 
     private String datetime;
 
+    private boolean rated;
+
 
 
     @OneToOne
@@ -72,5 +74,6 @@ public class Order {
     public void setReceiverAddressID(Address receiverAddressID) {
         this.receiverAddressID = receiverAddressID;
     }
+
 
 }
