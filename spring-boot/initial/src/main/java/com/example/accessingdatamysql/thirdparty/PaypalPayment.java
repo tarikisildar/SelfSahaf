@@ -39,7 +39,7 @@ public class PaypalPayment implements PaymentInterface {
     @Transactional
     public boolean refundPayment(CardInfo card, OrderDetail orderDetail) {
 
-        orderDetail.setRefund(OrderStatus.CANCELLED);
+        orderDetail.setStatus(OrderStatus.CANCELLED);
         orderDetailRepository.save(orderDetail);
 
         return true;

@@ -14,6 +14,8 @@ public interface StorageService {
 
     String storeAll(List<MultipartFile> files, Integer productID, Integer sellerID);
 
+    String storeAll(List<MultipartFile> files, Integer refundID);
+
     String storeMain(MultipartFile file, Integer productID, Integer sellerID);
 
 

@@ -40,7 +40,7 @@ public class RatingController {
     @ApiOperation("Rates product in given order. Takes order id and product id")
     @PostMapping(path = "/rateSeller")
     public @ResponseBody
-    String rateSeller(@RequestBody Ratings ratings, @RequestParam Integer orderID, @RequestParam Integer productID , HttpServletResponse response)
+    String rateSeller(@RequestBody Ratings ratings, @RequestParam Integer orderID, @RequestParam Integer productID , @RequestParam Integer sellerID, HttpServletResponse response)
     {
         Optional<Ratings> ratingsOptional = ratingsRepository.findRatingByOrderID(orderID);
         if(ratingsOptional.isPresent())
@@ -53,7 +53,7 @@ public class RatingController {
         }
 
         Order order = orderRepository.findById(orderID).get();
-        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderIDAndProductID(orderID,productID);
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderIDAndProductIDAndSellerID(orderID,productID,sellerID);
 
         LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
         String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);

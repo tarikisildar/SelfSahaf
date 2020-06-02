@@ -5,5 +5,8 @@ public enum OrderStatus {
     CANCELLED,
     BLOCKED,
     DELIVERED,
-    SHIPPING
+    SHIPPING,
+    REFUNDREQUEST,
+    REFUNDED,
+    CONFIRMED
 }

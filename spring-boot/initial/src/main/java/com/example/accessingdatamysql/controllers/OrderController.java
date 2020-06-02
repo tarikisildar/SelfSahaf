@@ -5,6 +5,7 @@ import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.enums.OrderStatus;
 import com.example.accessingdatamysql.models.enums.ProductStatus;
+import com.example.accessingdatamysql.storage.StorageService;
 import com.example.accessingdatamysql.thirdparty.PaypalPayment;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.core.Authentication;
@@ -57,8 +58,11 @@ public class OrderController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private StorageService storageService;
 
-
+    @Autowired
+    private RefundRepository refundRepository;
 
     @Autowired
     private CartRepository cartRepository;
@@ -211,11 +215,6 @@ public class OrderController {
     }
 
 
-
-
-
-
-
     @ApiOperation("Get list of given orders by user")
     @GetMapping(path="/givenOrders")
     public @ResponseBody List<Order> givenOrders()
@@ -236,9 +235,16 @@ public class OrderController {
 
     @ApiOperation("Cancel Order Not implemented")
     @PostMapping(path="/cancel")
-    public @ResponseBody String cancelOrder(@RequestParam Integer orderID)
+    public @ResponseBody String cancelOrder(@RequestParam Integer orderID, @RequestParam Integer productID, @RequestParam Integer sellerID, HttpServletResponse response)
     {
-        throw new NotImplementedException();
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderIDAndProductIDAndSellerID(orderID,productID,sellerID);
+        if(orderDetail.getStatus() == OrderStatus.ACTIVE)
+            orderDetail.setStatus(OrderStatus.CANCELLED);
+        else{
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "You can't cancel an order after beginning it's shipment process. Look for refunding.";
+        }
+        return "Your order has canceled";
     }
 
     @ApiOperation("Change Address Not implemented")
@@ -248,11 +254,44 @@ public class OrderController {
         throw new NotImplementedException();
     }
 
-    @ApiOperation("Return Request Not implemented")
-    @PostMapping(path="/returnRequest")
-    public @ResponseBody String returnRequest(@RequestParam Integer orderID, List<MultipartFile> file, String message)
+    @Transactional
+    @ApiOperation("Refund Request")
+    @PostMapping(path="/refundRequest")
+    public @ResponseBody String refundRequest(@RequestParam Integer orderID,@RequestParam Integer productId, @RequestParam Integer sellerID,@RequestBody(required = false) List<MultipartFile> file,@RequestParam String message)
     {
-        throw new NotImplementedException();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        User user = userRepository.findUserByUserID(userID).get();
+
+        LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
+        String formattedDatetime = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
+
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderIDAndProductIDAndSellerID(orderID,productId,sellerID);
+        orderDetail.setStatus(OrderStatus.REFUNDREQUEST);
+        RefundRequest refundRequest = new RefundRequest(orderDetail,formattedDatetime,message);
+        refundRequest.setUser(user);
+
+        refundRequest = refundRepository.save(refundRequest);
+        if(file != null)
+        {
+            refundRequest.setPath(storageService.storeAll(file,refundRequest.getRefundID()));
+            refundRepository.save(refundRequest);
+        }
+        return "refund request created with id " + refundRequest.getRefundID().toString();
+    }
+
+    @ApiOperation("List Refund Requests")
+    @GetMapping(path = "/refundRequests")
+    public @ResponseBody List<RefundRequest> getRefundRequests()
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        List<RefundRequest> ref = refundRepository.findRefundRequestsBySellerID(userID);
+        Collections.sort(ref, Comparator.comparing(RefundRequest::getDatetime));
+        Collections.reverse(ref);
+        return ref;
     }
 
     @ApiOperation("Return Request Not implemented")
