@@ -123,7 +123,13 @@ public class FileSystemStorageService implements StorageService {
 
         Path dir_path = Paths.get(sellerID.toString()).resolve(productID.toString());
 
+        return storeAllIns(dir_path, files);
 
+
+    }
+
+    private String storeAllIns(Path dir_path, List<MultipartFile> files)
+    {
         // Create a directory in the format of root/sellerID/productID
         try
         {
@@ -147,7 +153,13 @@ public class FileSystemStorageService implements StorageService {
             enumerate += 1;
         }
         return this.rootLocation.resolve(dir_path.toString()).toAbsolutePath().toString();
+    }
 
+    @Override
+    public String storeAll(List<MultipartFile> files, Integer refundID)
+    {
+        Path dir_path = Paths.get("refunds").resolve(refundID.toString());
+        return storeAllIns(dir_path, files);
     }
 
     @Override
