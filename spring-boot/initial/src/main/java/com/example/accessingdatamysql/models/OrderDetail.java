@@ -22,7 +22,7 @@ public class OrderDetail implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(length=45)
-    private OrderStatus refund;
+    private OrderStatus status;
 
 
 
@@ -91,12 +91,12 @@ public class OrderDetail implements Serializable {
         this.quantity = quantity;
     }
 
-    public OrderStatus getRefund() {
-        return refund;
+    public OrderStatus getStatus() {
+        return status;
     }
 
-    public void setRefund(OrderStatus refund) {
-        this.refund = refund;
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 
     public OrderDetailKey getOrderDetailID() {

@@ -21,7 +21,7 @@ public class ShippingController {
 
     @ApiOperation("Add Shipping Company")
     @PostMapping("/addCompany")
-    public @ResponseBody String addShippingCompany(@RequestParam String companyName, @RequestParam String website, @RequestParam float price)
+    public @ResponseBody String addShippingCompany(@RequestParam String companyName, @RequestParam(defaultValue = "No website") String website, @RequestParam float price)
     {
         Optional<ShippingCompany> comp = shippingRepository.findShippingCompanyByCompanyName(companyName);
         ShippingCompany shippingCompany;

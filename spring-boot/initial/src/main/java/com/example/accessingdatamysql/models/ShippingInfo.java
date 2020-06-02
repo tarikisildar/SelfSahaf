@@ -14,7 +14,6 @@ public class ShippingInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer shippingInfoID;
 
-    private boolean delivered;
     @Column(length = 45)
     private String trackingNumber;
 
@@ -32,7 +31,6 @@ public class ShippingInfo {
     }
 
     public ShippingInfo(boolean delivered, String trackingNumber, ShippingCompany shippingCompanyID) {
-        this.delivered = delivered;
         this.trackingNumber = trackingNumber;
         this.shippingCompanyID = shippingCompanyID;
     }
@@ -43,14 +41,6 @@ public class ShippingInfo {
 
     public void setShippingInfoID(Integer shippingInfoID) {
         this.shippingInfoID = shippingInfoID;
-    }
-
-    public boolean isDelivered() {
-        return delivered;
-    }
-
-    public void setDelivered(boolean delivered) {
-        this.delivered = delivered;
     }
 
     public String getTrackingNumber() {

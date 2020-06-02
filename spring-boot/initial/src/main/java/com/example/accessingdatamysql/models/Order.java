@@ -27,8 +27,6 @@ public class Order {
 
     private String datetime;
 
-    private boolean rated;
-
 
 
     @OneToOne
