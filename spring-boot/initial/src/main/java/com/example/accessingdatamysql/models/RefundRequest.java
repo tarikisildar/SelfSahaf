@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.models;
 
+import com.example.accessingdatamysql.models.enums.RefundStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -29,6 +30,7 @@ public class RefundRequest {
 
     private String path;
 
+    private RefundStatus status;
 
     @Column(length = 255)
     private String message;
@@ -95,5 +97,12 @@ public class RefundRequest {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public RefundStatus getStatus() {
+        return status;
+    }
+    public void setStatus(RefundStatus status) {
+        this.status = status;
     }
 }

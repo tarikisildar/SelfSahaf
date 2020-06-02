@@ -5,9 +5,11 @@ import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.enums.OrderStatus;
 import com.example.accessingdatamysql.models.enums.ProductStatus;
+import com.example.accessingdatamysql.models.enums.RefundStatus;
 import com.example.accessingdatamysql.storage.StorageService;
 import com.example.accessingdatamysql.thirdparty.PaypalPayment;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import io.swagger.annotations.Api;
 import javax.servlet.http.HttpServletResponse;
 
+import java.sql.Ref;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -255,7 +258,7 @@ public class OrderController {
     }
 
     @Transactional
-    @ApiOperation("Refund Request")
+    @ApiOperation("Refund Request, orderId productId and sellerId needed for finding specific product order. file is optional")
     @PostMapping(path="/refundRequest")
     public @ResponseBody String refundRequest(@RequestParam Integer orderID,@RequestParam Integer productId, @RequestParam Integer sellerID,@RequestBody(required = false) List<MultipartFile> file,@RequestParam String message)
     {
@@ -271,6 +274,7 @@ public class OrderController {
         orderDetail.setStatus(OrderStatus.REFUNDREQUEST);
         RefundRequest refundRequest = new RefundRequest(orderDetail,formattedDatetime,message);
         refundRequest.setUser(user);
+        refundRequest.setStatus(RefundStatus.PENDING);
 
         refundRequest = refundRepository.save(refundRequest);
         if(file != null)
@@ -281,9 +285,9 @@ public class OrderController {
         return "refund request created with id " + refundRequest.getRefundID().toString();
     }
 
-    @ApiOperation("List Refund Requests")
-    @GetMapping(path = "/refundRequests")
-    public @ResponseBody List<RefundRequest> getRefundRequests()
+    @ApiOperation("List Refund Requests, for seller")
+    @GetMapping(path = "/sellerRefundRequests")
+    public @ResponseBody List<RefundRequest> getSellerRefundRequests()
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
@@ -294,10 +298,29 @@ public class OrderController {
         return ref;
     }
 
-    @ApiOperation("Return Request Not implemented")
-    @PostMapping(path="/returnConfirm")
-    public @ResponseBody String confirmReturnRequest(@RequestParam Integer orderID, String message, boolean confirm)
+    @ApiOperation("List all refund requests, for admin")
+    @GetMapping(path = "/refundRequests")
+    public @ResponseBody List<RefundRequest> getAllRefundRequests()
     {
-        throw new NotImplementedException();
+        List<RefundRequest> ref = refundRepository.findAll();
+        Collections.sort(ref, Comparator.comparing(RefundRequest::getDatetime));
+        Collections.reverse(ref);
+        return ref;
+    }
+
+    @ApiOperation("Refund Confirm or Reject")
+    @PostMapping(path="/refundEvaluate")
+    public @ResponseBody String evaluateRefundRequest(@RequestParam Integer refundId, @RequestParam boolean confirm)
+    {
+        RefundRequest refundRequest = refundRepository.findById(refundId).get();
+        if(confirm)
+            refundRequest.setStatus(RefundStatus.CONFIRMED);
+        else{
+            refundRequest.setStatus(RefundStatus.DECLINED);
+        }
+        refundRepository.save(refundRequest);
+
+        return "status changed";
+
     }
 }

@@ -9,4 +9,6 @@ import java.util.List;
 public interface RefundRepository extends CrudRepository<RefundRequest,Integer>{
     @Query("SELECT refund FROM RefundRequest refund WHERE refund.orderDetail.orderDetailID.sellerID = ?1")
     List<RefundRequest> findRefundRequestsBySellerID(Integer sellerID);
+
+    List<RefundRequest> findAll();
 }
