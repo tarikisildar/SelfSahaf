@@ -16,6 +16,9 @@ public interface OrderDetailRepository extends CrudRepository<OrderDetail, Integ
     @Query("SELECT ord.order FROM OrderDetail ord WHERE ord.orderDetailID.sellerID = ?1")
     List<Order> findOrdersBySellerID(Integer sellerID);
 
+    @Query("SELECT ord FROM OrderDetail ord WHERE ord.orderDetailID.orderID = ?1 AND ord.orderDetailID.productID = ?2")
+    OrderDetail findOrderDetailByOrderIDAndProductID(Integer orderID, Integer productID);
+
     @Query("SELECT ord FROM OrderDetail ord WHERE ord.orderDetailID.orderID = ?1")
-    OrderDetail findOrderDetailByOrderID(Integer orderID);
+    List<OrderDetail> findOrderDetailsByOrderID(Integer orderID);
 }

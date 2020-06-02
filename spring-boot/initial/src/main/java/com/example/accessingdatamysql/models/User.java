@@ -28,11 +28,6 @@ public class User {
     @Column(length = 45)
     private String role;
 
-    @ColumnDefault("0")
-    private float rating;
-
-    @ColumnDefault("0")
-    private float ratedCount;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CartItem> cart;
@@ -215,19 +210,4 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
-
-    public float getRatedCount() {
-        return ratedCount;
-    }
-
-    public void setRatedCount(float ratedCount) {
-        this.ratedCount = ratedCount;
-    }
 }

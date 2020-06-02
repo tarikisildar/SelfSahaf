@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface OrderRepository extends CrudRepository<Order, Integer>{
-    @Query("SELECT ord FROM Order ord WHERE ord.buyerID.userID = ?1")
+    @Query("SELECT ord FROM Order ord WHERE ord.buyer.userID = ?1")
     List<Order> findOrderByUserID(Integer userID);
 
 }

@@ -22,10 +22,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Controller
@@ -59,6 +56,9 @@ public class OrderController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RatingsRepository ratingsRepository;
 
 
     @Autowired
@@ -204,41 +204,69 @@ public class OrderController {
         return true;
     }
 
+    @ApiOperation("Get Order Details")
+    @GetMapping(path = "/getOrderDetails")
+    public @ResponseBody List<OrderDetail> getOrderDetails(@RequestParam Integer orderID)
+    {
+        return orderDetailRepository.findOrderDetailsByOrderID(orderID);
+    }
+
 
     @ApiOperation("Rate Order")
     @PostMapping(path = "/rateSeller")
-    public @ResponseBody String rateSeller(@RequestParam Integer orderID,@RequestParam Integer rating, HttpServletResponse response)
+    public @ResponseBody String rateSeller(@RequestBody Ratings ratings,@RequestParam Integer orderID, @RequestParam Integer productID ,HttpServletResponse response)
     {
-        if(rating < 1 || rating > 5)
+        Optional<Ratings> ratingsOptional = ratingsRepository.findRatingByOrderID(orderID);
+        if(ratingsOptional.isPresent())
+            ratings.setRatingID(ratingsOptional.get().getRatingID());
+
+        if(ratings.getRating() < 1 || ratings.getRating() > 5)
         {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "rating must be between 1 and 5";
         }
+
         Order order = orderRepository.findById(orderID).get();
-        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderID(orderID);
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderIDAndProductID(orderID,productID);
+
+        LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
+        String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
+        ratings.setDatetime(formatted);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
-        if(order.getBuyerID().getUserID() != userID)
+        if(order.getBuyer().getUserID() != userID)
         {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "You can only rate your order";
         }
 
-        User seller = userRepository.findById(orderDetail.getOrderDetailID().getSellerID()).get();
-        seller.setRatedCount(seller.getRatedCount()+1);
-        seller.setRating(seller.getRating()+rating);
-        userRepository.save(seller);
-        return "You gave " + rating + " stars to " + seller.getName();
+        ratings.setOrderDetail(orderDetail);
+
+
+        Ratings rat = ratingsRepository.save(ratings);
+
+        return "You gave " + ratings.getRating() + " stars";
     }
 
-    @ApiOperation("Get Rating of seller")
-    @GetMapping(path = "/getRating")
-    public @ResponseBody Integer getRating(@RequestParam Integer sellerID)
+    @ApiOperation("Get Average Rating of seller")
+    @GetMapping(path = "/getAverageRating")
+    public @ResponseBody Integer getAverageRating(@RequestParam Integer sellerID)
     {
-        User seller = userRepository.findById(sellerID).get();
-        return Math.round(seller.getRating()/seller.getRatedCount());
+        List<Integer> ratings = ratingsRepository.findRatingValuesBySellerID(sellerID);
+        Integer sum = 0;
+        for (Integer i: ratings) {
+            sum+=i;
+        }
+        return Math.round((float)sum /ratings.size());
+    }
+
+    @ApiOperation("Get Ratings Of Seller")
+    @GetMapping(path = "getRatings")
+    public @ResponseBody List<Ratings> getSellerRatings(@RequestParam  Integer sellerID)
+    {
+        return ratingsRepository.findRatingsBySellerID(sellerID);
     }
 
     @ApiOperation("Get given orders")
