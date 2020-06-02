@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.controllers;
 
+import com.example.accessingdatamysql.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -28,19 +29,64 @@ public class EmailController {
     private JavaMailSender javaMailSender;
 
 
+    @Autowired
+    private UserRepository userRepository;
+
     @ApiOperation("Send email to a user")
-    @PostMapping(value = "/sendemail")
-    public @ResponseBody String sendEmail(String email) throws IOException, MessagingException {
+    @PostMapping(value = "/sendEmailToUser")
+    public @ResponseBody String sendEmailToUser(String email, String title, String context) throws IOException, MessagingException {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom("selfsahaf.ss@gmail.com");
         msg.setTo(email);
 
-        msg.setSubject("Testing from Spring Boot");
-        msg.setText("Hello World \n Spring Boot Email");
+        msg.setSubject(title);
+        msg.setText(context);
 
         javaMailSender.send(msg);
         return "Email sent successfully";
     }
+
+
+    @ApiOperation("Send email to a users")
+    @PostMapping(value = "/sendEmailToUsers")
+    public @ResponseBody String sendEmailToUsers(String title, String context) throws IOException, MessagingException {
+
+
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setSubject(title);
+        msg.setText(context);
+
+        Integer successfully = 0;
+        Integer totalUsers = 0;
+
+        Iterable<String> emails = userRepository.getUserEmails();
+
+        for(String email : emails){
+
+            try{
+                msg.setFrom("selfsahaf.ss@gmail.com");
+                msg.setTo(email);
+
+                javaMailSender.send(msg);
+
+                successfully += 1;
+                totalUsers += 1;
+            }
+            catch(Exception e){
+                totalUsers += 1;
+            }
+
+        }
+
+        return "Emails sent to " + successfully.toString() + " of " + totalUsers.toString() + " users successfully";
+    }
+
+
+
+
+
+
+
 
 
 }
