@@ -27,7 +27,7 @@ public class FileSystemStorageService implements StorageService {
             "gif", "png", "bmp", "jpg" // and other formats you need
     };
 
-    static final String EXTENSION = ".jpg";
+    static final String EXTENSION = ".png";
 
     private final Path rootLocation;
 

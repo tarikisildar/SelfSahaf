@@ -1,8 +1,10 @@
 package com.example.accessingdatamysql.dao;
 
 import com.example.accessingdatamysql.models.User;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
@@ -11,4 +13,7 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Integer> {
     Optional<User> findUserByEmail(String email);
     Optional<User> findUserByUserID(Integer userID);
+
+    @Query("SELECT Count(user) FROM User user")
+    Integer getUserCount();
 }
