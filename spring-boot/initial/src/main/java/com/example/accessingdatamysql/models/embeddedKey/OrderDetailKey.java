@@ -18,7 +18,7 @@ public class OrderDetailKey implements Serializable{
     @Column
     private Integer productID;
 
-    @Column(unique = false)
+    @Column
     private Integer shippingInfoID;
 
 

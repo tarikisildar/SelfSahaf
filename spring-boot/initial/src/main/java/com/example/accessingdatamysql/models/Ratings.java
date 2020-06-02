@@ -10,15 +10,16 @@ import javax.persistence.*;
 @Table(name = "ratings")
 public class Ratings {
 
-    @EmbeddedId
-    private RatingKey ratingID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer ratingID;
 
     @JsonIgnoreProperties("ratings")
     @ManyToOne
     @JoinColumns(
             {
-                    @JoinColumn(updatable=false,insertable=false, name="receiver", referencedColumnName="sellerID"),
-                    @JoinColumn(updatable=false,insertable=false, name="productID", referencedColumnName="productID"),
+                    @JoinColumn(name="receiverID", referencedColumnName="sellerID"),
+                    @JoinColumn(name="productID", referencedColumnName="productID")
 
             })
     private OrderDetail orderDetail;
@@ -27,8 +28,8 @@ public class Ratings {
 
     @JsonIgnoreProperties("ratings")
     @ManyToOne
-    @JoinColumn(updatable=false,insertable=false, name="raterID", referencedColumnName="buyerID")
-    private Order order;
+    @JoinColumn(name="buyerID", referencedColumnName="userID")
+    private User user;
 
     private String datetime;
     private Integer rating;
@@ -36,12 +37,11 @@ public class Ratings {
     private String comment;
 
 
-
-    public RatingKey getRatingID() {
+    public Integer getRatingID() {
         return ratingID;
     }
 
-    public void setRatingID(RatingKey ratingID) {
+    public void setRatingID(Integer ratingID) {
         this.ratingID = ratingID;
     }
 
@@ -53,12 +53,13 @@ public class Ratings {
         this.orderDetail = orderDetail;
     }
 
-    public Order getOrder() {
-        return order;
+
+    public User getUser() {
+        return user;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setUser(User userr) {
+        this.user = userr;
     }
 
     public String getDatetime() {
@@ -84,8 +85,5 @@ public class Ratings {
     public void setComment(String comment) {
         this.comment = comment;
     }
-
-
-
 }
 

@@ -61,7 +61,7 @@ public class User {
             joinColumns = @JoinColumn(name = "userID"),
             inverseJoinColumns = @JoinColumn(name = "addressID")
     )
-    private Set<Address> addresses;     
+    private Set<Address> addresses;
 
 
 
@@ -70,9 +70,11 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<OrderDetail> orderdetails;
 
-    @JsonIgnoreProperties("buyerID")
-    @OneToMany(mappedBy = "buyerID", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("buyer")
+    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Order> orders;
+
+
 
 
     public User(){
@@ -85,6 +87,15 @@ public class User {
         this.dob = dob;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     @JsonIgnore

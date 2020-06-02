@@ -98,12 +98,7 @@ public class OrderController {
                 System.out.println("Hello");
                 card = cardRepository.save(card);
 
-                ShippingInfo shippingInfo = new ShippingInfo();
-                shippingInfo.setShippingCompanyID(shippingCompany);
-                shippingInfo.setDelivered(false);
-                shippingInfo.setTrackingNumber("0000");
 
-                shippingInfo = shippingInfoRepository.save(shippingInfo);
 
                 System.out.println(user.getUserID());
                 System.out.println(card.getCardNumber());
@@ -116,7 +111,7 @@ public class OrderController {
                 cardSet.add(card);*/
 
                 Order order = new Order();
-                order.setBuyerID(user);
+                order.setBuyer(user);
                 order.setCardNumber(card);
                 order.setDatetime(formattedDatetime);
                 order.setReceiverAddressID(address);
@@ -124,6 +119,13 @@ public class OrderController {
                 orderRepository.save(order);
 
                 for (CartItem item : cart) {
+
+                    ShippingInfo shippingInfo = new ShippingInfo();
+                    shippingInfo.setShippingCompanyID(shippingCompany);
+                    shippingInfo.setDelivered(false);
+                    shippingInfo.setTrackingNumber("0000");
+
+                    shippingInfo = shippingInfoRepository.save(shippingInfo);
 
                     Sells sells = item.getSells();
                     Product product = sells.getProduct();
