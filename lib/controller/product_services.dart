@@ -49,7 +49,7 @@ Future<List<Book>> getSelfBooks() async {
           return result;
           }
         }
-        print("satatus code");
+        print("status code");
         print(response.statusCode);
         print(response.data);
 

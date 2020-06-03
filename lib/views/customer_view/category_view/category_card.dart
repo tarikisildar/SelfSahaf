@@ -29,7 +29,7 @@ class _CategoryCardState extends State<CategoryCard> {
           
           children: <Widget>[
             Expanded(
-              flex: 7,
+              flex: 9,
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(

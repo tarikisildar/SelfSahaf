@@ -84,17 +84,15 @@ class _ProductsPageState extends State<ProductsPage> {
                 setState(() {
                   _isloading = false;
                 });
-         
+
                 Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => AddBook(),
                             maintainState: true))
                     .then((e) {
-                     
                   setState(() {
-                    if(e!=null)
-                    bookList.add(e);
+                    if (e != null) bookList.add(e);
                     WidgetsBinding.instance.addPostFrameCallback(
                         (_) => _refreshIndicatorKey.currentState.show());
                   });
@@ -116,7 +114,11 @@ class _ProductsPageState extends State<ProductsPage> {
                 if (bookList[0] == null) {
                   return Padding(
                     padding: const EdgeInsets.all(35.0),
-                    child: Center(child: Text("No Books on Sale", style: TextStyle(color: Colors.white),)),
+                    child: Center(
+                        child: Text(
+                      "No Books on Sale",
+                      style: TextStyle(color: Colors.white),
+                    )),
                   );
                 } else {
                   return Dismissible(
@@ -140,15 +142,14 @@ class _ProductsPageState extends State<ProductsPage> {
                                     builder: (context) => BookProfile(
                                         selectedBook: bookList[index])))
                             .then((onValue) {
-                          
-                                print(onValue);
-                                setState(() {
-                                  if(onValue!=null){
-                                  bookList.removeAt(index);
-                                  bookList.add(onValue);
-                                  }
-                                });
-                              
+                          print(onValue);
+                          setState(() {
+                            if (onValue != null) {
+                              bookList.removeAt(index);
+                              bookList.add(onValue);
+                            }
+                          });
+
                           WidgetsBinding.instance.addPostFrameCallback(
                               (_) => _refreshIndicatorKey.currentState.show());
                         });
@@ -182,9 +183,9 @@ class _ProductsPageState extends State<ProductsPage> {
                                       if (e) {
                                         print("deleted");
                                         setState(() {
-                                            bookList.removeAt(index);
+                                          bookList.removeAt(index);
                                         });
-                                      
+
                                         if (bookList.length == 0) {
                                           setState(() {
                                             bookList = [null];
@@ -340,18 +341,155 @@ class _FilterFloatingState extends State<FilterFloating> {
                           topLeft: const Radius.circular(20),
                           topRight: const Radius.circular(20))),
                   child: Container(
-                    height: 450,
-                    child: Center(
+                    decoration: BoxDecoration(
+                      color: Color(0xffe65100),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.8),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3),
+                        )
+                      ],
+                    ),
+                    height: MediaQuery.of(context).size.height / 2,
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Expanded(
-                            child: FlatButton(
-                              onPressed: () {},
-                              child: Icon(
-                                Icons.close,
-                                color: Colors.white,
-                              ),
-                              color: Colors.black,
+                              flex: 3,
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 10,
+                                      child: Text(
+                                        "Filtrele",
+                                        style: TextStyle(color: Colors.white,fontSize: 24),
+                                      )),
+                                  Expanded(
+                                    flex: 1,
+                                    child: InkWell(
+                                      onTap: () => Navigator.of(context).pop(),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,),
+                                        
+                                        child: Icon(Icons.close,color: Color(0xffe65100),
+                                      ),
+                                    ),
+                                  ),),
+                                ],
+                              )),
+                          Center(
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                    flex: 5,
+                                    child: Text(
+                                      "By Price",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                                Expanded(
+                                  flex: 5,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      FlatButton(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                        ),
+                                        child: Text(
+                                          "Increasing",
+                                          style: TextStyle(
+                                              color: Color(0xffe65100)),
+                                        ),
+                                        onPressed: () {
+                                          print("BURA DAHA BITMEDI BITER INS");
+                                        },
+                                      ),
+                                      FlatButton(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                        ),
+                                        child: Text(
+                                          "Decreasing",
+                                          style: TextStyle(
+                                              color: Color(0xffe65100)),
+                                        ),
+                                        onPressed: () {
+                                          print("BURA DAHA BITMEDI BITER INS");
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Divider(
+                            thickness: 2,
+                            color: Colors.white,
+                          ),
+                          Center(
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                    flex: 5,
+                                    child: Text(
+                                      "By Alphabet",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                                Expanded(
+                                  flex: 5,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      FlatButton(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                        ),
+                                        child: Text(
+                                          "A-Z",
+                                          style: TextStyle(
+                                              color: Color(0xffe65100)),
+                                        ),
+                                        onPressed: () {
+                                          print("BURA DAHA BITMEDI BITER INS");
+                                        },
+                                      ),
+                                      FlatButton(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                        ),
+                                        child: Text(
+                                          "Z-A",
+                                          style: TextStyle(
+                                              color: Color(0xffe65100)),
+                                        ),
+                                        onPressed: () {
+                                          print("BURA DAHA BITMEDI BITER INS");
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],

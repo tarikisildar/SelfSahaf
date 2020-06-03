@@ -1,11 +1,12 @@
-class Category{
+class Category {
   int categoryID;
   String categoryName;
-Category({this.categoryName,this.categoryID});
 
+  Category({this.categoryName, this.categoryID});
 
-Category.fromJson(Map<String, dynamic> json):
-  categoryID=json["categoryID"],
-  categoryName=json["name"];
-  
+  Category.fromJson(Map<String, dynamic> json)
+      : categoryID = json["categoryID"],
+        categoryName = json["name"];
 }
+
+

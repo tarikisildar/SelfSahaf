@@ -58,20 +58,20 @@ class SelfSahaf extends StatelessWidget {
           //white body elements
         ),
       ),
-      home:Signup(),
+      // home:MainPage(),
       debugShowCheckedModeBanner: false,
-      // initialRoute: '/',
-      // routes: <String, WidgetBuilder>{
-      //   '/': (context) => LoginPage(),
-      //   '/signup': (context) => Signup(),
-      //   '/guider': (context) => Guide(),
-      //   '/mainPage': (context) => MainPage(),
-      //   '/adminMain': (context) => AdminMainPage(),
-      //   '/searchPage': (context) => SearchPage(),
-      //   '/notifications': (context) => NotificationsPage(),
-      //   '/profilePage': (context) => AccountProfilePage(),
-      //   '/addbooks': (context) => AddBook(),
-      // },
+      initialRoute: '/',
+      routes: <String, WidgetBuilder>{
+        '/': (context) => LoginPage(),
+        '/signup': (context) => Signup(),
+        '/guider': (context) => Guide(),
+        '/mainPage': (context) => MainPage(),
+        '/adminMain': (context) => AdminMainPage(),
+        '/searchPage': (context) => SearchPage(),
+        '/notifications': (context) => NotificationsPage(),
+        '/profilePage': (context) => AccountProfilePage(),
+        '/addbooks': (context) => AddBook(),
+      },
     );
   }
 }

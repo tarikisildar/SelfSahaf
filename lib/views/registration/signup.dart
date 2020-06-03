@@ -90,7 +90,7 @@ class _SignupState extends State<Signup> {
   void _signup(data) async {
     var message = "";
     api.signup(data).then((val) {
-      if (val == 200 || val == 302) {
+      if (val.toString() == "200" || val.toString() == "302" || val.toString() == "Saved") {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => MainPage()),
