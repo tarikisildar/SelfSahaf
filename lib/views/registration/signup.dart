@@ -86,41 +86,7 @@ class _SignupState extends State<Signup> {
     }
   }
 
-  /*String message(statusCode) {
-    if (statusCode == 409) {
-      return "Girdiğiniz E-mail kullanılmaktadır!\nLütfen başka bir E-mail giriniz.";
-    } else {
-      return "Bağlantı Hatası\nLütfen daha sonra tekrar deneyiniz.";
-    }
-  }*/
-
-  /*_showDialog(statusCode) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: new Text(
-              message(statusCode),
-              style: TextStyle(fontSize: 25),
-            ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15))),
-            actions: <Widget>[
-              new FlatButton(
-                child: new Text(
-                  "Tamam",
-                  style: TextStyle(fontSize: 25),
-                ),
-                onPressed: () {
-                  
-                  Navigator.pop(context);
-                },
-              )
-            ],
-          );
-        });
-  }*/
-
+  
   void _signup(data) async {
     var message = "";
     api.signup(data).then((val) {
@@ -129,7 +95,7 @@ class _SignupState extends State<Signup> {
             context,
             MaterialPageRoute(builder: (context) => MainPage()),
             ModalRoute.withName("/Home"));
-      } else
+      } else {
         print(val.toString());
         message = "This e-mail is linked to different account";
         return showDialog(
@@ -166,6 +132,8 @@ class _SignupState extends State<Signup> {
                 ],
               );
             });
+      }
+        
     });
   }
 

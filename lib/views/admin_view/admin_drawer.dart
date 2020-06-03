@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/views/admin_view/admin_search.dart';
+import 'package:selfsahaf/views/admin_view/admin_shipping_companies.dart';
 import 'package:selfsahaf/views/admin_view/edit_categories.dart';
 
 class AdminDrawer extends StatelessWidget {
@@ -60,7 +61,12 @@ class AdminDrawer extends StatelessWidget {
                       "Shipping Companies",
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     )),
-                onTap: () => {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ShippingCompanies()),
+                  );
+                },
               ),
             ),
             Expanded(
