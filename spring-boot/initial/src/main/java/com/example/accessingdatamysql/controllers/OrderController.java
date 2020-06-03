@@ -191,6 +191,9 @@ public class OrderController {
 
     }
 
+
+
+
     public boolean isCartValid(Set<CartItem> cart){
 
         for(CartItem item : cart){
@@ -208,6 +211,25 @@ public class OrderController {
 
         }
         return true;
+    }
+
+    @ApiOperation("Mark Order as shipping, Confirmed or delivered. for seller")
+    @PostMapping(path = "/markOrder")
+    public  @ResponseBody String MarkShipping(@RequestParam Integer orderID, @RequestParam Integer productID, @RequestParam OrderStatus status,HttpServletResponse response)
+    {
+        if(!(status == OrderStatus.CONFIRMED || status == OrderStatus.SHIPPING || status == OrderStatus.DELIVERED))
+        {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "You can only mark confirmed, delivered or shipping";
+        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderIDAndProductIDAndSellerID(orderID,productID,userID);
+
+        orderDetail.setStatus(status);
+        orderDetailRepository.save(orderDetail);
+        return "status marked as" + status.name();
     }
 
     @ApiOperation("Get Order Details. Lists details for every product")
@@ -229,14 +251,14 @@ public class OrderController {
 
     @ApiOperation("Get list of taken orders by seller")
     @GetMapping(path="/takenOrders")
-    public @ResponseBody List<Order> getTakenOrders()
+    public @ResponseBody List<OrderDetail> getTakenOrders()
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
-        return  orderDetailRepository.findOrdersBySellerID(userID);
+        return  orderDetailRepository.findOrderDetailBySellerID(userID);
     }
 
-    @ApiOperation("Cancel Order Not implemented")
+    @ApiOperation("Cancel Order")
     @PostMapping(path="/cancel")
     public @ResponseBody String cancelOrder(@RequestParam Integer orderID, @RequestParam Integer productID, @RequestParam Integer sellerID, HttpServletResponse response)
     {

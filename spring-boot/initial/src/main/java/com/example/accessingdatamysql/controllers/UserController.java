@@ -33,7 +33,6 @@ import static com.example.accessingdatamysql.security.UserRole.*;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private PostalRepository postalRepository;
 
@@ -151,6 +150,15 @@ public class UserController {
         }
         return "saved";
 
+    }
+
+    @ApiOperation("Delete address")
+    @DeleteMapping("/deleteAddress")
+    public @ResponseBody String deleteAddress(@RequestParam Integer addressID)
+    {
+        Address address = addressRepository.findAddressByAddressID(addressID).get();
+        addressRepository.delete(address);
+        return "deleted address with name " + address.getAddressName();
     }
 
     @ApiOperation("w/ id for update")
