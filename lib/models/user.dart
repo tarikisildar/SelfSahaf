@@ -9,7 +9,6 @@ class User{
   String phoneNumber;
   String email;
   String role;
-  String address;
 
 
   User({mail, name,surname,password,dob}){
@@ -31,7 +30,27 @@ class User{
     "phoneNumber" : phoneNumber,
     "role" : "ROLE_USER",
   };
-
+  Map<String,dynamic> toJsonUpdate() =>{
+    "email" : email,
+    "password": password,
+    "surname" : surname,
+    "dob" : dateOfBirth,
+    "name" : name,
+    "phoneNumber" : phoneNumber,
+    "role" :role,
+    "userID": userID
+  };
+   Map<String,dynamic> toJsonBecameSeller() =>{
+    "email" : email,
+    "password": password,
+    "surname" : surname,
+    "dob" : dateOfBirth,
+    "name" : name,
+    "phoneNumber" : phoneNumber,
+    "role" :"ROLE_SELLER",
+    "userID": userID
+  };
+  
 
   User.fromJson(Map<String, dynamic> json)
     :role=json['role'],
@@ -41,7 +60,6 @@ class User{
     name=json["name"],
     surname=json["surname"],
     dateOfBirth=json["dob"],
-    phoneNumber=json["phoneNumber"],
-    address = json["address"];
+    phoneNumber=json["phoneNumber"];
 
 }

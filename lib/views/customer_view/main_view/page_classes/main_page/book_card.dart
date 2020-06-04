@@ -6,7 +6,7 @@ class BookCard extends StatelessWidget {
   final String bookName;
   final String picture;
   final String writer;
-  final int price;
+  final double price;
   final String seller;
   BookCard({this.bookName, this.picture, this.price, this.seller, this.writer});
 

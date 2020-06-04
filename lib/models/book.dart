@@ -8,9 +8,10 @@ class Book {
   String categoryName;
   String isbn;
   String sellerName;
+  String status,condition;
   int productID;
   int quantity;
-  int price;
+  double price;
   int categoryID;
   int sellerID;
   Book(
@@ -24,7 +25,9 @@ class Book {
       this.quantity,
       this.price,
       this.categoryID,
-      this.sellerName});
+      this.sellerName,
+      this.status,
+      this.condition});
   Book.bookForUpdate({
 this.authorName,
       this.name,
@@ -52,7 +55,9 @@ this.authorName,
       "language": language,
       "name": name,
       "imagePath": imagePath,
-      "publisher": publisher
+      "publisher": publisher,
+      "condition":condition,
+      "status":status
     };
   }
     Map<String, dynamic> toJsonBookUpdate() {

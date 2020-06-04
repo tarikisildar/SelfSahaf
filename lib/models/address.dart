@@ -33,4 +33,17 @@ class Address {
       }
     };
   }
+   Map<String, dynamic> toUpdateJson() {
+    return {
+      "addressLine": this.addressLine,
+      "addressName": this.addressName,
+       "addressID":addressID,
+      "postalCode": {
+        "postalCode": this.postalCode,
+        "city": this.city,
+        "country": this.country
+      }
+     
+    };
+  }
 }

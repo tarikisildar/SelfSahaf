@@ -114,11 +114,7 @@ class _ProductsPageState extends State<ProductsPage> {
                 if (bookList[0] == null) {
                   return Padding(
                     padding: const EdgeInsets.all(35.0),
-                    child: Center(
-                        child: Text(
-                      "No Books on Sale",
-                      style: TextStyle(color: Colors.white),
-                    )),
+                    child: Center(child: Text("No Books on Sale", style: TextStyle(color: Colors.white, fontSize: 25),)),
                   );
                 } else {
                   return Dismissible(

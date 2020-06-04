@@ -34,7 +34,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   TextEditingController _quantityController;
   bool _edit = false;
   List<Category> categories;
-  Category selectedCategory;
+  Category selectedCategory; 
   List<String> languages = [
     "TR",
     "EN",
@@ -167,7 +167,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                 isbn: _isbnController.text,
                 language: selectedLanguage,
                 name: _bookNameController.text,
-                price: int.parse(_priceController.text),
+                price: double.parse(_priceController.text),
                 productID: oldBook.productID,
                 publisher: _publisherController.text,
                 quantity: int.parse(_quantityController.text),

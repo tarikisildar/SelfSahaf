@@ -11,7 +11,8 @@ import 'dart:convert';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:carousel_slider/carousel_slider.dart';
+import "package:http/http.dart" as http;
 class AddBook extends StatefulWidget {
   @override
   _AddBookState createState() => new _AddBookState();
@@ -31,9 +32,9 @@ class _AddBookState extends State<AddBook> {
   TextEditingController _quantityController = new TextEditingController();
   List<Category> categories;
   Category selectedCategory;
-  File _image;
+  List<File> _imagesList = new List();
   final picker = ImagePicker();
-
+String condition;
   List<String> languages = [
     "TR",
     "EN",
@@ -131,13 +132,17 @@ class _AddBookState extends State<AddBook> {
     final pickedFile =
         await picker.getImage(source: source, maxHeight: 640, maxWidth: 640);
     setState(() {
-      pickedFile != null ? _image = File(pickedFile.path) : _image = null;
+      if (pickedFile != null) {
+        _imagesList.add(File(pickedFile.path));
+      }
+      print("list size = ${_imagesList.length}");
     });
   }
 
-  void clearImage() {
+  void clearImage(int index) {
     setState(() {
-      _image = null;
+      _imagesList.removeAt(index);
+      print(_imagesList.length);
     });
   }
 
@@ -160,20 +165,19 @@ class _AddBookState extends State<AddBook> {
           ),
           children: [
             SpeedDialChild(
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.photo_camera,
-                  color: Color(0xffe65100),
-                ),
-                label: "Camera",
-                labelStyle: TextStyle(
-                  fontSize: 15.0,
-                ),
-                onTap: () => getImage(ImageSource.camera),
-                
-                ),
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.photo_camera,
+                color: Color(0xffe65100),
+              ),
+              label: "Camera",
+              labelStyle: TextStyle(
+                fontSize: 15.0,
+              ),
+              onTap: () => getImage(ImageSource.camera),
+            ),
             SpeedDialChild(
-              elevation: 8.0,
+                elevation: 8.0,
                 backgroundColor: Colors.white,
                 child: Icon(
                   Icons.photo_album,
@@ -224,6 +228,51 @@ class _AddBookState extends State<AddBook> {
                             style: TextStyle(color: Colors.white, fontSize: 25),
                           ),
                         ),
+                        (_imagesList.length == 0)
+                            ? Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                child: Text(
+                                  "No photo selected",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                              )
+                            : CarouselSlider.builder(
+                                itemCount: _imagesList.length,
+                                itemBuilder: (BuildContext context,
+                                        int itemIndex) =>
+                                    Container(
+                                        padding: EdgeInsets.only(bottom: 10),
+                                        child: Stack(
+                                          fit: StackFit.expand,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Image.file(
+                                                _imagesList[itemIndex],
+                                                fit: BoxFit.cover,
+                                                width: double.infinity,
+                                              ),
+                                            ),
+                                            Container(
+                                              alignment: Alignment.topRight,
+                                              child: IconButton(
+                                                  icon: Icon(
+                                                    Icons.cancel,
+                                                    size: 35,
+                                                    color: Colors.white,
+                                                  ),
+                                                  onPressed: () =>
+                                                      clearImage(itemIndex)),
+                                            ),
+                                          ],
+                                        )),
+                                options: CarouselOptions(
+                                  autoPlay: false,
+                                  enableInfiniteScroll: false,
+                                  initialPage: 0,
+                                  enlargeCenterPage: true,
+                                )),
                         Padding(
                           padding:
                               const EdgeInsets.only(bottom: 12.0, top: 12.0),
@@ -349,34 +398,36 @@ class _AddBookState extends State<AddBook> {
                                 ),
                               ),
                             )),
-                        (_image == null)
-                            ? Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                                child: Text(
-                                  "No photo selected",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
+                            Padding(
+                            padding: const EdgeInsets.only(bottom: 12.0),
+                            child: Theme(
+                              data: ThemeData(
+                                  canvasColor: Color.fromRGBO(255, 144, 77, 1)),
+                              child: SafeArea(
+                                child: DropdownButton<String>(
+                                  hint: Text(
+                                    "Select Condition",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  items: ["NEW","SECONDHAND"].map((String dropdownItem) {
+                                    return DropdownMenuItem<String>(
+                                      value: dropdownItem,
+                                      child: Text(
+                                        dropdownItem,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String newValueSelected) {
+                                    setState(() {
+                                      this.condition= newValueSelected;
+                                    });
+                                  },
+                                  value: this.condition,
                                 ),
-                              )
-                            : Center(
-                                child: Stack(
-                                children: <Widget>[
-                                  Container(
-                                    child: Image.file(_image),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(
-                                        icon: Icon(
-                                          Icons.cancel,
-                                          size: 35,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        onPressed: () => clearImage()),
-                                  ),
-                                ],
-                              )),
+                              ),
+                            )),
+                        
                         Container(
                           height: 55,
                           width: 220,
@@ -396,7 +447,8 @@ class _AddBookState extends State<AddBook> {
                                 onPressed: () {
                                   if (_formKey.currentState.validate() &&
                                       selectedCategory != null &&
-                                      selectedLanguage != null) {
+                                      selectedLanguage != null &&this.condition!=null&&
+                                      _imagesList.length != 0) {
                                     Book addedBook = Book(
                                         categoryID: selectedCategory.categoryID,
                                         authorName: _authorController.text,
@@ -407,8 +459,10 @@ class _AddBookState extends State<AddBook> {
                                         quantity:
                                             int.parse(_quantityController.text),
                                         language: selectedLanguage,
+                                        condition: this.condition,
+                                        status: "ACTIVE",
                                         name: _booknameController.text,
-                                        price: int.parse(_priceController.text),
+                                        price: double.parse(_priceController.text),
                                         sellerName:
                                             userService.getUser().getUserName(),
                                         publisher: _publisherController.text);
@@ -416,10 +470,21 @@ class _AddBookState extends State<AddBook> {
                                         .addBook(addedBook,
                                             userService.getUser().userID)
                                         .then((e) {
-                                      Navigator.of(context).pop(addedBook);
+                                       productService.uploadImages(_imagesList, e).then((value){
+                                         if(value==200)
+                                           Navigator.of(context).pop(addedBook);
+                                          else{
+                                            productService.deleteBook(e);
+                                          print("HATA");
+                                          print(value);
+                                          print(e);
+                                          }
+                                       });
+                                    
                                     });
                                   } else if (selectedLanguage == null ||
-                                      selectedCategory == null) {
+                                      selectedCategory == null ||
+                                      _imagesList.length == 0) {
                                     showDialog(
                                         context: context,
                                         builder: (context) {
@@ -434,10 +499,15 @@ class _AddBookState extends State<AddBook> {
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
-                                            content: Text(
-                                                "Please select category or language.",
-                                                style: TextStyle(
-                                                    color: Colors.white)),
+                                            content: (_imagesList.length == 0)
+                                                ? Text(
+                                                    "Please select an image or images",
+                                                    style: TextStyle(
+                                                        color: Colors.white))
+                                                : Text(
+                                                    "Please select category or language.",
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                             actions: <Widget>[
                                               FlatButton(
                                                 color: Colors.white,
