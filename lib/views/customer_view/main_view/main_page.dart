@@ -36,8 +36,7 @@ class _MainPageState extends State<MainPage> {
   bool _loading = true;
   @override
   void initState() {
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
+
     _fetchData();
 
     _pages = [
@@ -51,7 +50,9 @@ class _MainPageState extends State<MainPage> {
           _scrollController.position.maxScrollExtent) {
         _getMoreData();
       }
+
     });
+    
     
   }
 

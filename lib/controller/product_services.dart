@@ -159,13 +159,7 @@ class ProductService extends GeneralServices {
     }
 
     try {
-    /*FormData formData = new FormData.fromMap({
-        "file":  multiFiles,
-        "productID": productID,
-      });*/
-      /*FormData formData=new FormData();
-      formData.files.add(MapEntry("files", MultipartFile(images[0].openRead(),await images[0].length(), filename: images[0].path.split("/").last)));
-      formData.fields.add(MapEntry("productID","$productID"));*/
+
       FormData formData=FormData();
       formData.fields.add(MapEntry("productID", productID.toString()));
       for(int i=0;i<images.length;i++){
