@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:selfsahaf/views/admin_view/admin_main_page.dart';
-import 'package:selfsahaf/views/app_guide.dart';
 import 'package:selfsahaf/views/customer_view/main_view/main_page.dart';
 import 'package:selfsahaf/controller/product_services.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/notification_pages/notifications.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/search_pages/search_page.dart';
 import 'package:selfsahaf/views/customer_view/products_pages/add_book.dart';
-import 'package:selfsahaf/views/customer_view/profile_pages/account_profile.dart';
+import 'package:selfsahaf/views/customer_view/profile_pages/profile_page.dart';
 import 'package:selfsahaf/views/registration/login.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
 
@@ -64,12 +63,11 @@ class SelfSahaf extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/': (context) => LoginPage(),
         '/signup': (context) => Signup(),
-        '/guider': (context) => Guide(),
         '/mainPage': (context) => MainPage(),
         '/adminMain': (context) => AdminMainPage(),
         '/searchPage': (context) => SearchPage(),
         '/notifications': (context) => NotificationsPage(),
-        '/profilePage': (context) => AccountProfilePage(),
+        '/profilePage': (context) => ProfilePage(),
         '/addbooks': (context) => AddBook(),
       },
     );

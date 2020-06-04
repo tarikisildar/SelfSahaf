@@ -7,7 +7,6 @@ import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/m
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/sahaf_drawer.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/notification_pages/notifications.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/search_pages/search_page.dart';
-import 'package:selfsahaf/views/customer_view/profile_pages/account_profile.dart';
 import 'package:selfsahaf/views/customer_view/profile_pages/profile_page.dart';
 import 'package:selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
@@ -34,7 +33,7 @@ class _MainPageState extends State<MainPage> {
     HomePage(),
     SearchPage(),
     NotificationsPage(),
-    AccountProfilePage(),
+    ProfilePage(),
   ];
   AuthService get userService => GetIt.I<AuthService>();
   BookService get _bookService => GetIt.I<BookService>();
