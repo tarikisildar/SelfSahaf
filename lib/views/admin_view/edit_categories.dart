@@ -11,7 +11,7 @@ class EditCategories extends StatefulWidget {
 class _EditCategoriesState extends State<EditCategories> {
   final _formKey = GlobalKey<FormState>();
   
-  AuthService categoryApi = new AuthService();
+  CategoryService categoryApi = new CategoryService();
   TextEditingController categorynameController = TextEditingController();
    
   String categorynameValidation(String categoryname) {
