@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:selfsahaf/views/app_guide.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/book_card.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/home_page_carousel.dart';
+import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/home_page_.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/sahaf_drawer.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/notification_pages/notifications.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/search_pages/search_page.dart';
-import 'package:selfsahaf/views/customer_view/profile_pages/account_profile.dart';
 import 'package:selfsahaf/views/customer_view/profile_pages/profile_page.dart';
 import 'package:selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
@@ -29,7 +28,12 @@ class _MainPageState extends State<MainPage> {
   int _index = 0;
   int page = 0, size = 4, localpage = 0;
   bool checkPage;
-  List<Widget> _pages;
+  List<Widget> _pages= [
+    HomePage(),
+    SearchPage(),
+    NotificationsPage(),
+    ProfilePage(),
+  ];
   AuthService get userService => GetIt.I<AuthService>();
   BookService get _bookService => GetIt.I<BookService>();
 
@@ -43,7 +47,7 @@ class _MainPageState extends State<MainPage> {
       MainPage(),
       SearchPage(),
       NotificationsPage(),
-      AccountProfilePage()
+      ProfilePage()
     ];
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -143,10 +147,7 @@ class _MainPageState extends State<MainPage> {
                               color: Colors.white,
                             ),
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MainPage()));
+                        _changeIndex(0);
                       },
                     ),
                     _index == 0
@@ -173,10 +174,7 @@ class _MainPageState extends State<MainPage> {
                               color: Colors.white,
                             ),
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SearchPage()));
+                        _changeIndex(1);
                       },
                     ),
                     _index == 1
@@ -203,10 +201,7 @@ class _MainPageState extends State<MainPage> {
                               color: Colors.white,
                             ),
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => NotificationsPage()));
+                        _changeIndex(2);
                       },
                     ),
                     _index == 2
@@ -233,10 +228,7 @@ class _MainPageState extends State<MainPage> {
                               color: Colors.white,
                             ),
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfilePage()));
+                        _changeIndex(3);
                       },
                     ),
                     _index == 3
@@ -252,70 +244,9 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
         ),
-        appBar: AppBar(
-          title: Container(
-              height: 50,
-              child: Image.asset("images/logo_white/logo_white.png")),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.shopping_cart),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ShoppingCart()),
-                  );
-                }),
-          ],
-        ),
-        drawer: (_loading)
-            ? Center(child: CircularProgressIndicator())
-            : SahafDrawer(),
-        body: (_loading)
-            ? Center(child: CircularProgressIndicator())
-            : RefreshIndicator(
-                onRefresh: () => _refresh(),
-                key: _refreshIndicatorKey,
-                child: ListView(
-                  controller: _scrollController,
-                  physics: AlwaysScrollableScrollPhysics(),
-                  children: <Widget>[
-                    HomePageCarousel(),
-                    (bookList.length == 0)
-                        ? Center(
-                            child: Text(
-                              "No book on sale",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25),
-                            ),
-                          )
-                        : GridView.builder(
-                            physics: ScrollPhysics(),
-                            itemCount: bookList.length,
-                            shrinkWrap: true,
-                            gridDelegate:
-                                new SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2),
-                            itemBuilder: (BuildContext context, int index) {
-                              return BookCard(
-                                bookName: bookList[index].name,
-                                picture: "images/sell/lontano.jpg",
-                                price: bookList[index].price,
-                                seller: bookList[index].sellerName,
-                                writer: bookList[index].authorName,
-                              );
-                            }),
-                    Container(
-                      height: _isloading ? 50.0 : 0,
-                      color: Colors.transparent,
-                      child: Center(
-                        child: new CircularProgressIndicator(
-                          backgroundColor: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ));
+        
+        
+        body: _pages[_index],);
   }
 
   _changeIndex(int i) {

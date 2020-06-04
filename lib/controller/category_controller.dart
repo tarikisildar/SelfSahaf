@@ -6,7 +6,7 @@ import 'package:selfsahaf/models/api_response.dart';
 
 import 'package:selfsahaf/controller/generalServices.dart';
 
-class AuthService extends GeneralServices{
+class CategoryService extends GeneralServices{
   Dio _dio;
   AuthService(){
   _dio= super.dio;
