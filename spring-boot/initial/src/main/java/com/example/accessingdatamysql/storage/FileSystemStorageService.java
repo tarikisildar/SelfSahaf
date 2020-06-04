@@ -121,7 +121,7 @@ public class FileSystemStorageService implements StorageService {
     @Override
     public String storeAll(List<MultipartFile> files, Integer productID, Integer sellerID){
 
-        Path dir_path = Paths.get(sellerID.toString()).resolve(productID.toString());
+        Path dir_path = Paths.get("productImages").resolve(Paths.get(sellerID.toString()).resolve(productID.toString()));
 
         return storeAllIns(dir_path, files);
 
@@ -131,6 +131,7 @@ public class FileSystemStorageService implements StorageService {
     private String storeAllIns(Path dir_path, List<MultipartFile> files)
     {
         // Create a directory in the format of root/sellerID/productID
+
         try
         {
             File dir = new File(this.rootLocation.resolve(dir_path.toString()).toString());
@@ -172,7 +173,7 @@ public class FileSystemStorageService implements StorageService {
         // Create a directory in the format of root/sellerID/productID
         try
         {
-            File dir = new File(this.rootLocation.resolve(dir_path.toString()).toString());
+            File dir = new File(this.rootLocation.resolve("productImages"+dir_path.toString()).toString());
             boolean isCreated = dir.mkdirs();
         }
         catch (Exception e)
@@ -196,7 +197,9 @@ public class FileSystemStorageService implements StorageService {
 
     @Override
     public List<Resource> loadAllResources(String productID, String sellerID){
-        File folder = new File(this.rootLocation.resolve(sellerID.toString()).resolve(productID.toString()).toString());
+        Path root = this.rootLocation.resolve("productImages");
+
+        File folder = new File(root.resolve(sellerID.toString()).resolve(productID.toString()).toString());
 
         File[] listOfFiles = folder.listFiles();
         List<Resource> resourceList = new ArrayList<Resource>();

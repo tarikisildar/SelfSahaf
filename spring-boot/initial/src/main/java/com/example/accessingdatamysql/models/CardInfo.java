@@ -88,7 +88,7 @@ public class CardInfo {
     public String getCvv() {
         return cvv;
     }
-    @JsonIgnore
+
     public void setCvv(String cvv) {
         this.cvv = cvv;
     }
@@ -96,7 +96,7 @@ public class CardInfo {
     public String getExpirationYear() {
         return expirationYear;
     }
-    @JsonIgnore
+
     public void setExpirationYear(String expirationYear) {
         this.expirationYear = expirationYear;
     }
@@ -104,7 +104,7 @@ public class CardInfo {
     public String getExpirationMonth() {
         return expirationMonth;
     }
-    @JsonIgnore
+
     public void setExpirationMonth(String expirationMonth) {
         this.expirationMonth = expirationMonth;
     }

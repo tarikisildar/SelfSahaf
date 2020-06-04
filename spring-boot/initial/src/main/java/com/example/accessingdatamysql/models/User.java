@@ -84,11 +84,11 @@ public class User {
         this.email = email;
     }
 
-
+    @JsonIgnore
     public Set<Order> getOrders() {
         return orders;
     }
-
+    @JsonIgnore
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
