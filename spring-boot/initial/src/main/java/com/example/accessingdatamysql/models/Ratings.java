@@ -16,13 +16,9 @@ public class Ratings {
     private Integer ratingID;
 
     @JsonIgnoreProperties("ratings")
-    @ManyToOne
-    @JoinColumns(
-            {
-                    @JoinColumn(name="receiverID", referencedColumnName="sellerID"),
-                    @JoinColumn(name="productID", referencedColumnName="productID")
+    @OneToOne
+    @JoinColumn(name="orderDetailID", referencedColumnName="orderDetailID")
 
-            })
     private OrderDetail orderDetail;
 
 

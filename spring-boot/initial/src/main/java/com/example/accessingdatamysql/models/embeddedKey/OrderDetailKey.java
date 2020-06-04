@@ -9,16 +9,16 @@ import java.util.Objects;
 @Embeddable
 public class OrderDetailKey implements Serializable{
 
-    @Column(unique = false)
+    @Column(unique = false, nullable = false)
     private Integer orderID;
 
-    @Column
+    @Column(unique = false, nullable = false)
     private Integer sellerID;
 
-    @Column
+    @Column(unique = false, nullable = false)
     private Integer productID;
 
-    @Column
+    @Column(unique = false, nullable = false)
     private Integer shippingInfoID;
 
 
@@ -47,7 +47,7 @@ public class OrderDetailKey implements Serializable{
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOrderID(), getProductID(), getSellerID(), getShippingInfoID());
+        return Objects.hash(getOrderID(), getSellerID(), getProductID(), getShippingInfoID());
     }
 
 

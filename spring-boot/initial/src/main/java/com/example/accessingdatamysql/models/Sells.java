@@ -113,6 +113,7 @@ public class Sells implements Serializable{
     public Double getPrice() {
         String date = LocalDateTime.MIN.toString();
         Price tempPrice = null;
+        Double discount;
         for (Price p : price) {
 
             if (p.getPriceID().getDatetime().compareTo(date) > 0) {
@@ -120,8 +121,13 @@ public class Sells implements Serializable{
                 date = tempPrice.getDate();
             }
         }
-        if(tempPrice != null)
-            return tempPrice.getPrice();
+        if(tempPrice != null) {
+
+
+            discount = tempPrice.getDiscount() / 100.;
+
+            return tempPrice.getPrice() * (1 - discount);
+        }
         else
             return null;
     }

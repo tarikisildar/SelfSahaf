@@ -96,7 +96,7 @@ public class OrderController {
 
                 /*validate card if validated return true*/
             System.out.println("Hello");
-            if(true) {
+            if(paypal.validateCard(card)) {
 
                 System.out.println("Hello");
                 card = cardRepository.save(card);

@@ -10,15 +10,15 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface OrderDetailRepository extends CrudRepository<OrderDetail, Integer>{
-    @Query("SELECT ord FROM OrderDetail ord WHERE ord.orderDetailID.sellerID = ?1")
+    @Query("SELECT ord FROM OrderDetail ord WHERE ord.user.userID = ?1")
     List<OrderDetail> findOrderDetailBySellerID(Integer sellerID);
 
-    @Query("SELECT ord.order FROM OrderDetail ord WHERE ord.orderDetailID.sellerID = ?1")
+    @Query("SELECT ord.order FROM OrderDetail ord WHERE ord.user.userID = ?1")
     List<Order> findOrdersBySellerID(Integer sellerID);
 
-    @Query("SELECT ord FROM OrderDetail ord WHERE ord.orderDetailID.orderID = ?1 AND ord.orderDetailID.productID = ?2 AND ord.orderDetailID.sellerID = ?3")
+    @Query("SELECT ord FROM OrderDetail ord WHERE ord.order.orderID = ?1 AND ord.product.productID = ?2 AND ord.user.userID = ?3")
     OrderDetail findOrderDetailByOrderIDAndProductIDAndSellerID(Integer orderID, Integer productID, Integer sellerID);
 
-    @Query("SELECT ord FROM OrderDetail ord WHERE ord.orderDetailID.orderID = ?1")
+    @Query("SELECT ord FROM OrderDetail ord WHERE ord.order.orderID = ?1")
     List<OrderDetail> findOrderDetailsByOrderID(Integer orderID);
 }

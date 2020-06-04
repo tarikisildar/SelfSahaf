@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface RefundRepository extends CrudRepository<RefundRequest,Integer>{
-    @Query("SELECT refund FROM RefundRequest refund WHERE refund.orderDetail.orderDetailID.sellerID = ?1")
+    @Query("SELECT refund FROM RefundRequest refund WHERE refund.orderDetail.user.userID = ?1")
     List<RefundRequest> findRefundRequestsBySellerID(Integer sellerID);
 }

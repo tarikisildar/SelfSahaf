@@ -11,13 +11,10 @@ public class RefundRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer refundID;
 
-    @JsonIgnoreProperties("refunds")
-    @ManyToOne
-    @JoinColumns(
-            {
-                    @JoinColumn(name="receiverID", referencedColumnName="sellerID"),
-                    @JoinColumn(name="productID", referencedColumnName="productID")
-            })
+
+    @JsonIgnoreProperties("ratings")
+    @OneToOne
+    @JoinColumn(name="orderDetailID", referencedColumnName="orderDetailID")
     private OrderDetail orderDetail;
 
     @JsonIgnoreProperties("refunds")
@@ -58,6 +55,8 @@ public class RefundRequest {
     }
     @JsonIgnore
     public OrderDetail getOrderDetail() {
+
+
         return orderDetail;
     }
     @JsonIgnore

@@ -15,10 +15,12 @@ import java.io.Serializable;
 public class OrderDetail implements Serializable {
 
 
-    @EmbeddedId
-    private OrderDetailKey orderDetailID = new OrderDetailKey();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer orderDetailID;
 
     private Integer quantity;
+
 
     @Enumerated(EnumType.STRING)
     @Column(length=45)
@@ -27,28 +29,31 @@ public class OrderDetail implements Serializable {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("orderID")
-    @JoinColumn(name = "orderID")
+//    @MapsId("orderID")
+    @JoinColumn(name = "orderID", referencedColumnName = "orderID")
     private Order order;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("shippingInfoID")
-    @JoinColumn(name = "shippingInfoID")
+//    @MapsId("shippingInfoID")
+    @JoinColumn(name = "shippingInfoID", referencedColumnName = "shippingInfoID")
     private ShippingInfo shippingInfo;
 
 
     @JsonIgnoreProperties("orderdetails")
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("sellerID")
+//    @MapsId("sellerID")
     @JoinColumn(name = "sellerID", referencedColumnName = "userID")
     private User user;
 
     @JsonIgnoreProperties("orderdetails")
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("productID")
+//    @MapsId("productID")
     @JoinColumn(name = "productID", referencedColumnName = "productID")
     private Product product;
+
+
+
 
     @JsonIgnore
     public Order getOrder() {
@@ -99,11 +104,11 @@ public class OrderDetail implements Serializable {
         this.status = status;
     }
 
-    public OrderDetailKey getOrderDetailID() {
+    public Integer getOrderDetailID() {
         return orderDetailID;
     }
 
-    public void setOrderDetailID(OrderDetailKey orderDetailID) {
+    public void setOrderDetailID(Integer orderDetailID) {
         this.orderDetailID = orderDetailID;
     }
 

@@ -62,11 +62,11 @@ public class User {
 
 
     @JsonIgnoreProperties("user")
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<OrderDetail> orderdetails;
 
     @JsonIgnoreProperties("buyer")
-    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "buyer", fetch = FetchType.EAGER)
     private Set<Order> orders;
 
 
