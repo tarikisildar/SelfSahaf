@@ -260,9 +260,9 @@ public class OrderController {
 
     @ApiOperation("Cancel Order")
     @PostMapping(path="/cancel")
-    public @ResponseBody String cancelOrder(@RequestParam Integer orderID, @RequestParam Integer productID, @RequestParam Integer sellerID, HttpServletResponse response)
+    public @ResponseBody String cancelOrder(@RequestParam Integer orderDetailID, HttpServletResponse response)
     {
-        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderIDAndProductIDAndSellerID(orderID,productID,sellerID);
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailsByOrderDetailID(orderDetailID);
         if(orderDetail.getStatus() == OrderStatus.ACTIVE)
             orderDetail.setStatus(OrderStatus.CANCELLED);
         else{
@@ -282,7 +282,7 @@ public class OrderController {
     @Transactional
     @ApiOperation("Refund Request, orderId productId and sellerId needed for finding specific product order. file is optional")
     @PostMapping(path="/refundRequest")
-    public @ResponseBody String refundRequest(@RequestParam Integer orderID,@RequestParam Integer productId, @RequestParam Integer sellerID,@RequestBody(required = false) List<MultipartFile> file,@RequestParam String message)
+    public @ResponseBody String refundRequest(@RequestParam Integer orderDetailID,@RequestBody(required = false) List<MultipartFile> file,@RequestParam String message)
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
@@ -292,7 +292,7 @@ public class OrderController {
         LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
         String formattedDatetime = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
 
-        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderIDAndProductIDAndSellerID(orderID,productId,sellerID);
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailsByOrderDetailID(orderDetailID);
         orderDetail.setStatus(OrderStatus.REFUNDREQUEST);
         RefundRequest refundRequest = new RefundRequest(orderDetail,formattedDatetime,message);
         refundRequest.setUser(user);

@@ -92,7 +92,7 @@ public class ProductController {
         sells.setUser(user.get());
 
         sellerRepository.save(sells);
-        return "A new selling created";
+        return pr.getProductID().toString();
     }
     @ApiOperation("update Product")
     @PostMapping(path ="/updateBook")
