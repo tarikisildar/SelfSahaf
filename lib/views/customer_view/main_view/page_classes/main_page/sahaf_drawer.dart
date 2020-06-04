@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
 import 'package:selfsahaf/views/customer_view/products_pages/productsDialog.dart';
 import 'package:selfsahaf/views/customer_view/products_pages/products_page.dart';
+import "package:selfsahaf/views/customer_view/profile_pages/profile_page.dart";
+import 'package:selfsahaf/views/customer_view/profile_pages/settings_page.dart';
 class SahafDrawer extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -70,7 +72,7 @@ class _SahafDrawer extends State<SahafDrawer> {
                     "My Account",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
-              onTap: () => {},
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder:(context)=>ProfilePage() )),
             ),
             InkWell(
                 child: ListTile(
@@ -108,7 +110,7 @@ class _SahafDrawer extends State<SahafDrawer> {
                     "Settings",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
-              onTap: () => {},
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder:(context)=>SettingsPage() )),
             )
           ],
         ),

@@ -14,7 +14,7 @@ class HomePageCarousel extends StatelessWidget {
         dotBgColor: Colors.transparent,
         boxFit: BoxFit.cover,
         images: [
-          AssetImage("images/carousel/kitap1.png"),
+          AssetImage("images/carousel/kitap1.png",),
           AssetImage("images/carousel/kitap2.jpg"),
           AssetImage("images/carousel/kitap3.jpg"),
           AssetImage("images/carousel/kitap4.jpg"),
