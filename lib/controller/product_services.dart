@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -159,13 +158,7 @@ class ProductService extends GeneralServices {
     }
 
     try {
-    /*FormData formData = new FormData.fromMap({
-        "file":  multiFiles,
-        "productID": productID,
-      });*/
-      /*FormData formData=new FormData();
-      formData.files.add(MapEntry("files", MultipartFile(images[0].openRead(),await images[0].length(), filename: images[0].path.split("/").last)));
-      formData.fields.add(MapEntry("productID","$productID"));*/
+
       FormData formData=FormData();
       formData.fields.add(MapEntry("productID", productID.toString()));
       for(int i=0;i<images.length;i++){
@@ -214,6 +207,25 @@ class ProductService extends GeneralServices {
         print(e.request);
         print(e.message);
         return 406;
+      }
+    }
+  }
+  Future<Uint8List> getImage(int userID,int productID, int imageID) async {
+    try {
+      
+     Response response= await _dio.get("product/images", queryParameters:{
+       "path": "/root/images/productImages/$userID/$productID/$imageID.png"
+     },options: Options(contentType: 'application/json',  method: 'GET', responseType: ResponseType.bytes) );
+    
+     return response.data;
+    } on DioError catch (e) {
+      if (e.response != null) {
+
+        return null;
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        
+        return null;
       }
     }
   }

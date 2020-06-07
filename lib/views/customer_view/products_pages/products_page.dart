@@ -124,6 +124,8 @@ class _ProductsPageState extends State<ProductsPage> {
                       authorName: bookList[index].authorName,
                       publisherName: bookList[index].publisher,
                       price: "${bookList[index].price}",
+                      productID: bookList[index].productID,
+                      sellerID: bookList[index].sellerID,
                     ),
                     direction: DismissDirection.horizontal,
                     onDismissed: (direction) {

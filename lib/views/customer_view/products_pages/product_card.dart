@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:selfsahaf/controller/product_services.dart';
 import 'package:selfsahaf/models/book.dart';
 
 class ProductCard extends StatefulWidget {
@@ -6,17 +10,28 @@ class ProductCard extends StatefulWidget {
   final String authorName;
   final String publisherName;
   final String price;
-
+  final int sellerID,productID;
   ProductCard(
           {@required this.bookName,
           @required this.authorName,
           @required this.publisherName,
-          @required this.price, });
+          @required this.price, @required this.sellerID, @required this.productID});
 
   @override
   _ProductsCardState createState(){  return _ProductsCardState(); }
 }
 class _ProductsCardState extends State<ProductCard> {
+  ProductService get _productService => GetIt.I<ProductService>();
+   Uint8List photo;
+  @override
+  void initState() {
+    super.initState();
+    _productService.getImage(widget.sellerID, widget.productID, 1).then((value) {
+      setState(() {
+        this.photo=value;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context){
     return Padding(
@@ -34,10 +49,11 @@ class _ProductsCardState extends State<ProductCard> {
                         child: Container(
                           height: 100,
                           width: 100,
+                     
                           decoration: BoxDecoration(
                               color: Colors.transparent,
                               borderRadius: BorderRadius.all(Radius.circular(25))),
-                          child: Icon(Icons.book, color: Color(0xffe65100), size: 60,),
+                          child:(photo==null)? Icon(Icons.book, color: Color(0xffe65100), size: 60,):Image.memory(photo, fit: BoxFit.cover,),
                         ),
                       ),
                       Expanded(
