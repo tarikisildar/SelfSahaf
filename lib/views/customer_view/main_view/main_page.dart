@@ -39,9 +39,7 @@ class _MainPageState extends State<MainPage> {
   bool _loading = true;
   @override
   void initState() {
-    
     _index=0;
-    
   }
 
   @override

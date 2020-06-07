@@ -1,7 +1,7 @@
 // This is a generated file; do not edit or check into version control.
 FLUTTER_ROOT=/Users/aosmankocaman/Developer/flutter
-FLUTTER_APPLICATION_PATH=/Users/aosmankocaman/Desktop/bbm384
-FLUTTER_TARGET=/Users/aosmankocaman/Desktop/bbm384/lib/main.dart
+FLUTTER_APPLICATION_PATH=/Users/aosmankocaman/Desktop/selfsahaf/bbm384-project-spring2020-daltonlar-ve-barkin
+FLUTTER_TARGET=/Users/aosmankocaman/Desktop/selfsahaf/bbm384-project-spring2020-daltonlar-ve-barkin/lib/main.dart
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build/ios
 OTHER_LDFLAGS=$(inherited) -framework Flutter
