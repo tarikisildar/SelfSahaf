@@ -53,34 +53,55 @@ class _BookCardState extends State<BookCard> {
           child: (clicked)
               ? Container(
                   width: 40,
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(widget.bookName,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Theme.of(context).primaryColor)),
-                      Text(
-                        "Author: " + widget.writer,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Text(
-                        "${widget.price}",
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      ),
-                      Container(
-                        alignment: Alignment.bottomRight,
-                        child: InkWell(
-                          onTap: (){
-                            print("sa");
-                          },
-                          child:Icon(Icons.send,
-                            color: Theme.of(context).primaryColor, size: 50),)
-                      )
-                    ],
+                  color: Color.fromRGBO(252, 140, 3, 0.8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 8,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 6,
+                                child: Text(widget.bookName,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.white)),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  "Author: " + widget.writer,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  "${widget.price} TL",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                            flex: 2,
+                            child: InkWell(
+                              onTap: () {
+                                print("sa");
+                              },
+                              child: Icon(Icons.arrow_forward_ios,
+                                  color: Colors.white,
+                                  size: 50),
+                            )),
+                      ],
+                    ),
                   ))
               : GridTile(
                   child: Container(
