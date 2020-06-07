@@ -112,6 +112,8 @@ class _AdminSearchState extends State<AdminSearch> {
                           bookName: "alios",
                           price: "20",
                           publisherName: "alios publishing",
+                          productID: 5,
+                  sellerID: 2,
                         ),
                       ],
                     ),

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
 import 'package:selfsahaf/views/customer_view/main_view/main_page.dart';
@@ -26,46 +26,13 @@ class _LoginPageState extends State<LoginPage> {
     api
         .loginWithEmail(_emailController.text, _passwordController.text)
         .then((val) {
-      if (val == 200 || val == 302) {
+      if (!val.error) {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => MainPage()),
             ModalRoute.withName("/Home"));
       } else
-        return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                backgroundColor: Color(0xffe65100),
-                title: Text(
-                  "Hata!",
-                  style: TextStyle(color: Colors.white),
-                ),
-                content: Text("Girdiğiniz E-Mail veya Şifre Hatalıdır.",
-                    style: TextStyle(color: Colors.white)),
-                actions: <Widget>[
-                  FlatButton(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    child: Text(
-                      "Tamam",
-                      style: TextStyle(color: Color(0xffe65100)),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                ],
-              );
-            });
+        return ErrorDialog().showErrorDialog(context, "Hata", val.errorMessage);
     });
   }
 

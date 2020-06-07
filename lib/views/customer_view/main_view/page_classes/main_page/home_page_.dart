@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/controller/book_controller.dart';
+import 'package:selfsahaf/controller/product_services.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
 import 'package:selfsahaf/models/book.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/book_card.dart';
@@ -34,8 +35,6 @@ class _HomePageState extends State<HomePage> {
   
   @override
   void initState() {
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
     _fetchData();
 
     
@@ -90,6 +89,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<Null> _refresh() {
+    
     setState(() {
       _isloading = true;
     });
@@ -101,6 +101,8 @@ class _HomePageState extends State<HomePage> {
           page = 0;
       
         this.bookList = e;
+        _bookService.getImage(bookList[0].sellerID,  bookList[0].productID, 1).then((value) => print(value));
+        
           _isloading = false;
       });
       print(bookList.length);
@@ -125,10 +127,10 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         drawer: (_loading)
-            ? Center(child: CircularProgressIndicator())
+            ?  Container(  color: Colors.transparent,child:Center(child: CircularProgressIndicator(backgroundColor: Colors.white,)))
             : SahafDrawer(),
       body: (_loading)
-            ? Center(child: CircularProgressIndicator())
+            ? Container(  color: Colors.transparent,child:Center(child: CircularProgressIndicator(backgroundColor: Colors.white,)))
             : RefreshIndicator(
                 onRefresh: () => _refresh(),
                 key: _refreshIndicatorKey,
@@ -153,12 +155,15 @@ class _HomePageState extends State<HomePage> {
                                 new SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2),
                             itemBuilder: (BuildContext context, int index) {
+                              
                               return BookCard(
                                 bookName: bookList[index].name,
                                 picture: "images/sell/lontano.jpg",
                                 price: bookList[index].price,
                                 seller: bookList[index].sellerName,
                                 writer: bookList[index].authorName,
+                                productID: bookList[index].productID,
+                                sellerID: bookList[index].sellerID,
                               );
                             }),
                     Container(

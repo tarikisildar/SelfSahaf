@@ -3,7 +3,7 @@ import 'package:selfsahaf/controller/user_controller.dart';
 import 'package:selfsahaf/models/user.dart';
 import 'package:selfsahaf/views/customer_view/main_view/main_page.dart';
 import 'package:selfsahaf/views/registration/input_field.dart';
-
+import 'package:selfsahaf/views/errors/error_dialog.dart';
 import 'login.dart';
 
 class Signup extends StatefulWidget {
@@ -98,40 +98,7 @@ class _SignupState extends State<Signup> {
       } else {
         print(val.toString());
         message = "This e-mail is linked to different account";
-        return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                backgroundColor: Color(0xffe65100),
-                title: Text(
-                  "Hata!",
-                  style: TextStyle(color: Colors.white),
-                ),
-                content: Text(val.toString(),
-                    style: TextStyle(color: Colors.white)),
-                actions: <Widget>[
-                  FlatButton(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    child: Text(
-                      "Tamam",
-                      style: TextStyle(color: Color(0xffe65100)),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                ],
-              );
-            });
+        return ErrorDialog().showErrorDialog(context, "Hata", val.errorMessage);
       }
         
     });
