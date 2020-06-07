@@ -5,6 +5,7 @@ import com.example.accessingdatamysql.models.embeddedKey.PriceKey;
 import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
+@Indexed
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "sells")
 public class Sells implements Serializable{
@@ -50,6 +52,9 @@ public class Sells implements Serializable{
     @OneToMany(mappedBy = "sells", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<CartItem> cart;
 
+    @Field(analyze = Analyze.NO)
+    @Facet(forField = "currentPrice", encoding = FacetEncodingType.DOUBLE)
+    private Double currentPrice;
 
     @JsonIgnoreProperties("sells")
     @OneToMany(mappedBy = "sells", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -120,8 +125,10 @@ public class Sells implements Serializable{
                 date = tempPrice.getDate();
             }
         }
-        if(tempPrice != null)
+        if(tempPrice != null) {
+            setCurrentPrice(tempPrice.getPrice());
             return tempPrice.getPrice();
+        }
         else
             return null;
     }
@@ -138,6 +145,15 @@ public class Sells implements Serializable{
         this.price = price;
     }
 
+    public Double getCurrentPrice() {
+        return currentPrice;
+    }
 
+    public void setCurrentPrice(Double currentPrice) {
+        this.currentPrice = currentPrice;
+    }
 }
+
+
+
 

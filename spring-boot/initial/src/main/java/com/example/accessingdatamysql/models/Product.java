@@ -4,6 +4,12 @@ import com.example.accessingdatamysql.models.enums.ProductCondition;
 import com.example.accessingdatamysql.models.enums.ProductStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
+import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilterFactory;
+import org.apache.lucene.analysis.ngram.EdgeNGramFilterFactory;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Parameter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,8 +18,30 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+@Indexed
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "product")
+@AnalyzerDefs({
+        @AnalyzerDef(name = "edgeNgram",
+                tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
+                filters = {
+                        @TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
+                        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+                        @TokenFilterDef(
+                                factory = EdgeNGramFilterFactory.class,
+                                params = {
+                                        @Parameter(name = "minGramSize", value = "1"),
+                                        @Parameter(name = "maxGramSize", value = "10")
+                                }
+                        )
+                }),
+        @AnalyzerDef(name = "edgeNGram_query",
+                tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
+                filters = {
+                        @TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
+                        @TokenFilterDef(factory = LowerCaseFilterFactory.class)
+                })
+})
 public class Product
 {
     @Id
@@ -22,10 +50,13 @@ public class Product
     @Column(length = 255)
     private String description;
     @Column(length = 45)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "edgeNgram"), store = Store.NO)
     private String name;
     @Column(length = 15)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "edgeNgram"), store = Store.NO)
     private String language;
     @Column(length = 45)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "edgeNgram"), store = Store.NO)
     private String author;
     @Column(length = 45)
     private String publisher;

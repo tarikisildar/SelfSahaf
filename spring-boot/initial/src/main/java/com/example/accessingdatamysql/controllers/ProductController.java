@@ -85,6 +85,7 @@ public class ProductController {
 
         prices.add(price1);
         sells.setPrice(prices);
+        sells.setCurrentPrice(price1.getPrice());
         sells.setQuantity(quantity);
 
         sells.setProduct(pr);
@@ -116,8 +117,10 @@ public class ProductController {
                 String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
                 PriceKey priceKey = new PriceKey(product.getProductID(),sell.getSellerID(),formatted);
                 Set<Price> prices = new HashSet<>();
-                prices.add(new Price(priceKey,sell,price));
+                Price newPrice = new Price(priceKey,sell,price);
+                prices.add(newPrice);
                 sell.setPrice(prices);
+                sell.setCurrentPrice(newPrice.getPrice());
                 sell.setQuantity(quantity);
                 flag = true;
             }
