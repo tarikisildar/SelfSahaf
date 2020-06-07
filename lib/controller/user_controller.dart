@@ -11,39 +11,55 @@ class AuthService extends GeneralServices {
   AuthService() {
     _dio = super.dio;
   }
-  Future<int> loginWithEmail(String email, String password) async {
+  Future<APIResponse<int>> loginWithEmail(String email, String password) async {
     try {
       Response response = await _dio.post(
         "login?email=" + email + "&password=" + password,
       );
-      return response.statusCode;
+      if(response.statusCode==403)
+        return APIResponse<int>(data: response.statusCode , error: true, errorMessage: "Email or password is wrong!") ;
+
+      return APIResponse<int>(data: response.statusCode ) ;
     } on DioError catch (e) {
-      if (e.response != null) {
-        print(e.response.data);
-        print(e.response.headers);
-        print(e.response.statusCode);
-        return e.response.statusCode;
+
+       if (e.response != null) {
+         print(e.response.statusCode);
+        return APIResponse<int>(data: e.response.statusCode, error: true, errorMessage: e.response.data) ;
       } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
-        print(e.message);
-        return null;
+         print(e);
+        //server is crashed
+        if(e.type==DioErrorType.CONNECT_TIMEOUT){
+          return APIResponse<int>(data: 500, errorMessage: "Connection Timeout", error: true);
+        }
+        // internet is not open
+        if(e.type== DioErrorType.DEFAULT){
+          return APIResponse<int>(data: 101, errorMessage: "Internet is not avaible.", error: true);
+        }
+        return APIResponse<int>(data: -1, errorMessage: "Some error occurs.", error: true);
       }
     }
   }
 
-  Future<String> signup(data) async {
+  Future<APIResponse<String>> signup(data) async {
     try {
       Response response = await _dio.post("user/add", data: data);
-
-      return response.data.toString();
+        
+         return APIResponse<String>(data: response.data.toString()) ;
     } on DioError catch (e) {
       if (e.response != null) {
         print(e.response.data);
         print(e.response.headers);
         print(e.response.request);
-        return e.response.statusMessage;
+        return APIResponse<String>(data: e.response.statusMessage,error:true, errorMessage: e.response.statusMessage);
       } else {
+        //server is crashed
+        if(e.type==DioErrorType.CONNECT_TIMEOUT){
+          return APIResponse<String>(data: "500", errorMessage: "Connection Timeout", error: true);
+        }
+        // internet is not open
+        if(e.type== DioErrorType.DEFAULT){
+          return APIResponse<String>(data: "101", errorMessage: "Internet is not avaible.", error: true);
+        }
         print(e.request);
         print(e.message);
         return null;
