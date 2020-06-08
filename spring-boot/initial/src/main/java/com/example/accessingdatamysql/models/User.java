@@ -2,11 +2,12 @@ package com.example.accessingdatamysql.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@Indexed
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "user")
 public class User {
@@ -14,10 +15,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userID;
     @Column(length = 45)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "edgeNgram"), store = Store.NO)
     private String name;
     @Column(length = 82)
     private String password;
     @Column(length = 45)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "edgeNgram"), store = Store.NO)
     private String surname;
 
     private String dob;
