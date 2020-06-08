@@ -74,8 +74,6 @@ public class ProductController {
         sells.setProductID(pr.getProductID());
         sells.setSellerID(sellerID);
 
-
-
         Price price1 = new Price();
         LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
         String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
@@ -85,9 +83,8 @@ public class ProductController {
 
         prices.add(price1);
         sells.setPrice(prices);
-        sells.setCurrentPrice(price1.getPrice());
         sells.setQuantity(quantity);
-
+        sells.setCurrentPrice(price);
         sells.setProduct(pr);
         Optional<User> user = userRepository.findUserByUserID(sellerID);
         sells.setUser(user.get());
@@ -117,10 +114,9 @@ public class ProductController {
                 String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
                 PriceKey priceKey = new PriceKey(product.getProductID(),sell.getSellerID(),formatted);
                 Set<Price> prices = new HashSet<>();
-                Price newPrice = new Price(priceKey,sell,price);
-                prices.add(newPrice);
+                prices.add(new Price(priceKey,sell,price));
                 sell.setPrice(prices);
-                sell.setCurrentPrice(newPrice.getPrice());
+                sell.setCurrentPrice(price);
                 sell.setQuantity(quantity);
                 flag = true;
             }

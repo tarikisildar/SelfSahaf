@@ -103,12 +103,13 @@ public class Product
             joinColumns = @JoinColumn(name = "productID"),
             inverseJoinColumns = @JoinColumn(name = "categoryID")
     )
+    @IndexedEmbedded
     private Set<Category> categories;
 
 
     @JsonIgnoreProperties("product")
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-
+    @IndexedEmbedded
     private Set<Sells> sells;
 
 

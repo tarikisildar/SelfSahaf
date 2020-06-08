@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,6 +14,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer categoryID;
     @Column(length = 45)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "edgeNgram"), store = Store.NO)
     private String name;
 
     public Category() {
