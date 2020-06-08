@@ -119,9 +119,9 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public String storeAll(List<MultipartFile> files, Integer productID, Integer sellerID){
+    public String storeAll(List<MultipartFile> files, Integer productID){
 
-        Path dir_path = Paths.get("productImages").resolve(Paths.get(sellerID.toString()).resolve(productID.toString()));
+        Path dir_path = Paths.get("productImages").resolve(Paths.get(productID.toString()));
 
         return storeAllIns(dir_path, files);
 
@@ -157,7 +157,7 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public String storeAll(List<MultipartFile> files, Integer refundID)
+    public String storeAllRefund(List<MultipartFile> files, Integer refundID)
     {
         Path dir_path = Paths.get("refunds").resolve(refundID.toString());
         return storeAllIns(dir_path, files);
@@ -165,9 +165,9 @@ public class FileSystemStorageService implements StorageService {
 
     @Override
 
-    public String storeMain(MultipartFile file, Integer productID, Integer sellerID){
+    public String storeMain(MultipartFile file, Integer productID){
 
-        Path dir_path = Paths.get(sellerID.toString()).resolve(productID.toString());
+        Path dir_path = Paths.get(productID.toString());
 
 
         // Create a directory in the format of root/sellerID/productID
@@ -196,10 +196,10 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public List<Resource> loadAllResources(String productID, String sellerID){
+    public List<Resource> loadAllResources(String productID){
         Path root = this.rootLocation.resolve("productImages");
 
-        File folder = new File(root.resolve(sellerID.toString()).resolve(productID.toString()).toString());
+        File folder = new File(root.resolve(productID.toString()).toString());
 
         File[] listOfFiles = folder.listFiles();
         List<Resource> resourceList = new ArrayList<Resource>();

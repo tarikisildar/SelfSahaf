@@ -301,7 +301,7 @@ public class OrderController {
         refundRequest = refundRepository.save(refundRequest);
         if(file != null)
         {
-            refundRequest.setPath(storageService.storeAll(file,refundRequest.getRefundID()));
+            refundRequest.setPath(storageService.storeAllRefund(file,refundRequest.getRefundID()));
             refundRepository.save(refundRequest);
         }
         return "refund request created with id " + refundRequest.getRefundID().toString();

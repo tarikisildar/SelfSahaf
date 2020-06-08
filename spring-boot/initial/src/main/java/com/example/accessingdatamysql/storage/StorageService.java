@@ -12,11 +12,11 @@ public interface StorageService {
 
     void init();
 
-    String storeAll(List<MultipartFile> files, Integer productID, Integer sellerID);
+    String storeAll(List<MultipartFile> files, Integer productID);
 
-    String storeAll(List<MultipartFile> files, Integer refundID);
+    String storeAllRefund(List<MultipartFile> files, Integer refundID);
 
-    String storeMain(MultipartFile file, Integer productID, Integer sellerID);
+    String storeMain(MultipartFile file, Integer productID);
 
 
 
@@ -30,6 +30,6 @@ public interface StorageService {
 
     void deleteAll();
 
-    List<Resource> loadAllResources(String productID, String sellerID);
+    List<Resource> loadAllResources(String productID);
 
 }
