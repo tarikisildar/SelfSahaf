@@ -45,13 +45,14 @@ class _ProductsCardState extends State<ProductCard> {
                   child: Row(
                     children: <Widget>[
                       Expanded(
-                        flex:4,
+                        flex:5,
                         child: Container(
                           height: 100,
+                          width: 100,
                           decoration: BoxDecoration(
                               color: Colors.transparent,
                               borderRadius: BorderRadius.all(Radius.circular(25))),
-                          child:(photo==null)? Icon(Icons.book, color: Color(0xffe65100), size: 60,):ClipRRect(borderRadius:BorderRadius.circular(25),child: Image.memory(photo, fit: BoxFit.fitHeight,)),
+                          child:(photo==null)? Icon(Icons.book, color: Color(0xffe65100), size: 60,):ClipRRect(borderRadius:BorderRadius.circular(25),child: Image.memory(photo, fit: BoxFit.cover,)),
                         ),
                       ),
                       Expanded(
@@ -66,11 +67,10 @@ class _ProductsCardState extends State<ProductCard> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(2.5),
                                     child: Text(
-                                      "Name: ${widget.bookName}"
-                                      ,
+                                      "Name: ${widget.bookName}",
                                       style: TextStyle(
                                         color: Color(0xffe65100),
-                                        fontSize: 15,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ),
@@ -83,7 +83,7 @@ class _ProductsCardState extends State<ProductCard> {
                                       ,
                                       style: TextStyle(
                                         color: Color(0xffe65100),
-                                        fontSize: 15,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ),
@@ -96,7 +96,7 @@ class _ProductsCardState extends State<ProductCard> {
                                       ,
                                       style: TextStyle(
                                         color: Color(0xffe65100),
-                                        fontSize: 15,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ),
@@ -109,7 +109,7 @@ class _ProductsCardState extends State<ProductCard> {
                                       widget.price+" TL",
                                       style: TextStyle(
                                         color: Color(0xffe65100),
-                                        fontSize: 15,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ),

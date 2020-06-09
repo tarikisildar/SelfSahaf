@@ -218,7 +218,7 @@ class ProductService extends GeneralServices {
     try {
       Response response = await _dio.get("product/images",
           queryParameters: {
-            "path": "/root/images/productImages/$userID/$productID/$imageID.png"
+            "path": "/./root/images/productImages/$productID/$imageID.png"
           },
           options: Options(
               contentType: 'application/json',

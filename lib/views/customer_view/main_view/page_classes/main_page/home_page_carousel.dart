@@ -23,12 +23,7 @@ class HomePageCarousel extends StatelessWidget {
         autoplay: true,
         animationCurve: Curves.fastOutSlowIn,
         animationDuration: Duration(milliseconds: 1000),
-
       ),
-
     );
-
   }
-
-
 }
