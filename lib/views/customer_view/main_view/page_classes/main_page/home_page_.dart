@@ -97,13 +97,8 @@ class _HomePageState extends State<HomePage> {
           page = 0;
 
         this.bookList = e;
-<<<<<<< HEAD
         
           _isloading = false;
-=======
-
-        _isloading = false;
->>>>>>> Yavuz
       });
       print(bookList.length);
     });
@@ -126,27 +121,9 @@ class _HomePageState extends State<HomePage> {
                 }),
           ],
         ),
-<<<<<<< HEAD
         drawer: SahafDrawer(),
       body: (_loading)
             ? Container(  color: Colors.transparent,child:Center(child: CircularProgressIndicator(backgroundColor: Colors.white,)))
-=======
-        drawer:(_loading)
-            ? Container(
-                color: Colors.transparent,
-                child: Center(
-                    child: CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                ))): SahafDrawer(),
-        body: (_loading)
-            ? Container(
-                color: Colors.transparent,
-                child: Center(
-                    child: CircularProgressIndicator(
-    
-                  backgroundColor: Colors.white,
-                )))
->>>>>>> Yavuz
             : RefreshIndicator(
                 onRefresh: () => _refresh(),
                 key: _refreshIndicatorKey,
