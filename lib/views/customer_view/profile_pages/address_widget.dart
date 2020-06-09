@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
@@ -6,7 +5,7 @@ import 'package:selfsahaf/views/customer_view/profile_pages/addAddress.dart';
 
 class AddressWidget extends StatelessWidget {
   String addressName, addressLine, city, country, postalCode;
-     AuthService userService = GetIt.I<AuthService>();
+  AuthService userService = GetIt.I<AuthService>();
   AddressWidget(
       {this.addressName,
       this.addressLine,
@@ -17,7 +16,6 @@ class AddressWidget extends StatelessWidget {
   int addressID;
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding:
           const EdgeInsets.only(top: 4.0, bottom: 4.0, left: 10, right: 10),
@@ -36,7 +34,6 @@ class AddressWidget extends StatelessWidget {
                   children: <Widget>[
                   Container(
                     padding: EdgeInsets.all(5),
-
                     alignment: Alignment.centerLeft,
                     child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
@@ -74,16 +71,28 @@ class AddressWidget extends StatelessWidget {
                   ),
                 ])),
             Expanded(
-              
                 flex: 2,
+<<<<<<< HEAD
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                    InkWell(
+=======
+                child: Column(children: <Widget>[
+                  InkWell(
+>>>>>>> Yavuz
                       onTap: () => showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
-                              content: AddAddress(addType: 2, addressID: addressID,addressLine: addressLine,addressName: addressName,city: city,country: country,postalCode: postalCode,),
+                              content: AddAddress(
+                                addType: 2,
+                                addressID: addressID,
+                                addressLine: addressLine,
+                                addressName: addressName,
+                                city: city,
+                                country: country,
+                                postalCode: postalCode,
+                              ),
                               title: Text("Update Address Information"),
                             ),
                           ),
@@ -101,14 +110,26 @@ class AddressWidget extends StatelessWidget {
                               title: Text("Are you sure"),
                               actions: <Widget>[
                                 FlatButton(
-                                    onPressed: () =>userService.deleteAddress(addressID),
+                                    onPressed: () {
+                                      userService
+                                          .deleteAddress(addressID)
+                                          .then((value) {
+                                        if (value == 200) {
+                                          Navigator.pop(context);
+                                          return null;
+                                        } else
+                                          print("HATATATAT");
+                                      });
+                                    },
                                     child: Text("yes")),
                                 FlatButton(
                                     onPressed: () => Navigator.pop(context),
                                     child: Text("no")),
                               ],
                             ),
-                          ),
+                          ).then((value){
+                            
+                          }),
                       child: Icon(
                         Icons.delete,
                         size: 40,

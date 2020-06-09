@@ -26,6 +26,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         _date = pickedDate;
         dob = _date.toString().split(' ')[0].split('-').reversed.join('/');
+        print(dob);
       });
     }
   }
@@ -86,21 +87,21 @@ class _SignupState extends State<Signup> {
     }
   }
 
-  
   void _signup(data) async {
     var message = "";
     api.signup(data).then((val) {
-      if (val.toString() == "200" || val.toString() == "302" || val.toString() == "Saved") {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => MainPage()),
-            ModalRoute.withName("/Home"));
+      if (val.data == "200" || val.data == "302" || val.data == "Saved") {
+        api.initUser().then((value) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => MainPage()),
+              ModalRoute.withName("/Home"));
+        });
       } else {
-        print(val.toString());
+        print("sasa" + val.data);
         message = "This e-mail is linked to different account";
-        return ErrorDialog().showErrorDialog(context, "Hata", val.errorMessage);
+        return ErrorDialog().showErrorDialog(context, "Hata", message);
       }
-        
     });
   }
 
@@ -275,10 +276,15 @@ class _SignupState extends State<Signup> {
                                 newuser.surname = _surnameController.value.text;
                                 newuser.password = _passController.value.text;
                                 newuser.email = _emailController.value.text;
-                                newuser.phoneNumber = _phoneController.value.text;
+                                newuser.phoneNumber =
+                                    _phoneController.value.text;
                                 if (dob.compareTo(
-                                        "Please Select Your Birthday") != 0) {
-                                  newuser.dateOfBirth = dob;
+                                        "Please Select Your Birthday") !=
+                                    0) {
+                                      String _date=dob.split("/").reversed.join("-");
+                        
+                                  newuser.dateOfBirth =_date;
+                                      
                                   var userjson = newuser.toJsonsignup();
                                   _signup(userjson);
                                 } else {

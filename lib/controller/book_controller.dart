@@ -29,24 +29,25 @@ class BookService extends GeneralServices {
         }
         else{
           print("boş liste");
+          print(response);
          return [];
          }
       }
 
       //_token = response.data["token"];
-      result = [null];
-      return result;
+   
+      return [];
     } on DioError catch (e) {
       if (e.response != null) {
         print(e.response.data);
         print(e.response.headers);
         print(e.response.request);
-        return [null];
+        return [];
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         print(e.request);
         print(e.message);
-        return [null];
+        return [];
       }
     }
   }

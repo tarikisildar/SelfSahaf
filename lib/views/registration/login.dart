@@ -31,9 +31,14 @@ class _LoginPageState extends State<LoginPage> {
             context,
             MaterialPageRoute(builder: (context) => MainPage()),
             ModalRoute.withName("/Home"));
-      } else
-        return ErrorDialog().showErrorDialog(context, "Hata", val.errorMessage);
-    });
+      } else if(val.data==404)
+              return ErrorDialog().showErrorDialog(context, "Error!", "Server does not found");
+        else{
+          print(val.data);
+return ErrorDialog().showErrorDialog(context, "Error!", val.errorMessage);
+
+        }
+            });
   }
 
   String emailValidation(String email) {

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
+import 'package:selfsahaf/models/user.dart';
+import 'package:selfsahaf/views/customer_view/profile_pages/addAddress.dart';
+import 'package:selfsahaf/views/registration/input_field.dart';
 
 class SettingsPage extends StatefulWidget {
   // ExamplePage({ Key key }) : super(key: key);
@@ -9,207 +12,410 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPage extends State<SettingsPage> {
-  String _name,_surname,_email,_phoneNumber;
-  final _sellerController=TextEditingController();
-  bool _checkSeller=false;
-  AuthService userService= GetIt.I<AuthService>();
-  @override
-  void initState() { 
-    this._name=userService.getUser().name;
-    this._surname=userService.getUser().surname;
-    this._email=userService.getUser().email;
-    this._phoneNumber=userService.getUser().phoneNumber;
-    
+  User _user;
+  AuthService userService = GetIt.I<AuthService>();
+  DateTime _date = DateTime.now();
+  Future<Null> selectDate(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime(1923),
+      lastDate: _date,
+    );
+
+    if (pickedDate != null && pickedDate != _date) {
+      setState(() {
+        _date = pickedDate;
+        dob = _date.toString().split(' ')[0].split('-').reversed.join('/');
+      });
+    }
   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _user = userService.getUser();
+    _emailController.text = _user.email;
+    _phoneController.text = _user.phoneNumber;
+    _fnameController.text = _user.name;
+    _surnameController.text = _user.surname;
+    dob = _user.dateOfBirth.split("-").reversed.join("/").toString();
+    _date = DateTime(
+        int.parse(_user.dateOfBirth.split("-")[0]),
+        int.parse(_user.dateOfBirth.split("-")[1]),
+        int.parse(_user.dateOfBirth.split("-")[2]));
+  }
+
+  String dob;
+  bool _checkPasswordChange = false;
+  final _formKey = GlobalKey<FormState>();
+  final _passwordFormKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _fnameController = TextEditingController();
+  final _surnameController = TextEditingController();
+  final _passController = TextEditingController();
+  final _passCheckController = TextEditingController();
+  String fnameValidation(String fullname) {
+    if (fullname.length < 2) {
+      return "Isim kismi bos birakilamaz.";
+    } else
+      return null;
+  }
+
+  String surnameValidation(String fullname) {
+    if (fullname.length < 2) {
+      return "Soyisim kismi bos birakilamaz.";
+    } else
+      return null;
+  }
+
+  String telephoneNumberValidation(String number) {
+    bool numberValid = RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$')
+        .hasMatch(number);
+    return numberValid ? null : "Lütfen geçerli bir telefon numarası giriniz.";
+  }
+
+  String emailValidation(String email) {
+    bool emailValid =
+        RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+    return emailValid ? null : "Lütfen geçerli bir mail adresi giriniz.";
+  }
+
+  String passwrdValidation(String passwrd) {
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.!@#\$&*~]).{8,24}$';
+    RegExp regExp = new RegExp(pattern);
+    return (!doppelValidation(
+                _passController.text, _passCheckController.text))
+            ? "password does not match":regExp.hasMatch(passwrd)
+        ? null
+            : "Lütfen geçerli bir şifre giriniz.";
+  }
+
+  bool doppelValidation(String random, String random2) {
+    if (random.compareTo(random2) == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Image.asset("images/logo_white/logo_white.png"),
-     
       ),
-      body: Container(
-        color: Theme.of(context).primaryColor,
-        child: ListView(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                  alignment: Alignment.center,
-                    
-                  padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  width: 250,
-                  color: Colors.white,
-                  child: Center( child: Text("$_name $_surname",style:TextStyle(color: Theme.of(context).primaryColor ,fontSize: 25 ) , )),
-                 )),
-               Expanded(
-                 flex: 1,
-                 child: InkWell(
-                  child: Icon(Icons.edit, color:Colors.white, size: 50,),
-                  onTap: (){
-                    print("sa");
-                  },
-                ))
-                
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                  alignment: Alignment.center,
-                   
-                  padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                  width: 250,
-                  color: Colors.white,
-                  child: Center( child: Text("Change Photo",style:TextStyle(color: Theme.of(context).primaryColor ,fontSize: 25 ) , )),
-                 )),
-               Expanded(
-                 flex: 1,
-                 child: InkWell(
-                  child: Icon(Icons.party_mode, color:Colors.white, size: 50,),
-                  onTap: (){
-                    print("sa");
-                  },
-                ))
-                
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                  alignment: Alignment.center,
-                    
-          
-                  padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                  width: 250,
-                  color: Colors.white,
-                  child: Center( child: Text(_email,style:TextStyle(color: Theme.of(context).primaryColor ,fontSize: 25 ) , )),
-                 )),
-               Expanded(
-                 flex: 1,
-                 child: InkWell(
-                  child: Icon(Icons.edit, color:Colors.white, size: 50,),
-                  onTap: (){
-                    print("sa");
-                  },
-                ))
-                
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                  alignment: Alignment.center,
-                    
-                  
-                  padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                  width: 250,
-                  color: Colors.white,
-                  child: Center( child: Text("Change Password",style:TextStyle(color: Theme.of(context).primaryColor ,fontSize: 25 ) , )),
-                 )),
-               Expanded(
-                 flex: 1,
-                 child: InkWell(
-                  child: Icon(Icons.edit, color:Colors.white, size: 50,),
-                  onTap: (){
-                    print("sa");
-                  },
-                ))
-                
-              ],
-            ),Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                  alignment: Alignment.center,
-                    
-                  
-                  padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                  width: 250,
-                  color: Colors.white,
-                  child: Center( child: Text("Seller",style:TextStyle(color: Theme.of(context).primaryColor ,fontSize: 25 ) , )),
-                 )),
-               Expanded(
-                 flex: 1,
-                 child: InkWell(
-                  child: Icon(Icons.add_circle, color:Colors.white, size: 50,),
-                  onTap: (){
-                    return showDialog(context: context, builder: (context){
-                      return AlertDialog(
-                        title: Text("Seller's address"),
-                        content: TextFormField( 
-                          controller:  _sellerController,
-                          decoration: InputDecoration(
-                            labelText: 'Enter your address'
+      backgroundColor: Color.fromRGBO(230, 81, 0, 1),
+      key: _scaffoldKey,
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+            child: Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(height: 20.0),
+                    InputField(
+                      lines: 1,
+                      controller: _fnameController,
+                      inputType: TextInputType.text,
+                      validation: fnameValidation,
+                      labelText: "Name",
+                      suffixIcon: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                    InputField(
+                      lines: 1,
+                      controller: _surnameController,
+                      inputType: TextInputType.text,
+                      validation: surnameValidation,
+                      labelText: "Surname",
+                      suffixIcon: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                    InputField(
+                      lines: 1,
+                      controller: _emailController,
+                      inputType: TextInputType.emailAddress,
+                      validation: emailValidation,
+                      labelText: "Email",
+                      suffixIcon: Icon(
+                        Icons.mail,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                    InputField(
+                      lines: 1,
+                      controller: _phoneController,
+                      inputType: TextInputType.phone,
+                      validation: telephoneNumberValidation,
+                      labelText: "Phone Number",
+                      suffixIcon: Icon(
+                        Icons.phone,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    FlatButton(
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(12.0),
+                          side: BorderSide(color: Colors.white)),
+                      color: Colors.white,
+                      child: Text(
+                        "Change Password",
+                        style: TextStyle(
+                            color: Color.fromRGBO(230, 81, 0, 1),
+                            fontSize: 20.0),
+                      ),
+                      onPressed: () {
+                        _checkPasswordChange = false;
+                        _passController.text = "";
+                        _passCheckController.text = "";
+                      
+                        return showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                content: StatefulBuilder(builder:
+                                    (BuildContext context,
+                                        StateSetter setState) {
+                                  return SafeArea(
+                                      child: Form(
+                                    key: _passwordFormKey,
+                                    child: Container(
+                                      width: 300,
+                                      height: 350,
+                                      child: Column(
+                                        children: <Widget>[
+                                          SizedBox(height: 12.0),
+                                          InputField(
+                                            lines: 1,
+                                            controller: _passController,
+                                            inputType:
+                                                TextInputType.visiblePassword,
+                                            validation: passwrdValidation,
+                                            labelText: "Password",
+                                            isPassword: true,
+                                            suffixIcon: Icon(
+                                              Icons.lock,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          SizedBox(height: 12.0),
+                                          InputField(
+                                            lines: 1,
+                                            controller: _passCheckController,
+                                            inputType:
+                                                TextInputType.visiblePassword,
+                                            validation: passwrdValidation,
+                                            isPassword: true,
+                                            labelText: "Validate Password",
+                                            suffixIcon: Icon(
+                                              Icons.verified_user,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                         
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              FlatButton(
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.0),
+                                                ),
+                                                child: Text(
+                                                  "Change",
+                                                  style: TextStyle(
+                                                      color: Color(0xffe65100),
+                                                      fontSize: 20),
+                                                ),
+                                                onPressed: () {
+                                                  if (_passwordFormKey
+                                                      .currentState
+                                                      .validate()) {
+                                                    setState(() {
+                                                      _checkPasswordChange =
+                                                          true;
+                                                     
+                                                    });
+                                                    Navigator.pop(context);
+                                                  } else {
+                                                    setState(() {
+                                                      _checkPasswordChange =
+                                                          true;
+                                                    
+                                                    });
+                                                  }
+                                                },
+                                              ),
+                                              SizedBox(width: 20.0),
+                                              FlatButton(
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.0),
+                                                ),
+                                                child: Text(
+                                                  "Cancel",
+                                                  style: TextStyle(
+                                                      color: Color(0xffe65100),
+                                                      fontSize: 20),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ));
+                                }),
+                                title: Text(
+                                  "Change Password",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              );
+                            });
+                      },
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    FlatButton(
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(12.0),
+                          side: BorderSide(color: Colors.white)),
+                      color: Colors.white,
+                      child: Text(
+                        dob,
+                        style: TextStyle(
+                            color: Color.fromRGBO(230, 81, 0, 1),
+                            fontSize: 20.0),
+                      ),
+                      onPressed: () {
+                        selectDate(context);
+                      },
+                    ),
+                    SizedBox(height: 8.0),
+                    Container(
+                        width: 50.0,
+                        height: 50.0,
+                        padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
+                        child: FlatButton(
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(12.0),
+                              side: BorderSide(color: Colors.white)),
+                          color: Colors.white,
+                          child: Text(
+                            "Save",
+                            style: TextStyle(
+                                color: Color.fromRGBO(230, 81, 0, 1),
+                                fontSize: 20.0),
                           ),
-
-                        ),
-                        actions: <Widget>[
-                          InkWell(child: Icon( Icons.done, color: Colors.red,size: 50 ) ,
-                          onTap: (){
-                            if(_sellerController.text==''){
-                              print("nah sana");
-                            _checkSeller=false;
-                             
-                            }
-                            else{
-                              _checkSeller=true;
-                              Navigator.of(context).pop();
+                          onPressed: () {
+                            CircularProgressIndicator();
+                            User newuser = new User();
+                            if (doppelValidation(_passController.value.text,
+                                _passCheckController.value.text)) {
+                              if (_formKey.currentState.validate()) {
+                                newuser.name = _fnameController.value.text;
+                                newuser.surname = _surnameController.value.text;
+                                if (_checkPasswordChange) {
+                                  newuser.password = _passController.value.text;
+                                  print(newuser.password);
+                                  print(_checkPasswordChange);
+                                }
+                                newuser.role = _user.role;
+                                newuser.email = _emailController.value.text;
+                                newuser.phoneNumber =
+                                    _phoneController.value.text;
+                                if (dob.compareTo(
+                                        "Please Select Your Birthday") !=
+                                    0) {
+                                  String _date =
+                                      dob.split("/").reversed.join("-");
+                                  newuser.dateOfBirth = _date;
+                                  newuser.userID = _user.userID;
+                                  userService
+                                      .updateUser(newuser, _checkPasswordChange)
+                                      .then((value) {
+                                    userService.initUser().then((value) {
+                                      setState(() {
+                                        _user = userService.getUser();
+                                      });
+                                    });
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      duration: Duration(seconds: 1),
+                                      backgroundColor: Colors.white,
+                                      content: Text(
+                                        "SAVED",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(230, 81, 0, 1),
+                                            fontSize: 18),
+                                      ),
+                                    ));
+                                  });
+                                } else {
+                                  _scaffoldKey.currentState
+                                      .showSnackBar(SnackBar(
+                                    duration: Duration(seconds: 1),
+                                    backgroundColor: Colors.white,
+                                    content: Text(
+                                      "Please Select Your Birthday",
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(230, 81, 0, 1),
+                                          fontSize: 18),
+                                    ),
+                                  ));
+                                }
                               }
-                            
-                          }                       
-                          ,)
-                         
-                        ],
-                      );
-                    });
-                  },
-                ))
-                
-              ],
-            ),Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                  alignment: Alignment.center,
-                    
-                  
-                  padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                  width: 250,
-                  color: Colors.white,
-                  child: Center( child: Text("$_phoneNumber",style:TextStyle(color: Theme.of(context).primaryColor ,fontSize: 25 ) , )),
-                 )),
-               Expanded(
-                 flex: 1,
-                 child: InkWell(
-                  child: Icon(Icons.edit, color:Colors.white, size: 50,),
-                  onTap: (){
-                    print("sa");
-                  },
-                ))
-                
-              ],
-            )
-          ],
-        )
-      ) ,
+                            } else {
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                duration: Duration(seconds: 1),
+                                backgroundColor: Colors.white,
+                                content: Text(
+                                  "Passwords Not Matching.",
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(230, 81, 0, 1),
+                                      fontSize: 18),
+                                ),
+                              ));
+                            }
+                          },
+                        )),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
