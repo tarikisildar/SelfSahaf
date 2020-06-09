@@ -72,15 +72,8 @@ class AddressWidget extends StatelessWidget {
                 ])),
             Expanded(
                 flex: 2,
-<<<<<<< HEAD
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                   InkWell(
-=======
                 child: Column(children: <Widget>[
                   InkWell(
->>>>>>> Yavuz
                       onTap: () => showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
