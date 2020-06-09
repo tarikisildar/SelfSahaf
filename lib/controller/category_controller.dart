@@ -8,12 +8,12 @@ import 'package:selfsahaf/controller/generalServices.dart';
 
 class CategoryService extends GeneralServices{
   Dio _dio;
-  AuthService(){
+  CategoryService(){
   _dio= super.dio;
   }
   Future<int> addCategory(String categoryName) async {
     try {
-      Response response = await _dio.post("product/addCategory", data: categoryName);
+      Response response = await _dio.post("product/addCategory?name=$categoryName");
       return response.statusCode;
     } on DioError catch (e) {
       if (e.response != null) {
