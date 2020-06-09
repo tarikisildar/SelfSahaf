@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/home_page.dart';
-
-import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/sahaf_drawer.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/notification_pages/notifications.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/search_pages/search_page.dart';
 import 'package:selfsahaf/views/customer_view/profile_pages/profile_page.dart';
-import 'package:selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
 import 'package:selfsahaf/controller/user_controller.dart';
 import 'package:selfsahaf/models/book.dart';
 import 'package:selfsahaf/controller/book_controller.dart';
