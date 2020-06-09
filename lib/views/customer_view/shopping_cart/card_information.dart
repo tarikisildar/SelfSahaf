@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/views/customer_view/shopping_cart/credit_card_view/credit_card.dart';
-import 'package:selfsahaf/views/customer_view/shopping_cart/order_summary.dart';
-import 'package:selfsahaf/views/registration/input_field.dart';
+import 'package:Selfsahaf/views/customer_view/shopping_cart/credit_card_view/credit_card.dart';
+import 'package:Selfsahaf/views/customer_view/shopping_cart/order_summary.dart';
+import 'package:Selfsahaf/views/registration/input_field.dart';
 import 'credit_card_view/credit_card_widget.dart';
 
 import 'credit_card_view/credit_card_model.dart';

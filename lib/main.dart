@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:selfsahaf/views/admin_view/admin_main_page.dart';
-import 'package:selfsahaf/views/customer_view/main_view/main_page.dart';
-import 'package:selfsahaf/controller/product_services.dart';
-import 'package:selfsahaf/views/customer_view/main_view/page_classes/notification_pages/notifications.dart';
-import 'package:selfsahaf/views/customer_view/main_view/page_classes/search_pages/search_page.dart';
-import 'package:selfsahaf/views/customer_view/products_pages/add_book.dart';
-import 'package:selfsahaf/views/customer_view/profile_pages/profile_page.dart';
-import 'package:selfsahaf/views/registration/login.dart';
-import 'package:selfsahaf/controller/user_controller.dart';
+import 'package:Selfsahaf/controller/product_services.dart';
+import 'package:Selfsahaf/views/registration/login.dart';
+import 'package:Selfsahaf/controller/user_controller.dart';
 
 import 'views/registration/signup.dart';
-import 'package:selfsahaf/controller/book_controller.dart';
+import 'package:Selfsahaf/controller/book_controller.dart';
 
 
 void setupServiseLocator() {

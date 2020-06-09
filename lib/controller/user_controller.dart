@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'dart:convert';
-import 'package:selfsahaf/models/user.dart';
-import 'package:selfsahaf/models/api_response.dart';
-import 'package:selfsahaf/controller/generalServices.dart';
-import 'package:selfsahaf/models/address.dart';
+import 'package:Selfsahaf/models/user.dart';
+import 'package:Selfsahaf/models/api_response.dart';
+import 'package:Selfsahaf/controller/generalServices.dart';
+import 'package:Selfsahaf/models/address.dart';
 
 class AuthService extends GeneralServices {
   Dio _dio;

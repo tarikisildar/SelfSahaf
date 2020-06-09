@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:selfsahaf/controller/user_controller.dart';
-import 'package:selfsahaf/models/address.dart';
-import 'package:selfsahaf/models/user.dart';
+import 'package:Selfsahaf/controller/user_controller.dart';
+import 'package:Selfsahaf/models/address.dart';
+import 'package:Selfsahaf/models/user.dart';
 
 class AddAddress extends StatefulWidget {
   int addType;//0 user address add 2 user address update 1 add seller address

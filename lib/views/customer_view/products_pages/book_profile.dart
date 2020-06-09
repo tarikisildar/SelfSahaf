@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/models/book.dart';
-import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/home_page_carousel.dart';
-import 'package:selfsahaf/views/customer_view/products_pages/book_settings.dart';
+import 'package:Selfsahaf/models/book.dart';
+import 'package:Selfsahaf/views/customer_view/main_view/page_classes/main_page/home_page_carousel.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/book_settings.dart';
 
 class BookProfile extends StatefulWidget {
   Book selectedBook;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:selfsahaf/controller/user_controller.dart';
-import 'package:selfsahaf/models/book.dart';
-import 'package:selfsahaf/views/registration/input_field.dart';
-import 'package:selfsahaf/controller/product_services.dart';
-import 'package:selfsahaf/models/category.dart';
+import 'package:Selfsahaf/controller/user_controller.dart';
+import 'package:Selfsahaf/models/book.dart';
+import 'package:Selfsahaf/views/registration/input_field.dart';
+import 'package:Selfsahaf/controller/product_services.dart';
+import 'package:Selfsahaf/models/category.dart';
 
 class BookSettingsPage extends StatefulWidget {
   final Book selectedBook;

@@ -2,9 +2,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:selfsahaf/controller/book_controller.dart';
-import 'package:selfsahaf/models/book.dart';
-import "package:selfsahaf/views/customer_view/products_pages/book_profile.dart";
+import 'package:Selfsahaf/controller/book_controller.dart';
+import 'package:Selfsahaf/models/book.dart';
+import "package:Selfsahaf/views/customer_view/products_pages/book_profile.dart";
 
 class BookCard extends StatefulWidget {
   Book book;

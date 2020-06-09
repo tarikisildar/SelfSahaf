@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/models/book.dart';
-
 class CategoryCard extends StatefulWidget {
   final String categoryName;
 

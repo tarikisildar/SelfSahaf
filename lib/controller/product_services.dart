@@ -1,15 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:selfsahaf/controller/generalServices.dart';
+import 'package:Selfsahaf/controller/generalServices.dart';
 import 'dart:io';
-import 'package:selfsahaf/models/book.dart';
-import 'package:selfsahaf/models/category.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:path/path.dart';
-
+import 'package:Selfsahaf/models/book.dart';
+import 'package:Selfsahaf/models/category.dart';
 class ProductService extends GeneralServices {
   Dio _dio;
   ProductService() {
@@ -152,22 +147,27 @@ class ProductService extends GeneralServices {
   }
 
   Future<int> uploadImages(List<File> images, int productID) async {
-    List<MultipartFile> multiFiles=[];
-    for(int i=0;i<images.length;i++){
-      multiFiles.add(MultipartFile(images[0].openRead(),await images[0].length(), filename: images[0].path.split("/").last));
+    List<MultipartFile> multiFiles = [];
+    for (int i = 0; i < images.length; i++) {
+      multiFiles.add(MultipartFile(
+          images[0].openRead(), await images[0].length(),
+          filename: images[0].path.split("/").last));
     }
 
     try {
-
-      FormData formData=FormData();
+      FormData formData = FormData();
       formData.fields.add(MapEntry("productID", productID.toString()));
-      for(int i=0;i<images.length;i++){
-  formData.files.add(MapEntry("file", new MultipartFile(images[i].openRead(),await images[i].length(), filename: images[i].path.split("/").last)));
+      for (int i = 0; i < images.length; i++) {
+        formData.files.add(MapEntry(
+            "file",
+            new MultipartFile(images[i].openRead(), await images[i].length(),
+                filename: images[i].path.split("/").last)));
       }
-    
-      Response response =
-          await _dio.post("product/uploadImages", data: formData, options: Options(contentType: 'multipart/form-data',  method: 'POST') );
-  print("response ${response.data.toString()}");
+
+      Response response = await _dio.post("product/uploadImages",
+          data: formData,
+          options: Options(contentType: 'multipart/form-data', method: 'POST'));
+      print("response ${response.data.toString()}");
       return response.statusCode;
     } on DioError catch (e) {
       if (e.response != null) {
@@ -191,10 +191,13 @@ class ProductService extends GeneralServices {
             filename: image.path.split('/').last),
         "productID": productID
       });
-      Response response =
-          await _dio.post("product/uploadMainImage", data: formData, onSendProgress: (int sent, int total) {
-    print("$sent $total");
-  },);
+      Response response = await _dio.post(
+        "product/uploadMainImage",
+        data: formData,
+        onSendProgress: (int sent, int total) {
+          print("$sent $total");
+        },
+      );
       return response.statusCode;
     } on DioError catch (e) {
       if (e.response != null) {
@@ -210,21 +213,53 @@ class ProductService extends GeneralServices {
       }
     }
   }
-  Future<Uint8List> getImage(int userID,int productID, int imageID) async {
+
+  Future<Uint8List> getImage(int userID, int productID, int imageID) async {
     try {
-      
-     Response response= await _dio.get("product/images", queryParameters:{
-       "path": "/root/images/productImages/$userID/$productID/$imageID.png"
-     },options: Options(contentType: 'application/json',  method: 'GET', responseType: ResponseType.bytes) );
-    
-     return response.data;
+      Response response = await _dio.get("product/images",
+          queryParameters: {
+            "path": "/root/images/productImages/$userID/$productID/$imageID.png"
+          },
+          options: Options(
+              contentType: 'application/json',
+              method: 'GET',
+              responseType: ResponseType.bytes));
+
+      return response.data;
     } on DioError catch (e) {
       if (e.response != null) {
-
         return null;
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        
+
+        return null;
+      }
+    }
+  }
+
+  Future<List<Book>> getAllBooks(
+      int pageNo, int pageSize, String sortBy) async {
+        List<Book> result;
+    try {
+      Response response = await _dio.get("product/getBooks", queryParameters: {
+        "pageNo": pageNo,
+        "pageSize": pageSize,
+        "sortBy": sortBy
+      });
+      if(response.statusCode == 200){
+        if (response.data.length != 0) {
+          List<dynamic> i = response.data;
+          result = i.map((p) => Book.fromJson(p)).toList();
+          return result;
+        }
+      }
+      return response.data;
+    } on DioError catch (e) {
+      if (e.response != null) {
+        return null;
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+
         return null;
       }
     }

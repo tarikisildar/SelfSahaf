@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/views/customer_view/products_pages/products_page.dart';
-import 'package:selfsahaf/controller/product_services.dart';
-import 'package:selfsahaf/views/customer_view/profile_pages/addAddress.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/products_page.dart';
+import 'package:Selfsahaf/controller/product_services.dart';
+import 'package:Selfsahaf/views/customer_view/profile_pages/addAddress.dart';
 class ProductsDialog extends StatefulWidget {
   ProductsDialog({Key key}) : super(key: key);
 

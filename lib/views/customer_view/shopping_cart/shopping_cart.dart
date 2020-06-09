@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/models/book.dart';
-import 'package:selfsahaf/views/customer_view/products_pages/product_card.dart';
-import 'package:selfsahaf/views/customer_view/shopping_cart/order_address.dart';
+import 'package:Selfsahaf/models/book.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
+import 'package:Selfsahaf/views/customer_view/shopping_cart/order_address.dart';
 
 class ShoppingCart extends StatefulWidget {
   @override

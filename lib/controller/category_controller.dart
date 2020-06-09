@@ -1,10 +1,6 @@
 
 import 'package:dio/dio.dart';
-import 'package:selfsahaf/models/category.dart';
-
-import 'package:selfsahaf/models/api_response.dart';
-
-import 'package:selfsahaf/controller/generalServices.dart';
+import 'package:Selfsahaf/controller/generalServices.dart';
 
 class CategoryService extends GeneralServices{
   Dio _dio;

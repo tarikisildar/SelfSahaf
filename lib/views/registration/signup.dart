@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/controller/user_controller.dart';
-import 'package:selfsahaf/models/user.dart';
-import 'package:selfsahaf/views/customer_view/main_view/main_page.dart';
-import 'package:selfsahaf/views/registration/input_field.dart';
-import 'package:selfsahaf/views/errors/error_dialog.dart';
+import 'package:Selfsahaf/controller/user_controller.dart';
+import 'package:Selfsahaf/models/user.dart';
+import 'package:Selfsahaf/views/customer_view/main_view/main_page.dart';
+import 'package:Selfsahaf/views/registration/input_field.dart';
+import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'login.dart';
 
 class Signup extends StatefulWidget {

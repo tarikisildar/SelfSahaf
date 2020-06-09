@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:selfsahaf/models/book.dart';
-import 'package:selfsahaf/controller/generalServices.dart';
+import 'package:Selfsahaf/models/book.dart';
+import 'package:Selfsahaf/controller/generalServices.dart';
 
 class BookService extends GeneralServices {
   Dio _dio;

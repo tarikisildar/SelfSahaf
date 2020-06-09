@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:selfsahaf/controller/user_controller.dart';
-import 'package:selfsahaf/models/address.dart';
-import 'package:selfsahaf/views/customer_view/profile_pages/address_widget.dart';
-import 'package:selfsahaf/views/customer_view/profile_pages/addAddress.dart';
+import 'package:Selfsahaf/controller/user_controller.dart';
+import 'package:Selfsahaf/models/address.dart';
+import 'package:Selfsahaf/views/customer_view/profile_pages/address_widget.dart';
+import 'package:Selfsahaf/views/customer_view/profile_pages/addAddress.dart';
 
 class AdressesPage extends StatefulWidget {
   // ExamplePage({ Key key }) : super(key: key);

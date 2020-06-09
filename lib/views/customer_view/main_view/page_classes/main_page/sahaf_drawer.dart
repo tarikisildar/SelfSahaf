@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:selfsahaf/controller/user_controller.dart';
-import 'package:selfsahaf/views/customer_view/products_pages/productsDialog.dart';
-import 'package:selfsahaf/views/customer_view/products_pages/products_page.dart';
-import "package:selfsahaf/views/customer_view/profile_pages/profile_page.dart";
-import 'package:selfsahaf/views/customer_view/profile_pages/settings_page.dart';
+import 'package:Selfsahaf/controller/user_controller.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/productsDialog.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/products_page.dart';
+import "package:Selfsahaf/views/customer_view/profile_pages/profile_page.dart";
+import 'package:Selfsahaf/views/customer_view/profile_pages/settings_page.dart';
 class SahafDrawer extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {

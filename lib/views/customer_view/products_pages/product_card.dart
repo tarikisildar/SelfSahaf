@@ -2,8 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:selfsahaf/controller/product_services.dart';
-import 'package:selfsahaf/models/book.dart';
+import 'package:Selfsahaf/controller/product_services.dart';
+import 'package:Selfsahaf/models/book.dart';
 
 class ProductCard extends StatefulWidget {
   final String bookName;

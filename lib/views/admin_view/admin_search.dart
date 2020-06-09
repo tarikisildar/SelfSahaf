@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/views/admin_view/admin_main_page.dart';
-import 'package:selfsahaf/views/customer_view/products_pages/product_card.dart';
+import 'package:Selfsahaf/views/admin_view/admin_main_page.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
 
 class AdminSearch extends StatefulWidget {
   @override

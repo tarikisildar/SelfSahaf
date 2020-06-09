@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
+import 'package:Selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
 
 class NotificationsPage extends StatefulWidget {
   // ExamplePage({ Key key }) : super(key: key);

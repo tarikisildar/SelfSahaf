@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:selfsahaf/controller/category_controller.dart';
-import 'package:selfsahaf/views/customer_view/category_view/category_card.dart';
-import 'package:selfsahaf/views/registration/input_field.dart';
+import 'package:Selfsahaf/controller/category_controller.dart';
+import 'package:Selfsahaf/views/customer_view/category_view/category_card.dart';
+import 'package:Selfsahaf/views/registration/input_field.dart';
 
 class EditCategories extends StatefulWidget {
   @override

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:selfsahaf/controller/product_services.dart';
-import "package:selfsahaf/models/book.dart";
-import 'package:selfsahaf/views/customer_view/products_pages/add_book.dart';
-import 'package:selfsahaf/views/customer_view/products_pages/book_profile.dart';
-import 'package:selfsahaf/views/customer_view/products_pages/product_card.dart';
+import 'package:Selfsahaf/controller/product_services.dart';
+import "package:Selfsahaf/models/book.dart";
+import 'package:Selfsahaf/views/customer_view/products_pages/add_book.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/book_profile.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
 
 class ProductsPage extends StatefulWidget {
   ProductsPage({Key key}) : super(key: key);
