@@ -48,13 +48,10 @@ class _ProductsCardState extends State<ProductCard> {
                         flex:4,
                         child: Container(
                           height: 100,
-                          
-                     
                           decoration: BoxDecoration(
                               color: Colors.transparent,
                               borderRadius: BorderRadius.all(Radius.circular(25))),
-                          
-                          child:(photo==null)? Icon(Icons.book, color: Color(0xffe65100), size: 60,):Image.memory(photo, fit: BoxFit.cover,),
+                          child:(photo==null)? Icon(Icons.book, color: Color(0xffe65100), size: 60,):ClipRRect(borderRadius:BorderRadius.circular(25),child: Image.memory(photo, fit: BoxFit.fitHeight,)),
                         ),
                       ),
                       Expanded(

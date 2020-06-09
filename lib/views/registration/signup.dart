@@ -45,14 +45,14 @@ class _SignupState extends State<Signup> {
 
   String fnameValidation(String fullname) {
     if (fullname.length < 2) {
-      return "Isim kismi bos birakilamaz.";
+      return "Name field cannot be empty";
     } else
       return null;
   }
 
   String surnameValidation(String fullname) {
     if (fullname.length < 2) {
-      return "Soyisim kismi bos birakilamaz.";
+      return "Lastname field cannot be empty";
     } else
       return null;
   }
@@ -60,13 +60,13 @@ class _SignupState extends State<Signup> {
   String telephoneNumberValidation(String number) {
     bool numberValid = RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$')
         .hasMatch(number);
-    return numberValid ? null : "Lütfen geçerli bir telefon numarası giriniz.";
+    return numberValid ? null : "Please enter valid phone number";
   }
 
   String emailValidation(String email) {
     bool emailValid =
         RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
-    return emailValid ? null : "Lütfen geçerli bir mail adresi giriniz.";
+    return emailValid ? null : "Please enter valid e-mail address";
   }
 
   String passwrdValidation(String passwrd) {
@@ -75,7 +75,7 @@ class _SignupState extends State<Signup> {
     RegExp regExp = new RegExp(pattern);
     return regExp.hasMatch(passwrd)
         ? null
-        : "Lütfen geçerli bir şifre giriniz.";
+        : "Password isn't valid";
   }
 
   bool doppelValidation(String random, String random2) {
