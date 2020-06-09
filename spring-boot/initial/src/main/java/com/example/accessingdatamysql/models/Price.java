@@ -27,7 +27,7 @@ public class Price {
 
     private Double price;
 
-    @Column()
+    @Column
     private Integer discount;
 
     public Price(){}

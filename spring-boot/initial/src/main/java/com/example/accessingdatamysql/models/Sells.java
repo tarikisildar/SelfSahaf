@@ -26,10 +26,10 @@ public class Sells implements Serializable{
 
 
     private Integer quantity;
-
+    @Column(length = 10)
     private Integer sellerID;
 
-
+    @Column(length = 10)
     private Integer productID;
 
 
