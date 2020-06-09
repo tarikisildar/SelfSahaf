@@ -1,17 +1,43 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:selfsahaf/controller/product_services.dart';
 import 'package:selfsahaf/models/book.dart';
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/home_page_carousel.dart';
 import 'package:selfsahaf/views/customer_view/products_pages/book_settings.dart';
+import 'package:selfsahaf/views/errors/error_dialog.dart';
 
 class BookProfile extends StatefulWidget {
   Book selectedBook;
-  BookProfile({@required this.selectedBook});
+  bool isproduct = false;
+  BookProfile({@required this.selectedBook, @required this.isproduct});
   @override
   _BookProfileState createState() => _BookProfileState();
 }
 
 class _BookProfileState extends State<BookProfile> {
-  
+  ProductService get _productService => GetIt.I<ProductService>();
+  List<Image> images;
+  bool _loading=true;
+  @override
+  void initState() {
+   _fetchData();
+  }
+  _fetchData() async{
+ _productService.getAllImages(widget.selectedBook.productID).then((value) {
+   setState(() {
+     if (value.error) {
+        print("error");
+      } else {
+        images = value.data;
+        _loading=false;
+      }
+   });
+      
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,30 +46,40 @@ class _BookProfileState extends State<BookProfile> {
         title: Container(
             height: 50, child: Image.asset("images/logo_white/logo_white.png")),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.settings), onPressed: () {
-          
-             Navigator.push(
+          (widget.isproduct)
+              ? IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: () {
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => BookSettingsPage(selectedBook: widget.selectedBook,),)).then((e){
-                              if(e!=null){
-                                Navigator.of(context).pop(e);
-                              }
-                            });
-            
-          })
+                          builder: (context) => BookSettingsPage(
+                            selectedBook: widget.selectedBook,
+                          ),
+                        )).then((e) {
+                      if (e != null) {
+                        Navigator.of(context).pop(e);
+                      }
+                    });
+                  })
+              : IconButton(
+                  icon: Icon(Icons.shopping_cart),
+                  onPressed: () => print("asas"))
         ],
       ),
-      body: Center(
+      body:(_loading)
+            ? Container(  color: Colors.transparent,child:Center(child: CircularProgressIndicator(backgroundColor: Colors.white,)))
+            : Center(
         child: Container(
           color: Color(0xffe65100),
           child: Column(
             children: <Widget>[
-              HomePageCarousel(),
+              HomePageCarousel(
+                bookImages: images,
+              ),
               Padding(
                 padding: const EdgeInsets.all(6.0),
                 child: SafeArea(
-                  
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -60,17 +96,25 @@ class _BookProfileState extends State<BookProfile> {
                       ),
                       Expanded(flex: 2, child: SizedBox()),
                       Expanded(
-                        flex: 6,
-                        child: Container(
-                          width: double.maxFinite,
-                          height: 70,
-                          child: Center(
-                              child: Text(
-                            "${widget.selectedBook.price} TL",
-                            style: TextStyle(color: Colors.white),
-                          )),
-                        ),
-                      )
+                          flex: 6,
+                          child: InkWell(
+                            child: Container(
+                              width: double.maxFinite,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(25))),
+                              child: Center(
+                                  child: Text(
+                                "${widget.selectedBook.price} TL",
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 18),
+                              )),
+                            ),
+                            onTap: () => print("sa"),
+                          ))
                     ],
                   ),
                 ),
@@ -218,10 +262,9 @@ class _BookProfileState extends State<BookProfile> {
                                   Expanded(
                                     child: SingleChildScrollView(
                                         child: Text(
-                                          "More About Book:\n " +
-                                      widget.selectedBook.description,
-                                      style:
-                                          TextStyle(color: Colors.white),
+                                      "More About Book:\n " +
+                                          widget.selectedBook.description,
+                                      style: TextStyle(color: Colors.white),
                                     )),
                                   ),
                                 ],
