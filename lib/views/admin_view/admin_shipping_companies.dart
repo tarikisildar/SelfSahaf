@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/admin_view/admin_company_card.dart';
-import 'package:Selfsahaf/views/customer_view/category_view/category_card.dart';
-import 'package:Selfsahaf/views/customer_view/shipping_view/shipping_card.dart';
-
 class ShippingCompanies extends StatefulWidget{
   @override
   _ShippingCompaniesState createState() => _ShippingCompaniesState();
