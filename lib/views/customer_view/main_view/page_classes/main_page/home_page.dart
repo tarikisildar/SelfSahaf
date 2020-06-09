@@ -157,13 +157,7 @@ class _HomePageState extends State<HomePage> {
                             itemBuilder: (BuildContext context, int index) {
                               
                               return BookCard(
-                                bookName: bookList[index].name,
-                                picture: "images/sell/lontano.jpg",
-                                price: bookList[index].price,
-                                seller: bookList[index].sellerName,
-                                writer: bookList[index].authorName,
-                                productID: bookList[index].productID,
-                                sellerID: bookList[index].sellerID,
+                              book: bookList[index]
                               );
                             }),
                     Container(
