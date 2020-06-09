@@ -77,7 +77,7 @@ class _MainPageState extends State<MainPage> {
                         ? Text(
                             "Ana Sayfa",
                             style: TextStyle(
-                                fontSize: 10, fontWeight: FontWeight.bold),
+                                fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
                           )
                         : SizedBox(),
                   ],
@@ -104,7 +104,7 @@ class _MainPageState extends State<MainPage> {
                         ? Text(
                             "Arama",
                             style: TextStyle(
-                                fontSize: 10, fontWeight: FontWeight.bold),
+                                fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
                           )
                         : SizedBox(),
                   ],
@@ -131,7 +131,7 @@ class _MainPageState extends State<MainPage> {
                         ? Text(
                             "Bildirimler",
                             style: TextStyle(
-                                fontSize: 10, fontWeight: FontWeight.bold),
+                                fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
                           )
                         : SizedBox(),
                   ],
@@ -158,7 +158,7 @@ class _MainPageState extends State<MainPage> {
                         ? Text(
                             "Profilim",
                             style: TextStyle(
-                                fontSize: 10, fontWeight: FontWeight.bold),
+                                fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
                           )
                         : SizedBox(),
                   ],

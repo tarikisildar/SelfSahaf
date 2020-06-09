@@ -101,7 +101,6 @@ class _HomePageState extends State<HomePage> {
           page = 0;
       
         this.bookList = e;
-        _bookService.getImage(bookList[0].sellerID,  bookList[0].productID, 1).then((value) => print(value));
         
           _isloading = false;
       });
@@ -126,9 +125,7 @@ class _HomePageState extends State<HomePage> {
                 }),
           ],
         ),
-        drawer: (_loading)
-            ?  Container(  color: Colors.transparent,child:Center(child: CircularProgressIndicator(backgroundColor: Colors.white,)))
-            : SahafDrawer(),
+        drawer: SahafDrawer(),
       body: (_loading)
             ? Container(  color: Colors.transparent,child:Center(child: CircularProgressIndicator(backgroundColor: Colors.white,)))
             : RefreshIndicator(

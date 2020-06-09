@@ -26,12 +26,14 @@ class AddressWidget extends StatelessWidget {
         height: 120,
         margin: EdgeInsets.all(5),
         decoration:
-            BoxDecoration(color: Colors.white, shape: BoxShape.rectangle),
+            BoxDecoration(color: Colors.white, shape: BoxShape.rectangle, borderRadius: BorderRadius.all(Radius.circular(25))),
         child: Row(
           children: <Widget>[
             Expanded(
                 flex: 7,
-                child: Column(children: <Widget>[
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
                   Container(
                     padding: EdgeInsets.all(5),
 
@@ -74,7 +76,9 @@ class AddressWidget extends StatelessWidget {
             Expanded(
               
                 flex: 2,
-                child: Column(children: <Widget>[
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
                    InkWell(
                       onTap: () => showDialog(
                             context: context,

@@ -9,7 +9,73 @@ class EditCategories extends StatefulWidget {
 }
 
 class _EditCategoriesState extends State<EditCategories> {
+
+  CategoryService api = CategoryService();
   final _formKey = GlobalKey<FormState>();
+
+  void messagepopup(int val){
+    var _title;
+    var _content;
+    if(val==0){
+      _title = "Hata!";
+      _content = "Baglanti Hatasi";
+    }
+    else if (val == 1){
+      _title = "Mesaj";
+      _content = "Kategori Kaydedildi";
+    }
+    else{
+      _title = "Hata!";
+      _content = "Gecersiz Kategori Ismi";
+    }
+    Navigator.of(context).pop();
+    showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                backgroundColor: Color(0xffe65100),
+                title: Text(
+                  _title,
+                  style: TextStyle(color: Colors.white),
+                ),
+                content: Text(_content,
+                    style: TextStyle(color: Colors.white)),
+                actions: <Widget>[
+                  FlatButton(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: Text(
+                      "Tamam",
+                      style: TextStyle(color: Color(0xffe65100)),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                ],
+              );
+            });
+  }
+
+  void _addCategory() async {
+    api
+        .addCategory(categorynameController.text)
+        .then((val) {
+      if (val>=400) {
+        
+        messagepopup(0);
+      } else
+        return messagepopup(1);
+    });
+  }
   
   CategoryService categoryApi = new CategoryService();
   TextEditingController categorynameController = TextEditingController();
@@ -124,7 +190,12 @@ class _EditCategoriesState extends State<EditCategories> {
                         style: TextStyle(color: Color(0xffe65100)),
                       ),
                       onPressed: () {
-                        print("BURA DAHA BITMEDI BITER INS");
+                        if(categorynameController.text == "" || categorynameController.text == " "){
+                          messagepopup(2);
+                        }
+                        else{
+                          _addCategory();
+                        }
                         
                       },
                     ),
