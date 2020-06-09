@@ -72,8 +72,10 @@ class AddressWidget extends StatelessWidget {
                 ])),
             Expanded(
                 flex: 2,
-                child: Column(children: <Widget>[
-                  InkWell(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                   InkWell(
                       onTap: () => showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
