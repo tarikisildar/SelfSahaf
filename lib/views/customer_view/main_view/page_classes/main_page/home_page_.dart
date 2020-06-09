@@ -9,19 +9,18 @@ import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/h
 import 'package:selfsahaf/views/customer_view/main_view/page_classes/main_page/sahaf_drawer.dart';
 import 'package:selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
 
-
-
-  class HomePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _HomePageState();
   }
 }
+
 class _HomePageState extends State<HomePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   ScrollController _scrollController = new ScrollController();
-  List<Book> bookList = [null];
+  List<Book> bookList = [];
   bool _isloading = true;
   int _index = 0;
   int page = 0, size = 4, localpage = 0;
@@ -32,19 +31,18 @@ class _HomePageState extends State<HomePage> {
 
   bool _loading = true;
 
-  
   @override
   void initState() {
     _fetchData();
 
-    
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         _getMoreData();
       }
     });
-    
+    print(bookList);
+    print(bookList.length);
   }
 
   _getMoreData() async {
@@ -78,18 +76,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   _fetchData() async {
-     userService.initUser().then((e) {
-       _refresh().then((value){
-         setState(() {
-            _loading = false;
-          });
-       });
-          
+    userService.initUser().then((e) {
+      _refresh().then((value) {
+        setState(() {
+          _loading = false;
         });
+      });
+    });
   }
 
   Future<Null> _refresh() {
-    
     setState(() {
       _isloading = true;
     });
@@ -99,19 +95,18 @@ class _HomePageState extends State<HomePage> {
           page = 1;
         else
           page = 0;
-      
+
         this.bookList = e;
-        _bookService.getImage(bookList[0].sellerID,  bookList[0].productID, 1).then((value) => print(value));
-        
-          _isloading = false;
+
+        _isloading = false;
       });
       print(bookList.length);
     });
   }
 
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           title: Container(
               height: 50,
               child: Image.asset("images/logo_white/logo_white.png")),
@@ -126,11 +121,21 @@ class _HomePageState extends State<HomePage> {
                 }),
           ],
         ),
-        drawer: (_loading)
-            ?  Container(  color: Colors.transparent,child:Center(child: CircularProgressIndicator(backgroundColor: Colors.white,)))
-            : SahafDrawer(),
-      body: (_loading)
-            ? Container(  color: Colors.transparent,child:Center(child: CircularProgressIndicator(backgroundColor: Colors.white,)))
+        drawer:(_loading)
+            ? Container(
+                color: Colors.transparent,
+                child: Center(
+                    child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                ))): SahafDrawer(),
+        body: (_loading)
+            ? Container(
+                color: Colors.transparent,
+                child: Center(
+                    child: CircularProgressIndicator(
+    
+                  backgroundColor: Colors.white,
+                )))
             : RefreshIndicator(
                 onRefresh: () => _refresh(),
                 key: _refreshIndicatorKey,
@@ -155,7 +160,6 @@ class _HomePageState extends State<HomePage> {
                                 new SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2),
                             itemBuilder: (BuildContext context, int index) {
-                              
                               return BookCard(
                                 bookName: bookList[index].name,
                                 picture: "images/sell/lontano.jpg",
@@ -177,8 +181,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-              )
-    );
-    
+              ));
   }
 }

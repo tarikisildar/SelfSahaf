@@ -16,6 +16,7 @@ class AuthService extends GeneralServices {
       Response response = await _dio.post(
         "login?email=" + email + "&password=" + password,
       );
+
       if(response.statusCode==403)
         return APIResponse<int>(data: response.statusCode , error: true, errorMessage: "Email or password is wrong!") ;
 
@@ -43,7 +44,7 @@ class AuthService extends GeneralServices {
   Future<APIResponse<String>> signup(data) async {
     try {
       Response response = await _dio.post("user/add", data: data);
-        
+       
          return APIResponse<String>(data: response.data.toString()) ;
     } on DioError catch (e) {
       if (e.response != null) {
@@ -70,6 +71,7 @@ class AuthService extends GeneralServices {
   Future<int> initUser() async {
     try {
       Response response = await _dio.get("user/get");
+      if(response.statusCode==200)
       _user = new User.fromJson(response.data);
       return response.statusCode;
     } on DioError catch (e) {
@@ -135,7 +137,9 @@ class AuthService extends GeneralServices {
       );
       List<Address> result=new List();
       print(response);
-       if (response.data.length != 0) {
+
+       if (response.data.length != 0||response.statusCode==200) {
+      
           List<dynamic> i = response.data;
           result = i.map((p) => Address.fromJson(p)).toList();
           result.sort((a,b)=>a.addressID.compareTo(b.addressID));
@@ -203,10 +207,10 @@ class AuthService extends GeneralServices {
       }
     }
   }
-  Future<int> updateUser(User user) async {
+  Future<int> updateUser(User user,bool changePassword) async {
     try {
       Response response = await _dio.post("user/update",
-          data: json.encode(user.toJsonUpdate()));
+          data: json.encode(user.toJsonUpdate(changePassword)));
       print(response);
       return response.statusCode;
     } on DioError catch (e) {

@@ -48,7 +48,7 @@ class _AdressesPage extends State<AdressesPage> {
           backgroundColor: Colors.white,
           child: Icon(Icons.add),
         ),
-        body: (_addresses == null)
+        body: (_addresses == null||_addresses.length==0)
             ? Center(
                 child: Text("No address",style: TextStyle(color:Colors.white, fontSize: 25 ),),
               )
@@ -56,6 +56,7 @@ class _AdressesPage extends State<AdressesPage> {
             onRefresh: () => _getAddresses(),
             key: _refreshIndicatorKey,
             child: ListView.builder(
+              
                 itemBuilder: (BuildContext context, index) {
                   return AddressWidget(
                     addressID: _addresses[index].addressID,

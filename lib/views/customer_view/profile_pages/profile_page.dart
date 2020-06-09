@@ -28,6 +28,7 @@ void initState() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Container(height: 50,child: Image.asset("images/logo_white/logo_white.png")),
         actions: <Widget>[
           IconButton(
