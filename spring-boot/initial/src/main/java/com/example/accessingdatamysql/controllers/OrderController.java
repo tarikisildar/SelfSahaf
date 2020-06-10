@@ -127,6 +127,7 @@ public class OrderController {
                 order.setCardNumber(card);
                 order.setDatetime(formattedDatetime);
                 order.setReceiverAddressID(address);
+                order.setItemCount(cart.size());
 
                 orderRepository.save(order);
 

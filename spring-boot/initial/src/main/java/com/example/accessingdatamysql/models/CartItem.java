@@ -28,7 +28,7 @@ public class CartItem {
     private Integer sellerID;
 
     @Transient
-    private Integer productID;
+    private Product product;
 
 
 
@@ -70,6 +70,10 @@ public class CartItem {
     @JsonIgnore
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Product getProduct() {
+        return sells.getProduct();
     }
 
     public Integer getAmount() {
