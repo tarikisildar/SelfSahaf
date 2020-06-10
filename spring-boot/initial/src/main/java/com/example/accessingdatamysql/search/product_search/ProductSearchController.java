@@ -33,23 +33,37 @@ public class ProductSearchController {
     @ApiOperation("search product by category")
     @GetMapping(path = "/searchBookByCategory")
     public @ResponseBody
-    List<Product> searchBookByCategory(@RequestParam("category") String category) {
-        return repository.findProductByCategory(category);
+    List<Product> searchBookByCategory(@RequestParam("category") String category,
+                                       @RequestParam(defaultValue = "0") Integer pageNo,
+                                       @RequestParam(defaultValue = "8") Integer pageSize) {
+        return repository.findProductByCategory(category, pageNo, pageSize);
     }
 
     @ApiOperation("search product by language")
     @GetMapping(path = "/searchBookByLanguage")
     public @ResponseBody
-    List<Product> searchBookByLanguage (@RequestParam("language") String language) {
-        return repository.findProductByLanguage(language);
+    List<Product> searchBookByLanguage (@RequestParam("language") String language,
+                                        @RequestParam(defaultValue = "0") Integer pageNo,
+                                        @RequestParam(defaultValue = "8") Integer pageSize) {
+        return repository.findProductByLanguage(language, pageNo, pageSize);
     }
 
     @ApiOperation("search product by price range")
     @GetMapping(path = "/searchBookByPriceRange")
     public @ResponseBody
     List<Product> searchBookByPriceRange (@RequestParam(defaultValue = "0") Double from,
-                                          @RequestParam(defaultValue = "999999999") Double to) {
-        return repository.findProductByPriceRange(from, to);
+                                          @RequestParam(defaultValue = "999999999") Double to,
+                                          @RequestParam(defaultValue = "0") Integer pageNo,
+                                          @RequestParam(defaultValue = "8") Integer pageSize) {
+        return repository.findProductByPriceRange(from, to, pageNo, pageSize);
     }
 
+    @ApiOperation("search product by ISBN")
+    @GetMapping(path = "/searchBookByISBN")
+    public @ResponseBody
+    List<Product> searchBookByISBN (@RequestParam("isbn") String isbn,
+                                        @RequestParam(defaultValue = "0") Integer pageNo,
+                                        @RequestParam(defaultValue = "8") Integer pageSize) {
+        return repository.findProductByISBN(isbn, pageNo, pageSize);
+    }
 }

@@ -59,7 +59,7 @@ public class ProductSearchService {
         return jpaQuery.getResultList();
     }
 
-    public List<Product> findProductByCategory(String category) {
+    public List<Product> findProductByCategory(String category, int pageNo, int pageSize) {
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         try {
             fullTextEntityManager.createIndexer().startAndWait();
@@ -84,12 +84,14 @@ public class ProductSearchService {
                 fullTextEntityManager.createFullTextQuery(query, Product.class);
 
         System.out.println(jpaQuery.getResultList().size());
+        jpaQuery.setFirstResult(pageNo * pageSize); // Page size starts at 0.
+        jpaQuery.setMaxResults(pageSize);
 
         return jpaQuery.getResultList();
 
     }
 
-    public List<Product> findProductByLanguage(String language) {
+    public List<Product> findProductByLanguage(String language, int pageNo, int pageSize) {
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         try {
             fullTextEntityManager.createIndexer().startAndWait();
@@ -113,11 +115,14 @@ public class ProductSearchService {
                 fullTextEntityManager.createFullTextQuery(query, Product.class);
 
         System.out.println(jpaQuery.getResultList().size());
+        jpaQuery.setFirstResult(pageNo * pageSize); // Page size starts at 0.
+        jpaQuery.setMaxResults(pageSize);
+
         return jpaQuery.getResultList();
 
     }
 
-    public List<Product> findProductByPriceRange(double from, double to) {
+    public List<Product> findProductByPriceRange(double from, double to, int pageNo, int pageSize) {
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         try {
             fullTextEntityManager.createIndexer().startAndWait();
@@ -143,16 +148,46 @@ public class ProductSearchService {
         FacetManager facetManager = fullTextQuery.getFacetManager();
         facetManager.enableFaceting(priceFacetingRequest);
 
-        List<Product> products = fullTextQuery.getResultList();
-
         List<Facet> facets = facetManager.getFacets("priceFaceting");
 
         FacetSelection facetSelection = facetManager.getFacetGroup( "priceFaceting" );
         facetSelection.selectFacets(facets.get(0));
 
-        products = fullTextQuery.getResultList();
-        System.out.println(products.size());
-        return products;
+        fullTextQuery.setFirstResult(pageNo * pageSize); // Page size starts at 0.
+        fullTextQuery.setMaxResults(pageSize);
+        System.out.println(fullTextQuery.getResultList().size());
+        return fullTextQuery.getResultList();
+
+    }
+
+    public List<Product> findProductByISBN(String isbn, int pageNo, int pageSize) {
+        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        try {
+            fullTextEntityManager.createIndexer().startAndWait();
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.fillInStackTrace());
+        }
+
+        QueryBuilder queryBuilder = fullTextEntityManager
+                .getSearchFactory()
+                .buildQueryBuilder().forEntity(Product.class)
+                .get();
+
+        Query query = queryBuilder
+                .keyword()
+                .onField("ISBN")
+                .matching(isbn)
+                .createQuery();
+
+        javax.persistence.Query jpaQuery =
+                fullTextEntityManager.createFullTextQuery(query, Product.class);
+
+        System.out.println(jpaQuery.getResultList().size());
+        jpaQuery.setFirstResult(pageNo * pageSize); // Page size starts at 0.
+        jpaQuery.setMaxResults(pageSize);
+
+        return jpaQuery.getResultList();
 
     }
 }
