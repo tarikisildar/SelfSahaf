@@ -176,15 +176,6 @@ public class CartController {
                 response.setStatus( HttpServletResponse.SC_FORBIDDEN);
 
         }
-        if(response.getStatus() == HttpServletResponse.SC_OK)
-        {
-            for(CartItem c : cart){
-                c.getSells().setQuantity( c.getSells().getQuantity() - c.getAmount());
-                if(c.getSells().getQuantity() == 0)
-                    c.getSells().getProduct().setStatus(ProductStatus.DEACTIVE);
-                cartRepository.deleteByUserIDAndSellID(userID,c.getCartItemID().getSellID());
-            }
-        }
         return responses;
     }
 

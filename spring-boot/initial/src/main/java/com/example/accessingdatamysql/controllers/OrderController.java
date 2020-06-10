@@ -5,8 +5,11 @@ import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.enums.OrderStatus;
 import com.example.accessingdatamysql.models.enums.ProductStatus;
+import com.example.accessingdatamysql.models.enums.RefundStatus;
+import com.example.accessingdatamysql.storage.StorageService;
 import com.example.accessingdatamysql.thirdparty.PaypalPayment;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +21,12 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import io.swagger.annotations.Api;
 import javax.servlet.http.HttpServletResponse;
 
+import java.sql.Ref;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Controller
@@ -60,6 +61,11 @@ public class OrderController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private StorageService storageService;
+
+    @Autowired
+    private RefundRepository refundRepository;
 
     @Autowired
     private CartRepository cartRepository;
@@ -93,17 +99,12 @@ public class OrderController {
 
                 /*validate card if validated return true*/
             System.out.println("Hello");
-            if(true) {
+            if(paypal.validateCard(card)) {
 
                 System.out.println("Hello");
                 card = cardRepository.save(card);
 
-                ShippingInfo shippingInfo = new ShippingInfo();
-                shippingInfo.setShippingCompanyID(shippingCompany);
-                shippingInfo.setDelivered(false);
-                shippingInfo.setTrackingNumber("0000");
 
-                shippingInfo = shippingInfoRepository.save(shippingInfo);
 
                 System.out.println(user.getUserID());
                 System.out.println(card.getCardNumber());
@@ -116,7 +117,7 @@ public class OrderController {
                 cardSet.add(card);*/
 
                 Order order = new Order();
-                order.setBuyerID(user);
+                order.setBuyer(user);
                 order.setCardNumber(card);
                 order.setDatetime(formattedDatetime);
                 order.setReceiverAddressID(address);
@@ -124,6 +125,12 @@ public class OrderController {
                 orderRepository.save(order);
 
                 for (CartItem item : cart) {
+
+                    ShippingInfo shippingInfo = new ShippingInfo();
+                    shippingInfo.setShippingCompanyID(shippingCompany);
+                    shippingInfo.setTrackingNumber("0000");
+
+                    shippingInfo = shippingInfoRepository.save(shippingInfo);
 
                     Sells sells = item.getSells();
                     Product product = sells.getProduct();
@@ -149,7 +156,7 @@ public class OrderController {
                     orderDetail.setProduct(product);
                     orderDetail.setUser(sells.getUser());
                     orderDetail.setShippingInfo(shippingInfo);
-                    orderDetail.setRefund(OrderStatus.ACTIVE);
+                    orderDetail.setStatus(OrderStatus.ACTIVE);
 
 
 
@@ -169,6 +176,7 @@ public class OrderController {
                 return "confirmed";
             }
             else{
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return "Card could not be confirmed";
             }
 
@@ -178,10 +186,13 @@ public class OrderController {
 
 
         }
-
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         return "Cart is not valid.";
 
     }
+
+
+
 
     public boolean isCartValid(Set<CartItem> cart){
 
@@ -199,55 +210,139 @@ public class OrderController {
             }
 
         }
-
-
         return true;
+    }
 
+    @ApiOperation("Mark Order as shipping, Confirmed or delivered. for seller")
+    @PostMapping(path = "/markOrder")
+    public  @ResponseBody String MarkShipping(@RequestParam Integer orderID, @RequestParam Integer productID, @RequestParam OrderStatus status,HttpServletResponse response)
+    {
+        if(!(status == OrderStatus.CONFIRMED || status == OrderStatus.SHIPPING || status == OrderStatus.DELIVERED))
+        {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "You can only mark confirmed, delivered or shipping";
+        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderIDAndProductIDAndSellerID(orderID,productID,userID);
+
+        orderDetail.setStatus(status);
+        orderDetailRepository.save(orderDetail);
+        return "status marked as" + status.name();
+    }
+
+    @ApiOperation("Get Order Details. Lists details for every product")
+    @GetMapping(path = "/getOrderDetails")
+    public @ResponseBody List<OrderDetail> getOrderDetails(@RequestParam Integer orderID)
+    {
+        return orderDetailRepository.findOrderDetailsByOrderID(orderID);
     }
 
 
-
-
-
-    @ApiOperation("Get given orders")
+    @ApiOperation("Get list of given orders by user")
     @GetMapping(path="/givenOrders")
-    public @ResponseBody Iterable<Order> getGivenOrders()
+    public @ResponseBody List<Order> givenOrders()
     {
-        throw new NotImplementedException();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+        return orderRepository.findOrderByUserID(userID);
     }
 
-    @ApiOperation("Get taken orders")
+    @ApiOperation("Get list of taken orders by seller")
     @GetMapping(path="/takenOrders")
-    public @ResponseBody Iterable<Order> getTakenOrders()
+    public @ResponseBody List<OrderDetail> getTakenOrders()
     {
-        throw new NotImplementedException();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+        return  orderDetailRepository.findOrderDetailBySellerID(userID);
     }
 
     @ApiOperation("Cancel Order")
     @PostMapping(path="/cancel")
-    public @ResponseBody String cancelOrder(@RequestParam Integer orderID)
+    public @ResponseBody String cancelOrder(@RequestParam Integer orderDetailID, HttpServletResponse response)
     {
-        throw new NotImplementedException();
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailsByOrderDetailID(orderDetailID);
+        if(orderDetail.getStatus() == OrderStatus.ACTIVE)
+            orderDetail.setStatus(OrderStatus.CANCELLED);
+        else{
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "You can't cancel an order after beginning it's shipment process. Look for refunding.";
+        }
+        return "Your order has canceled";
     }
 
-    @ApiOperation("Change Address")
+    @ApiOperation("Change Address Not implemented")
     @PostMapping(path="/updateAddress")
     public @ResponseBody String updateAddress(@RequestParam Integer orderID, Address address)
     {
         throw new NotImplementedException();
     }
 
-    @ApiOperation("Return Request")
-    @PostMapping(path="/returnRequest")
-    public @ResponseBody String returnRequest(@RequestParam Integer orderID, List<MultipartFile> file, String message)
+    @Transactional
+    @ApiOperation("Refund Request, orderId productId and sellerId needed for finding specific product order. file is optional")
+    @PostMapping(path="/refundRequest")
+    public @ResponseBody String refundRequest(@RequestParam Integer orderDetailID,@RequestBody(required = false) List<MultipartFile> file,@RequestParam String message)
     {
-        throw new NotImplementedException();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        User user = userRepository.findUserByUserID(userID).get();
+
+        LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
+        String formattedDatetime = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
+
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailsByOrderDetailID(orderDetailID);
+        orderDetail.setStatus(OrderStatus.REFUNDREQUEST);
+        RefundRequest refundRequest = new RefundRequest(orderDetail,formattedDatetime,message);
+        refundRequest.setUser(user);
+        refundRequest.setStatus(RefundStatus.PENDING);
+
+        refundRequest = refundRepository.save(refundRequest);
+        if(file != null)
+        {
+            refundRequest.setPath(storageService.storeAllRefund(file,refundRequest.getRefundID()));
+            refundRepository.save(refundRequest);
+        }
+        return "refund request created with id " + refundRequest.getRefundID().toString();
     }
 
-    @ApiOperation("Return Request")
-    @PostMapping(path="/returnConfirm")
-    public @ResponseBody String confirmReturnRequest(@RequestParam Integer orderID, String message, boolean confirm)
+    @ApiOperation("List Refund Requests, for seller")
+    @GetMapping(path = "/sellerRefundRequests")
+    public @ResponseBody List<RefundRequest> getSellerRefundRequests()
     {
-        throw new NotImplementedException();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        List<RefundRequest> ref = refundRepository.findRefundRequestsBySellerID(userID);
+        Collections.sort(ref, Comparator.comparing(RefundRequest::getDatetime));
+        Collections.reverse(ref);
+        return ref;
+    }
+
+    @ApiOperation("List all refund requests, for admin")
+    @GetMapping(path = "/refundRequests")
+    public @ResponseBody List<RefundRequest> getAllRefundRequests()
+    {
+        List<RefundRequest> ref = refundRepository.findAll();
+        Collections.sort(ref, Comparator.comparing(RefundRequest::getDatetime));
+        Collections.reverse(ref);
+        return ref;
+    }
+
+    @ApiOperation("Refund Confirm or Reject")
+    @PostMapping(path="/refundEvaluate")
+    public @ResponseBody String evaluateRefundRequest(@RequestParam Integer refundId, @RequestParam boolean confirm)
+    {
+        RefundRequest refundRequest = refundRepository.findById(refundId).get();
+        if(confirm)
+            refundRequest.setStatus(RefundStatus.CONFIRMED);
+        else{
+            refundRequest.setStatus(RefundStatus.DECLINED);
+        }
+        refundRepository.save(refundRequest);
+
+        return "status changed";
+
     }
 }

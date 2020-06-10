@@ -26,10 +26,10 @@ public class Sells implements Serializable{
 
 
     private Integer quantity;
-
+    @Column(length = 10)
     private Integer sellerID;
 
-
+    @Column(length = 10)
     private Integer productID;
 
 
@@ -118,6 +118,7 @@ public class Sells implements Serializable{
     public Double getPrice() {
         String date = LocalDateTime.MIN.toString();
         Price tempPrice = null;
+        Double discount;
         for (Price p : price) {
 
             if (p.getPriceID().getDatetime().compareTo(date) > 0) {
@@ -126,17 +127,20 @@ public class Sells implements Serializable{
             }
         }
         if(tempPrice != null) {
+
+
+            discount = tempPrice.getDiscount() / 100.;
             setCurrentPrice(tempPrice.getPrice());
-            return tempPrice.getPrice();
+            return tempPrice.getPrice() * (1 - discount);
         }
         else
             return null;
     }
-
+    @JsonIgnore
     public Set<CartItem> getCart() {
         return cart;
     }
-
+    @JsonIgnore
     public void setCart(Set<CartItem> cart) {
         this.cart = cart;
     }

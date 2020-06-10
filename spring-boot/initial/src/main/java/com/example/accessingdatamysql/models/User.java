@@ -31,6 +31,7 @@ public class User {
     @Column(length = 45)
     private String role;
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CartItem> cart;
 
@@ -64,12 +65,14 @@ public class User {
 
 
     @JsonIgnoreProperties("user")
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<OrderDetail> orderdetails;
 
-    @JsonIgnoreProperties("buyerID")
-    @OneToMany(mappedBy = "buyerID", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("buyer")
+    @OneToMany(mappedBy = "buyer", fetch = FetchType.EAGER)
     private Set<Order> orders;
+
+
 
 
     public User(){
@@ -82,6 +85,15 @@ public class User {
         this.dob = dob;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+
+    @JsonIgnore
+    public Set<Order> getOrders() {
+        return orders;
+    }
+    @JsonIgnore
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     @JsonIgnore
@@ -153,11 +165,12 @@ public class User {
     public String getSurname() {
         return surname;
     }
-
+    @JsonIgnore
     public Set<CartItem> getCart() {
         return cart;
     }
 
+    @JsonIgnore
     public void setCart(Set<CartItem> cart) {
         this.cart = cart;
     }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -20,7 +21,7 @@ public class ShippingController {
 
     @ApiOperation("Add Shipping Company")
     @PostMapping("/addCompany")
-    public @ResponseBody String addShippingCompany(@RequestParam String companyName, @RequestParam String website, @RequestParam float price)
+    public @ResponseBody String addShippingCompany(@RequestParam String companyName, @RequestParam(defaultValue = "No website") String website, @RequestParam float price)
     {
         Optional<ShippingCompany> comp = shippingRepository.findShippingCompanyByCompanyName(companyName);
         ShippingCompany shippingCompany;
@@ -45,4 +46,10 @@ public class ShippingController {
         return "deleted";
     }
 
+    @ApiOperation("Get All Shipping Options")
+    @GetMapping("/getCompanies")
+    public @ResponseBody Iterable<ShippingCompany> getCompanies()
+    {
+        return shippingRepository.findAll();
+    }
 }

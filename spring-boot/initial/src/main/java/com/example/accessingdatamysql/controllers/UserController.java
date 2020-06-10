@@ -33,7 +33,6 @@ import static com.example.accessingdatamysql.security.UserRole.*;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private PostalRepository postalRepository;
 
@@ -76,11 +75,13 @@ public class UserController {
 
         Optional<User> findUser = userRepository.findUserByUserID(user.getUserID());
 
-        if(findUser.isPresent()) {
+        if(!findUser.isPresent()) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
             return "Requested User not found";
         }
+
+        User userDb = findUser.get();
 
         if(user.getAddresses() != null) {
             for (Address a : user.getAddresses()) {
@@ -88,31 +89,26 @@ public class UserController {
                 if (postalCode != null) {
                     a.setPostalCode(postalCode);
                 }
-                findUser.get().getAddresses().add(a);
+                userDb.getAddresses().add(a);
             }
         }
 
-        Set<CardInfo> cards = new HashSet<>();
-        if(user.getCards() != null) {
-            for (CardInfo c : user.getCards()) {
-                Set<User> s = new HashSet<User>();
-                s.add(findUser.get());
-                c.setUsers(s);
-                cards.add(c);
-            }
-        }
+
+        userDb.setRole(user.getRole());
+        userDb.setEmail(user.getEmail());
+        userDb.setName(user.getName());
+        userDb.setDob(user.getDob());
+        userDb.setPhoneNumber(user.getPhoneNumber());
+        userDb.setSurname(user.getSurname());
 
         if(user.getPassword() != null)
-            findUser
-                    .get()
+            userDb
                     .setPassword(
                             passwordEncoder.encode(user.getPassword())
                     );
 
 
-        if(!cards.isEmpty()) findUser.get().setCards(cards);
-
-        userRepository.save(findUser.get());
+        userRepository.save(userDb);
         return "Saved";
 
     }
@@ -146,11 +142,34 @@ public class UserController {
 
 
             addressRepository.save(address);
+            user.get().setSellerAddressID(address);
 
             userRepository.save(user.get());
+
+
         }
         return "saved";
 
+    }
+
+    @ApiOperation("Delete address")
+    @DeleteMapping("/deleteAddress")
+    public @ResponseBody String deleteAddress(@RequestParam Integer addressID,HttpServletResponse response)
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findUserByUserID(((UserDetailsImp) auth.getPrincipal()).getUserID());
+
+        for (Address address:user.get().getAddresses()) {
+            if(address.getAddressID() == addressID)
+            {
+                user.get().getAddresses().remove(address);
+                userRepository.save(user.get());
+                return "deleted address with name " + address.getAddressName();
+            }
+
+        }
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        return "can't delete address with id "+ addressID;
     }
 
     @ApiOperation("w/ id for update")
@@ -180,8 +199,23 @@ public class UserController {
     @ApiOperation("Set Address")
     @PostMapping(path = "/updateAddress")
     public @ResponseBody String updateAddress(@RequestBody Address address, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findUserByUserID(((UserDetailsImp) auth.getPrincipal()).getUserID());
+
+        for (Address address1:user.get().getAddresses()) {
+            if(address1.getAddressID() == address.getAddressID())
+            {
+                addressRepository.save(address);
+                return "address updated";
+            }
+        }
+        if(user.get().getSellerAddressID() != null && user.get().getSellerAddressID().getAddressID() == address.getAddressID()){
+            user.get().setSellerAddressID(address);
+            return "seller address updated";
+        }
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        return "Not implemented";
+        return "no address";
+
     }
 
 

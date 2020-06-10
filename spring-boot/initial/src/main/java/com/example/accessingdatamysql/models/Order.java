@@ -15,10 +15,10 @@ public class Order {
     private Integer orderID;
 
 
-
-    @ManyToOne
+    @JsonIgnoreProperties("orders")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyerID", referencedColumnName = "userID")
-    private User buyerID;
+    private User buyer;
 
     @ManyToOne
     @JoinColumn(name = "cardNumber")
@@ -41,12 +41,12 @@ public class Order {
         this.orderID = orderID;
     }
 
-    public User getBuyerID() {
-        return buyerID;
+    public User getBuyer() {
+        return buyer;
     }
 
-    public void setBuyerID(User buyerID) {
-        this.buyerID = buyerID;
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
     }
 
     public CardInfo getCardNumber() {
@@ -72,5 +72,6 @@ public class Order {
     public void setReceiverAddressID(Address receiverAddressID) {
         this.receiverAddressID = receiverAddressID;
     }
+
 
 }

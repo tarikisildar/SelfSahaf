@@ -13,8 +13,6 @@ public class Price {
     private PriceKey priceID;
 
 
-
-
     @JsonIgnoreProperties("prices")
     @ManyToOne
 
@@ -29,12 +27,32 @@ public class Price {
 
     private Double price;
 
+    @Column
+    private Integer discount;
+
     public Price(){}
+
+
+    public Price(PriceKey priceID, Sells sells, Double price, Integer discount) {
+        this.priceID = priceID;
+        this.sells = sells;
+        this.price = price;
+        this.discount = discount;
+    }
 
     public Price(PriceKey priceID, Sells sells, Double price) {
         this.priceID = priceID;
         this.sells = sells;
         this.price = price;
+        this.discount = 0;
+    }
+
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 
     @JsonIgnore

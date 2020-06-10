@@ -79,6 +79,7 @@ public class ProductController {
         String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
         price1.setPriceID(new PriceKey(pr.getProductID(),sellerID, formatted));
         price1.setPrice(price);
+        price1.setDiscount(0);
         Set<Price> prices = new HashSet<Price>();
 
         prices.add(price1);
@@ -90,7 +91,7 @@ public class ProductController {
         sells.setUser(user.get());
 
         sellerRepository.save(sells);
-        return "A new selling created";
+        return pr.getProductID().toString();
     }
     @ApiOperation("update Product")
     @PostMapping(path ="/updateBook")
@@ -113,8 +114,9 @@ public class ProductController {
                 LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
                 String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
                 PriceKey priceKey = new PriceKey(product.getProductID(),sell.getSellerID(),formatted);
-                Set<Price> prices = new HashSet<>();
-                prices.add(new Price(priceKey,sell,price));
+                Set<Price> prices = sell.getPriceList();
+                Integer dc = (int)((sell.getPrice() - price)/sell.getPrice()*100);
+                prices.add(new Price(priceKey,sell,price,dc));
                 sell.setPrice(prices);
                 sell.setCurrentPrice(price);
                 sell.setQuantity(quantity);
@@ -218,7 +220,7 @@ public class ProductController {
         }
 
 
-        String name = storageService.storeAll(file,productID,sellerID);
+        String name = storageService.storeAll(file,productID);
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/images/")
                 .path(productRepositoryWithoutPage.findById(productID).get().getPath())
@@ -253,7 +255,7 @@ public class ProductController {
         }
 
 
-        String name = storageService.storeMain(file,productID,sellerID);
+        String name = storageService.storeMain(file,productID);
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/images/")
                 .path(productRepositoryWithoutPage.findById(productID).get().getPath())
@@ -264,10 +266,9 @@ public class ProductController {
 
     @GetMapping("/getImagePaths")
     public @ResponseBody List<String> GetImagePaths(@RequestParam Integer productID) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
-        List<Resource> resources = storageService.loadAllResources(productID.toString(), sellerID.toString());
+
+        List<Resource> resources = storageService.loadAllResources(productID.toString());
         List<String> resourcesS = new ArrayList<>();
         for (Resource res :
                 resources) {

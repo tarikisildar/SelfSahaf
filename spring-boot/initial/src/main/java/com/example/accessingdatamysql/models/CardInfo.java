@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.ManyToAny;
 
@@ -50,11 +51,11 @@ public class CardInfo {
     }
 
 
-
+    @JsonIgnore
     public Set<User> getUsers() {
         return users;
     }
-
+    @JsonIgnore
     public void setUsers(Set<User> users) {
         this.users = users;
     }
@@ -83,7 +84,7 @@ public class CardInfo {
         this.ownerName = ownerName;
     }
 
-
+    @JsonIgnore
     public String getCvv() {
         return cvv;
     }
@@ -91,7 +92,7 @@ public class CardInfo {
     public void setCvv(String cvv) {
         this.cvv = cvv;
     }
-
+    @JsonIgnore
     public String getExpirationYear() {
         return expirationYear;
     }
@@ -99,7 +100,7 @@ public class CardInfo {
     public void setExpirationYear(String expirationYear) {
         this.expirationYear = expirationYear;
     }
-
+    @JsonIgnore
     public String getExpirationMonth() {
         return expirationMonth;
     }
