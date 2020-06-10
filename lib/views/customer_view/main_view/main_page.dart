@@ -43,7 +43,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: BottomAppBar(
-          elevation: 5,
+          elevation: 8,
           child: Container(
             decoration: BoxDecoration(
               color: Color(0xffe65100),

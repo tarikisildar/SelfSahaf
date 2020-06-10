@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/controller/book_controller.dart';
@@ -14,23 +15,33 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   TextEditingController queryController;
 
-  _SearchPageState(){
-    queryController.addListener(() {
-      if(queryController.text.length>=3){
-        print("ARKAYA SEARCH ISTEGI");
-      }
-      else {
-        print(3-queryController.text.length);
-      }
+  // _SearchPageState(){
+  //   queryController.addListener(() {
+  //     if(queryController.text.length>=3){
+  //       print("ARKAYA SEARCH ISTEGI");
+  //     }
+  //     else {
+  //       print(3-queryController.text.length);
+  //     }
 
-    });
-  }
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Container(
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.deepOrange,
+            bottom: TabBar(
+              tabs: [
+                Tab(child: Text("Books",style: TextStyle(color: Colors.white),),),
+                Tab(child: Text("Categories",style: TextStyle(color: Colors.white),),),
+                Tab(child: Text("ISBN",style: TextStyle(color: Colors.white),),),
+              ],
+            ),
+            title: Container(
           child: TextFormField(
             style: TextStyle(color: Colors.white),
             controller: queryController,
@@ -40,14 +51,46 @@ class _SearchPageState extends State<SearchPage> {
                 border: InputBorder.none),
           ),
         ),
-        leading: IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            onPressed: () {}),
+          ),
+          body: TabBarView(
+            children: [
+              Container(
+                color: Colors.deepOrange,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView(
+                    children: <Widget>[
+                      Text("BOOK CEK"),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                color: Colors.deepOrange,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView(
+                    children: <Widget>[
+                      Text("KATEGORI CEK"),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                color: Colors.deepOrange,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView(
+                    children: <Widget>[
+                      Text("ISBN CEK"),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      body: Center(child: Text("Badi")),
     );
   }
 }
