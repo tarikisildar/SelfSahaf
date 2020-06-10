@@ -23,11 +23,10 @@ public class RatingKey implements Serializable {
     public RatingKey() {
     }
 
-    public RatingKey(Integer productID, Integer sellerID, Integer datetime) {
+    public RatingKey(Integer receiverID, Integer raterID, Integer productID) {
         this.receiverID = receiverID;
         this.raterID = raterID;
         this.productID = productID;
-
     }
 
     @Override

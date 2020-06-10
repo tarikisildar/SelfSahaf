@@ -14,7 +14,6 @@ public class ShippingInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer shippingInfoID;
 
-    private boolean delivered;
     @Column(length = 45)
     private String trackingNumber;
 
@@ -22,6 +21,19 @@ public class ShippingInfo {
     @JoinColumn(name = "shippingCompanyID")
     private ShippingCompany shippingCompanyID;
 
+    /*@OneToOne(mappedBy = "shippingInfo")
+    @JoinColumn(name = "shippingCompanyID")
+    private OrderDetail orderDetail;*/
+
+
+    public ShippingInfo(){
+
+    }
+
+    public ShippingInfo(boolean delivered, String trackingNumber, ShippingCompany shippingCompanyID) {
+        this.trackingNumber = trackingNumber;
+        this.shippingCompanyID = shippingCompanyID;
+    }
 
     public Integer getShippingInfoID() {
         return shippingInfoID;
@@ -31,14 +43,6 @@ public class ShippingInfo {
         this.shippingInfoID = shippingInfoID;
     }
 
-    public boolean isDelivered() {
-        return delivered;
-    }
-
-    public void setDelivered(boolean delivered) {
-        this.delivered = delivered;
-    }
-
     public String getTrackingNumber() {
         return trackingNumber;
     }
@@ -46,4 +50,13 @@ public class ShippingInfo {
     public void setTrackingNumber(String trackingNumber) {
         this.trackingNumber = trackingNumber;
     }
+
+    public ShippingCompany getShippingCompanyID() {
+        return shippingCompanyID;
+    }
+
+    public void setShippingCompanyID(ShippingCompany shippingCompanyID) {
+        this.shippingCompanyID = shippingCompanyID;
+    }
+
 }

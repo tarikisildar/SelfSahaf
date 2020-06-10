@@ -27,7 +27,7 @@ public class FileSystemStorageService implements StorageService {
             "gif", "png", "bmp", "jpg" // and other formats you need
     };
 
-    static final String EXTENSION = ".jpg";
+    static final String EXTENSION = ".png";
 
     private final Path rootLocation;
 
@@ -42,11 +42,12 @@ public class FileSystemStorageService implements StorageService {
         try
         {
             File dir = new File(rootLocation.toAbsolutePath().toString());
-            boolean isCreated = dir.mkdirs();
+            if(!dir.exists())
+                dir.mkdirs();
         }
         catch (Exception e)
         {
-            System.out.println("Directory already exists");
+            throw new StorageException("Can't make directory",e);
         }
 
     }
@@ -67,14 +68,13 @@ public class FileSystemStorageService implements StorageService {
             try (InputStream inputStream = file.getInputStream()) {
 
                 System.out.println(this.rootLocation);
-                Files.copy(inputStream, this.rootLocation.resolve(filename),
-
+                Files.copy(inputStream, this.rootLocation.resolve(filename).toAbsolutePath(),
                         StandardCopyOption.REPLACE_EXISTING);
             }
 
         }
         catch (IOException e) {
-            throw new StorageException("Failed to store file " + filename, e);
+            throw new StorageException("Failed to store file " + this.rootLocation.resolve(filename).toAbsolutePath(), e);
         }
 
         return filename;
@@ -119,20 +119,28 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public String storeAll(List<MultipartFile> files, Integer productID, Integer sellerID){
+    public String storeAll(List<MultipartFile> files, Integer productID){
 
-        Path dir_path = Paths.get(sellerID.toString()).resolve(productID.toString());
+        Path dir_path = Paths.get("productImages").resolve(Paths.get(productID.toString()));
+
+        return storeAllIns(dir_path, files);
 
 
+    }
+
+    private String storeAllIns(Path dir_path, List<MultipartFile> files)
+    {
         // Create a directory in the format of root/sellerID/productID
+
         try
         {
             File dir = new File(this.rootLocation.resolve(dir_path.toString()).toString());
-            boolean isCreated = dir.mkdirs();
+            if(!dir.exists())
+                dir.mkdirs();
         }
         catch (Exception e)
         {
-            System.out.println("Directory already exists");
+            throw new StorageException("Can't make directory",e);
         }
         Integer enumerate = 1;
 
@@ -145,21 +153,27 @@ public class FileSystemStorageService implements StorageService {
 
             enumerate += 1;
         }
-        return dir_path.toString();
+        return this.rootLocation.resolve(dir_path.toString()).toAbsolutePath().toString();
+    }
 
+    @Override
+    public String storeAllRefund(List<MultipartFile> files, Integer refundID)
+    {
+        Path dir_path = Paths.get("refunds").resolve(refundID.toString());
+        return storeAllIns(dir_path, files);
     }
 
     @Override
 
-    public String storeMain(MultipartFile file, Integer productID, Integer sellerID){
+    public String storeMain(MultipartFile file, Integer productID){
 
-        Path dir_path = Paths.get(sellerID.toString()).resolve(productID.toString());
+        Path dir_path = Paths.get(productID.toString());
 
 
         // Create a directory in the format of root/sellerID/productID
         try
         {
-            File dir = new File(this.rootLocation.resolve(dir_path.toString()).toString());
+            File dir = new File(this.rootLocation.resolve("productImages"+dir_path.toString()).toString());
             boolean isCreated = dir.mkdirs();
         }
         catch (Exception e)
@@ -182,11 +196,12 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public List<Resource> loadAllResources(String productID, String sellerID){
-        File folder = new File(this.rootLocation.resolve(sellerID.toString()).resolve(productID.toString()).toString());
+    public List<Resource> loadAllResources(String productID){
+        Path root = this.rootLocation.resolve("productImages");
+
+        File folder = new File(root.resolve(productID.toString()).toString());
 
         File[] listOfFiles = folder.listFiles();
-
         List<Resource> resourceList = new ArrayList<Resource>();
 
         for (File file : listOfFiles) {
