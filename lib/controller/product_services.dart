@@ -1,10 +1,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:Selfsahaf/controller/generalServices.dart';
+import 'package:Selfsahaf/models/api_response.dart';
 import 'dart:io';
 import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/models/category.dart';
+import 'package:Selfsahaf/models/api_response.dart';
 class ProductService extends GeneralServices {
   Dio _dio;
   ProductService() {
@@ -261,6 +265,43 @@ class ProductService extends GeneralServices {
         // Something happened in setting up or sending the request that triggered an Error
 
         return null;
+      }
+    }
+  }
+
+  Future<APIResponse<List<Image>>> getAllImages(
+     int productID) async {
+    try {
+      Response response = await _dio.get("product/getImagePaths",
+          queryParameters: {"productID": productID});
+      List<Image> images=new List();
+      if (response.statusCode == 200) {
+         
+          int size=response.data.length;
+       for (int i = 0; i < size; i++) {
+          response = await _dio.get("product/images",
+              queryParameters: {
+                "path":
+                   "/./root/images/productImages/$productID/${i+1}.png"
+              },
+              options: Options(
+                  contentType: 'application/json',
+                  method: 'GET',
+                  responseType: ResponseType.bytes));
+                  print(response.data);
+                  images.add(Image.memory(response.data, fit:BoxFit.cover));
+        }
+
+        return APIResponse(data:images);
+      }
+      return APIResponse(data:null,error:true,errorMessage: "Error occurs");
+    } on DioError catch (e) {
+      if (e.response != null) {
+       return APIResponse(data:null,error:true,errorMessage: "Error occurs");
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+
+        return APIResponse(data:null,error:true,errorMessage: "Error occurs");
       }
     }
   }

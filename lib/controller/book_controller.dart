@@ -53,7 +53,6 @@ class BookService extends GeneralServices {
   }
    Future<Uint8List> getImage(int userID,int productID, int imageID) async {
     try {
-      
      Response response= await _dio.get("product/images", queryParameters:{
        "path": "/./root/images/productImages/$productID/$imageID.png"
      },options: Options(contentType: 'application/json',  method: 'GET', responseType: ResponseType.bytes) );
