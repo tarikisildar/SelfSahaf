@@ -357,9 +357,9 @@ class _FilterFloatingState extends State<FilterFloating> {
                     width: MediaQuery.of(context).size.width,
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: ListView(
+                        
+
                         children: <Widget>[
                           Expanded(
                               flex: 3,
