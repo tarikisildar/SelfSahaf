@@ -107,8 +107,10 @@ class _SettingsPage extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset("images/logo_white/logo_white.png"),
-      ),
+          title: Container(
+              height: 50,
+              child: Image.asset("images/logo_white/logo_white.png")),
+        ),
       backgroundColor: Color.fromRGBO(230, 81, 0, 1),
       key: _scaffoldKey,
       body: SafeArea(

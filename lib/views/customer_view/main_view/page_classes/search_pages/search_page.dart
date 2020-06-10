@@ -14,17 +14,17 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   TextEditingController queryController;
 
-  _SearchPageState(){
-    queryController.addListener(() {
-      if(queryController.text.length>=3){
-        print("ARKAYA SEARCH ISTEGI");
-      }
-      else {
-        print(3-queryController.text.length);
-      }
+  // _SearchPageState(){
+  //   queryController.addListener(() {
+  //     if(queryController.text.length>=3){
+  //       print("ARKAYA SEARCH ISTEGI");
+  //     }
+  //     else {
+  //       print(3-queryController.text.length);
+  //     }
 
-    });
-  }
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

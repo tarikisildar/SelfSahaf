@@ -47,8 +47,8 @@ class _ShoppingCartState extends State<ShoppingCart> {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
-                  spreadRadius: 8,
+                  color: Colors.black.withOpacity(0.2),
+                  spreadRadius: 6,
                   blurRadius: 9,
                   offset: Offset(0, 3), // changes position of shadow
                 ),
@@ -59,7 +59,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
             child: FlatButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
-                  side: BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
+                  ),
               color: Colors.white,
               onPressed: () async {
                 //@TODO : degistir bunu
