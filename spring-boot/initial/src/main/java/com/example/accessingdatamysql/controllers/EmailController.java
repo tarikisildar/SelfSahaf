@@ -47,6 +47,8 @@ public class EmailController {
     }
 
 
+
+
     @ApiOperation("Send email to a users")
     @PostMapping(value = "/sendEmailToUsers")
     public @ResponseBody String sendEmailToUsers(String title, String context) throws IOException, MessagingException {

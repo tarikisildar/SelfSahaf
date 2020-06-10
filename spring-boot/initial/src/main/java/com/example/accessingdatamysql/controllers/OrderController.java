@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import io.swagger.annotations.Api;
+
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
 import java.sql.Ref;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -70,6 +73,9 @@ public class OrderController {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private EmailController emailController;
+
 
     private PaypalPayment paypal = PaypalPayment.getInstance();
 
@@ -77,7 +83,7 @@ public class OrderController {
     @PostMapping(path="/confirmOrder")
     @Transactional(rollbackFor=Exception.class)
     public @ResponseBody String confirmOrder(@RequestParam Integer addressID, @RequestParam Integer shippingCompanyID,
-                                            @RequestBody CardInfo card, HttpServletResponse response){
+                                            @RequestBody CardInfo card, HttpServletResponse response) throws IOException, MessagingException {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
@@ -172,6 +178,12 @@ public class OrderController {
 
 
                 }
+
+                String context = "Your Order has ben taken. \n\n Regards, \nSelfsahaf Support";
+                String title = "Selfsahaf Order";
+
+
+                emailController.sendEmailToUsers(title, context);
 
                 return "confirmed";
             }
