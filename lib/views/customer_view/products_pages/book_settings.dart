@@ -98,7 +98,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   String _booknameValidation(String email) {
     bool emailValid = false;
     if (email.length >= 5) emailValid = true;
-    return emailValid ? null : 'not valid email.';
+    return emailValid ? null : 'not valid book name.';
   }
 
   String _authorValidation(String author) {
@@ -116,12 +116,12 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   String _priceValidation(String price) {
     if (!isNumeric(price)) return "price should be number";
     bool priceValid = false;
-    if (price.length > 0 && price.length < 4) {
+    if (price.length > 0 && price.length < 7) {
       priceValid = true;
-      if (int.parse(price) <= 0)
+      if (double.parse(price) <= 0)
         return "price can not be less then or equal zero";
     }
-    if (price.length >= 4) return "price is max 3 character";
+    if (price.length >= 7) return "price is max 3 character";
     return priceValid ? null : 'not valid price';
   }
 

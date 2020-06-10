@@ -13,7 +13,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController queryController;
-
+/*
   _SearchPageState(){
     queryController.addListener(() {
       if(queryController.text.length>=3){
@@ -24,7 +24,7 @@ class _SearchPageState extends State<SearchPage> {
       }
 
     });
-  }
+  }*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(

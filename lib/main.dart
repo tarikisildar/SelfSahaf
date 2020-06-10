@@ -1,3 +1,4 @@
+import 'package:Selfsahaf/controller/cart_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -13,6 +14,7 @@ void setupServiseLocator() {
   GetIt.I.registerLazySingleton(() => BookService());
   GetIt.I.registerLazySingleton(() => ProductService());
   GetIt.I.registerLazySingleton(() => AuthService());
+  GetIt.I.registerLazySingleton(() => CartService());
 }
 
 void main() {

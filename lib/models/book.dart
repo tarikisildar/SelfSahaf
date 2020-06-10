@@ -14,6 +14,8 @@ class Book {
   double price;
   int categoryID;
   int sellerID;
+  String userName;
+  String userSurname;
   Book(
       {this.authorName,
       this.name,
@@ -75,8 +77,6 @@ this.authorName,
       "imagePath": imagePath,
       "publisher": publisher,
       "productID":productID,
-      "sells":[]
-      
     };
   }
 
@@ -93,6 +93,8 @@ this.authorName,
         imagePath=json["imagePath"],
         language=json["language"],
         sellerID=json["sells"][0]["sellerID"],
-        categoryID=json["categories"][0]["categoryID"]
+        categoryID=json["categories"][0]["categoryID"],
+        userName=json["sells"][0]["user"]["name"],
+        userSurname=json["sells"][0]["user"]["surname"]
         ;
 }
