@@ -131,13 +131,14 @@ class _OrderAddressState extends State<OrderAddress> {
                       Expanded(
                         flex: 15,
                         child: Text(
-                          "Card Information",
+                          "Select Shipping Company",
                           style: TextStyle(
                               color: Color.fromRGBO(230, 81, 0, 1),
                               fontSize: 20),
                         ),
                       ),
                       Expanded(
+                        
                         child: Icon(
                           Icons.arrow_forward_ios,
                           color: Color.fromRGBO(230, 81, 0, 1),

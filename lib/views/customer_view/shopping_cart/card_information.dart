@@ -18,6 +18,7 @@ class _CardInformationState extends State<CardInformation> {
   String cardNumber = '';
   String expiryDate = '';
   String cardHolderName = '';
+  String cardHolderSurname = '';
   String cvvCode = '';
   bool isCvvFocused = false;
 
@@ -25,6 +26,7 @@ class _CardInformationState extends State<CardInformation> {
   TextEditingController _cardnumberController;
   TextEditingController _cvcController;
   TextEditingController _expirationController;
+  TextEditingController _cardholdersurnameController;
   String _cardholdernameValidation(String name) {
     bool emailValid = false;
     if (name.length >= 5) emailValid = true;
@@ -67,6 +69,7 @@ class _CardInformationState extends State<CardInformation> {
                 cardNumber: cardNumber,
                 expiryDate: expiryDate,
                 cardHolderName: cardHolderName,
+                cardHolderSurname: cardHolderSurname,
                 cvvCode: cvvCode,
                 showBackView: isCvvFocused,
               ),
