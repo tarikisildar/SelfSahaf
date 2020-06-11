@@ -83,11 +83,13 @@ class _AddAddressState extends State<AddAddress> {
               Container(
                 width: 300,
                 child: TextFormField(
+                  style: TextStyle(color: Colors.white),
                   validator: _nameValidation,
                   controller: _nameController,
                   maxLines: 1,
                   maxLength: 10,
                   decoration: InputDecoration(
+                    
                       errorStyle: TextStyle(color: Colors.white),
                       contentPadding:
                           EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -128,6 +130,7 @@ class _AddAddressState extends State<AddAddress> {
               Container(
                 width: 300,
                 child: TextFormField(
+                  style: TextStyle(color: Colors.white),
                   validator: _addressLineValidation,
                   controller: _addresline,
                   maxLines: 3,
@@ -172,6 +175,7 @@ class _AddAddressState extends State<AddAddress> {
               ),
               Container(
                 child: TextFormField(
+                  style: TextStyle(color: Colors.white),
                   validator: _postalCodeValidation,
                   keyboardType: TextInputType.number,
                   controller: _postalcode,

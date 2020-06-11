@@ -45,7 +45,8 @@ class _AdressesPage extends State<AdressesPage> {
           onPressed: () => showDialog(
               context: context,
               builder: (_) => AlertDialog(
-                    title: Text("Address informations"),
+                backgroundColor: Theme.of(context).primaryColor,
+                    title: Text("Address informations",style: TextStyle(color: Colors.white),),
                     content: AddAddress(
                       addType: 0,
                     ),
@@ -53,7 +54,7 @@ class _AdressesPage extends State<AdressesPage> {
             _getAddresses(context);
           }),
           backgroundColor: Colors.white,
-          child: Icon(Icons.add),
+          child: Icon(Icons.add,color: Theme.of(context).primaryColor,),
         ),
         body: RefreshIndicator(
             onRefresh: () => _getAddresses(context),

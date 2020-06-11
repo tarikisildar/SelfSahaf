@@ -62,6 +62,7 @@ class AddressWidget extends StatelessWidget {
                       onTap: () => showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
+                              backgroundColor: Theme.of(context).primaryColor,
                               content: AddAddress(
                                 addType: 2,
                                 addressID: addressID,
@@ -71,7 +72,7 @@ class AddressWidget extends StatelessWidget {
                                 country: country,
                                 postalCode: postalCode,
                               ),
-                              title: Text("Update Address Information"),
+                              title: Text("Update Address Information",style: TextStyle(color: Colors.white),),
                             ),
                           ),
                       child: Icon(
@@ -83,9 +84,14 @@ class AddressWidget extends StatelessWidget {
                       onTap: () => showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
+
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)
+                              ),
+                              backgroundColor: Theme.of(context).primaryColor,
                               content:
-                                  Text("Do you want to delete $addressName"),
-                              title: Text("Are you sure"),
+                                  Text("Do you want to delete $addressName",style: TextStyle(color: Colors.white),),
+                              title: Text("Are you sure", style: TextStyle(color: Colors.white)),
                               actions: <Widget>[
                                 FlatButton(
                                     onPressed: () {
@@ -99,10 +105,10 @@ class AddressWidget extends StatelessWidget {
                                           print("HATATATAT");
                                       });
                                     },
-                                    child: Text("yes")),
+                                    child: Text("yes",style: TextStyle(color: Colors.white),)),
                                 FlatButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: Text("no")),
+                                    child: Text("no",style: TextStyle(color: Colors.white),)),
                               ],
                             ),
                           ).then((value){
