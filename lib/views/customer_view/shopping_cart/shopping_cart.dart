@@ -23,14 +23,14 @@ class _ShoppingCartState extends State<ShoppingCart> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   List<CartModel> _cartList;
   bool _loading = true;
-  double totalValue=0;
+  double totalValue = 0;
   Future<Null> _refresh(BuildContext context) {
     setState(() {
       _loading = true;
     });
     _cartService.getCart().then((value) {
       setState(() {
-        totalValue=0;
+        totalValue = 0;
         if (!value.error) {
           this._cartList = value.data;
         } else {
@@ -39,9 +39,9 @@ class _ShoppingCartState extends State<ShoppingCart> {
         }
         _loading = false;
       });
-      if(value.data!=null){
-        for(int i =0 ;i <value.data.length;i++){
-          totalValue+=value.data[i].amount*value.data[i].price;
+      if (value.data != null) {
+        for (int i = 0; i < value.data.length; i++) {
+          totalValue += value.data[i].amount * value.data[i].price;
         }
       }
     });
@@ -69,6 +69,18 @@ class _ShoppingCartState extends State<ShoppingCart> {
             Navigator.of(context).pop();
           },
         ),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 5,top:5,bottom:5),
+            child: Container(
+                child: Center(
+              child: Text(
+                "${totalValue} TL",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )),
+          )
+        ],
       ),
       body: Container(
           color: Color(0xffe65100),
@@ -100,9 +112,6 @@ class _ShoppingCartState extends State<ShoppingCart> {
                       : ListView.builder(
                           itemCount: _cartList.length,
                           itemBuilder: (_, int index) {
-                            
-                           
-                    
                             return Dismissible(
                               key: ValueKey(_cartList[index].productID),
                               child: ProductCard(
@@ -116,7 +125,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
                                 amount: _cartList[index].amount,
                               ),
                               direction: DismissDirection.horizontal,
-                          
+
                               confirmDismiss: (direction) async {
                                 //right to left for information
                                 if (direction == DismissDirection.endToStart) {
@@ -309,11 +318,14 @@ class _ShoppingCartState extends State<ShoppingCart> {
                   if (!value.error) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => OrderAddress(total: this.totalValue,)),
+                      MaterialPageRoute(
+                          builder: (context) => OrderAddress(
+                                total: this.totalValue,
+                              )),
                     );
-                  }
-                  else if(value.error){
-                    ErrorDialog().showErrorDialog(context,"Error", value.errorMessage);
+                  } else if (value.error) {
+                    ErrorDialog()
+                        .showErrorDialog(context, "Error", value.errorMessage);
                   }
                 });
               },
@@ -322,7 +334,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
                   Expanded(
                     flex: 15,
                     child: Text(
-                      "Checkout           Total: $totalValue",
+                      "Checkout",
                       style: TextStyle(
                           color: Color.fromRGBO(230, 81, 0, 1), fontSize: 20),
                     ),
