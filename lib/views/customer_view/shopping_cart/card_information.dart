@@ -1,3 +1,4 @@
+import 'package:Selfsahaf/models/address.dart';
 import 'package:Selfsahaf/models/shipping_company_model.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/credit_card_view/credit_card.dart';
@@ -8,10 +9,10 @@ import 'credit_card_view/credit_card_widget.dart';
 import 'credit_card_view/credit_card_model.dart';
 
 class CardInformation extends StatefulWidget {
-  final int addressID;
+  final Address address;
   final double totalPrice;
   final ShippingCompanyModel company;
-  CardInformation({@required this.addressID,@required this.totalPrice,@required this.company});
+  CardInformation({@required this.address,@required this.totalPrice,@required this.company});
   @override
   _CardInformationState createState() => _CardInformationState();
 }
@@ -23,7 +24,9 @@ class _CardInformationState extends State<CardInformation> {
   String cardHolderSurname = '';
   String cvvCode = '';
   bool isCvvFocused = false;
-
+  Address address;
+  double totalPrice;
+  ShippingCompanyModel company;
   TextEditingController _cardholdernameController;
   TextEditingController _cardnumberController;
   TextEditingController _cvcController;
@@ -37,7 +40,9 @@ class _CardInformationState extends State<CardInformation> {
   double total;
 @override
   void initState() {
+    this.address = widget.address;
     this.total=widget.totalPrice;
+    this.company = widget.company;
   }
   @override
   Widget build(BuildContext widget) {
@@ -95,6 +100,10 @@ class _CardInformationState extends State<CardInformation> {
               Expanded(
                 child: SingleChildScrollView(
                   child: CreditCardForm(
+                    address: address,
+                    totalPrice: total,
+                    company: company,
+
                     onCreditCardModelChange: onCreditCardModelChange,
                   ),
                 ),

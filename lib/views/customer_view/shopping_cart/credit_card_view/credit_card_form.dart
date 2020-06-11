@@ -1,3 +1,6 @@
+import 'package:Selfsahaf/models/address.dart';
+import 'package:Selfsahaf/models/shipping_company_model.dart';
+import 'package:Selfsahaf/views/customer_view/shopping_cart/card_information.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
@@ -6,11 +9,16 @@ import 'package:Selfsahaf/views/customer_view/shopping_cart/order_summary.dart';
 import 'credit_card_model.dart';
 
 class CreditCardForm extends StatefulWidget {
+  
   const CreditCardForm({
+    @required this.address,
+    @required this.totalPrice,
+    @required this.company,
     Key key,
     this.cardNumber,
     this.expiryDate,
     this.cardHolderName,
+    this.cardHolderSurname,
     this.cvvCode,
     @required this.onCreditCardModelChange,
     this.themeColor,
@@ -18,9 +26,13 @@ class CreditCardForm extends StatefulWidget {
     this.cursorColor,
   }) : super(key: key);
 
+  final Address address;
+  final double totalPrice;
+  final ShippingCompanyModel company;
   final String cardNumber;
   final String expiryDate;
   final String cardHolderName;
+  final String cardHolderSurname;
   final String cvvCode;
   final void Function(CreditCardModel) onCreditCardModelChange;
   final Color themeColor;
@@ -32,9 +44,13 @@ class CreditCardForm extends StatefulWidget {
 }
 
 class _CreditCardFormState extends State<CreditCardForm> {
+  Address address;
+  double totalPrice;
+  ShippingCompanyModel company;
   String cardNumber;
   String expiryDate;
   String cardHolderName;
+  String cardHolderSurname;
   String cvvCode;
   bool isCvvFocused = false;
   Color themeColor;
@@ -47,6 +63,8 @@ class _CreditCardFormState extends State<CreditCardForm> {
   final TextEditingController _expiryDateController =
       MaskedTextController(mask: '00/00');
   final TextEditingController _cardHolderNameController =
+      TextEditingController();
+      final TextEditingController _cardHolderSurnameController =
       TextEditingController();
   final TextEditingController _cvvCodeController =
       MaskedTextController(mask: '000');
@@ -65,11 +83,14 @@ class _CreditCardFormState extends State<CreditCardForm> {
     cvvCode = widget.cvvCode ?? '';
 
     creditCardModel = CreditCardModel(
-        cardNumber, expiryDate, cardHolderName, cvvCode, isCvvFocused);
+        cardNumber, expiryDate, cardHolderName, cardHolderSurname,cvvCode, isCvvFocused);
   }
 
   @override
   void initState() {
+    this.address = widget.address;
+    this.totalPrice = widget.totalPrice;
+    this.company = widget.company;
     super.initState();
 
     createCreditCardModel();
@@ -98,6 +119,13 @@ class _CreditCardFormState extends State<CreditCardForm> {
       setState(() {
         cardHolderName = _cardHolderNameController.text;
         creditCardModel.cardHolderName = cardHolderName;
+        onCreditCardModelChange(creditCardModel);
+      });
+    });
+    _cardHolderSurnameController.addListener(() {
+      setState(() {
+        cardHolderName = _cardHolderSurnameController.text;
+        creditCardModel.cardHolderSurname = cardHolderSurname;
         onCreditCardModelChange(creditCardModel);
       });
     });
@@ -326,7 +354,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 12.0),
+              padding: const EdgeInsets.only(top: 12.0,bottom: 20),
               child: Container(
                   width: MediaQuery.of(context).size.width - 220,
                   height: 60,
@@ -336,10 +364,12 @@ class _CreditCardFormState extends State<CreditCardForm> {
                         side: BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
                     color: Colors.white,
                     onPressed: () async {
-                      //@TODO : degistir bunu
+
+                      CreditCardModel myCard = new CreditCardModel(_cardNumberController.text, _expiryDateController.text, _cardHolderNameController.text,_cardHolderSurnameController.text ,_cvvCodeController.text, isCvvFocused);
+                      
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => OrderSummary()),
+                        MaterialPageRoute(builder: (context) => OrderSummary(address:address,company: company,totalPrice: totalPrice,myCard: myCard,)),
                       );
                     },
                     child: Row(

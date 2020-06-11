@@ -1,4 +1,5 @@
 import 'package:Selfsahaf/controller/shipping_company_service.dart';
+import 'package:Selfsahaf/models/address.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/card_information.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
@@ -6,15 +7,16 @@ import 'package:Selfsahaf/models/shipping_company_model.dart';
 import 'package:get_it/get_it.dart';
 
 class ShippingCompanyList extends StatefulWidget {
-  final int addressID;
+  final Address address;
   final double total;
-  ShippingCompanyList({@required this.addressID, @required this.total});
+  ShippingCompanyList({@required this.address, @required this.total});
 
   @override
   _ShippingCompanyListState createState() => _ShippingCompanyListState();
 }
 
 class _ShippingCompanyListState extends State<ShippingCompanyList> {
+  Address address;
   int companyGroup;
   List<ShippingCompanyModel> _companies;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
@@ -22,6 +24,7 @@ class _ShippingCompanyListState extends State<ShippingCompanyList> {
   ShippingCompanyService companyService = GetIt.I<ShippingCompanyService>();
   @override
   void initState() {
+    this.address = widget.address;
     _refresh(context);
   }
 
@@ -59,7 +62,7 @@ class _ShippingCompanyListState extends State<ShippingCompanyList> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => CardInformation(
-                            addressID: widget.addressID,
+                            address: widget.address,
                             totalPrice: widget.total + _companies[companyGroup].price,
                             company: _companies[companyGroup],
                           )),
