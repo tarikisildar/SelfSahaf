@@ -11,46 +11,7 @@ class _AdminSearchState extends State<AdminSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: GestureDetector(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-            width: MediaQuery.of(context).size.width - 220,
-            height: 60,
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                  side: BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
-              color: Colors.white,
-              onPressed: () async {
-                //@TODO : degistir bunu
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AdminMainPage()),
-                );
-              },
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 15,
-                    child: Text(
-                      "Summary",
-                      style: TextStyle(
-                          color: Color.fromRGBO(230, 81, 0, 1), fontSize: 20),
-                    ),
-                  ),
-                  Expanded(
-                    child: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color.fromRGBO(230, 81, 0, 1),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      floatingActionButton: FilterFloating(),
       body: MaterialApp(
         home: DefaultTabController(
           
@@ -126,5 +87,203 @@ class _AdminSearchState extends State<AdminSearch> {
         ),
       ),
     );
+  }
+}
+
+class FilterFloating extends StatefulWidget {
+  @override
+  _FilterFloatingState createState() => _FilterFloatingState();
+}
+
+class _FilterFloatingState extends State<FilterFloating> {
+  bool _show = true;
+  @override
+  Widget build(BuildContext context) {
+    return _show
+        ? FloatingActionButton(
+            backgroundColor: Colors.white,
+            child: Icon(
+              Icons.lightbulb_outline,
+              color: Color(0xffe65100),
+            ),
+            onPressed: () {
+              var sheetController = showBottomSheet(
+                context: context,
+                builder: (context) => Container(
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(20),
+                          topRight: const Radius.circular(20))),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xffe65100),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.8),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3),
+                        )
+                      ],
+                    ),
+                    height: MediaQuery.of(context).size.height / 2,
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: ListView(
+                        children: <Widget>[
+                          Expanded(
+                              flex: 3,
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 10,
+                                      child: Text(
+                                        "Filtrele",
+                                        style: TextStyle(color: Colors.white,fontSize: 24),
+                                      )),
+                                  Expanded(
+                                    flex: 1,
+                                    child: InkWell(
+                                      onTap: () => Navigator.of(context).pop(),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,),
+                                        
+                                        child: Icon(Icons.close,color: Color(0xffe65100),
+                                      ),
+                                    ),
+                                  ),),
+                                ],
+                              )),
+                          Center(
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                    flex: 5,
+                                    child: Text(
+                                      "By Price",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                                Expanded(
+                                  flex: 5,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      FlatButton(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                        ),
+                                        child: Text(
+                                          "Increasing",
+                                          style: TextStyle(
+                                              color: Color(0xffe65100)),
+                                        ),
+                                        onPressed: () {
+                                          print("BURA DAHA BITMEDI BITER INS");
+                                        },
+                                      ),
+                                      FlatButton(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                        ),
+                                        child: Text(
+                                          "Decreasing",
+                                          style: TextStyle(
+                                              color: Color(0xffe65100)),
+                                        ),
+                                        onPressed: () {
+                                          print("BURA DAHA BITMEDI BITER INS");
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Divider(
+                            thickness: 2,
+                            color: Colors.white,
+                          ),
+                          Center(
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                    flex: 5,
+                                    child: Text(
+                                      "By Alphabet",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                                Expanded(
+                                  flex: 5,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      FlatButton(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                        ),
+                                        child: Text(
+                                          "A-Z",
+                                          style: TextStyle(
+                                              color: Color(0xffe65100)),
+                                        ),
+                                        onPressed: () {
+                                          print("BURA DAHA BITMEDI BITER INS");
+                                        },
+                                      ),
+                                      FlatButton(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                        ),
+                                        child: Text(
+                                          "Z-A",
+                                          style: TextStyle(
+                                              color: Color(0xffe65100)),
+                                        ),
+                                        onPressed: () {
+                                          print("BURA DAHA BITMEDI BITER INS");
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+              _showButton(false);
+
+              sheetController.closed.then((value) {
+                _showButton(true);
+              });
+            },
+          )
+        : Container();
+  }
+
+  void _showButton(bool value) {
+    setState(() {
+      _show = value;
+    });
   }
 }

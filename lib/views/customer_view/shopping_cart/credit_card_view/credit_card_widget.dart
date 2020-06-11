@@ -10,6 +10,7 @@ class CreditCardWidget extends StatefulWidget {
     @required this.cardHolderName,
     @required this.cvvCode,
     @required this.showBackView,
+    @required this.cardHolderSurname,
     this.animationDuration = const Duration(milliseconds: 500),
     this.height,
     this.width,
@@ -22,6 +23,7 @@ class CreditCardWidget extends StatefulWidget {
   final String cardNumber;
   final String expiryDate;
   final String cardHolderName;
+  final String cardHolderSurname;
   final String cvvCode;
   final TextStyle textStyle;
   final Color cardBgColor;

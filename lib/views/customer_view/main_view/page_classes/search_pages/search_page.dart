@@ -33,7 +33,7 @@ class _SearchPageState extends State<SearchPage> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.deepOrange,
+            backgroundColor: Color(0xffe65100),
             bottom: TabBar(
               tabs: [
                 Tab(child: Text("Books",style: TextStyle(color: Colors.white),),),
@@ -55,7 +55,7 @@ class _SearchPageState extends State<SearchPage> {
           body: TabBarView(
             children: [
               Container(
-                color: Colors.deepOrange,
+                color: Color(0xffe65100),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ListView(
@@ -66,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               Container(
-                color: Colors.deepOrange,
+                color: Color(0xffe65100),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ListView(
@@ -77,7 +77,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               Container(
-                color: Colors.deepOrange,
+                color: Color(0xffe65100),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ListView(

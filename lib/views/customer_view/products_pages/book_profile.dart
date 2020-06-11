@@ -123,16 +123,16 @@ class _BookProfileState extends State<BookProfile> {
                               child: Row(children: <Widget>[
                                 Container(
                                   padding: EdgeInsets.only(left: 15),
-                                  child: Text("Amuount: ",
+                                  child: Text("Amount: ",
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 25)),
+                                          color: Colors.white, fontSize: 18)),
                                 ),
                                 (_itemCount != 1)
                                     ? IconButton(
                                         icon: Icon(
                                           Icons.remove,
                                           color: Colors.white,
-                                          size: 40,
+                                          size: 35,
                                         ),
                                         onPressed: () =>
                                             setState(() => _itemCount--),
@@ -155,13 +155,13 @@ class _BookProfileState extends State<BookProfile> {
                                     icon: new Icon(
                                       Icons.add,
                                       color: Colors.white,
-                                      size: 40,
+                                      size: 35,
                                     ),
                                     onPressed: () =>
                                         setState(() => _itemCount++)),
                               ])),
                           Expanded(
-                              flex: 8,
+                              flex: 10,
                               child: InkWell(
                                   child: Container(
                                     margin: EdgeInsets.only(right: 15),
@@ -178,7 +178,7 @@ class _BookProfileState extends State<BookProfile> {
                                        "${widget.selectedBook.price * _itemCount} TL",
                                       style: TextStyle(
                                           color: Theme.of(context).primaryColor,
-                                          fontSize: 18),
+                                          fontSize: 16),
                                     )),
                                   ),
                                   onTap: () {

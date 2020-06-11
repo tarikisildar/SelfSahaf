@@ -1,3 +1,4 @@
+import 'package:Selfsahaf/views/customer_view/shopping_cart/shipping_company_list.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/card_information.dart';
 
@@ -76,22 +77,24 @@ class _OrderAddressState extends State<OrderAddress> {
                   color: Colors.white,
                   onPressed: () async {
                     Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CardInformation()),
-                );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ShippingCompanyList()),
+                    );
                   },
                   child: Row(
                     children: <Widget>[
                       Expanded(
                         flex: 15,
                         child: Text(
-                          "Card Information",
+                          "Select Shipping Company",
                           style: TextStyle(
                               color: Color.fromRGBO(230, 81, 0, 1),
                               fontSize: 20),
                         ),
                       ),
                       Expanded(
+                        
                         child: Icon(
                           Icons.arrow_forward_ios,
                           color: Color.fromRGBO(230, 81, 0, 1),
@@ -143,7 +146,7 @@ class AddressElement extends StatefulWidget {
   _AddressElementState createState() => _AddressElementState();
 }
 
-class _AddressElementState extends State<AddressElement>{
+class _AddressElementState extends State<AddressElement> {
   bool selected = false;
   Widget build(BuildContext context) {
     return Container(
@@ -159,12 +162,13 @@ class _AddressElementState extends State<AddressElement>{
                   flex: 2,
                   child: Container(
                     child: Checkbox(
-                        activeColor: Colors.white,
-                        checkColor: Colors.white,
-                        onChanged: (bool value) {
-                          setState(() => this.selected = value);
-                        },
-                        value: selected,),
+                      activeColor: Colors.white,
+                      checkColor: Colors.white,
+                      onChanged: (bool value) {
+                        setState(() => this.selected = value);
+                      },
+                      value: selected,
+                    ),
                   ),
                 ),
                 Expanded(
@@ -173,8 +177,14 @@ class _AddressElementState extends State<AddressElement>{
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("Address 1",style: TextStyle(color: Colors.white,fontSize: 16),),
-                      Text("EV",style: TextStyle(color: Colors.white,fontSize: 20),),
+                      Text(
+                        "Address 1",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                      Text(
+                        "EV",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
                     ],
                   ),
                 ),

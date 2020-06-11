@@ -1,4 +1,6 @@
 import 'package:Selfsahaf/controller/cart_service.dart';
+import 'package:Selfsahaf/views/admin_view/admin_main_page.dart';
+import 'package:Selfsahaf/views/admin_view/user_from_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
