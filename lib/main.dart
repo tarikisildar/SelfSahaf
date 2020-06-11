@@ -1,4 +1,5 @@
 import 'package:Selfsahaf/controller/cart_service.dart';
+import 'package:Selfsahaf/controller/shipping_company_service.dart';
 import 'package:Selfsahaf/views/admin_view/admin_main_page.dart';
 import 'package:Selfsahaf/views/admin_view/user_from_admin.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ void setupServiseLocator() {
   GetIt.I.registerLazySingleton(() => ProductService());
   GetIt.I.registerLazySingleton(() => AuthService());
   GetIt.I.registerLazySingleton(() => CartService());
+  GetIt.I.registerLazySingleton(() => ShippingCompanyService());
 }
 
 void main() {
