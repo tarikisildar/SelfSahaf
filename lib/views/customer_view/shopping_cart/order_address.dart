@@ -72,7 +72,11 @@ class _OrderAddressState extends State<OrderAddress> {
                     showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
-                              title: Text("Address informations"),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24)
+                          ),
+                          backgroundColor: Theme.of(context).primaryColor,
+                              title: Text("Address Information",style: TextStyle(color: Colors.white),),
                               content: AddAddress(
                                 addType: 0,
                               ),

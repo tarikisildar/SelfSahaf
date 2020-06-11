@@ -5,7 +5,7 @@ import 'package:Selfsahaf/models/address.dart';
 import 'package:Selfsahaf/models/user.dart';
 
 class AddAddress extends StatefulWidget {
-  int addType;//0 user address add 2 user address update 1 add seller address
+  int addType; //0 user address add 2 user address update 1 add seller address
   String addressName, addressLine, city, country, postalCode;
   int addressID;
   AddAddress(
@@ -88,10 +88,40 @@ class _AddAddressState extends State<AddAddress> {
                   maxLines: 1,
                   maxLength: 10,
                   decoration: InputDecoration(
-                    labelText: 'Address Name',
-                    hintText: "Ex: Home",
-                    contentPadding: EdgeInsets.all(5.0),
-                  ),
+                      errorStyle: TextStyle(color: Colors.white),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      labelText: "Address Name",
+                      labelStyle: TextStyle(color: Colors.white),
+                      focusedBorder: OutlineInputBorder(
+                          gapPadding: 2.0,
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 3.0),
+                          borderRadius: new BorderRadius.circular(16.0)),
+                      enabledBorder: new OutlineInputBorder(
+                        gapPadding: 2.0,
+                        borderRadius: new BorderRadius.circular(16.0),
+                        borderSide: new BorderSide(
+                          color: Colors.white,
+                          width: 3.0,
+                        ),
+                      ),
+                      errorBorder: new OutlineInputBorder(
+                        gapPadding: 2.0,
+                        borderRadius: new BorderRadius.circular(16.0),
+                        borderSide: new BorderSide(
+                          color: Colors.deepPurple,
+                          width: 3.0,
+                        ),
+                      ),
+                      focusedErrorBorder: new OutlineInputBorder(
+                        gapPadding: 2.0,
+                        borderRadius: new BorderRadius.circular(16.0),
+                        borderSide: new BorderSide(
+                          color: Colors.deepPurple,
+                          width: 3.0,
+                        ),
+                      )),
                   autofocus: false,
                 ),
               ),
@@ -103,10 +133,40 @@ class _AddAddressState extends State<AddAddress> {
                   maxLines: 3,
                   maxLength: 255,
                   decoration: InputDecoration(
-                    labelText: 'Address',
-                    hintText: "write full address",
-                    contentPadding: EdgeInsets.all(5.0),
-                  ),
+                      errorStyle: TextStyle(color: Colors.white),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      labelText: "Address",
+                      labelStyle: TextStyle(color: Colors.white),
+                      focusedBorder: OutlineInputBorder(
+                          gapPadding: 2.0,
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 3.0),
+                          borderRadius: new BorderRadius.circular(16.0)),
+                      enabledBorder: new OutlineInputBorder(
+                        gapPadding: 2.0,
+                        borderRadius: new BorderRadius.circular(16.0),
+                        borderSide: new BorderSide(
+                          color: Colors.white,
+                          width: 3.0,
+                        ),
+                      ),
+                      errorBorder: new OutlineInputBorder(
+                        gapPadding: 2.0,
+                        borderRadius: new BorderRadius.circular(16.0),
+                        borderSide: new BorderSide(
+                          color: Colors.deepPurple,
+                          width: 3.0,
+                        ),
+                      ),
+                      focusedErrorBorder: new OutlineInputBorder(
+                        gapPadding: 2.0,
+                        borderRadius: new BorderRadius.circular(16.0),
+                        borderSide: new BorderSide(
+                          color: Colors.deepPurple,
+                          width: 3.0,
+                        ),
+                      )),
                   autofocus: false,
                 ),
               ),
@@ -117,9 +177,40 @@ class _AddAddressState extends State<AddAddress> {
                   controller: _postalcode,
                   autovalidate: true,
                   decoration: InputDecoration(
-                      hintText: "Ex: 06123",
-                      contentPadding: EdgeInsets.all(5.0),
-                      labelText: 'Postal Code'),
+                      errorStyle: TextStyle(color: Colors.white),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      labelText: "Postal Code",
+                      labelStyle: TextStyle(color: Colors.white),
+                      focusedBorder: OutlineInputBorder(
+                          gapPadding: 2.0,
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 3.0),
+                          borderRadius: new BorderRadius.circular(16.0)),
+                      enabledBorder: new OutlineInputBorder(
+                        gapPadding: 2.0,
+                        borderRadius: new BorderRadius.circular(16.0),
+                        borderSide: new BorderSide(
+                          color: Colors.white,
+                          width: 3.0,
+                        ),
+                      ),
+                      errorBorder: new OutlineInputBorder(
+                        gapPadding: 2.0,
+                        borderRadius: new BorderRadius.circular(16.0),
+                        borderSide: new BorderSide(
+                          color: Colors.deepPurple,
+                          width: 3.0,
+                        ),
+                      ),
+                      focusedErrorBorder: new OutlineInputBorder(
+                        gapPadding: 2.0,
+                        borderRadius: new BorderRadius.circular(16.0),
+                        borderSide: new BorderSide(
+                          color: Colors.deepPurple,
+                          width: 3.0,
+                        ),
+                      )),
                   autofocus: false,
                 ),
               ),
@@ -196,8 +287,10 @@ class _AddAddressState extends State<AddAddress> {
                                       country: this._country,
                                       postalCode: this._postalcode.text))
                                   .then((value) {
-                                if (value == 200) Navigator.pop(context);
-                                else print("Erroorrr");
+                                if (value == 200)
+                                  Navigator.pop(context);
+                                else
+                                  print("Erroorrr");
                               });
                             } else if (widget.addType == 2) {
                               userService
@@ -210,7 +303,7 @@ class _AddAddressState extends State<AddAddress> {
                                       addressID: widget.addressID))
                                   .then((value) => Navigator.pop(context));
                             } else if (widget.addType == 1) {
-                              User user=userService.getUser();
+                              User user = userService.getUser();
                               userService
                                   .addSellerAddress(Address(
                                 addressLine: this._addresline.text,
