@@ -11,6 +11,7 @@ class CreditCardForm extends StatefulWidget {
     this.cardNumber,
     this.expiryDate,
     this.cardHolderName,
+    this.cardHolderSurname,
     this.cvvCode,
     @required this.onCreditCardModelChange,
     this.themeColor,
@@ -21,6 +22,7 @@ class CreditCardForm extends StatefulWidget {
   final String cardNumber;
   final String expiryDate;
   final String cardHolderName;
+  final String cardHolderSurname;
   final String cvvCode;
   final void Function(CreditCardModel) onCreditCardModelChange;
   final Color themeColor;
@@ -35,6 +37,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
   String cardNumber;
   String expiryDate;
   String cardHolderName;
+  String cardHolderSurname;
   String cvvCode;
   bool isCvvFocused = false;
   Color themeColor;
@@ -48,8 +51,10 @@ class _CreditCardFormState extends State<CreditCardForm> {
       MaskedTextController(mask: '00/00');
   final TextEditingController _cardHolderNameController =
       TextEditingController();
+      final TextEditingController _cardHolderSurnameController =
+      TextEditingController();
   final TextEditingController _cvvCodeController =
-      MaskedTextController(mask: '0000');
+      MaskedTextController(mask: '000');
 
   FocusNode cvvFocusNode = FocusNode();
 
@@ -65,7 +70,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
     cvvCode = widget.cvvCode ?? '';
 
     creditCardModel = CreditCardModel(
-        cardNumber, expiryDate, cardHolderName, cvvCode, isCvvFocused);
+        cardNumber, expiryDate, cardHolderName,cardHolderSurname, cvvCode, isCvvFocused);
   }
 
   @override
@@ -97,6 +102,13 @@ class _CreditCardFormState extends State<CreditCardForm> {
     _cardHolderNameController.addListener(() {
       setState(() {
         cardHolderName = _cardHolderNameController.text;
+        creditCardModel.cardHolderName = cardHolderName;
+        onCreditCardModelChange(creditCardModel);
+      });
+    });
+    _cardHolderSurnameController.addListener(() {
+      setState(() {
+         cardHolderSurname= _cardHolderNameController.text;
         creditCardModel.cardHolderName = cardHolderName;
         onCreditCardModelChange(creditCardModel);
       });
@@ -325,6 +337,54 @@ class _CreditCardFormState extends State<CreditCardForm> {
                 textInputAction: TextInputAction.next,
               ),
             ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
+              child: TextFormField(
+                controller: _cardHolderSurnameController,
+                cursorColor: widget.cursorColor ?? themeColor,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                    errorStyle: TextStyle(color: Colors.white),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    hintText: "Card Holder's Surname",
+                    hintStyle: TextStyle(color: Colors.white70),
+                    labelStyle: TextStyle(color: Colors.white),
+                    focusedBorder: OutlineInputBorder(
+                        gapPadding: 2.0,
+                        borderSide: BorderSide(color: Colors.white, width: 3.0),
+                        borderRadius: new BorderRadius.circular(16.0)),
+                    enabledBorder: new OutlineInputBorder(
+                      gapPadding: 2.0,
+                      borderRadius: new BorderRadius.circular(16.0),
+                      borderSide: new BorderSide(
+                        color: Colors.white,
+                        width: 3.0,
+                      ),
+                    ),
+                    errorBorder: new OutlineInputBorder(
+                      gapPadding: 2.0,
+                      borderRadius: new BorderRadius.circular(16.0),
+                      borderSide: new BorderSide(
+                        color: Colors.deepPurple,
+                        width: 3.0,
+                      ),
+                    ),
+                    focusedErrorBorder: new OutlineInputBorder(
+                      gapPadding: 2.0,
+                      borderRadius: new BorderRadius.circular(16.0),
+                      borderSide: new BorderSide(
+                        color: Colors.deepPurple,
+                        width: 3.0,
+                      ),
+                    )),
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 12.0),
               child: Container(
@@ -336,7 +396,6 @@ class _CreditCardFormState extends State<CreditCardForm> {
                         side: BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
                     color: Colors.white,
                     onPressed: () async {
-                      //@TODO : degistir bunu
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => OrderSummary()),
@@ -364,6 +423,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
                   ),
                 ),
             ),
+            SizedBox(height: 15,),
           ],
         ),
       ),
