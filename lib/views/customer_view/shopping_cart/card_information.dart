@@ -1,3 +1,4 @@
+import 'package:Selfsahaf/models/shipping_company_model.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/credit_card_view/credit_card.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/order_summary.dart';
@@ -9,7 +10,8 @@ import 'credit_card_view/credit_card_model.dart';
 class CardInformation extends StatefulWidget {
   final int addressID;
   final double totalPrice;
-  CardInformation({@required this.addressID,@required this.totalPrice});
+  final ShippingCompanyModel company;
+  CardInformation({@required this.addressID,@required this.totalPrice,@required this.company});
   @override
   _CardInformationState createState() => _CardInformationState();
 }
@@ -35,7 +37,6 @@ class _CardInformationState extends State<CardInformation> {
   double total;
 @override
   void initState() {
-    // TODO: implement initState
     this.total=widget.totalPrice;
   }
   @override

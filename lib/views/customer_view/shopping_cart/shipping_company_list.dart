@@ -61,6 +61,7 @@ class _ShippingCompanyListState extends State<ShippingCompanyList> {
                       builder: (context) => CardInformation(
                             addressID: widget.addressID,
                             totalPrice: widget.total + _companies[companyGroup].price,
+                            company: _companies[companyGroup],
                           )),
                 );
                }
