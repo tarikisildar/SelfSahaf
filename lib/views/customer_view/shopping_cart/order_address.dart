@@ -53,6 +53,18 @@ class _OrderAddressState extends State<OrderAddress> {
             Navigator.of(context).pop();
           },
         ),
+          actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 5,top:5,bottom:5),
+            child: Container(
+                child: Center(
+              child: Text(
+                "${widget.total} TL",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )),
+          )
+        ],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,

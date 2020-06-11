@@ -8,8 +8,8 @@ import 'credit_card_view/credit_card_model.dart';
 
 class CardInformation extends StatefulWidget {
   final int addressID;
-  final double total;
-  CardInformation({@required this.addressID,@required this.total});
+  final double totalPrice;
+  CardInformation({@required this.addressID,@required this.totalPrice});
   @override
   _CardInformationState createState() => _CardInformationState();
 }
@@ -32,7 +32,12 @@ class _CardInformationState extends State<CardInformation> {
     if (name.length >= 5) emailValid = true;
     return emailValid ? null : 'not valid name.';
   }
-
+  double total;
+@override
+  void initState() {
+    // TODO: implement initState
+    this.total=widget.totalPrice;
+  }
   @override
   Widget build(BuildContext widget) {
     return Scaffold(
@@ -48,6 +53,19 @@ class _CardInformationState extends State<CardInformation> {
             Navigator.of(context).pop();
           },
         ),
+          actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 5,top:5,bottom:5),
+            child: Container(
+                child: Center(
+              child: Text(
+                "${total} TL",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )),
+          )
+        ],
+        
       ),
       body: Center(
         child: Container(
