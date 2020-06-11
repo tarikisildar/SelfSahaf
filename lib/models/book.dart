@@ -44,6 +44,8 @@ this.authorName,
       this.sellerName,
       this.productID,
       this.categoryName,
+      this.condition,
+      this.status
   });
 
   Map<String, dynamic> toJsonBook() {
@@ -77,6 +79,8 @@ this.authorName,
       "imagePath": imagePath,
       "publisher": publisher,
       "productID":productID,
+      "condition":condition,
+      "status":status
     };
   }
 
@@ -95,6 +99,8 @@ this.authorName,
         sellerID=json["sells"][0]["sellerID"],
         categoryID=json["categories"][0]["categoryID"],
         userName=json["sells"][0]["user"]["name"],
-        userSurname=json["sells"][0]["user"]["surname"]
+        userSurname=json["sells"][0]["user"]["surname"],
+       condition=json["condition"],
+      status=json["status"]
         ;
 }

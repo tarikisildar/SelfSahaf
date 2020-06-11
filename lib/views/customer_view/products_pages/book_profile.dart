@@ -10,10 +10,12 @@ import 'package:Selfsahaf/controller/product_services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
+
 class BookProfile extends StatefulWidget {
-  Book selectedBook;
-  bool isproduct = false;
-  BookProfile({@required this.selectedBook, @required this.isproduct});
+  final Book selectedBook;
+  final int type; //0 product  1 buy product 2 update cart
+  int amount;
+  BookProfile({@required this.selectedBook, @required this.type, this.amount});
   @override
   _BookProfileState createState() => _BookProfileState();
 }
@@ -27,6 +29,9 @@ class _BookProfileState extends State<BookProfile> {
   bool _loading = true;
   @override
   void initState() {
+    if (widget.amount != null) {
+      this._itemCount = widget.amount;
+    }
     print(widget.selectedBook.userName);
     print(widget.selectedBook.userSurname);
     _fetchData();
@@ -54,7 +59,7 @@ class _BookProfileState extends State<BookProfile> {
         title: Container(
             height: 50, child: Image.asset("images/logo_white/logo_white.png")),
         actions: <Widget>[
-          (widget.isproduct)
+          (widget.type == 0)
               ? IconButton(
                   icon: Icon(Icons.settings),
                   onPressed: () {
@@ -70,10 +75,20 @@ class _BookProfileState extends State<BookProfile> {
                       }
                     });
                   })
-              : IconButton(
-                  icon: Icon(Icons.shopping_cart),
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ShoppingCart())))
+              : (widget.type == 1)
+                  ? IconButton(
+                      icon: Icon(Icons.shopping_cart),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ShoppingCart())))
+                  : IconButton(
+                      icon: Icon(Icons.save),
+                      onPressed: () {
+                        print("salam");
+                        Navigator.of(context).pop(this._itemCount);
+                        
+                      })
         ],
       ),
       body: (_loading)
@@ -167,15 +182,13 @@ class _BookProfileState extends State<BookProfile> {
                                     margin: EdgeInsets.only(right: 15),
                                     width: double.maxFinite,
                                     height: 50,
-                                    
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(25))),
                                     child: Center(
                                         child: Text(
-                                      
-                                       "${widget.selectedBook.price * _itemCount} TL",
+                                      "${widget.selectedBook.price * _itemCount} TL",
                                       style: TextStyle(
                                           color: Theme.of(context).primaryColor,
                                           fontSize: 18),
@@ -203,9 +216,9 @@ class _BookProfileState extends State<BookProfile> {
                                             textAlign: TextAlign.center,
                                           ),
                                         ));
-                                      }
-                                      else{
-                                        ErrorDialog().showErrorDialog(context, "Error!", value.errorMessage);
+                                      } else {
+                                        ErrorDialog().showErrorDialog(context,
+                                            "Error!", value.errorMessage);
                                       }
                                     });
                                   }))

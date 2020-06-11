@@ -138,7 +138,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => BookProfile(
-                                        selectedBook: bookList[index],isproduct: true,)))
+                                        selectedBook: bookList[index],type: 0,)))
                             .then((onValue) {
                           print(onValue);
                           setState(() {

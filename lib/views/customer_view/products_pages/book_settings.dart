@@ -34,7 +34,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   TextEditingController _quantityController;
   bool _edit = false;
   List<Category> categories;
-  Category selectedCategory; 
+  Category selectedCategory;
   List<String> languages = [
     "TR",
     "EN",
@@ -48,7 +48,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   ];
   String selectedLanguage;
   bool _isLoading = true;
-
+String condition;
   @override
   void initState() {
     print(widget.selectedBook.sellerName);
@@ -171,14 +171,16 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                 productID: oldBook.productID,
                 publisher: _publisherController.text,
                 quantity: int.parse(_quantityController.text),
-                sellerName: userService.getUser().name);
+                sellerName: userService.getUser().name,
+                condition: this.condition,
+                status: "ACTIVE"
+                );
             productService.updateBook(updatedBook).then((e) {
               if (e == 200) {
                 Navigator.of(context).pop(updatedBook);
               }
             });
           }
-         
         },
         child: Icon(
           Icons.save,
@@ -314,8 +316,8 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                           ],
                         ),
                       ),
-                      Padding(
-                          padding: const EdgeInsets.fromLTRB(50, 0, 15, 12),
+                      Row(children: <Widget>[Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 15, 12),
                           child: Theme(
                             data: ThemeData(
                                 canvasColor: Color.fromRGBO(255, 144, 77, 1)),
@@ -342,7 +344,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                             ),
                           )),
                       Padding(
-                          padding: const EdgeInsets.fromLTRB(50, 0, 15, 12),
+                          padding: const EdgeInsets.fromLTRB(20, 0, 15, 12),
                           child: Theme(
                             data: ThemeData(
                                 canvasColor: Color.fromRGBO(255, 144, 77, 1)),
@@ -366,6 +368,36 @@ class _BookSettingsPage extends State<BookSettingsPage> {
                               ),
                             ),
                           )),
+                      Padding(
+                           padding: const EdgeInsets.fromLTRB(20, 0, 15, 12),
+                          child: Theme(
+                            data: ThemeData(
+                                canvasColor: Color.fromRGBO(255, 144, 77, 1)),
+                            child: SafeArea(
+                              child: DropdownButton<String>(
+                                hint: Text(
+                                  "Select Condition",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                items: ["NEW", "SECONDHAND"]
+                                    .map((String dropdownItem) {
+                                  return DropdownMenuItem<String>(
+                                    value: dropdownItem,
+                                    child: Text(
+                                      dropdownItem,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String newValueSelected) {
+                                  setState(() {
+                                    this.condition = newValueSelected;
+                                  });
+                                },
+                                value: this.condition,
+                              ),
+                            ),
+                          )),],)
                     ],
                   ),
                 ),

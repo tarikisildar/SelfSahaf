@@ -130,7 +130,7 @@ class AuthService extends GeneralServices {
     }
   }
 
-  Future<List<Address>> getUserAddresses() async {
+  Future<APIResponse<List<Address>>> getUserAddresses() async {
     try {
       Response response = await _dio.get(
         "user/getadress",
@@ -138,26 +138,23 @@ class AuthService extends GeneralServices {
       List<Address> result=new List();
       print(response);
 
-       if (response.data.length != 0||response.statusCode==200) {
-      
+       if (response.statusCode==200) {
+         if(response.data.length != 0){
           List<dynamic> i = response.data;
           result = i.map((p) => Address.fromJson(p)).toList();
           result.sort((a,b)=>a.addressID.compareTo(b.addressID));
-          return result;
+          return APIResponse<List<Address>>(data: result,error: false);
+          }
+          else
+          return APIResponse<List<Address>>(data: null,error: false);
         }
-        return null;
+      
+       else  if(response.statusCode==403)
+        return APIResponse<List<Address>>(data: null,error: true, errorMessage: "Something went wrong!");
+      else
+        return APIResponse<List<Address>>(data: null,error: true, errorMessage: "Some errors occurs.!");
     } on DioError catch (e) {
-      if (e.response != null) {
-        print(e.response.data);
-        print(e.response.headers);
-        print(e.response.statusCode);
-        return null;
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
-        print(e.message);
-        return null;
-      }
+      return APIResponse<List<Address>>(data: null,error: true, errorMessage: "Some errors occurs!");
     }
   }
 

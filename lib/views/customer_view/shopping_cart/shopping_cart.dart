@@ -1,5 +1,6 @@
 import 'package:Selfsahaf/controller/cart_service.dart';
 import 'package:Selfsahaf/models/cart_model.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/book_profile.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/models/book.dart';
@@ -19,21 +20,30 @@ class _ShoppingCartState extends State<ShoppingCart> {
   CartService get _cartService => GetIt.I<CartService>();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   List<CartModel> _cartList;
   bool _loading = true;
+  double totalValue=0;
   Future<Null> _refresh(BuildContext context) {
     setState(() {
       _loading = true;
     });
     _cartService.getCart().then((value) {
       setState(() {
+        totalValue=0;
         if (!value.error) {
           this._cartList = value.data;
         } else {
           ErrorDialog().showErrorDialog(context, "Error", value.errorMessage);
+          this._cartList = value.data;
         }
         _loading = false;
       });
+      if(value.data!=null){
+        for(int i =0 ;i <value.data.length;i++){
+          totalValue+=value.data[i].amount*value.data[i].price;
+        }
+      }
     });
   }
 
@@ -46,6 +56,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Container(
             height: 50, child: Image.asset("images/logo_white/logo_white.png")),
@@ -89,6 +100,9 @@ class _ShoppingCartState extends State<ShoppingCart> {
                       : ListView.builder(
                           itemCount: _cartList.length,
                           itemBuilder: (_, int index) {
+                            
+                           
+                    
                             return Dismissible(
                               key: ValueKey(_cartList[index].productID),
                               child: ProductCard(
@@ -98,15 +112,68 @@ class _ShoppingCartState extends State<ShoppingCart> {
                                 price: "${_cartList[index].price}",
                                 productID: _cartList[index].productID,
                                 sellerID: _cartList[index].sellerID,
+                                type: 1,
+                                amount: _cartList[index].amount,
                               ),
                               direction: DismissDirection.horizontal,
-                              onDismissed: (direction) {
-                                print("sa");
-                              },
+                          
                               confirmDismiss: (direction) async {
                                 //right to left for information
                                 if (direction == DismissDirection.endToStart) {
-                                  print("sondan basa");
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BookProfile(
+                                                selectedBook:
+                                                    _cartList[index].book,
+                                                type: 2,
+                                                amount: this
+                                                    ._cartList[index]
+                                                    .amount,
+                                              ))).then((onValue) {
+                                    print(onValue);
+                                    if (onValue != null) {
+                                      if (onValue !=
+                                          this._cartList[index].amount) {
+                                        _cartService
+                                            .updateItemFromCart(
+                                                _cartList[index].productID,
+                                                onValue)
+                                            .then((value) {
+                                          if (!value.error) {
+                                            setState(() {
+                                              _cartList[index].amount = onValue;
+                                            });
+                                            _scaffoldKey.currentState
+                                                .showSnackBar(SnackBar(
+                                              duration: Duration(seconds: 1),
+                                              backgroundColor: Colors.white,
+                                              content: Text(
+                                                "Added to the cart.",
+                                                style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      230, 81, 0, 1),
+                                                  fontSize: 18,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ));
+                                          } else {
+                                            ErrorDialog().showErrorDialog(
+                                                context,
+                                                "Error!",
+                                                value.errorMessage);
+                                          }
+                                        });
+                                      }
+                                    }
+
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) =>
+                                            _refreshIndicatorKey.currentState
+                                                .show());
+                                  });
+
                                   return false;
                                 }
                                 //left to right for delete
@@ -234,22 +301,28 @@ class _ShoppingCartState extends State<ShoppingCart> {
             height: 60,
             child: FlatButton(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                  ),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
               color: Colors.white,
-              onPressed: () async {
-                //@TODO : degistir bunu
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OrderAddress()),
-                );
+              onPressed: () {
+                _cartService.cartCheckout().then((value) {
+                  if (!value.error) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => OrderAddress(total: this.totalValue,)),
+                    );
+                  }
+                  else if(value.error){
+                    ErrorDialog().showErrorDialog(context,"Error", value.errorMessage);
+                  }
+                });
               },
               child: Row(
                 children: <Widget>[
                   Expanded(
                     flex: 15,
                     child: Text(
-                      "Checkout",
+                      "Checkout           Total: $totalValue",
                       style: TextStyle(
                           color: Color.fromRGBO(230, 81, 0, 1), fontSize: 20),
                     ),

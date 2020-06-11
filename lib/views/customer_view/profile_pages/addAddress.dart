@@ -187,6 +187,7 @@ class _AddAddressState extends State<AddAddress> {
                               _country != "Country" &&
                               _city != "City") {
                             if (widget.addType == 0) {
+                              print(_country);
                               userService
                                   .addUserAddress(Address(
                                       addressLine: this._addresline.text,

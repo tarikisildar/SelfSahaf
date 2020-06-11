@@ -200,13 +200,7 @@ String condition;
             height: 50,
             child: Image.asset("images/logo_white/logo_white.png"),
           ),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.shopping_cart),
-                onPressed: () {
-                  print("shopping");
-                }),
-          ],
+         
         ),
         body: Builder(builder: (context) {
           if (_isLoading) {

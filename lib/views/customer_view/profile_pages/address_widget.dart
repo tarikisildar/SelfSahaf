@@ -20,58 +20,41 @@ class AddressWidget extends StatelessWidget {
       padding:
           const EdgeInsets.only(top: 4.0, bottom: 4.0, left: 10, right: 10),
       child: Container(
-        padding: EdgeInsets.all(5),
-        height: 120,
-        margin: EdgeInsets.all(5),
-        decoration:
+      padding: EdgeInsets.all(12),
+       decoration:
             BoxDecoration(color: Colors.white, shape: BoxShape.rectangle, borderRadius: BorderRadius.all(Radius.circular(25))),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-                flex: 7,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    alignment: Alignment.centerLeft,
-                    child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        padding: EdgeInsets.all(2),
-                        child: Text(
-                          " $addressName: ${addressLine} ",
-                          overflow: TextOverflow.clip,
-                          maxLines: 3,
-                          textDirection: TextDirection.ltr,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        )),
+      child: Row(
+        children: <Widget>[
+          
+          Flexible(
+            flex: 7,
+                      child: Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    addressName,
+                    style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20),
+                  ),
+                  Text(
+                   addressLine,
+                    style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16),
                   ),
                   Container(
-                    padding: EdgeInsets.all(2),
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      "$city/$country",
-                      maxLines: 1,
-                      textDirection: TextDirection.ltr,
-                      textAlign: TextAlign.right,
+                    alignment: Alignment.centerRight,
+                                      child: Text(
+                      "${postalCode}   ${city}/${country}",
+                      style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(2),
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      "$postalCode",
-                      maxLines: 1,
-                      textDirection: TextDirection.ltr,
-                      textAlign: TextAlign.right,
-                    ),
-                  ),
-                ])),
-            Expanded(
-                flex: 2,
+                ],
+              ),
+            ),
+          ),
+          Flexible(
+            flex: 2,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -131,9 +114,10 @@ class AddressWidget extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                       ))
                 ]))
-          ],
-        ),
+        ],
+        
       ),
+    )
     );
   }
 }

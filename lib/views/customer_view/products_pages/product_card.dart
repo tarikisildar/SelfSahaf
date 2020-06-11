@@ -11,11 +11,13 @@ class ProductCard extends StatefulWidget {
   final String publisherName;
   final String price;
   final int sellerID,productID;
+  final int type;
+  final int amount;
   ProductCard(
           {@required this.bookName,
           @required this.authorName,
           @required this.publisherName,
-          @required this.price, @required this.sellerID, @required this.productID});
+          @required this.price, @required this.sellerID, @required this.productID, @required this.type, this.amount});
 
   @override
   _ProductsCardState createState(){  return _ProductsCardState(); }
@@ -105,7 +107,7 @@ class _ProductsCardState extends State<ProductCard> {
                                   flex: 2,
                                   child: Padding(
                                     padding: const EdgeInsets.all(2.5),
-                                    child: Text(
+                                    child: Text((widget.type==1)?"Amount: "+widget.amount.toString()+"    "+widget.price.toString()+" TL":
                                       widget.price+" TL",
                                       style: TextStyle(
                                         color: Color(0xffe65100),

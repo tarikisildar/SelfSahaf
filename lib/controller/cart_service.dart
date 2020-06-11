@@ -85,4 +85,41 @@ class CartService extends GeneralServices {
           data: -1, error: true, errorMessage: "Some errors occurs.");
     }
   }
+  Future<APIResponse<int>> updateItemFromCart(int productID,int amount)async{
+    try {
+      Response response = await _dio.post("cart/updateCart", queryParameters: {
+        "productID":productID,
+        "amount":amount
+      });
+      print(response.data);
+      if (response.statusCode == 200) 
+      return APIResponse<int>(data: 200);    
+    else if (response.statusCode == 403)
+        return APIResponse<int>(
+            data: 403, error: true, errorMessage: response.data.toString());
+      else
+        return APIResponse<int>(
+            data: -1, error: true, errorMessage: "Some errors occurs.");
+    } on DioError catch (e) {
+      return APIResponse(
+          data: -1, error: true, errorMessage: "Some errors occurs.");
+    }
+  }
+  Future<APIResponse<int>> cartCheckout()async{
+    try {
+      Response response = await _dio.post("cart/checkout");
+      print(response.data[0].toString());
+      if (response.statusCode == 200) 
+      return APIResponse<int>(data: 200);    
+    else if (response.statusCode == 403)
+        return APIResponse<int>(
+            data: 403, error: true, errorMessage: response.data[0].toString());
+      else
+        return APIResponse<int>(
+            data: -1, error: true, errorMessage: "Some errors occurs.");
+    } on DioError catch (e) {
+      return APIResponse(
+          data: -1, error: true, errorMessage: "Some errors occurs.");
+    }
+  }
 }

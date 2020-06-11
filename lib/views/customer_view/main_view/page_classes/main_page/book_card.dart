@@ -89,7 +89,7 @@ class _BookCardState extends State<BookCard> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) =>
-                                            BookProfile(selectedBook: widget.book, isproduct: false,)));
+                                            BookProfile(selectedBook: widget.book, type: 1,)));
                               },
                               child: Icon(Icons.arrow_forward_ios,
                                   color: Colors.white, size: 50),

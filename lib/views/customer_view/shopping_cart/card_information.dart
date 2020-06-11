@@ -7,6 +7,9 @@ import 'credit_card_view/credit_card_widget.dart';
 import 'credit_card_view/credit_card_model.dart';
 
 class CardInformation extends StatefulWidget {
+  final int addressID;
+  final double total;
+  CardInformation({@required this.addressID,@required this.total});
   @override
   _CardInformationState createState() => _CardInformationState();
 }
