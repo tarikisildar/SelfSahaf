@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
@@ -7,7 +8,6 @@ import 'input_field.dart';
 import 'package:Selfsahaf/views/registration/signup.dart';
 import 'package:dio/dio.dart';
 import 'package:Selfsahaf/views/registration/input_field.dart';
-import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -27,18 +27,26 @@ class _LoginPageState extends State<LoginPage> {
         .loginWithEmail(_emailController.text, _passwordController.text)
         .then((val) {
       if (!val.error) {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => MainPage()),
-            ModalRoute.withName("/Home"));
-      } else if(val.data==404)
-              return ErrorDialog().showErrorDialog(context, "Error!", "Server does not found");
-        else{
-          print(val.data);
-return ErrorDialog().showErrorDialog(context, "Error!", val.errorMessage);
-
-        }
-            });
+        api.initUser().then((value) {
+          if (!value.error) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MainPage(
+                          user: api.getUser(),
+                        )),
+                ModalRoute.withName("/Home"));
+          }
+        });
+      } else if (val.data == 404)
+        return ErrorDialog()
+            .showErrorDialog(context, "Error!", "Server does not found");
+      else {
+        print(val.data);
+        return ErrorDialog()
+            .showErrorDialog(context, "Error!", val.errorMessage);
+      }
+    });
   }
 
   String emailValidation(String email) {
@@ -124,7 +132,8 @@ return ErrorDialog().showErrorDialog(context, "Error!", val.errorMessage);
                             side: BorderSide(
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
-                        onPressed: ()async { //@TODO : degistir bunu 
+                        onPressed: () async {
+                          //@TODO : degistir bunu
                           _login();
                           /*if (_formKey.currentState.validate()) {
                             
@@ -154,11 +163,45 @@ return ErrorDialog().showErrorDialog(context, "Error!", val.errorMessage);
                         color: Colors.white,
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Signup()),);
+                            context,
+                            MaterialPageRoute(builder: (context) => Signup()),
+                          );
                         },
                         child: Text(
                           "Signup",
+                          style: TextStyle(
+                              color: Color.fromRGBO(230, 81, 0, 1),
+                              fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Container(
+                      width: 250,
+                      height: 45,
+                      child: FlatButton(
+                        shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(15.0),
+                            side: BorderSide(
+                                color: Color.fromRGBO(230, 81, 0, 1))),
+                        color: Colors.white,
+                        onPressed: () async {
+                          User newuser = new User(
+                              name: "Anonim",
+                              surname: "Sahaf",
+                              role: "ROLE_ANON");
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MainPage(
+                                        user: newuser,
+                                      )),
+                              ModalRoute.withName("/Home"));
+                        },
+                        child: Text(
+                          "I have a friend inside!",
                           style: TextStyle(
                               color: Color.fromRGBO(230, 81, 0, 1),
                               fontSize: 20),

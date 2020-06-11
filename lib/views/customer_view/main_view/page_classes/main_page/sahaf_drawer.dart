@@ -1,3 +1,4 @@
+import 'package:Selfsahaf/views/registration/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
@@ -5,6 +6,7 @@ import 'package:Selfsahaf/views/customer_view/products_pages/productsDialog.dart
 import 'package:Selfsahaf/views/customer_view/products_pages/products_page.dart';
 import "package:Selfsahaf/views/customer_view/profile_pages/profile_page.dart";
 import 'package:Selfsahaf/views/customer_view/profile_pages/settings_page.dart';
+
 class SahafDrawer extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -13,16 +15,35 @@ class SahafDrawer extends StatefulWidget {
 }
 
 class _SahafDrawer extends State<SahafDrawer> {
- AuthService userService=GetIt.I<AuthService>();
- bool seller=false;
- @override
+  AuthService userService = GetIt.I<AuthService>();
+  bool seller = false;
+  int role; //0 for anon
+  //1 for user
+  //2 for seller
+  //3 for admin
+  @override
   void initState() {
-    if(userService.getUser().role=="ROLE_ADMIN" || userService.getUser().role=="ROLE_SELLER")
+    switch (userService.getUser().role) {
+      case "ROLE_ADMIN":
+        role = 3;
+        break;
+      case "ROLE_SELLER":
+        role = 2;
+        break;
+      case "ROLE_USER":
+        role = 1;
+        break;
+      case "ROLE_ANON":
+        role = 0;
+        break;
+      default:
+    }
+    if (role == 3 || role == 2)
       setState(() {
-        seller=true;
+        seller = true;
       });
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -48,7 +69,10 @@ class _SahafDrawer extends State<SahafDrawer> {
                               Image.asset('images/logo_white/logo_white.png'),
                           height: 150,
                           width: 200),
-                      Text(userService.getUser().name +" "+ userService.getUser().surname ,
+                      Text(
+                          userService.getUser().name +
+                              " " +
+                              userService.getUser().surname,
                           style: Theme.of(context)
                               .textTheme
                               .body2
@@ -72,19 +96,9 @@ class _SahafDrawer extends State<SahafDrawer> {
                     "My Account",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder:(context)=>ProfilePage() )),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfilePage())),
             ),
-            InkWell(
-                child: ListTile(
-                    leading: Icon(
-                      Icons.category,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      "Categories",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    )),
-                onTap: () {}),
             InkWell(
               child: ListTile(
                   leading: Icon(
@@ -95,12 +109,15 @@ class _SahafDrawer extends State<SahafDrawer> {
                     "Products",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
-              onTap: () { 
-                return (seller)? Navigator.push(context, MaterialPageRoute(builder:(context)=>ProductsPage() )) :showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ProductsDialog();
-                    });
+              onTap: () {
+                return (seller)
+                    ? Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ProductsPage()))
+                    : showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ProductsDialog();
+                        });
               },
             ),
             InkWell(
@@ -110,8 +127,42 @@ class _SahafDrawer extends State<SahafDrawer> {
                     "Settings",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder:(context)=>SettingsPage() )),
-            )
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SettingsPage())),
+            ),
+            (role == 0)
+                ? InkWell(
+                    child: ListTile(
+                        leading: Icon(
+                          Icons.wc,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          "Login",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        )),
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          ModalRoute.withName("/Login"));
+                    })
+                : InkWell(
+                    child: ListTile(
+                        leading: Icon(
+                          Icons.error_outline,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          "Logout",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        )),
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          ModalRoute.withName("/Login"));
+                    }),
           ],
         ),
       ),

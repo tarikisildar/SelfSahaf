@@ -1,3 +1,4 @@
+import 'package:Selfsahaf/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/main_page/home_page.dart';
@@ -9,6 +10,8 @@ import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/controller/book_controller.dart';
 
 class MainPage extends StatefulWidget {
+  final User user;
+  MainPage({@required this.user});
   @override
   State<StatefulWidget> createState() {
     return _MainPageState();
@@ -36,6 +39,8 @@ class _MainPageState extends State<MainPage> {
   bool _loading = true;
   @override
   void initState() {
+    print(widget.user.name);
+      userService.setUser(widget.user);
     _index=0;
   }
 

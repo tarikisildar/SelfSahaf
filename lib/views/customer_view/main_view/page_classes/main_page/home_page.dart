@@ -78,14 +78,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   _fetchData() async {
-     userService.initUser().then((e) {
+     
        _refresh().then((value){
          setState(() {
             _loading = false;
           });
        });
-          
-        });
+
   }
 
   Future<Null> _refresh() {

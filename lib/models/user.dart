@@ -8,12 +8,13 @@ class User {
   String email;
   String role;
 
-  User({mail, name, surname, password, dob}) {
+  User({mail, name, surname, password, dob,role}) {
     this.email = mail;
     this.password = password;
     this.surname = surname;
     this.name = name;
     this.dateOfBirth = dob;
+    this.role=role;
   }
   String getUserName() {
     return this.name + " " + this.surname;
