@@ -1,6 +1,7 @@
 import 'package:Selfsahaf/controller/user_controller.dart';
 import 'package:Selfsahaf/models/address.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/address_widget.dart';
+import 'package:Selfsahaf/views/customer_view/shopping_cart/shipping_company_list.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/card_information.dart';
@@ -119,12 +120,13 @@ class _OrderAddressState extends State<OrderAddress> {
                       Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => CardInformation(addressID: _addresses[radioGroup].addressID , total: widget.total,)),
+                          builder: (context) => ShippingCompanyList(addressID:_addresses[radioGroup].addressID ,total:widget.total)),
                     );
                    }
                    else{
                      ErrorDialog().showErrorDialog(context, "Error!", "Please select an address.");
                    }
+                    
                   },
                   child: Row(
                     children: <Widget>[

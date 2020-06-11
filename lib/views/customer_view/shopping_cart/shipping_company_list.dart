@@ -2,6 +2,9 @@ import 'package:Selfsahaf/views/customer_view/shopping_cart/card_information.dar
 import 'package:flutter/material.dart';
 
 class ShippingCompanyList extends StatefulWidget{
+  final int addressID;
+  final double total;
+  ShippingCompanyList({@required this.addressID,@required this.total });
   @override 
   _ShippingCompanyListState createState() => _ShippingCompanyListState();
 }
@@ -25,7 +28,7 @@ class _ShippingCompanyListState extends State<ShippingCompanyList>{
                   onPressed: () async {
                     Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CardInformation()),
+                  MaterialPageRoute(builder: (context) => CardInformation(addressID:widget.addressID, total: widget.total,)),
                 );
                   },
                   child: Row(
