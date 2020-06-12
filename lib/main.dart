@@ -1,5 +1,6 @@
 import 'package:Selfsahaf/controller/cart_service.dart';
 import 'package:Selfsahaf/controller/order_service.dart';
+import 'package:Selfsahaf/controller/search_service.dart';
 import 'package:Selfsahaf/controller/shipping_company_service.dart';
 import 'package:Selfsahaf/views/admin_view/admin_main_page.dart';
 import 'package:Selfsahaf/views/admin_view/user_from_admin.dart';
@@ -21,6 +22,7 @@ void setupServiseLocator() {
   GetIt.I.registerLazySingleton(() => CartService());
   GetIt.I.registerLazySingleton(() => ShippingCompanyService());
   GetIt.I.registerLazySingleton(() => OrderService());
+  GetIt.I.registerLazySingleton(() => SearchService());
 }
 
 void main() {
