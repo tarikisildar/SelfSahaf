@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:Selfsahaf/models/book.dart';
+import 'package:Selfsahaf/views/customer_view/profile_pages/seller_books_page.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/seller_comments_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -159,7 +160,7 @@ class _SellerProfilePage extends State<SellerProfilePage> {
               child: PageView(
                 controller: controller,
                 scrollDirection: Axis.horizontal,
-                children: <Widget>[HistoryPage(), SellerCommentsPage(sellingBook: seller,)],
+                children: <Widget>[SellerBooksPage(bookfrom: seller,), SellerCommentsPage(sellingBook: seller,)],
               ),
             )
           ],

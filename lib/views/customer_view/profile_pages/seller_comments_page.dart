@@ -62,7 +62,7 @@ class _SellerCommentsPage extends State<SellerCommentsPage> {
                     return (allRatings == null)
                         ? Center(
                             child: Text(
-                              "No comments exist",
+                              "No Comments Exists",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 25),
                               textAlign: TextAlign.center,
