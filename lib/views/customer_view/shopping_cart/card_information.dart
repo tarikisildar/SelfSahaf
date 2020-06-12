@@ -12,7 +12,10 @@ class CardInformation extends StatefulWidget {
   final Address address;
   final double totalPrice;
   final ShippingCompanyModel company;
-  CardInformation({@required this.address,@required this.totalPrice,@required this.company});
+  CardInformation(
+      {@required this.address,
+      @required this.totalPrice,
+      @required this.company});
   @override
   _CardInformationState createState() => _CardInformationState();
 }
@@ -37,13 +40,15 @@ class _CardInformationState extends State<CardInformation> {
     if (name.length >= 5) emailValid = true;
     return emailValid ? null : 'not valid name.';
   }
+
   double total;
-@override
+  @override
   void initState() {
     this.address = widget.address;
-    this.total=widget.totalPrice;
+    this.total = widget.totalPrice;
     this.company = widget.company;
   }
+
   @override
   Widget build(BuildContext widget) {
     return Scaffold(
@@ -59,9 +64,9 @@ class _CardInformationState extends State<CardInformation> {
             Navigator.of(context).pop();
           },
         ),
-          actions: <Widget>[
+        actions: <Widget>[
           Padding(
-            padding: EdgeInsets.only(right: 5,top:5,bottom:5),
+            padding: EdgeInsets.only(right: 5, top: 5, bottom: 5),
             child: Container(
                 child: Center(
               child: Text(
@@ -71,45 +76,49 @@ class _CardInformationState extends State<CardInformation> {
             )),
           )
         ],
-        
       ),
       body: Center(
         child: Container(
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: 40,
-                child: Center(
-                    child: Text(
-                  "Card Information",
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                )),
-              ),
-              Divider(
-                thickness: 2.5,
-                color: Colors.white,
-              ),
-              CreditCardWidget(
-                cardNumber: cardNumber,
-                expiryDate: expiryDate,
-                cardHolderName: cardHolderName,
-                cardHolderSurname: cardHolderSurname,
-                cvvCode: cvvCode,
-                showBackView: isCvvFocused,
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: CreditCardForm(
-                    address: address,
-                    totalPrice: total,
-                    company: company,
-
-                    onCreditCardModelChange: onCreditCardModelChange,
-                  ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 40,
+                  child: Center(
+                      child: Text(
+                    "Card Information",
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  )),
                 ),
-              ),
+                Divider(
+                  thickness: 2.5,
+                  color: Colors.white,
+                ),
+                
+                  
+                      CreditCardWidget(
+                        cardNumber: cardNumber,
+                        expiryDate: expiryDate,
+                        cardHolderName: cardHolderName,
+                        cardHolderSurname: cardHolderSurname,
+                        cvvCode: cvvCode,
+                        showBackView: isCvvFocused,
+                      ),
+                      Divider(
+                        thickness: 1.5,
+                        color: Colors.white,
+                      ),
+                      CreditCardForm(
+                        address: address,
+                        totalPrice: total,
+                        company: company,
+                        onCreditCardModelChange: onCreditCardModelChange,
+                      ),
+                    ],
+                  
+                
               
-            ],
+            ),
           ),
         ),
       ),
