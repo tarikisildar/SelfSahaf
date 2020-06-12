@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   List<Book> bookList = [null];
   bool _isloading = true;
   int _index = 0;
-  int page = 0, size = 4, localpage = 0;
+  int page = 0, size = 8, localpage = 0;
   bool checkPage;
   List<Widget> _pages;
   AuthService get userService => GetIt.I<AuthService>();
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
         _isloading = false;
         return;
       } else if (bookList.length % size != 0 || newbooks.length != size) {
-        for (int i = (bookList.length % 4); i < newbooks.length; i++) {
+        for (int i = (bookList.length % size); i < newbooks.length; i++) {
           bookList.add(newbooks[i]);
         }
         if (newbooks.length == size) page += 1;
@@ -93,15 +93,15 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _isloading = true;
     });
-    return _bookService.getBooks(0, 4).then((e) {
+    return _bookService.getBooks(0, size).then((e) {
       setState(() {
-        if (e.length % 4 == 0)
+        if (e.length % size == 0)
           page = 1;
         else
           page = 0;
       
         this.bookList = e;
-        _bookService.getImage(bookList[0].sellerID,  bookList[0].productID, 1).then((value) => print(value));
+        _bookService.getImage(bookList[0].sellerID,  bookList[0].productID, 1);
         
           _isloading = false;
       });
