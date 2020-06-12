@@ -1,6 +1,6 @@
 class Rating{
   String comment;
-  double rating;
+  int rating;
   Rating({this.comment,this.rating});
 
   Rating.fromJson(Map<String, dynamic> json)
