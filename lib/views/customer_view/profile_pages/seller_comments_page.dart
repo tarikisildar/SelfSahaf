@@ -81,7 +81,7 @@ class _SellerCommentsPage extends State<SellerCommentsPage> {
                                     allowHalfRating: true,
                                     onRated: (v) {},
                                     starCount: 5,
-                                    rating: allRatings[index].rating,
+                                    rating: allRatings[index].rating.toDouble() ,
                                     size: 20.0,
                                     isReadOnly: true,
                                     filledIconData: Icons.star,

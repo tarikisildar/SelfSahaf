@@ -15,7 +15,9 @@ class RatingService extends GeneralServices {
   Future<APIResponse<List<Rating>>> getRatings(int sellerID) async {
     try {
       Response response = await _dio.get(
-        "rating/getRatings",
+        "rating/getRatings", queryParameters: {
+          "sellerID":sellerID
+        }
       );
       List<Rating> result = new List();
       print(response);
