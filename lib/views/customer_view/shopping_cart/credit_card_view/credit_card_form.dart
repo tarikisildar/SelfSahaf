@@ -1,4 +1,5 @@
 import 'package:Selfsahaf/models/address.dart';
+import 'package:Selfsahaf/models/card_model.dart';
 import 'package:Selfsahaf/models/shipping_company_model.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/card_information.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:Selfsahaf/views/customer_view/shopping_cart/order_summary.dart';
 import 'credit_card_model.dart';
 
 class CreditCardForm extends StatefulWidget {
-  
   const CreditCardForm({
     @required this.address,
     @required this.totalPrice,
@@ -64,7 +64,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
       MaskedTextController(mask: '00/00');
   final TextEditingController _cardHolderNameController =
       TextEditingController();
-      final TextEditingController _cardHolderSurnameController =
+  final TextEditingController _cardHolderSurnameController =
       TextEditingController();
   final TextEditingController _cvvCodeController =
       MaskedTextController(mask: '000');
@@ -82,8 +82,60 @@ class _CreditCardFormState extends State<CreditCardForm> {
     cardHolderName = widget.cardHolderName ?? '';
     cvvCode = widget.cvvCode ?? '';
 
-    creditCardModel = CreditCardModel(
-        cardNumber, expiryDate, cardHolderName, cardHolderSurname,cvvCode, isCvvFocused);
+    creditCardModel = CreditCardModel(cardNumber, expiryDate, cardHolderName,
+        cardHolderSurname, cvvCode, isCvvFocused);
+  }
+bool isNumberic(String value){
+return  (int.parse(value)!=null)?true:false;
+}
+  String _cardholdernameValidation(String value) {
+
+    bool cardHolderName = false;
+    if (value.length>=3) cardHolderName = true;
+    return cardHolderName ? null : 'not valid card holder name.';
+  }
+  String _cardYearValidation(String value){
+    bool cardYearValid=false;
+    var mountandYear=value.split("/");
+    if(mountandYear.length!=2)
+    return "please give all date";
+    String mount=mountandYear[0];
+    String year=mountandYear[1];
+    var time=DateTime.now().toString().split("-");
+    if(!isNumberic(year)||!isNumberic(mount))
+      return "Date must be numberic";
+    String timeYear=time[0][2]+time[0][3];
+    if(int.parse(year)<int.parse(timeYear))
+    return "please give correct year";
+    if(int.parse(year)==int.parse(timeYear)){
+      if(int.parse(mount)<int.parse(time[1])){
+        return "please give correct mounth";
+      }
+      else 
+      return null;
+    }
+    return null;
+  }
+   String _cardHolderSurnameValidation(String value) {
+
+    bool cardHolderName = false;
+    if (value.length>=3) cardHolderName = true;
+    return cardHolderName ? null : 'not valid card holder surname.';
+  }
+  String _cardNumberValidation(String value) {
+    bool _cardNumberValid = false;
+    if(value.length==19){
+return null;
+
+    }
+    else
+      return "Invalid card number.";
+
+  }
+   String _cardCVVValidation(String value) {
+    bool _cardCVVValid = false;
+      (value.length==3)?(isNumberic(value))? _cardCVVValid = true:_cardCVVValid=false :_cardCVVValid=false;
+    return _cardCVVValid ? null : 'not valid CVV number.';
   }
 
   @override
@@ -145,6 +197,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
     super.didChangeDependencies();
   }
 
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -153,12 +206,14 @@ class _CreditCardFormState extends State<CreditCardForm> {
         primaryColorDark: themeColor,
       ),
       child: Form(
+        key: formKey,
         child: Column(
           children: <Widget>[
             Container(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               margin: const EdgeInsets.only(left: 16, top: 16, right: 16),
               child: TextFormField(
+                validator: _cardNumberValidation,
                 controller: _cardNumberController,
                 cursorColor: widget.cursorColor ?? themeColor,
                 style: TextStyle(
@@ -201,12 +256,14 @@ class _CreditCardFormState extends State<CreditCardForm> {
                     )),
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
+               
               ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
               child: TextFormField(
+                validator: _cardYearValidation,
                 controller: _expiryDateController,
                 cursorColor: widget.cursorColor ?? themeColor,
                 style: TextStyle(
@@ -254,7 +311,8 @@ class _CreditCardFormState extends State<CreditCardForm> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
-              child: TextField(
+              child: TextFormField(
+                validator: _cardCVVValidation,
                 focusNode: cvvFocusNode,
                 controller: _cvvCodeController,
                 cursorColor: widget.cursorColor ?? themeColor,
@@ -309,6 +367,8 @@ class _CreditCardFormState extends State<CreditCardForm> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
               child: TextFormField(
+              
+                 validator: _cardholdernameValidation,
                 controller: _cardHolderNameController,
                 cursorColor: widget.cursorColor ?? themeColor,
                 style: TextStyle(
@@ -357,6 +417,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
               child: TextFormField(
+                validator: _cardHolderSurnameValidation,
                 controller: _cardHolderSurnameController,
                 cursorColor: widget.cursorColor ?? themeColor,
                 style: TextStyle(
@@ -402,47 +463,68 @@ class _CreditCardFormState extends State<CreditCardForm> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 12.0,bottom: 20),
+              padding: const EdgeInsets.only(top: 12.0, bottom: 20),
               child: Container(
-                  width: MediaQuery.of(context).size.width - 220,
-                  height: 60,
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        side: BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
-                    color: Colors.white,
-                    onPressed: () async {
-
-                      CreditCardModel myCard = new CreditCardModel(_cardNumberController.text, _expiryDateController.text, _cardHolderNameController.text,_cardHolderSurnameController.text ,_cvvCodeController.text, isCvvFocused);
-                      
+                width: MediaQuery.of(context).size.width - 220,
+                height: 60,
+                child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      side: BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
+                  color: Colors.white,
+                  onPressed: () async {
+                    if (formKey.currentState.validate()) {
+      /*_cardNumberController.text,
+                        _expiryDateController.text,
+                        _cardHolderNameController.text,
+                        _cardHolderSurnameController.text,
+                        _cvvCodeController.text,
+                        isCvvFocused*/ 
+                       CardModel myCard = new CardModel(
+                         cardNumber: _cardNumberController.text.split(" ").join(),
+                         cvv: _cvvCodeController.text,
+                         ownerName:_cardHolderNameController.text,
+                         ownerSurname: _cardHolderSurnameController.text,
+                         expirationMonth: _expiryDateController.text.split("/")[0],
+                         expirationYear: _expiryDateController.text.split("/")[1]
+                        );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => OrderSummary(address:address,company: company,totalPrice: totalPrice,myCard: myCard,)),
+                        MaterialPageRoute(
+                            builder: (context) => OrderSummary(
+                                  address: address,
+                                  company: company,
+                                  totalPrice: totalPrice,
+                                  myCard: myCard,
+                                )),
                       );
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 15,
-                          child: Text(
-                            "Summary",
-                            style: TextStyle(
-                                color: Color.fromRGBO(230, 81, 0, 1),
-                                fontSize: 20),
-                          ),
+                    }
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          "Summary",
+                          style: TextStyle(
+                              color: Color.fromRGBO(230, 81, 0, 1),
+                              fontSize: 20),
                         ),
-                        Expanded(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color.fromRGBO(230, 81, 0, 1),
-                          ),
+                      ),
+                      Expanded(
+                        child: Icon(
+                          Icons.arrow_forward_ios,
+                          color: Color.fromRGBO(230, 81, 0, 1),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
+              ),
             ),
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
           ],
         ),
       ),

@@ -1,15 +1,19 @@
+import 'package:Selfsahaf/controller/order_service.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
 import 'package:Selfsahaf/models/address.dart';
 import 'package:Selfsahaf/models/shipping_company_model.dart';
+import 'package:Selfsahaf/views/customer_view/main_view/main_page.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/credit_card_view/credit_card_model.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:Selfsahaf/models/card_model.dart';
+import 'package:get_it/get_it.dart';
 
 class OrderSummary extends StatefulWidget {
   final Address address;
   final double totalPrice;
   final ShippingCompanyModel company;
-  final CreditCardModel myCard;
+  final CardModel myCard;
   OrderSummary(
       {@required this.address,
       @required this.totalPrice,
@@ -22,7 +26,7 @@ class OrderSummary extends StatefulWidget {
 class _OrderSummaryState extends State<OrderSummary> {
   double totalPrice;
   ShippingCompanyModel company;
-  CreditCardModel myCard;
+  CardModel myCard;
   Address address;
   @override
   void initState() {
@@ -33,6 +37,8 @@ class _OrderSummaryState extends State<OrderSummary> {
     this.myCard = widget.myCard;
   }
 
+  OrderService get orderService => GetIt.I<OrderService>();
+  AuthService get userService => GetIt.I<AuthService>();
   @override
   Widget build(BuildContext widget) {
     return Scaffold(
@@ -61,8 +67,23 @@ class _OrderSummaryState extends State<OrderSummary> {
                   side: BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
               color: Colors.white,
               onPressed: () async {
-                //@TODO : degistir bunu
-                print("PARA CEKME ISLEMI");
+                orderService
+                    .confirmOrder(
+                        address.addressID, company.shippingCompanyID, myCard)
+                    .then((value) {
+                  if (!value.error) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MainPage(
+                                  user: userService.getUser(),
+                                )),
+                        ModalRoute.withName("/Home"));
+                  } else {
+                    ErrorDialog()
+                        .showErrorDialog(context, "Error", value.errorMessage);
+                  }
+                });
               },
               child: Row(
                 children: <Widget>[
@@ -206,11 +227,11 @@ class _OrderSummaryState extends State<OrderSummary> {
                         ),
                         Expanded(
                           flex: 4,
-                          child: Text(
-                              "${myCard.cardHolderName} ${myCard.cardHolderSurname}",
-                              style: TextStyle(
-                                color: Colors.white,
-                              )),
+                          child:
+                              Text("${myCard.ownerName} ${myCard.ownerSurname}",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  )),
                         ),
                       ],
                     ),
