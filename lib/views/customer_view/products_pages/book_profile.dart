@@ -206,7 +206,7 @@ class _BookProfileState extends State<BookProfile> {
                                   onTap: () {
                                     (_user.role == "ROLE_ANON")
                                         ? ErrorDialog().showLogin(context)
-                                        : _cartService
+                                        :(widget.selectedBook.sellerID==_user.userID)? ErrorDialog().showErrorDialog(context,"Error!", "You can not buy your product!"):_cartService
                                             .addItemToCart(
                                                 _itemCount,
                                                 widget.selectedBook.productID,

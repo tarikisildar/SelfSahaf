@@ -9,4 +9,9 @@ class ShippingInfo{
     this.trackingNumber,
     this.shippingcompany,
   });
+   ShippingInfo.fromJson(Map<String, dynamic> json)
+      : shippingInfoID=json["shippingInfoID"],
+      trackingNumber=json["trackingNumber"],
+      shippingcompany=ShippingCompanyModel.fromJson( json["shippingCompanyID"])
+      ;
 }

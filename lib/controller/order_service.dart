@@ -34,44 +34,30 @@ class OrderService extends GeneralServices {
           data: -1, error: true, errorMessage: "Some errors occurs.");
     }
   }
-  Future<List<Order>> getTakenOrders() async {
+  Future<APIResponse<List<Order>>> getTakenOrders() async {
     try {
       Response response = await _dio.get("order/takenOrders");
       List<Order> result;
-      print(response);
       if (response.statusCode == 200) {
-        
         if (response.data.length != 0) {
-          
+            
           List<dynamic> i = response.data;
+print(i[0]["buyer"]["name"]);
           result = i.map((p) => Order.fromJson(p)).toList();
-          print("gelen veri uzunluıgu");
-          print(result.length);
-          
-          return result;
+          return APIResponse<List<Order>>(data: result);
         }
         else{
-          print("boş liste");
-          print(response);
-         return [];
+      
+         return APIResponse<List<Order>>(data: null);
          }
       }
 
       //_token = response.data["token"];
    
-      return [];
+      return APIResponse<List<Order>>(data: null, error: true, errorMessage: "Some error occurs");
     } on DioError catch (e) {
-      if (e.response != null) {
-        print(e.response.data);
-        print(e.response.headers);
-        print(e.response.request);
-        return [];
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
-        print(e.message);
-        return [];
-      }
+
+     return APIResponse<List<Order>>(data: null, error: true, errorMessage: "Some error occurs");
     }
   }
 }
