@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:Selfsahaf/controller/product_services.dart';
+import 'package:Selfsahaf/controller/search_service.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -14,68 +15,318 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  bool sa=false;
-  final queryController = new TextEditingController();
-  int whichone;
-  ProductService get productService => GetIt.I<ProductService>();
-  String query;
+    SearchService get searchService => GetIt.I<SearchService>();
+  TextEditingController _minNumber = TextEditingController();
+  TextEditingController _maxNumber = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  final _numberFormKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    whichone = 0;
-    this.query = queryController.text;
-    queryController.addListener(() {
-      if(queryController.text == null || queryController.text == ""){
-        setState(() {
-          sa=false;
-        });
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
+  }
+
+  String _numberValidation(String value) {
+    if (isNumeric(value)) {
+      if (double.parse(value) < 0 || double.parse(value) >= 999999999)
+        return "invalid";
+      else {
+        return null;
       }
-      else{
-        setState(() {
-        this.query = queryController.text;
-        sa=true;
-        });
-      }
-    });
-    super.initState();
+    } else
+      return "invalid";
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FilterFloating(),
         appBar: AppBar(
-          leading: FlatButton(
-            color: Colors.white,
-            shape: CircleBorder(),
-            child: Icon(
-              Icons.search,
-              color: Theme.of(context).primaryColor,
-            ),
-            onPressed: () {
-              if(queryController.text != null){
-                setState(() {
-                  sa = true;
-                });
-              }
-              print(queryController.text);
-            },
-          ),
-          backgroundColor: Color(0xffe65100),
           title: Container(
-            child: TextFormField(
-              style: TextStyle(color: Colors.white),
-              controller: queryController,
-              decoration: InputDecoration(
-                  hintText: "Type to Search...",
-                  hintStyle: TextStyle(color: Colors.white),
-                  border: InputBorder.none),
-            ),
-          ),
+              alignment: Alignment.center,
+              height: 50,
+              child: Image.asset("images/logo_white/logo_white.png")),
         ),
-        body: Container(
-          color: Theme.of(context).primaryColor,
-          child: sa ? Text("asa") : Text("YOK"),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView(
+            children: <Widget>[
+              Center(
+                child: Text(
+                  "Search",
+                  style: TextStyle(color: Colors.white, fontSize: 30),
+                ),
+              ),
+              Center(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        flex: 3,
+                        child: Text(
+                          "By Name",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                    Expanded(
+                      flex: 8,
+                      child: Row(
+                  
+                        children: <Widget>[
+                          Expanded(
+                        flex: 8,
+                        child: InputField(
+                          lines: 1,
+                          controller: _nameController,
+                          inputType: TextInputType.text,
+                          validation: null,
+                          labelText: "Name",
+                        ),
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: FlatButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Icon(Icons.search),
+                          onPressed: () {
+                            searchService.searchBooksByName(_nameController.text, 0, 8);
+                            print("BURA DAHA BITMEDI BITER INS");
+                          },
+                        ),
+                      ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                height: 50,
+                thickness: 2,
+                color: Colors.white,
+              ),
+               Center(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        flex: 3,
+                        child: Text(
+                          "By Name",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                    Expanded(
+                      flex: 8,
+                      child: Row(
+                  
+                        children: <Widget>[
+                          Expanded(
+                        flex: 8,
+                        child: InputField(
+                          lines: 1,
+                          controller: _maxNumber,
+                          inputType: TextInputType.text,
+                          validation: _numberValidation,
+                          labelText: "Name",
+                        ),
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: FlatButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Icon(Icons.search),
+                          onPressed: () {
+                            
+                            print("BURA DAHA BITMEDI BITER INS");
+                          },
+                        ),
+                      ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                height: 50,
+                thickness: 2,
+                color: Colors.white,
+              ),
+              Center(
+                child: Form(
+                  key: _numberFormKey,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                          flex: 3,
+                          child: Text(
+                            "By Price",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                          SizedBox(
+                        width: 15,
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: InputField(
+                          lines: 1,
+                          controller: _minNumber,
+                          inputType: TextInputType.number,
+                          validation: _numberValidation,
+                          labelText: "Min",
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: InputField(
+                          lines: 1,
+                          controller: _maxNumber,
+                          inputType: TextInputType.number,
+                          validation: _numberValidation,
+                          labelText: "Max",
+                        ),
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: FlatButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Icon(Icons.search),
+                          onPressed: () {
+                            if(_numberFormKey.currentState.validate())
+                            print("BURA DAHA BITMEDI BITER INS");
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+               Divider(
+                height: 50,
+                thickness: 2,
+                color: Colors.white,
+              ),
+              Center(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        flex: 3,
+                        child: Text(
+                          "By Language",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                    Expanded(
+                      flex: 8,
+                      child: Row(
+                  
+                        children: <Widget>[
+                          Expanded(
+                        flex: 8,
+                        child: InputField(
+                          lines: 1,
+                          controller: _maxNumber,
+                          inputType: TextInputType.text,
+                          validation: _numberValidation,
+                          labelText: "Name",
+                        ),
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: FlatButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Icon(Icons.search),
+                          onPressed: () {
+                            
+                            print("BURA DAHA BITMEDI BITER INS");
+                          },
+                        ),
+                      ),
+                        ],
+                      ),
+                    ),
+                    
+                  ],
+                ),
+              ),
+               Divider(
+                height: 50,
+                thickness: 2,
+                color: Colors.white,
+              ),
+              Center(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        flex: 3,
+                        child: Text(
+                          "By Category",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                    Expanded(
+                      flex: 8,
+                      child: Row(
+                  
+                        children: <Widget>[
+                          Expanded(
+                        flex: 8,
+                        child: InputField(
+                          lines: 1,
+                          controller: _maxNumber,
+                          inputType: TextInputType.text,
+                          validation: _numberValidation,
+                          labelText: "Name",
+                        ),
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: FlatButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Icon(Icons.search),
+                          onPressed: () {
+                            
+                            print("BURA DAHA BITMEDI BITER INS");
+                          },
+                        ),
+                      ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ));
   }
 }
@@ -87,6 +338,7 @@ class FilterFloating extends StatefulWidget {
 
 class _FilterFloatingState extends State<FilterFloating> {
   bool _show = true;
+  int typeGroup;
   @override
   Widget build(BuildContext context) {
     return _show
@@ -126,38 +378,46 @@ class _FilterFloatingState extends State<FilterFloating> {
                       padding: const EdgeInsets.all(24.0),
                       child: ListView(
                         children: <Widget>[
-                          Expanded(
-                              flex: 3,
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                      flex: 10,
-                                      child: Text(
-                                        "Filtrele",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 24),
-                                      )),
-                                  Expanded(
-                                    flex: 1,
-                                    child: InkWell(
-                                      onTap: () => Navigator.of(context).pop(),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                        ),
-                                        child: Icon(
-                                          Icons.close,
-                                          color: Color(0xffe65100),
-                                        ),
-                                      ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                  flex: 10,
+                                  child: Text(
+                                    "Filtrele",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 24),
+                                  )),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () => Navigator.of(context).pop(),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                    ),
+                                    child: Icon(
+                                      Icons.close,
+                                      color: Color(0xffe65100),
                                     ),
                                   ),
-                                ],
-                              )),
+                                ),
+                              ),
+                            ],
+                          ),
                           Center(
                             child: Row(
                               children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: Radio(
+                                      activeColor: Colors.white,
+                                      value: 0,
+                                      groupValue: typeGroup,
+                                      onChanged: (T) {
+                                        _changeRadio(T);
+                                      }),
+                                ),
                                 Expanded(
                                     flex: 5,
                                     child: Text(
@@ -272,6 +532,12 @@ class _FilterFloatingState extends State<FilterFloating> {
             },
           )
         : Container();
+  }
+
+  void _changeRadio(int T) {
+    setState(() {
+      typeGroup = T;
+    });
   }
 
   void _showButton(bool value) {
