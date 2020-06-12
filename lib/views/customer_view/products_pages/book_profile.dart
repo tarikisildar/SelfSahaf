@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:Selfsahaf/controller/cart_service.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
 import 'package:Selfsahaf/models/user.dart';
+import 'package:Selfsahaf/views/customer_view/profile_pages/seller_profile.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/models/book.dart';
@@ -84,11 +85,12 @@ class _BookProfileState extends State<BookProfile> {
                   ? IconButton(
                       icon: Icon(Icons.shopping_cart),
                       onPressed: () {
-                        (_user.role=="ROLE_ANON")?ErrorDialog().showLogin(context):
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ShoppingCart()));
+                        (_user.role == "ROLE_ANON")
+                            ? ErrorDialog().showLogin(context)
+                            : Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ShoppingCart()));
                       })
                   : IconButton(
                       icon: Icon(Icons.save),
@@ -202,33 +204,36 @@ class _BookProfileState extends State<BookProfile> {
                                     )),
                                   ),
                                   onTap: () {
-                                     (_user.role=="ROLE_ANON")?ErrorDialog().showLogin(context):
-                                    _cartService
-                                        .addItemToCart(
-                                            _itemCount,
-                                            widget.selectedBook.productID,
-                                            widget.selectedBook.sellerID)
-                                        .then((value) {
-                                      if (!value.error) {
-                                        _scaffoldKey.currentState
-                                            .showSnackBar(SnackBar(
-                                          duration: Duration(seconds: 1),
-                                          backgroundColor: Colors.white,
-                                          content: Text(
-                                            "Added to the cart.",
-                                            style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(230, 81, 0, 1),
-                                              fontSize: 18,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ));
-                                      } else {
-                                        ErrorDialog().showErrorDialog(context,
-                                            "Error!", value.errorMessage);
-                                      }
-                                    });
+                                    (_user.role == "ROLE_ANON")
+                                        ? ErrorDialog().showLogin(context)
+                                        : _cartService
+                                            .addItemToCart(
+                                                _itemCount,
+                                                widget.selectedBook.productID,
+                                                widget.selectedBook.sellerID)
+                                            .then((value) {
+                                            if (!value.error) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                duration: Duration(seconds: 1),
+                                                backgroundColor: Colors.white,
+                                                content: Text(
+                                                  "Added to the cart.",
+                                                  style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        230, 81, 0, 1),
+                                                    fontSize: 18,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ));
+                                            } else {
+                                              ErrorDialog().showErrorDialog(
+                                                  context,
+                                                  "Error!",
+                                                  value.errorMessage);
+                                            }
+                                          });
                                   }))
                         ],
                       ),
@@ -243,6 +248,49 @@ class _BookProfileState extends State<BookProfile> {
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Column(
                             children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SellerProfilePage(
+                                              seller: widget.selectedBook,
+                                            )),
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: const Radius.circular(20),
+                                        topRight: const Radius.circular(20),
+                                        bottomLeft: const Radius.circular(20),
+                                        bottomRight: const Radius.circular(20),
+                                      )),
+                                  width: double.maxFinite,
+                                  height: 45,
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          "Seller: ",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                        ),
+                                        Text(
+                                            "${widget.selectedBook.userName}" +
+                                                " ${widget.selectedBook.userSurname}",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                               SizedBox(
                                 height: 5,
                               ),
