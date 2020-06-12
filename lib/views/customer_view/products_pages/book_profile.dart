@@ -195,6 +195,7 @@ class _BookProfileState extends State<BookProfile> {
                                     )),
                                   ),
                                   onTap: () {
+                                    
                                     _cartService
                                         .addItemToCart(
                                             _itemCount,
