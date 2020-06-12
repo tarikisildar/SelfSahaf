@@ -64,7 +64,7 @@ class User {
       };
 
   User.fromJson(Map<String, dynamic> json)
-      : role = json['role'],
+      : role = json["role"],
         userID = json['userID'],
         password = json['password'],
         email = json['email'],

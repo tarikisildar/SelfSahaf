@@ -1,4 +1,5 @@
 import 'package:Selfsahaf/views/admin_view/admin_main_page.dart';
+import 'package:Selfsahaf/views/customer_view/orders_page/taken_orders.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:Selfsahaf/views/registration/login.dart';
 import 'package:flutter/material.dart';
@@ -112,16 +113,43 @@ class _SahafDrawer extends State<SahafDrawer> {
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
               onTap: () {
-                  (role==0)?ErrorDialog().showLogin(context):(seller)
-                      ? Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductsPage()))
-                      : showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ProductsDialog();
-                          });
+                (role == 0)
+                    ? ErrorDialog().showLogin(context)
+                    : (seller)
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProductsPage()))
+                        : showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ProductsDialog();
+                            });
+              },
+            ),
+            InkWell(
+              child: ListTile(
+                  leading: Icon(
+                    Icons.swap_horizontal_circle,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    "Taken Orders",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  )),
+              onTap: () {
+                (role == 0)
+                    ? ErrorDialog().showLogin(context)
+                    : (seller)
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TakenOrders()))
+                        : showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ProductsDialog();
+                            });
               },
             ),
             InkWell(
@@ -186,7 +214,8 @@ class _SahafDrawer extends State<SahafDrawer> {
                     onTap: () {
                       Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => AdminMainPage()),
+                          MaterialPageRoute(
+                              builder: (context) => AdminMainPage()),
                           ModalRoute.withName("/AdminPanel"));
                     })
                 : Container(),
