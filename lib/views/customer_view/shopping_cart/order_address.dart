@@ -136,7 +136,7 @@ class _OrderAddressState extends State<OrderAddress> {
                       Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ShippingCompanyList(addressID:_addresses[radioGroup].addressID ,total:widget.total)),
+                          builder: (context) => ShippingCompanyList(address:_addresses[radioGroup] ,total:widget.total)),
                     );
                    }
                    else{
