@@ -11,6 +11,7 @@ import 'package:Selfsahaf/controller/product_services.dart';
 import 'package:Selfsahaf/views/registration/login.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
 
+import 'controller/rating_controller.dart';
 import 'views/registration/signup.dart';
 import 'package:Selfsahaf/controller/book_controller.dart';
 
@@ -23,6 +24,7 @@ void setupServiseLocator() {
   GetIt.I.registerLazySingleton(() => ShippingCompanyService());
   GetIt.I.registerLazySingleton(() => OrderService());
   GetIt.I.registerLazySingleton(() => SearchService());
+  GetIt.I.registerLazySingleton(() => RatingService());
 }
 
 void main() {

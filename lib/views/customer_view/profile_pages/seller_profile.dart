@@ -1,3 +1,7 @@
+import 'dart:ffi';
+
+import 'package:Selfsahaf/models/book.dart';
+import 'package:Selfsahaf/views/customer_view/profile_pages/seller_comments_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/adress_page.dart';
@@ -7,17 +11,19 @@ import 'package:Selfsahaf/views/customer_view/profile_pages/settings_page.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class SellerProfilePage extends StatefulWidget {
-  // ExamplePage({ Key key }) : super(key: key);
+  Book seller;
+  SellerProfilePage({this.seller});
   @override
   _SellerProfilePage createState() => new _SellerProfilePage();
 }
 
 class _SellerProfilePage extends State<SellerProfilePage> {
+  Book seller;
   AuthService userService = GetIt.I<AuthService>();
   String _name;
   @override
   void initState() {
-    _name = userService.getUser().name + " " + userService.getUser().surname;
+    this.seller = widget.seller;
   }
 
   List<Widget> _pages = [AdressesPage(), HistoryPage()];
@@ -66,18 +72,30 @@ class _SellerProfilePage extends State<SellerProfilePage> {
                     ),
                   ),
                 ),
+                SizedBox(width: 20,),
                 Container(
                   height: 150,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Expanded(
                         flex: 8,
                         child: Container(
                           child: Center(
-                            child: Text(
-                              _name,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  seller.userName,
+                                  style:
+                                      TextStyle(color: Colors.white, fontSize: 18),
+                                ),
+                                SizedBox(width: 5,),
+                                Text(
+                                  seller.userSurname,
+                                  style:
+                                      TextStyle(color: Colors.white, fontSize: 18),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -141,7 +159,7 @@ class _SellerProfilePage extends State<SellerProfilePage> {
               child: PageView(
                 controller: controller,
                 scrollDirection: Axis.horizontal,
-                children: <Widget>[HistoryPage(), AdressesPage()],
+                children: <Widget>[HistoryPage(), SellerCommentsPage(sellingBook: seller,)],
               ),
             )
           ],
