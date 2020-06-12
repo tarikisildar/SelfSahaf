@@ -1,3 +1,4 @@
+import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/controller/book_controller.dart';
@@ -78,14 +79,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   _fetchData() async {
-     userService.initUser().then((e) {
+     
        _refresh().then((value){
          setState(() {
             _loading = false;
           });
        });
-          
-        });
+
   }
 
   Future<Null> _refresh() {
@@ -119,6 +119,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
                 icon: Icon(Icons.shopping_cart),
                 onPressed: () {
+                   (userService.getUser().role=="ROLE_ANON")?ErrorDialog().showLogin(context):
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ShoppingCart()),

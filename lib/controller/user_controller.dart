@@ -19,8 +19,10 @@ class AuthService extends GeneralServices {
 
       if(response.statusCode==403)
         return APIResponse<int>(data: response.statusCode , error: true, errorMessage: "Email or password is wrong!") ;
-
+      else if(response.statusCode==200||response.statusCode==302)
       return APIResponse<int>(data: response.statusCode ) ;
+      else 
+            return APIResponse<int>(data: response.statusCode , error: true, errorMessage: "Some error occurs!") ;
     } on DioError catch (e) {
 
        if (e.response != null) {
@@ -68,24 +70,18 @@ class AuthService extends GeneralServices {
     }
   }
 
-  Future<int> initUser() async {
+  Future<APIResponse<int>> initUser() async {
     try {
       Response response = await _dio.get("user/get");
-      if(response.statusCode==200)
-      _user = new User.fromJson(response.data);
-      return response.statusCode;
-    } on DioError catch (e) {
-      if (e.response != null) {
-        print(e.response.data);
-        print(e.response.headers);
-        print(e.response.request);
-        return e.response.statusCode;
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
-        print(e.message);
-        return null;
+      if(response.statusCode==200){
+     this._user = new User.fromJson(response.data);
+     return APIResponse<int>(data: response.statusCode);
       }
+ 
+      
+      return APIResponse<int>(data: response.statusCode, error: true, errorMessage:"some errors occurs");
+    } on DioError catch (e) {
+      return APIResponse<int>(data: -1, error: true, errorMessage:"some errors occurs");
     }
   }
 
@@ -247,4 +243,5 @@ class AuthService extends GeneralServices {
   User getUser() {
     return _user;
   }
+  void setUser(User user)=> this._user=user;
 }

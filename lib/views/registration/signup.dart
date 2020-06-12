@@ -74,9 +74,7 @@ class _SignupState extends State<Signup> {
     String pattern =
         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.!@#\$&*~]).{8,24}$';
     RegExp regExp = new RegExp(pattern);
-    return regExp.hasMatch(passwrd)
-        ? null
-        : "Password isn't valid";
+    return regExp.hasMatch(passwrd) ? null : "Password isn't valid";
   }
 
   bool doppelValidation(String random, String random2) {
@@ -91,16 +89,32 @@ class _SignupState extends State<Signup> {
     var message = "";
     api.signup(data).then((val) {
       if (val.data == "200" || val.data == "302" || val.data == "Saved") {
-        api.initUser().then((value) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => MainPage()),
-              ModalRoute.withName("/Home"));
+        api
+            .loginWithEmail(_emailController.text, _passController.text)
+            .then((value) {
+          if (!value.error) {
+            api.initUser().then((value) {
+              if (!value.error) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MainPage(user: api.getUser())),
+                    ModalRoute.withName("/Home"));
+              } else {
+                return ErrorDialog()
+                    .showErrorDialog(context, "Error!", value.errorMessage);
+              }
+            });
+          }
+          else {
+                return ErrorDialog()
+                    .showErrorDialog(context, "Error!", value.errorMessage);
+              }
         });
       } else {
         print("sasa" + val.data);
         message = "This e-mail is linked to different account";
-        return ErrorDialog().showErrorDialog(context, "Hata", message);
+        return ErrorDialog().showErrorDialog(context, "Error!", message);
       }
     });
   }
@@ -281,10 +295,11 @@ class _SignupState extends State<Signup> {
                                 if (dob.compareTo(
                                         "Please Select Your Birthday") !=
                                     0) {
-                                      String _date=dob.split("/").reversed.join("-");
-                        
-                                  newuser.dateOfBirth =_date;
-                                      
+                                  String _date =
+                                      dob.split("/").reversed.join("-");
+
+                                  newuser.dateOfBirth = _date;
+
                                   var userjson = newuser.toJsonsignup();
                                   _signup(userjson);
                                 } else {

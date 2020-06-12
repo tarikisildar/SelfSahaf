@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:Selfsahaf/controller/cart_service.dart';
+import 'package:Selfsahaf/controller/user_controller.dart';
+import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/models/book.dart';
@@ -23,12 +25,15 @@ class BookProfile extends StatefulWidget {
 class _BookProfileState extends State<BookProfile> {
   ProductService get _productService => GetIt.I<ProductService>();
   CartService get _cartService => GetIt.I<CartService>();
+  AuthService get _userService => GetIt.I<AuthService>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  User _user;
   int _itemCount = 1;
   List<Image> images;
   bool _loading = true;
   @override
   void initState() {
+    _user = _userService.getUser();
     if (widget.amount != null) {
       this._itemCount = widget.amount;
     }
@@ -78,16 +83,18 @@ class _BookProfileState extends State<BookProfile> {
               : (widget.type == 1)
                   ? IconButton(
                       icon: Icon(Icons.shopping_cart),
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ShoppingCart())))
+                      onPressed: () {
+                        (_user.role=="ROLE_ANON")?ErrorDialog().showLogin(context):
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ShoppingCart()));
+                      })
                   : IconButton(
                       icon: Icon(Icons.save),
                       onPressed: () {
                         print("salam");
                         Navigator.of(context).pop(this._itemCount);
-                        
                       })
         ],
       ),
@@ -195,6 +202,7 @@ class _BookProfileState extends State<BookProfile> {
                                     )),
                                   ),
                                   onTap: () {
+                                     (_user.role=="ROLE_ANON")?ErrorDialog().showLogin(context):
                                     _cartService
                                         .addItemToCart(
                                             _itemCount,
