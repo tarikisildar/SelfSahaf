@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:Selfsahaf/controller/product_services.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -13,107 +14,69 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController queryController;
+  bool sa=false;
+  final queryController = new TextEditingController();
+  int whichone;
+  ProductService get productService => GetIt.I<ProductService>();
+  String query;
 
-  // _SearchPageState(){
-  //   queryController.addListener(() {
-  //     if(queryController.text.length>=3){
-  //       print("ARKAYA SEARCH ISTEGI");
-  //     }
-  //     else {
-  //       print(3-queryController.text.length);
-  //     }
+  @override
+  void initState() {
+    whichone = 0;
+    this.query = queryController.text;
+    queryController.addListener(() {
+      if(queryController.text == null || queryController.text == ""){
+        setState(() {
+          sa=false;
+        });
+      }
+      else{
+        setState(() {
+        this.query = queryController.text;
+        sa=true;
+        });
+      }
+    });
+    super.initState();
+  }
 
-  //   });
-  // }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          floatingActionButton: FilterFloating(),
-          appBar: AppBar(
-            leading: InkWell(
-              child: Icon(Icons.search),
-              onTap: () {
-                print(queryController.text);
-              },
+    return Scaffold(
+        floatingActionButton: FilterFloating(),
+        appBar: AppBar(
+          leading: FlatButton(
+            color: Colors.white,
+            shape: CircleBorder(),
+            child: Icon(
+              Icons.search,
+              color: Theme.of(context).primaryColor,
             ),
-            backgroundColor: Color(0xffe65100),
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  child: Text(
-                    "Books",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    "Categories",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    "ISBN",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-            title: Container(
-              child: TextFormField(
-                style: TextStyle(color: Colors.white),
-                controller: queryController,
-                decoration: InputDecoration(
-                    hintText: "Type to Search",
-                    hintStyle: TextStyle(color: Colors.white),
-                    border: InputBorder.none),
-              ),
-            ),
+            onPressed: () {
+              if(queryController.text != null){
+                setState(() {
+                  sa = true;
+                });
+              }
+              print(queryController.text);
+            },
           ),
-          body: TabBarView(
-            children: [
-              Container(
-                color: Color(0xffe65100),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ListView(
-                    children: <Widget>[
-                      Text("BOOK CEK"),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                color: Color(0xffe65100),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ListView(
-                    children: <Widget>[
-                      Text("KATEGORI CEK"),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                color: Color(0xffe65100),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ListView(
-                    children: <Widget>[
-                      Text("ISBN CEK"),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+          backgroundColor: Color(0xffe65100),
+          title: Container(
+            child: TextFormField(
+              style: TextStyle(color: Colors.white),
+              controller: queryController,
+              decoration: InputDecoration(
+                  hintText: "Type to Search...",
+                  hintStyle: TextStyle(color: Colors.white),
+                  border: InputBorder.none),
+            ),
           ),
         ),
-      ),
-    );
+        body: Container(
+          color: Theme.of(context).primaryColor,
+          child: sa ? Text("asa") : Text("YOK"),
+        ));
   }
 }
 
@@ -154,7 +117,7 @@ class _FilterFloatingState extends State<FilterFloating> {
                           spreadRadius: 5,
                           blurRadius: 7,
                           offset: Offset(0, 3),
-                        )
+                        ),
                       ],
                     ),
                     height: MediaQuery.of(context).size.height / 2,
@@ -303,7 +266,6 @@ class _FilterFloatingState extends State<FilterFloating> {
                 ),
               );
               _showButton(false);
-
               sheetController.closed.then((value) {
                 _showButton(true);
               });

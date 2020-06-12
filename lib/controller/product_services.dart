@@ -305,4 +305,6 @@ class ProductService extends GeneralServices {
       }
     }
   }
+  
 }
+
