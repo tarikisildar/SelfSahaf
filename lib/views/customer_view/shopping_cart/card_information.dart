@@ -35,6 +35,7 @@ class _CardInformationState extends State<CardInformation> {
   TextEditingController _cvcController;
   TextEditingController _expirationController;
   TextEditingController _cardholdersurnameController;
+    final _formKey = GlobalKey<FormState>();
   String _cardholdernameValidation(String name) {
     bool emailValid = false;
     if (name.length >= 5) emailValid = true;
@@ -94,30 +95,25 @@ class _CardInformationState extends State<CardInformation> {
                   thickness: 2.5,
                   color: Colors.white,
                 ),
-                
-                  
-                      CreditCardWidget(
-                        cardNumber: cardNumber,
-                        expiryDate: expiryDate,
-                        cardHolderName: cardHolderName,
-                        cardHolderSurname: cardHolderSurname,
-                        cvvCode: cvvCode,
-                        showBackView: isCvvFocused,
-                      ),
-                      Divider(
-                        thickness: 1.5,
-                        color: Colors.white,
-                      ),
-                      CreditCardForm(
-                        address: address,
-                        totalPrice: total,
-                        company: company,
-                        onCreditCardModelChange: onCreditCardModelChange,
-                      ),
-                    ],
-                  
-                
-              
+                CreditCardWidget(
+                  cardNumber: cardNumber,
+                  expiryDate: expiryDate,
+                  cardHolderName: cardHolderName,
+                  cardHolderSurname: cardHolderSurname,
+                  cvvCode: cvvCode,
+                  showBackView: isCvvFocused,
+                ),
+                Divider(
+                  thickness: 1.5,
+                  color: Colors.white,
+                ),
+                CreditCardForm(
+                  address: address,
+                  totalPrice: total,
+                  company: company,
+                  onCreditCardModelChange: onCreditCardModelChange,
+                ),
+              ],
             ),
           ),
         ),
