@@ -40,4 +40,33 @@ class RatingService extends GeneralServices {
           data: null, error: true, errorMessage: "Some errors occurs!");
     }
   }
+  
+  Future<APIResponse<int>> getAvgRating(int sellerID) async {
+    try {
+      Response response = await _dio.get(
+        "rating/getAverageRating", queryParameters: {
+          "sellerID":sellerID
+        }
+      );
+      List<Rating> result = new List();
+      print(response);
+
+      if (response.statusCode == 200) {
+        if (response.data != null) {
+          int i = response.data;
+          
+          return APIResponse<int>(data: i, error: false);
+        } else
+          return APIResponse<int>(data: null, error: false);
+      } else if (response.statusCode == 403)
+        return APIResponse<int>(
+            data: null, error: true, errorMessage: "Something went wrong!");
+      else
+        return APIResponse<int>(
+            data: null, error: true, errorMessage: "Some errors occurs.!");
+    } on DioError catch (e) {
+      return APIResponse<int>(
+          data: null, error: true, errorMessage: "Some errors occurs!");
+    }
+  }
 }

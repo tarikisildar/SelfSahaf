@@ -68,28 +68,34 @@ class _SellerCommentsPage extends State<SellerCommentsPage> {
                               textAlign: TextAlign.center,
                             ),
                           )
-                        : Container(
-                          height: 75,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16) 
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              Text(allRatings[index].comment),
-                              SmoothStarRating(
-                                    allowHalfRating: true,
-                                    onRated: (v) {},
-                                    starCount: 5,
-                                    rating: allRatings[index].rating.toDouble() ,
-                                    size: 20.0,
-                                    isReadOnly: true,
-                                    filledIconData: Icons.star,
-                                    halfFilledIconData: Icons.star_half,
-                                    color: Colors.deepPurple,
-                                    borderColor: Colors.deepPurple,
-                                    spacing: 0.0),
-                            ],
+                        : Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Container(
+                            height: 75,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(32) 
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                Expanded(flex: 3,child: Text(allRatings[index].comment)),
+                                Expanded(
+                                  flex: 2,
+                                  child: SmoothStarRating(
+                                        allowHalfRating: true,
+                                        onRated: (v) {},
+                                        starCount: 5,
+                                        rating: allRatings[index].rating.toDouble() ,
+                                        size: 20.0,
+                                        isReadOnly: true,
+                                        filledIconData: Icons.star,
+                                        halfFilledIconData: Icons.star_half,
+                                        color: Colors.deepPurple,
+                                        borderColor: Colors.deepPurple,
+                                        spacing: 0.0),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                   },
