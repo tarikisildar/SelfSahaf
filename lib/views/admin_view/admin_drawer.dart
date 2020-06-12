@@ -1,9 +1,13 @@
+import 'package:Selfsahaf/controller/user_controller.dart';
+import 'package:Selfsahaf/views/customer_view/main_view/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/admin_view/admin_search.dart';
 import 'package:Selfsahaf/views/admin_view/admin_shipping_companies.dart';
 import 'package:Selfsahaf/views/admin_view/edit_categories.dart';
+import 'package:get_it/get_it.dart';
 
 class AdminDrawer extends StatelessWidget {
+  AuthService get userService=>GetIt.I<AuthService>();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -83,6 +87,25 @@ class AdminDrawer extends StatelessWidget {
                     context,
                     MaterialPageRoute(builder: (context) => EditCategories()),
                   );
+                },
+              ),
+            ),
+             Expanded(
+              flex: 3,
+              child: InkWell(
+                child: ListTile(
+                    leading: Icon(Icons.directions_run, color: Colors.white),
+                    title: Text(
+                      "Go App",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    )),
+                onTap: () {
+                Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => MainPage(
+                            user: userService.getUser(),
+                          )),
+                          ModalRoute.withName("/Home"));
                 },
               ),
             ),

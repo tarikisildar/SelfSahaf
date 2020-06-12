@@ -317,7 +317,7 @@ String condition;
                         ),
                       ),
                       Row(children: <Widget>[Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 15, 12),
+                          padding: const EdgeInsets.fromLTRB(15, 0, 10, 12),
                           child: Theme(
                             data: ThemeData(
                                 canvasColor: Color.fromRGBO(255, 144, 77, 1)),
@@ -344,7 +344,7 @@ String condition;
                             ),
                           )),
                       Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 15, 12),
+                          padding: const EdgeInsets.fromLTRB(15, 0, 10, 12),
                           child: Theme(
                             data: ThemeData(
                                 canvasColor: Color.fromRGBO(255, 144, 77, 1)),
@@ -369,14 +369,15 @@ String condition;
                             ),
                           )),
                       Padding(
-                           padding: const EdgeInsets.fromLTRB(20, 0, 15, 12),
+                           padding: const EdgeInsets.fromLTRB(15, 0, 15, 12),
                           child: Theme(
                             data: ThemeData(
                                 canvasColor: Color.fromRGBO(255, 144, 77, 1)),
                             child: SafeArea(
                               child: DropdownButton<String>(
+                                
                                 hint: Text(
-                                  "Select Condition",
+                                  widget.selectedBook.condition,
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 items: ["NEW", "SECONDHAND"]
@@ -397,7 +398,8 @@ String condition;
                                 value: this.condition,
                               ),
                             ),
-                          )),],)
+                          )),],),
+                          SizedBox(height: 50,)
                     ],
                   ),
                 ),

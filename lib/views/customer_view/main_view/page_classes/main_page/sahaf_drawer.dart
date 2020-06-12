@@ -1,3 +1,5 @@
+import 'package:Selfsahaf/views/admin_view/admin_main_page.dart';
+import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:Selfsahaf/views/registration/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -110,14 +112,16 @@ class _SahafDrawer extends State<SahafDrawer> {
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
               onTap: () {
-                return (seller)
-                    ? Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ProductsPage()))
-                    : showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ProductsDialog();
-                        });
+                  (role==0)?ErrorDialog().showLogin(context):(seller)
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductsPage()))
+                      : showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ProductsDialog();
+                          });
               },
             ),
             InkWell(
@@ -127,14 +131,19 @@ class _SahafDrawer extends State<SahafDrawer> {
                     "Settings",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )),
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SettingsPage())),
+              onTap: () {
+                if (role == 0) {
+                  ErrorDialog().showLogin(context);
+                } else
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SettingsPage()));
+              },
             ),
             (role == 0)
                 ? InkWell(
                     child: ListTile(
                         leading: Icon(
-                          Icons.wc,
+                          Icons.account_circle,
                           color: Colors.white,
                         ),
                         title: Text(
@@ -163,6 +172,24 @@ class _SahafDrawer extends State<SahafDrawer> {
                           MaterialPageRoute(builder: (context) => LoginPage()),
                           ModalRoute.withName("/Login"));
                     }),
+            (role == 3)
+                ? InkWell(
+                    child: ListTile(
+                        leading: Icon(
+                          Icons.adb,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          "AdminPanel",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        )),
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => AdminMainPage()),
+                          ModalRoute.withName("/AdminPanel"));
+                    })
+                : Container(),
           ],
         ),
       ),
