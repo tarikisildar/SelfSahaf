@@ -1,5 +1,6 @@
 import 'package:Selfsahaf/controller/order_service.dart';
 import 'package:Selfsahaf/models/order.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/bought_book_profile.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -104,9 +105,9 @@ class _GivenOrderDetailsState extends State<GivenOrderDetails> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BookProfile(
-                                        selectedBook: orderList[index].product,
-                                        type: 0,
+                                  builder: (context) => BoughtBookProfile(
+                                        selectedBook: orderList[index],
+                                        amount: orderList[index].quantity,
                                       )));
 
                           return false;

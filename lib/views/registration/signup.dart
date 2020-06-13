@@ -4,6 +4,7 @@ import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/main_page.dart';
 import 'package:Selfsahaf/views/registration/input_field.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
+import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'login.dart';
 
 class Signup extends StatefulWidget {
@@ -37,22 +38,23 @@ class _SignupState extends State<Signup> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final MaskedTextController _phoneController =
+      MaskedTextController(mask: '0 000 000 00 00');
   final _fnameController = TextEditingController();
   final _surnameController = TextEditingController();
   final _passController = TextEditingController();
   final _passCheckController = TextEditingController();
   bool _kvkk = false;
 
-  String fnameValidation(String fullname) {
-    if (fullname.length < 2) {
+  String nameValidation(String firstname) {
+    if (firstname.length < 2) {
       return "Name field cannot be empty";
     } else
       return null;
   }
 
-  String surnameValidation(String fullname) {
-    if (fullname.length < 2) {
+  String surnameValidation(String surname) {
+    if (surname.length < 2) {
       return "Lastname field cannot be empty";
     } else
       return null;
@@ -152,7 +154,7 @@ class _SignupState extends State<Signup> {
                       lines: 1,
                       controller: _fnameController,
                       inputType: TextInputType.text,
-                      validation: fnameValidation,
+                      validation: nameValidation,
                       labelText: "Name",
                       suffixIcon: Icon(
                         Icons.person,
