@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -27,6 +28,18 @@ public class ProductSearchService {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+
+    /*Helper function to create keyword queries*/
+    private Query createFieldsQuery(QueryBuilder queryBuilder, List<String> fields, Object match){
+
+        return queryBuilder.keyword()
+                .onFields(fields.toArray(new String[0]))
+                .matching(match.toString()).createQuery();
+
+
+
+    }
 
     public List<Product> findProductByName(String name, int pageNo, int pageSize) {
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
@@ -45,11 +58,13 @@ public class ProductSearchService {
 
 
 
+        List<String> fields = new ArrayList<String>();
+        fields.add("name");
+        fields.add("author");
+
         org.apache.lucene.search.Query query = queryBuilder
                 .bool()
-                .must(queryBuilder.keyword()
-                        .onFields("name", "author")
-                        .matching(name).createQuery())
+                .must(createFieldsQuery(queryBuilder, fields, name))
                 .must(queryBuilder.keyword()
                         .onFields("status")
                         .matching(ProductStatus.ACTIVE).createQuery())
