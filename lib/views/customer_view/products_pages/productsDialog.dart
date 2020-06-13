@@ -24,6 +24,10 @@ class _ProductsDialogState extends State<ProductsDialog> {
               ? Container(
                   width: 250,
                   height: 180,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24),
+                    color: Theme.of(context).primaryColor,
+                  ),
                   child: Column(
                     children: <Widget>[
                       Text(
@@ -44,13 +48,13 @@ class _ProductsDialogState extends State<ProductsDialog> {
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: InkWell(
                                   child: Container(
-                                    color: Theme.of(context).primaryColor,
+                                    color: Colors.white,
                                     padding: EdgeInsets.all(7.0),
                                     margin: EdgeInsets.all(5.0),
                                     child: Text(
                                       "No",
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 30),
+                                          color: Theme.of(context).primaryColor, fontSize: 30),
                                     ),
                                   ),
                                   onTap: () {
@@ -64,11 +68,11 @@ class _ProductsDialogState extends State<ProductsDialog> {
                                   child: Container(
                                     padding: EdgeInsets.all(7.0),
                                     margin: EdgeInsets.all(5.0),
-                                    color: Theme.of(context).primaryColor,
+                                    color: Colors.white,
                                     child: Text(
                                       "Yes",
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 30),
+                                          color: Theme.of(context).primaryColor, fontSize: 30),
                                     ),
                                   ),
                                   onTap: () {

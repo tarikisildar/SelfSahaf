@@ -14,6 +14,31 @@ class ProductService extends GeneralServices {
   ProductService() {
     this._dio = super.dio;
   }
+    Future<APIResponse<List<Book>>> getSellerBooks(int sellerID) async {
+    try {
+      Response response = await _dio.get(
+        "product/getSellerBooks", queryParameters: {"sellerID": sellerID}
+      );
+      List<Book> result;
+      if (response.statusCode == 200) {
+        if (response.data.length != 0) {
+          List<dynamic> i = response.data;
+          result = i.map((e) => Book.fromJson(e)).toList();
+          
+        } else
+          result = null;
+        return APIResponse<List<Book>>(data: result);
+      } else if (response.statusCode == 403)
+        return APIResponse<List<Book>>(
+            data: null, error: true, errorMessage: response.data.toString());
+      else
+        return APIResponse<List<Book>>(
+            data: null, error: true, errorMessage: "Some errors occurs.");
+    } on DioError catch (e) {
+      return APIResponse<List<Book>>(
+          data: null, error: true, errorMessage: "Some errors occurs.");
+    }
+  }
 
   Future<int> addBook(Book book, int sellerID) async {
     try {

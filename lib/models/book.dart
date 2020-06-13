@@ -103,4 +103,6 @@ this.authorName,
        condition=json["condition"],
       status=json["status"]
         ;
+
+  fromJson(e) {}
 }

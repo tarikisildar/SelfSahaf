@@ -1,7 +1,11 @@
 import 'dart:ffi';
 
+import 'package:Selfsahaf/controller/rating_controller.dart';
 import 'package:Selfsahaf/models/book.dart';
+import 'package:Selfsahaf/models/rating.dart';
+import 'package:Selfsahaf/views/customer_view/profile_pages/seller_books_page.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/seller_comments_page.dart';
+import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/adress_page.dart';
@@ -20,10 +24,48 @@ class SellerProfilePage extends StatefulWidget {
 class _SellerProfilePage extends State<SellerProfilePage> {
   Book seller;
   AuthService userService = GetIt.I<AuthService>();
-  String _name;
+  RatingService _ratingService = GetIt.I<RatingService>();
+  List<Rating> allRatings;
+  bool rated= false;
+  int avgrating;
+  String msg;
+  _getRatings(BuildContext context) async {
+    _ratingService.getRatings(seller.sellerID).then((value) {
+      print(value.data);
+      if (!value.error) {
+        setState(() {
+          this.allRatings = value.data;
+        });
+      } else {
+        ErrorDialog().showErrorDialog(context, "Error", value.errorMessage);
+        setState(() {
+          this.allRatings = value.data;
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
     this.seller = widget.seller;
+    _getRatings(context);
+    _avgRating(context);
+  }
+
+  _avgRating(BuildContext context)async{
+    _ratingService.getAvgRating(seller.sellerID).then((value) {
+      print(value.data);
+      if (!value.error) {
+        setState(() {
+          this.avgrating = value.data;
+        });
+      } else {
+        ErrorDialog().showErrorDialog(context, "Error", value.errorMessage);
+        setState(() {
+          this.avgrating = value.data;
+        });
+      }
+    });
   }
 
   List<Widget> _pages = [AdressesPage(), HistoryPage()];
@@ -103,21 +145,25 @@ class _SellerProfilePage extends State<SellerProfilePage> {
                       Expanded(
                         flex: 3,
                         child: Container(
-                            child: Column(
+                            child: Row(
                               children: <Widget>[
                                 SmoothStarRating(
                                     allowHalfRating: true,
                                     onRated: (v) {},
                                     starCount: 5,
-                                    rating: 3.8,
-                                    size: 20.0,
+                                    rating: this.avgrating.toDouble(),
+                                    size: 24.0,
                                     isReadOnly: true,
                                     filledIconData: Icons.star,
                                     halfFilledIconData: Icons.star_half,
                                     color: Colors.deepPurple,
                                     borderColor: Colors.deepPurple,
                                     spacing: 0.0),
-                                    Text("3.82",style: TextStyle(color: Colors.deepPurple),),
+
+                                    Padding(
+                                      padding: const EdgeInsets.only(left:8.0),
+                                      child: Text("${this.avgrating}/5",style: TextStyle(color: Colors.deepPurple,fontSize: 20),),
+                                    ),
                               ],
                             )),
                       ),
@@ -159,7 +205,7 @@ class _SellerProfilePage extends State<SellerProfilePage> {
               child: PageView(
                 controller: controller,
                 scrollDirection: Axis.horizontal,
-                children: <Widget>[HistoryPage(), SellerCommentsPage(sellingBook: seller,)],
+                children: <Widget>[SellerBooksPage(bookfrom: seller,), SellerCommentsPage(sellingBook: seller,)],
               ),
             )
           ],
