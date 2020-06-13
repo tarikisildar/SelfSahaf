@@ -180,11 +180,15 @@ public class OrderController {
 
                 }
 
+
+
+                /* Send email to User about the order*/
+                String email = user.getEmail();
                 String context = "Your Order has ben taken. \n\n Regards, \nSelfsahaf Support";
                 String title = "Selfsahaf Order";
 
 
-                emailController.sendEmailToUsers(title, context);
+                emailController.sendEmailToUser(email, title, context);
 
                 return "confirmed";
             }
