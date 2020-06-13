@@ -1,5 +1,6 @@
 import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/admin_view/admin_list_view.dart';
+import 'package:Selfsahaf/views/admin_view/admin_send_mail.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/seller_profile.dart';
 import 'package:flutter/material.dart';
 
@@ -11,10 +12,11 @@ class UserCardForAdmin extends StatefulWidget {
 }
 
 class _UserCardForAdminState extends State<UserCardForAdmin> {
+  User user;
   bool _isSeller = true;
   @override
   void initState() {
-    // TODO: implement initState
+    this.user = widget.user;
     super.initState();
     if (widget.user.role == "ROLE_USER") {
       _isSeller = false;
@@ -105,7 +107,13 @@ class _UserCardForAdminState extends State<UserCardForAdmin> {
                           ],
                         ),
                         onPressed: () {
-                          print("seller products");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AdminMailPage(
+                                      user: this.user,
+                                    )),
+                          );
                         },
                       ),
                     ),
