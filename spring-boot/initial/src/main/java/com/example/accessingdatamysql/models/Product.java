@@ -72,6 +72,7 @@ public class Product
 
     @Enumerated(EnumType.STRING)
     @Column(length=45)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "edgeNgram"), store = Store.NO)
     private ProductStatus status;
 
 
