@@ -266,15 +266,16 @@ class _AddAddressState extends State<AddAddress> {
                     InkWell(
                       child: Icon(
                         Icons.close,
-                        color: Theme.of(context).primaryColor,
+                        color: Colors.white,
                         size: 30,
                       ),
                       onTap: () => Navigator.pop(context),
                     ),
+                    SizedBox(width: 12,),
                     InkWell(
                         child: Icon(
                           Icons.check,
-                          color: Theme.of(context).primaryColor,
+                          color: Colors.white,
                           size: 30,
                         ),
                         onTap: () {

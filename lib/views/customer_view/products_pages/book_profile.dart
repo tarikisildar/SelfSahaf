@@ -255,6 +255,7 @@ class _BookProfileState extends State<BookProfile> {
                                     MaterialPageRoute(
                                         builder: (context) => SellerProfilePage(
                                               seller: widget.selectedBook,
+                                              type:0
                                             )),
                                   );
                                 },
