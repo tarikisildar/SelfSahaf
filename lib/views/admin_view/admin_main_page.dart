@@ -1,5 +1,8 @@
+import 'package:Selfsahaf/controller/admin_service.dart';
+import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/admin_view/admin_drawer.dart';
+import 'package:get_it/get_it.dart';
 
 class AdminMainPage extends StatefulWidget {
   @override
@@ -9,7 +12,65 @@ class AdminMainPage extends StatefulWidget {
 }
 
 class _AdminMainPageState extends State<AdminMainPage> {
-  int _userCount = 2000, _ordersCount = 3000, _sellerCount = 1000;
+  int _userCount = 0, _ordersCount = 0, _sellerCount = 0;
+  AdminService _adminService = GetIt.I<AdminService>();
+  bool _isloading = true;
+  _getUserCount() async{
+    _adminService.getUserCount().then((value) {
+      if (!value.error) {
+        setState(() {
+
+          this._userCount = value.data;
+        });
+      } else {
+        setState(() async{
+
+          this._userCount = value.data;
+        });
+        ErrorDialog().showErrorDialog(context, "Error", value.errorMessage);
+      }
+    });
+  }
+
+  _getSellerCount() async{
+    _adminService.getSellerCount().then((value) {
+      if (!value.error) {
+        setState(() {
+          this._sellerCount = value.data;
+        });
+      } else {
+        setState(() {
+          this._sellerCount = value.data;
+        });
+        ErrorDialog().showErrorDialog(context, "Error", value.errorMessage);
+      }
+    });
+  }
+
+  _getOrderCount() {
+    _adminService.getOrderCount().then((value) {
+      if (!value.error) {
+        setState(() {
+          this._ordersCount = value.data;
+        });
+      } else {
+        setState(() {
+          this._ordersCount = value.data;
+        });
+        ErrorDialog().showErrorDialog(context, "Error", value.errorMessage);
+      }
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    _getSellerCount();
+    _getOrderCount();
+    _getUserCount().then((value){
+      _isloading=false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +82,14 @@ class _AdminMainPageState extends State<AdminMainPage> {
           ),
         ),
         drawer: AdminDrawer(),
-        body: Center(
+        body: (_isloading)
+          ? Container(
+              color: Colors.transparent,
+              child: Center(
+                  child: CircularProgressIndicator(
+                backgroundColor: Colors.white,
+              )))
+          : Center(
             child: Column(
           children: <Widget>[
             Container(

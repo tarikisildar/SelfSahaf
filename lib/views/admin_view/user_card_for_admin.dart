@@ -181,7 +181,13 @@ class _UserCardForAdminState extends State<UserCardForAdmin> {
                           ],
                         ),
                         onPressed: () {
-                          print("seller products");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AdminMailPage(
+                                      user: this.user,
+                                    )),
+                          );
                         },
                       ),
                     ),

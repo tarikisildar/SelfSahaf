@@ -19,7 +19,7 @@ class SellerProfilePage extends StatefulWidget {
   Book seller;
   User user;
   int type; //o for normal user 1 for admin
-  SellerProfilePage({this.seller, this.type, this.user});
+  SellerProfilePage({this.seller,@required this.type, this.user});
   @override
   _SellerProfilePage createState() => new _SellerProfilePage();
 }
