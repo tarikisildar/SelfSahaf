@@ -11,6 +11,7 @@ class Book {
   String status,condition;
   int productID;
   int quantity;
+
   double price;
   int categoryID;
   int sellerID;

@@ -48,7 +48,6 @@ class _ShippingCompaniesState extends State<ShippingCompanies> {
   }
 
   String _priceValidation(String price) {
-   
     if (!isNumeric(price)) return "price should be number";
 
     if (int.parse(price) <= 0)
@@ -81,16 +80,18 @@ class _ShippingCompaniesState extends State<ShippingCompanies> {
                   child: FlatButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        companyService.addCompany(ShippingCompanyModel(
-                            companyName: _companyNameController.text,
-                            price: double.parse(_companyPriceController.text),
-                            website: _websiteController.text)).then((value) {
-                              if(!value.error){
-                                _getCompanies(context);
-                                Navigator.pop(context);
-
-                              }
-                            });
+                        companyService
+                            .addCompany(ShippingCompanyModel(
+                                companyName: _companyNameController.text,
+                                price:
+                                    double.parse(_companyPriceController.text),
+                                website: _websiteController.text))
+                            .then((value) {
+                          if (!value.error) {
+                            _getCompanies(context);
+                            Navigator.pop(context);
+                          }
+                        });
                       }
                     },
                     color: Colors.white,
@@ -122,7 +123,7 @@ class _ShippingCompaniesState extends State<ShippingCompanies> {
               ],
               backgroundColor: Theme.of(context).primaryColor,
               content: SingleChildScrollView(
-                              child: Form(
+                child: Form(
                   key: _formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -186,23 +187,20 @@ class _ShippingCompaniesState extends State<ShippingCompanies> {
         floatingActionButton: FloatingActionButton(
           onPressed: () => _addCategory(),
           backgroundColor: Colors.white,
-          child: Icon(Icons.add),
+          child: Icon(
+            Icons.add,
+            color: Theme.of(context).primaryColor,
+          ),
         ),
         appBar: AppBar(
-          title: Container(
-            alignment: Alignment.centerLeft,
-            height: 22,
-            child: Image.asset("images/selfadmin_logo/selfadmin.png"),
-          ),
           leading: InkWell(
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-            ),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-          ),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(Icons.arrow_back_ios)),
+          title: Container(
+              height: 50,
+              child: Image.asset("images/logo_white/logo_white.png")),
         ),
         body: RefreshIndicator(
             onRefresh: () => _getCompanies(context),
@@ -247,7 +245,6 @@ class _ShippingCompaniesState extends State<ShippingCompanies> {
                   height: 80,
                 )
               ],
-            ))
-        );
+            )));
   }
 }

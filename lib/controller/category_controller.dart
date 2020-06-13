@@ -1,4 +1,6 @@
 
+import 'package:Selfsahaf/models/api_response.dart';
+import 'package:Selfsahaf/models/category.dart';
 import 'package:dio/dio.dart';
 import 'package:Selfsahaf/controller/generalServices.dart';
 
@@ -7,22 +9,47 @@ class CategoryService extends GeneralServices{
   CategoryService(){
   _dio= super.dio;
   }
-  Future<int> addCategory(String categoryName) async {
+
+  Future<APIResponse<int>> addCategory(
+      String categoryName) async {
     try {
-      Response response = await _dio.post("product/addCategory?name=$categoryName");
-      return response.statusCode;
-    } on DioError catch (e) {
-      if (e.response != null) {
-        print(e.response.data);
-        print(e.response.headers);
-        print(e.response.statusCode);
-        return e.response.statusCode;
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
-        print(e.message);
-        return null;
+      Response response = await _dio.post("product/addCategory", queryParameters: {
+        "name": categoryName,
+      });
+      if (response.statusCode == 200) {
+        return APIResponse<int>(data: response.statusCode);
+      } else if (response.statusCode == 403) {
+        return APIResponse<int>(
+            data: 403, error: true, errorMessage: response.data.toString());
       }
+      return APIResponse<int>(
+          data: -1, error: true, errorMessage: "Some error occurs");
+    } on DioError catch (e) {
+      return APIResponse<int>(
+          data: -1, error: true, errorMessage: "Some error occurs");
     }
   }
+
+  Future<APIResponse<List<Category>>> getCategories() async {
+    try {
+      Response response = await _dio.get("product/getCategories");
+      List<Category> result;
+      if (response.statusCode == 200) {
+        if (response.data.length != 0) {
+          List<dynamic> i = response.data;
+          result = i.map((p) => Category.fromJson(p)).toList();
+          return APIResponse<List<Category>>(data: result);
+        } else {
+          return APIResponse<List<Category>>(data: null);
+        }
+      }
+
+      return APIResponse<List<Category>>(
+          data: null, error: true, errorMessage: "Some error occurs");
+    } on DioError catch (e) {
+      return APIResponse<List<Category>>(
+          data: null, error: true, errorMessage: "Some error occurs");
+    }
+  }
+
 }
