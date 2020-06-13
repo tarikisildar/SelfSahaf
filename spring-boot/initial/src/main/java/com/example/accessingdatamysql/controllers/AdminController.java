@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.controllers;
 
+import com.example.accessingdatamysql.dao.OrderRepository;
 import com.example.accessingdatamysql.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ public class AdminController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private OrderRepository orderRepository;
 
 
     @ApiOperation("Get Total Number of Registered Users")
@@ -28,6 +31,20 @@ public class AdminController {
         return userRepository.getUserCount();
     }
 
+
+    @ApiOperation("Get Total Number of Sellers")
+    @GetMapping(path="/getSellerCount")
+    public @ResponseBody Integer getSellerCount(){
+        return userRepository.getSellerCount();
+    }
+
+
+
+    @ApiOperation("Get Total Number of Orders")
+    @GetMapping(path="/getOrderCount")
+    public @ResponseBody Integer getOrderCount(){
+        return orderRepository.getOrderCount();
+    }
 
 
 }

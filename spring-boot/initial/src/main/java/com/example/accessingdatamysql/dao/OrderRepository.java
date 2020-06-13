@@ -12,4 +12,9 @@ public interface OrderRepository extends CrudRepository<Order, Integer>{
     @Query("SELECT ord FROM Order ord WHERE ord.buyer.userID = ?1")
     List<Order> findOrderByUserID(Integer userID);
 
+
+    @Query("SELECT Count(ord) FROM Order ord")
+    Integer getOrderCount();
+
+
 }

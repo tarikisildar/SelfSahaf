@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.search.product_search;
 
 import com.example.accessingdatamysql.models.Product;
+import com.example.accessingdatamysql.models.enums.ProductStatus;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
@@ -12,6 +13,7 @@ import org.hibernate.search.query.engine.spi.FacetManager;
 import org.hibernate.search.query.facet.Facet;
 import org.hibernate.search.query.facet.FacetSelection;
 import org.hibernate.search.query.facet.FacetingRequest;
+import org.hibernate.search.query.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -41,10 +43,16 @@ public class ProductSearchService {
                 .overridesForField( "name", "edgeNGram_query" )
                 .get();
 
+
+
         org.apache.lucene.search.Query query = queryBuilder
-                .keyword()
-                .onFields("name", "author")
-                .matching(name)
+                .bool()
+                .must(queryBuilder.keyword()
+                        .onFields("name", "author")
+                        .matching(name).createQuery())
+                .must(queryBuilder.keyword()
+                        .onFields("status")
+                        .matching(ProductStatus.ACTIVE).createQuery())
                 .createQuery();
 
         // wrap Lucene query in a javax.persistence.Query
@@ -74,9 +82,14 @@ public class ProductSearchService {
                 .get();
 
         org.apache.lucene.search.Query query = queryBuilder
-                .keyword()
-                .onField("categories.name")
-                .matching(category)
+                .bool()
+                .must(queryBuilder.keyword()
+                    .onField("categories.name")
+                    .matching(category)
+                    .createQuery())
+                .must(queryBuilder.keyword()
+                        .onFields("status")
+                        .matching(ProductStatus.ACTIVE).createQuery())
                 .createQuery();
 
         // wrap Lucene query in a javax.persistence.Query
@@ -104,9 +117,14 @@ public class ProductSearchService {
                 .get();
 
         Query query = queryBuilder
-                .keyword()
-                .onField("language")
-                .matching(language)
+                .bool()
+                .must(queryBuilder.keyword()
+                    .onField("language")
+                    .matching(language)
+                    .createQuery())
+                .must(queryBuilder.keyword()
+                        .onFields("status")
+                        .matching(ProductStatus.ACTIVE).createQuery())
                 .createQuery();
 
         javax.persistence.Query jpaQuery =
@@ -129,13 +147,16 @@ public class ProductSearchService {
         QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
                 .forEntity(Product.class).get();
 
-        FacetingRequest priceFacetingRequest = queryBuilder.facet()
-                .name("priceFaceting")
-                .onField("sells.currentPrice")
-                .range()
-                .from(from).to(to)
-                .excludeLimit()
-                .createFacetingRequest();
+        FacetingRequest priceFacetingRequest = queryBuilder
+                    .facet()
+                    .name("priceFaceting")
+                    .onField("sells.currentPrice")
+                    .range()
+                    .from(from).to(to)
+                    .excludeLimit()
+                    .createFacetingRequest();
+
+
 
         Query luceneQuery = queryBuilder.all().createQuery(); // match all query
         FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Product.class);
