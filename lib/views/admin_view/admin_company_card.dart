@@ -1,8 +1,10 @@
+import 'package:Selfsahaf/controller/shipping_company_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class ShippingCompaniesCardAdmin extends StatefulWidget {
   final String companyName;
-  final String price;
+  final double price;
   bool isSelected = false;
   ShippingCompaniesCardAdmin({
     @required this.companyName,
@@ -13,6 +15,59 @@ class ShippingCompaniesCardAdmin extends StatefulWidget {
 }
 
 class _ShippingCompaniesCardAdminState extends State<ShippingCompaniesCardAdmin> {
+    ShippingCompanyService companyService = GetIt.I<ShippingCompanyService>();
+  
+  _deleteCompany() async {
+    return showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    print("sa");
+                  },
+                  child: FlatButton(
+                    onPressed: () {
+                      companyService.deleteCompany(widget.companyName).then((value) {
+                        if(!value.error)
+                          Navigator.pop(context);
+
+                      });
+                    },
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      "Delete",
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  onPressed: () {},
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                  ),
+                )
+              ],
+              backgroundColor: Theme.of(context).primaryColor,
+              content:Text("Do you want to delete  ${widget.companyName}?", style: TextStyle(color: Colors.white)),
+              title:
+                  Text("Add Category", style: TextStyle(color: Colors.white)),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -40,19 +95,7 @@ class _ShippingCompaniesCardAdminState extends State<ShippingCompaniesCardAdmin>
                     ],
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: InkWell(
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 35,
-                    ),
-                    onTap: () {
-                      print("Editlemek istiyorum");
-                    },
-                  ),
-                ),
+                
                 SizedBox(
                   width: 10,
                 ),
@@ -65,7 +108,7 @@ class _ShippingCompaniesCardAdminState extends State<ShippingCompaniesCardAdmin>
                       size: 35,
                     ),
                     onTap: () {
-                      print("Editlemek istiyorum");
+                      _deleteCompany();
                     },
                   ),
                 ),

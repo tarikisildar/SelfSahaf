@@ -12,18 +12,41 @@ class TakenOrders extends StatefulWidget {
 }
 
 class _TakenOrdersState extends State<TakenOrders> {
-  String markedAs;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   OrderService get orderService => GetIt.I<OrderService>();
   List<Order> allorders;
   bool _isloading = true;
-
+  List<String> allStatus = ["CONFIRMED", "SHIPPING", "DELIVERED"];
   _fetchData() async {
     _refresh();
   }
 
   _markDialog(BuildContext context, Order order) {
+    List<String> status;
+      String markedAs;
+      bool error=false;
+      String errorMessage;
+      String orderStatus=order.status;
+    if (order.status == "CONFIRMED")
+      status = ["SHIPPING", "DELIVERED"];
+    else if (order.status == "SHIPPING")
+      status = ["DELIVERED"];
+    else if (order.status == "CANCELLED")
+      status = ["CANCELLED"];
+      else if (order.status == "DELIVERED")
+      status = ["DELIVERED"];
+    else if (order.status == "REFUNDREQUEST")
+      status = ["REFUNDREQUEST"];
+    else if (order.status == "REFUNDED")
+      status = ["REFUNDED"];
+    else if (order.status == "BLOCKED")
+      status = ["BLOCKED"];
+    else{
+      status = ["CONFIRMED", "SHIPPING", "DELIVERED"];
+      orderStatus="Select Status";
+      }
+
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -31,61 +54,110 @@ class _TakenOrdersState extends State<TakenOrders> {
             backgroundColor: Theme.of(context).primaryColor,
             title:
                 Text("Mark Order As:", style: TextStyle(color: Colors.white)),
-            content: DropdownButton<String>(
-              hint: Text(
-                "Select Condition",
-                style: TextStyle(color: Colors.white),
-              ),
-              items: ["SHIPPING", "CONFIRMED", "DELIVERED"]
-                  .map((String dropdownItem) {
-                return DropdownMenuItem<String>(
-                  value: dropdownItem,
-                  child: Text(
-                    dropdownItem,
-                    style: TextStyle(color: Colors.white),
+            content: StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  DropdownButton<String>(
+                    hint: Text(
+                     orderStatus,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    items: status.map((String dropdownItem) {
+                      return DropdownMenuItem<String>(
+                        value: dropdownItem,
+                        child: Text(
+                          dropdownItem,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (String newValueSelected) {
+                      setState(() {
+                        markedAs = newValueSelected;
+                      });
+                    },
+                    value: markedAs,
                   ),
-                );
-              }).toList(),
-              onChanged: (String newValueSelected) {
-                setState(() {
-                  this.markedAs = newValueSelected;
-                });
-              },
-              value: this.markedAs,
-            ),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  if (markedAs == null) {
-                    print("please mark order.");
-                  } else {
-                    print(markedAs);
-                    Navigator.of(context).pop();
-                  }
-                },
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Text(
-                  "Apply",
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                ),
-              ),
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                ),
-              ),
-            ],
+                  (error)?Text(errorMessage,style: TextStyle(color:Colors.white),):Container(),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                            flex: 6,
+                            child: SizedBox(
+                              width: 50,
+                            )),
+                        Expanded(
+                          flex: 4,
+                          child: FlatButton(
+                            onPressed: () {
+                              if (markedAs == null) {
+                                setState(() {
+                                    error=true;
+                                    errorMessage="Please select a status";
+                                });
+                              
+                                print("please mark order.");
+                              } else {
+                                print(markedAs);
+                                orderService.markOrder(order.orderDetailID, order.product.productID, markedAs).then((value) {
+                                  if(!value.error){
+                                    _refresh();
+                                    Navigator.pop(context);
+                                  }
+                                  else{
+                                    setState(() {
+                                          error=true;
+                                          errorMessage=value.errorMessage;
+                                    });
+                                
+                                    print(value.errorMessage);
+                                  }
+                                });
+                              }
+                            },
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              "Apply",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: SizedBox(
+                              width: 20,
+                            )),
+                        Expanded(
+                          flex: 4,
+                          child: FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              );
+            }),
           );
         });
   }
@@ -120,16 +192,7 @@ class _TakenOrdersState extends State<TakenOrders> {
           title: Container(
               height: 50,
               child: Image.asset("images/logo_white/logo_white.png")),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.shopping_cart),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ShoppingCart()),
-                  );
-                }),
-          ],
+         
         ),
         body: RefreshIndicator(
             onRefresh: () => _refresh(),
@@ -172,7 +235,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 8,
+                                                      flex: 12,
                                                       child: Text(
                                                         "OrderID: ",
                                                         style: TextStyle(
@@ -206,7 +269,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 8,
+                                                      flex: 12,
                                                       child: Text(
                                                         "Book's Name: ",
                                                         style: TextStyle(
@@ -239,7 +302,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 8,
+                                                      flex: 12,
                                                       child: Text(
                                                         "Author's Name: ",
                                                         style: TextStyle(
@@ -272,7 +335,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 8,
+                                                      flex: 12,
                                                       child: Text(
                                                         "Book Price: ",
                                                         style: TextStyle(
@@ -286,9 +349,10 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       flex: 12,
                                                       child: Text(
                                                         allorders[index]
-                                                            .product
-                                                            .price
-                                                            .toString()+ " TL",
+                                                                .product
+                                                                .price
+                                                                .toString() +
+                                                            " TL",
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
@@ -306,7 +370,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 8,
+                                                      flex: 12,
                                                       child: Text(
                                                         "Shipping Company: ",
                                                         style: TextStyle(
@@ -340,23 +404,25 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 8,
+                                                      flex: 12,
                                                       child: Text(
                                                         "Shipping Company Price: ",
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
                                                                 .primaryColor,
-                                                            fontSize: 9),
+                                                            fontSize: 12),
                                                       ),
                                                     ),
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
                                                         allorders[index]
-                                                            .shippingInfo
-                                                            .shippingcompany
-                                                            .price.toString()+ " TL",
+                                                                .shippingInfo
+                                                                .shippingcompany
+                                                                .price
+                                                                .toString() +
+                                                            " TL",
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
@@ -374,7 +440,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 8,
+                                                      flex: 12,
                                                       child: Text(
                                                         "Buyer Name: ",
                                                         style: TextStyle(
@@ -407,14 +473,14 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 8,
+                                                      flex: 12,
                                                       child: Text(
                                                         "Buyer Phone Number: ",
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
                                                                 .primaryColor,
-                                                            fontSize: 10),
+                                                            fontSize: 12),
                                                       ),
                                                     ),
                                                     Expanded(
@@ -440,7 +506,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 8,
+                                                      flex: 12,
                                                       child: Text(
                                                         "Status: ",
                                                         style: TextStyle(
@@ -471,7 +537,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 8,
+                                                      flex: 12,
                                                       child: Text(
                                                         "Price: ",
                                                         style: TextStyle(
@@ -484,7 +550,16 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        ((allorders[index].price * allorders[index].quantity)+allorders[index].shippingInfo.shippingcompany.price).toString()+ " TL",
+                                                        ((allorders[index].price *
+                                                                        allorders[index]
+                                                                            .quantity) +
+                                                                    allorders[
+                                                                            index]
+                                                                        .shippingInfo
+                                                                        .shippingcompany
+                                                                        .price)
+                                                                .toString() +
+                                                            " TL",
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
@@ -502,7 +577,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 8,
+                                                      flex: 12,
                                                       child: Text(
                                                         "Amount: ",
                                                         style: TextStyle(
@@ -515,7 +590,9 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        allorders[index].quantity.toString(),
+                                                        allorders[index]
+                                                            .quantity
+                                                            .toString(),
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
@@ -526,7 +603,6 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                   ],
                                                 ),
                                               ),
-
                                             ],
                                           ),
                                         ),
@@ -534,7 +610,8 @@ class _TakenOrdersState extends State<TakenOrders> {
                                           flex: 1,
                                           child: GestureDetector(
                                             onTap: () {
-                                              _markDialog(context, allorders[index]);
+                                              _markDialog(
+                                                  context, allorders[index]);
                                             },
                                             child: Container(
                                               child: Icon(

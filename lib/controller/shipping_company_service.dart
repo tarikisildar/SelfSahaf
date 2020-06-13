@@ -65,7 +65,7 @@ class ShippingCompanyService extends GeneralServices {
   Future<APIResponse<int>> deleteCompany(String companyName) async {
     try {
       Response response =
-          await _dio.delete("shipping/addCompany", queryParameters: {
+          await _dio.delete("shipping/removeCompany", queryParameters: {
         "companyName": companyName,
       });
       print(response.data);
