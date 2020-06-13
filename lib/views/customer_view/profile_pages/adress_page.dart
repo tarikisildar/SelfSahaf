@@ -60,7 +60,6 @@ class _AdressesPage extends State<AdressesPage> {
             onRefresh: () => _getAddresses(context),
             key: _refreshIndicatorKey,
             child: ListView(
-              
               children: <Widget>[
                 ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
