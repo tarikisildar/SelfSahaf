@@ -140,7 +140,19 @@ public class Sells implements Serializable{
     }
 
     public Integer getDiscount() {
-        return getPrice().getDiscount();
+        Integer disc = 0;
+        for (Category cat:
+             product.getCategories()) {
+            if(cat.getDiscount() > disc){
+                disc = cat.getDiscount();
+            }
+        }
+        disc  = disc + (100-disc)*getPrice().getDiscount()/100; // total discount;
+        return disc;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 
     @JsonIgnore

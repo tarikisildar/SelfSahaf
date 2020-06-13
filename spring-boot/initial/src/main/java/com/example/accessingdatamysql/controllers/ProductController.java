@@ -127,7 +127,7 @@ public class ProductController {
                 flag = true;
             }
         }
-
+        product.setSoldCount(pr.getSoldCount());
         if(!flag)
         {
             response.setStatus( HttpServletResponse.SC_FORBIDDEN);

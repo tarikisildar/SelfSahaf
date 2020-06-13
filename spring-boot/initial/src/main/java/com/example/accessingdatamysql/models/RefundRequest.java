@@ -50,13 +50,13 @@ public class RefundRequest {
     public void setRefundID(Integer refundID) {
         this.refundID = refundID;
     }
-    @JsonIgnore
+
     public OrderDetail getOrderDetail() {
 
 
         return orderDetail;
     }
-    @JsonIgnore
+
     public void setOrderDetail(OrderDetail orderDetail) {
         this.orderDetail = orderDetail;
     }

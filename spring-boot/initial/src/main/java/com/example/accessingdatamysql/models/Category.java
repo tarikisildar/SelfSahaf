@@ -27,12 +27,20 @@ public class Category {
     @JsonIgnoreProperties("categories")
     @ManyToMany(mappedBy = "categories",fetch = FetchType.LAZY)
     private Set<Product> products;
-
-
+    @Column
+    private Integer discount = 0;
 
     @JsonIgnore
     public Set<Product> getProducts() {
         return products;
+    }
+
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 
     public void setProducts(Set<Product> products) {
