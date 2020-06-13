@@ -39,7 +39,7 @@ ShippingInfo shippingInfo;
         status = json["status"],
         buyer = User.fromJson(json["buyer"]),
         seller = User.fromJson(json["user"]),
-        price = json["product"]["sells"][0]['price'],
+        price = json["product"]["sells"][0]['currentPrice'],
         shippingInfo=ShippingInfo.fromJson(json["shippingInfo"]),
         product=Book.fromJson(json["product"])
         ;
