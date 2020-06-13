@@ -31,5 +31,6 @@ public interface StorageService {
     void deleteAll();
 
     List<Resource> loadAllResources(String productID);
+    List<Resource> loadAllResourcesRefund(String refundID);
 
 }

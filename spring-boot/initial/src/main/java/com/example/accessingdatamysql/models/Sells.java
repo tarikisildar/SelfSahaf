@@ -60,6 +60,9 @@ public class Sells implements Serializable{
     @OneToMany(mappedBy = "sells", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Price> price;
 
+    @Transient
+    private Integer discount;
+
     public Sells() {
     }
 
@@ -115,7 +118,8 @@ public class Sells implements Serializable{
         return price;
     }
 
-    public Double getPrice() {
+    @JsonIgnore
+    public Price getPrice() {
         String date = LocalDateTime.MIN.toString();
         Price tempPrice = null;
         Double discount;
@@ -129,13 +133,16 @@ public class Sells implements Serializable{
         if(tempPrice != null) {
 
 
-            discount = tempPrice.getDiscount() / 100.;
-            setCurrentPrice(tempPrice.getPrice());
-            return tempPrice.getPrice() * (1 - discount);
+            return tempPrice;
         }
         else
             return null;
     }
+
+    public Integer getDiscount() {
+        return getPrice().getDiscount();
+    }
+
     @JsonIgnore
     public Set<CartItem> getCart() {
         return cart;

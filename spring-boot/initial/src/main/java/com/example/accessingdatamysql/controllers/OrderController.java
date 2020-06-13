@@ -10,6 +10,7 @@ import com.example.accessingdatamysql.storage.StorageService;
 import com.example.accessingdatamysql.thirdparty.PaypalPayment;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -318,11 +319,30 @@ public class OrderController {
         refundRequest = refundRepository.save(refundRequest);
         if(file != null)
         {
-            refundRequest.setPath(storageService.storeAllRefund(file,refundRequest.getRefundID()));
+            storageService.storeAllRefund(file,refundRequest.getRefundID());
+
             refundRepository.save(refundRequest);
         }
         return "refund request created with id " + refundRequest.getRefundID().toString();
     }
+
+    @ApiOperation("RefundImagePath")
+    @GetMapping("/refundImagePath")
+    public @ResponseBody List<String> refundPaths(@RequestParam Integer refundID){
+        List<Resource> resources = storageService.loadAllResourcesRefund(refundID.toString());
+        List<String> resourcesS = new ArrayList<>();
+        for (Resource res :
+                resources) {
+            try {
+                resourcesS.add(res.getURL().toString().substring(5)); //cut "file:" part from url
+            }
+            catch (IOException e){
+                continue;
+            }
+        }
+        return  resourcesS;
+    }
+
 
     @ApiOperation("List Refund Requests, for seller")
     @GetMapping(path = "/sellerRefundRequests")

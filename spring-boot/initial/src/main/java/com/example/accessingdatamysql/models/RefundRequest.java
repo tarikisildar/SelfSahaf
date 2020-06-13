@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.List;
+
 @Entity
 @Table(name = "refunds")
 public class RefundRequest {
@@ -25,7 +27,6 @@ public class RefundRequest {
 
     private String datetime;
 
-    private String path;
 
     private RefundStatus status;
 
@@ -33,13 +34,7 @@ public class RefundRequest {
     private String message;
 
     public RefundRequest() {
-    }
 
-    public RefundRequest(OrderDetail orderDetail, String datetime, String path, String message) {
-        this.orderDetail = orderDetail;
-        this.datetime = datetime;
-        this.path = path;
-        this.message = message;
     }
 
     public RefundRequest(OrderDetail orderDetail, String datetime, String message) {
@@ -51,7 +46,7 @@ public class RefundRequest {
     public Integer getRefundID() {
         return refundID;
     }
-    @JsonIgnore
+
     public void setRefundID(Integer refundID) {
         this.refundID = refundID;
     }
@@ -82,13 +77,7 @@ public class RefundRequest {
         this.datetime = datetime;
     }
 
-    public String getPath() {
-        return path;
-    }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     public String getMessage() {
         return message;

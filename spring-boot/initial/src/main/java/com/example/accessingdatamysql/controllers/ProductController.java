@@ -6,6 +6,7 @@ import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.embeddedKey.PriceKey;
 import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
+import com.example.accessingdatamysql.models.enums.ProductStatus;
 import com.example.accessingdatamysql.storage.StorageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -96,7 +97,7 @@ public class ProductController {
     @ApiOperation("update Product")
     @PostMapping(path ="/updateBook")
     public @ResponseBody
-    String updateBook( @RequestBody Product product,@RequestParam Double price, @RequestParam Integer quantity,HttpServletResponse response)
+    String updateBook( @RequestBody Product product,@RequestParam Double price, @RequestParam Integer quantity,  @RequestParam(defaultValue = "0") Integer discount,HttpServletResponse response)
     {
         boolean flag = false;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -115,10 +116,12 @@ public class ProductController {
                 String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
                 PriceKey priceKey = new PriceKey(product.getProductID(),sell.getSellerID(),formatted);
                 Set<Price> prices = sell.getPriceList();
-                Integer dc = (int)((sell.getPrice() - price)/sell.getPrice()*100);
-                prices.add(new Price(priceKey,sell,price,dc));
+                prices.add(new Price(priceKey,sell,price,discount));
                 sell.setPrice(prices);
                 sell.setCurrentPrice(price);
+                if(quantity == 0){
+                    sell.getProduct().setStatus(ProductStatus.DEACTIVE);
+                }
                 sell.setQuantity(quantity);
                 flag = true;
             }
