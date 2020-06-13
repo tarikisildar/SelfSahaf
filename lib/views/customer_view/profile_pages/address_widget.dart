@@ -69,6 +69,9 @@ class AddressWidget extends StatelessWidget {
                             onTap: () => showDialog(
                                   context: context,
                                   builder: (_) => AlertDialog(
+                                    actions: <Widget>[
+                                      
+                                    ],
                                     backgroundColor:
                                         Theme.of(context).primaryColor,
                                     content: AddAddress(

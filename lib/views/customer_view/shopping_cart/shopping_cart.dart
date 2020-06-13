@@ -191,10 +191,14 @@ class _ShoppingCartState extends State<ShoppingCart> {
                                     context: context,
                                     builder: (_) {
                                       return AlertDialog(
+                                        backgroundColor: Theme.of(context).primaryColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(24)
+                                        ),
                                         content: Text(
-                                            "Confirm if you want to delete ${_cartList[index].book.name}"),
+                                            "Confirm if you want to delete ${_cartList[index].book.name}",style: TextStyle(color: Colors.white),),
                                         title: Text(
-                                            "Do yo want to delete the book?"),
+                                            "Do yo want to delete the book?",style: TextStyle(color: Colors.white)),
                                         actions: <Widget>[
                                           FlatButton(
                                             shape: RoundedRectangleBorder(
@@ -206,10 +210,10 @@ class _ShoppingCartState extends State<ShoppingCart> {
                                             child: Text(
                                               "DELETE",
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                  color: Theme.of(context).primaryColor),
                                             ),
                                             color:
-                                                Theme.of(context).primaryColor,
+                                                Colors.white,
                                             onPressed: () {
                                               _cartService
                                                   .deleteItemFromCart(
@@ -243,10 +247,10 @@ class _ShoppingCartState extends State<ShoppingCart> {
                                             child: Text(
                                               "CANCEL",
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                  color: Theme.of(context).primaryColor),
                                             ),
                                             color:
-                                                Theme.of(context).primaryColor,
+                                                Colors.white,
                                             onPressed: () {
                                               Navigator.of(context).pop(false);
                                             },

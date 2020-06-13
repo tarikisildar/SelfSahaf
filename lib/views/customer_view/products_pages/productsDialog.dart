@@ -18,22 +18,22 @@ class _ProductsDialogState extends State<ProductsDialog> {
   Widget build(BuildContext context) {
     
     return AlertDialog(
+      backgroundColor: Theme.of(context).primaryColor,
+      shape:RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(32),
+      ),
       content: StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return (_productsShowDialog)
               ? Container(
                   width: 250,
                   height: 180,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
-                    color: Theme.of(context).primaryColor,
-                  ),
                   child: Column(
                     children: <Widget>[
                       Text(
                         "Do you want to be a seller?",
                         style: TextStyle(
-                            color: Theme.of(context).primaryColor,
+                            color: Colors.white,
                             fontSize: 25),
                       ),
                       SizedBox(
@@ -48,7 +48,10 @@ class _ProductsDialogState extends State<ProductsDialog> {
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: InkWell(
                                   child: Container(
-                                    color: Colors.white,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
+                                      color: Colors.white,
+                                    ),
                                     padding: EdgeInsets.all(7.0),
                                     margin: EdgeInsets.all(5.0),
                                     child: Text(
@@ -66,9 +69,12 @@ class _ProductsDialogState extends State<ProductsDialog> {
                                 padding: const EdgeInsets.only(left:8.0),
                                 child: InkWell(
                                   child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
+                                      color: Colors.white,
+                                    ),
                                     padding: EdgeInsets.all(7.0),
                                     margin: EdgeInsets.all(5.0),
-                                    color: Colors.white,
                                     child: Text(
                                       "Yes",
                                       style: TextStyle(
