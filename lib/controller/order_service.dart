@@ -42,7 +42,6 @@ class OrderService extends GeneralServices {
         if (response.data.length != 0) {
             
           List<dynamic> i = response.data;
-print(i[0]["buyer"]["name"]);
           result = i.map((p) => Order.fromJson(p)).toList();
           return APIResponse<List<Order>>(data: result);
         }

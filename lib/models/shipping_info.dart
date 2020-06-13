@@ -1,7 +1,7 @@
 import 'package:Selfsahaf/models/shipping_company_model.dart';
 
 class ShippingInfo{
-  String shippingInfoID;
+  int shippingInfoID;
   String trackingNumber;
   ShippingCompanyModel shippingcompany;
   ShippingInfo({
