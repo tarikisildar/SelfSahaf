@@ -1,7 +1,11 @@
 package com.example.accessingdatamysql.controllers;
 
+import com.example.accessingdatamysql.dao.CategoryRepository;
 import com.example.accessingdatamysql.dao.OrderRepository;
 import com.example.accessingdatamysql.dao.UserRepository;
+import com.example.accessingdatamysql.models.Category;
+import com.example.accessingdatamysql.models.Product;
+import com.example.accessingdatamysql.models.Sells;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping(path="/admin")
@@ -23,6 +30,9 @@ public class AdminController {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
 
 
     @ApiOperation("Get Total Number of Registered Users")
@@ -45,6 +55,21 @@ public class AdminController {
     public @ResponseBody Integer getOrderCount(){
         return orderRepository.getOrderCount();
     }
+
+
+    @ApiOperation("Set Discount in Category Event")
+    @PostMapping(path="/setDiscount")
+    public @ResponseBody String  setDiscount(Integer categoryID, Integer discount){
+        Set<Product> products =  categoryRepository.findById(categoryID).get().getProducts();
+        for (Product product: products) {
+            for (Sells sell: product.getSells()) {
+                sell.getPrice().setDiscount(discount);
+            }
+        }
+        return "saved";
+    }
+
+
 
 
 }

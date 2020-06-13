@@ -140,6 +140,7 @@ public class OrderController {
 
                     shippingInfo = shippingInfoRepository.save(shippingInfo);
 
+
                     Sells sells = item.getSells();
                     Product product = sells.getProduct();
                     Integer newQuantity = sells.getQuantity() - item.getAmount();
@@ -149,6 +150,7 @@ public class OrderController {
                     } else if (newQuantity < 0) {
                         throw new RuntimeException("Not enough stock, transaction rollback");
                     }
+                    product.setSoldCount(product.getSoldCount()+item.getAmount());
 
                     /* Product Soldout */
                     if (newQuantity == 0) {

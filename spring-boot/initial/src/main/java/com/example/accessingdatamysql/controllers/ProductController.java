@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.accessingdatamysql.models.FilterObject;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -137,6 +138,14 @@ public class ProductController {
 
     }
 
+    @ApiOperation("Get Best Sellers")
+    @GetMapping("/bestSeller")
+    public @ResponseBody Iterable<Product> getBestSellers(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                          @RequestParam(defaultValue = "10") Integer pageSize)
+    {
+        return service.getBestSellers(pageNo,pageSize);
+    }
+
     @ApiOperation("delete book by id")
     @DeleteMapping("/deleteBook")
     public @ResponseBody String deleteBook(@RequestParam Integer productId, HttpServletResponse response)
@@ -174,8 +183,9 @@ public class ProductController {
     public @ResponseBody
     Iterable<Product> getProducts(@RequestParam(defaultValue = "0") Integer pageNo,
                                   @RequestParam(defaultValue = "2") Integer pageSize,
-                                  @RequestParam(defaultValue = "productID") String sortBy) {
-        Iterable<Product> list = service.getAll(pageNo,pageSize,sortBy);
+                                  @RequestParam(defaultValue = "productID") String sortBy,
+                                  @RequestParam(defaultValue = "true") boolean ascending) {
+        Iterable<Product> list = service.getAll(pageNo,pageSize,sortBy,ascending);
         return list;
         //return productRepository.findAll(pageable);
     }
@@ -288,7 +298,5 @@ public class ProductController {
     public @ResponseBody Resource getImage(@RequestParam String path){
         return storageService.loadAsResource(path);
     }
-
-
 
 }
