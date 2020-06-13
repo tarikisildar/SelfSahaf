@@ -15,6 +15,8 @@ class MailService extends GeneralServices {
         "email":userEmail,
         "title":title
       });
+      print(response.statusCode);
+      print(response.data);
       if(response.statusCode==200){
         return APIResponse<int>(data: response.statusCode);
       }
