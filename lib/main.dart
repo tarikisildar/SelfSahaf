@@ -1,3 +1,4 @@
+import 'package:Selfsahaf/controller/admin_service.dart';
 import 'package:Selfsahaf/controller/cart_service.dart';
 import 'package:Selfsahaf/controller/mail_service.dart';
 import 'package:Selfsahaf/controller/category_controller.dart';
@@ -29,6 +30,7 @@ void setupServiseLocator() {
   GetIt.I.registerLazySingleton(() => RatingService());
   GetIt.I.registerLazySingleton(() => MailService());
   GetIt.I.registerLazySingleton(() => CategoryService());
+  GetIt.I.registerLazySingleton(() => AdminService());
 }
 
 void main() {

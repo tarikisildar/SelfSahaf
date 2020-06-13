@@ -10,14 +10,14 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 
-class RefundPage extends StatefulWidget {
+class RefundDetailPage extends StatefulWidget {
   Order ourOrder;
-  RefundPage({@required this.ourOrder});
+  RefundDetailPage({@required this.ourOrder});
   @override
-  _RefundPageState createState() => _RefundPageState();
+  _RRefundDetailPageState createState() => _RRefundDetailPageState();
 }
 
-class _RefundPageState extends State<RefundPage> {
+class _RRefundDetailPageState extends State<RefundDetailPage> {
   final _formKey = GlobalKey<FormState>();
   List<File> _imagesList = new List();
   final picker = ImagePicker();
@@ -235,9 +235,9 @@ class _RefundPageState extends State<RefundPage> {
                         .then((value) {
                       if (!value.error) {
                         Navigator.pop(context);
-                      }
-                      else{
-                        ErrorDialog().showErrorDialog(context, "Error!", value.errorMessage);
+                      } else {
+                        ErrorDialog().showErrorDialog(
+                            context, "Error!", value.errorMessage);
                       }
                     });
                   } else if (_imagesList.length == 0) {
