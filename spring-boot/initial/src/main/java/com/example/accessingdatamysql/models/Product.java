@@ -65,7 +65,7 @@ public class Product
     @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
     private String ISBN;
 
-    private Integer soldCount;
+    private Integer soldCount = 0;
 
 
     @Enumerated(EnumType.STRING)
