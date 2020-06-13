@@ -127,7 +127,7 @@ class _SahafDrawer extends State<SahafDrawer> {
                             });
               },
             ),
-            InkWell(
+            (!seller)?Container():InkWell(
               child: ListTile(
                   leading: Icon(
                     Icons.swap_horizontal_circle,
