@@ -60,12 +60,9 @@ public class AdminController {
     @ApiOperation("Set Discount in Category Event")
     @PostMapping(path="/setDiscount")
     public @ResponseBody String  setDiscount(Integer categoryID, Integer discount){
-        Set<Product> products =  categoryRepository.findById(categoryID).get().getProducts();
-        for (Product product: products) {
-            for (Sells sell: product.getSells()) {
-                sell.getPrice().setDiscount(discount);
-            }
-        }
+        Category category =  categoryRepository.findById(categoryID).get();
+        category.setDiscount(discount);
+        categoryRepository.save(category);
         return "saved";
     }
 
