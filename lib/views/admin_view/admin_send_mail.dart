@@ -1,8 +1,6 @@
 import 'package:Selfsahaf/controller/mail_service.dart';
-import 'package:Selfsahaf/models/order.dart';
 import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
-import 'package:Selfsahaf/views/registration/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -32,12 +30,11 @@ class _AdminMailPageState extends State<AdminMailPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: Theme.of(context).primaryColor,
             title: Text("Success!",style: TextStyle(color: Colors.white),),
             content: Text(popMessage,style: TextStyle(color: Colors.white)),
             actions: <Widget>[
               FlatButton(
-                child: Text("OK!", style: TextStyle(color: Colors.white),),
+                child: Text("OK!", style: TextStyle(color: Theme.of(context).primaryColor),),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -59,14 +56,14 @@ class _AdminMailPageState extends State<AdminMailPage> {
 
   User user;
   String mailcontentValidation(String content) {
-    if (content.length < 2) {
+    if (content.length < 60) {
       return "Please explain to customer in detail.";
     } else
       return null;
   }
 
   String mailtitleValidation(String title) {
-    if (title.length < 2) {
+    if (title.length < 10) {
       return "Please use formal language to customers.";
     } else
       return null;
