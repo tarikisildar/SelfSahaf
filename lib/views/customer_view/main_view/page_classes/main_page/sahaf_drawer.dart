@@ -152,6 +152,31 @@ class _SahafDrawer extends State<SahafDrawer> {
                             });
               },
             ),
+            (!seller)?Container():InkWell(
+              child: ListTile(
+                  leading: Icon(
+                    Icons.record_voice_over,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    "Refund Orders",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  )),
+              onTap: () {
+                (role == 0)
+                    ? ErrorDialog().showLogin(context)
+                    : (seller)
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TakenOrders()))
+                        : showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ProductsDialog();
+                            });
+              },
+            ),
             InkWell(
               child: ListTile(
                   leading: Icon(Icons.settings, color: Colors.white),
