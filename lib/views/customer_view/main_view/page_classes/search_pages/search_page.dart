@@ -208,7 +208,7 @@ class _SearchPageState extends State<SearchPage> {
                                     flex: 8,
                                     child: InputField(
                                       lines: 1,
-                                      controller:_isbnController ,
+                                      controller: _isbnController,
                                       inputType: TextInputType.number,
                                       validation: _isbnValidation,
                                       labelText: "ISBN",
@@ -236,7 +236,8 @@ class _SearchPageState extends State<SearchPage> {
                                                       SearchPageProducts(
                                                         type: 1,
                                                         searchValue:
-                                                            _isbnController.text,
+                                                            _isbnController
+                                                                .text,
                                                       )));
                                         print("BURA DAHA BITMEDI BITER INS");
                                       },
@@ -397,10 +398,9 @@ class _SearchPageState extends State<SearchPage> {
                                             MaterialPageRoute(
                                                 builder: (_) =>
                                                     SearchPageProducts(
-                                                      type: 2,
-                                                      searchValue:
-                                                          selectedLanguage
-                                                    )));
+                                                        type: 2,
+                                                        searchValue:
+                                                            selectedLanguage)));
                                       } else {
                                         ErrorDialog().showErrorDialog(
                                             context,
@@ -516,4 +516,3 @@ class _SearchPageState extends State<SearchPage> {
               ));
   }
 }
-
