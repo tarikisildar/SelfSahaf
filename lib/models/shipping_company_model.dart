@@ -4,7 +4,7 @@ class ShippingCompanyModel{
   double price;
   String website;
 ShippingCompanyModel({
-  this.companyName,this.price,this.shippingCompanyID
+  this.companyName,this.price,this.shippingCompanyID, this.website
 });
 
   ShippingCompanyModel.fromJson(Map<String, dynamic> json)
