@@ -20,6 +20,8 @@ class _ShippingCompaniesState extends State<ShippingCompanies> {
   TextEditingController _companyPriceController = TextEditingController();
   TextEditingController _websiteController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool error = false;
+  String errorMessage = "";
   @override
   void initState() {
     _getCompanies(context);
@@ -72,110 +74,146 @@ class _ShippingCompaniesState extends State<ShippingCompanies> {
     return showDialog(
         context: context,
         builder: (_) => AlertDialog(
-              actions: <Widget>[
-                FlatButton(
-                  onPressed: () {
-                    print("sa");
-                  },
-                  child: FlatButton(
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        companyService
-                            .addCompany(ShippingCompanyModel(
-                                companyName: _companyNameController.text,
-                                price:
-                                    double.parse(_companyPriceController.text),
-                                website: _websiteController.text))
-                            .then((value) {
-                          if (!value.error) {
-                            _getCompanies(context);
-                            Navigator.pop(context);
-                          }
-                        });
-                      }
-                    },
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      "Add",
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () {},
-                  child: FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                  ),
-                )
-              ],
               backgroundColor: Theme.of(context).primaryColor,
-              content: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(8),
-                        child: InputField(
-                          lines: 1,
-                          controller: _companyNameController,
-                          inputType: TextInputType.text,
-                          labelText: "Company Name",
-                          suffixIcon: Icon(
-                            Icons.local_shipping,
-                            color: Colors.white,
+              content: StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                return SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(8),
+                          child: InputField(
+                            lines: 1,
+                            controller: _companyNameController,
+                            inputType: TextInputType.text,
+                            labelText: "Company Name",
+                            suffixIcon: Icon(
+                              Icons.local_shipping,
+                              color: Colors.white,
+                            ),
+                            validation: _companyNameValidation,
                           ),
-                          validation: _companyNameValidation,
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8),
-                        child: InputField(
-                          lines: 1,
-                          controller: _websiteController,
-                          inputType: TextInputType.text,
-                          labelText: "Website",
-                          suffixIcon: Icon(
-                            Icons.web_asset,
-                            color: Colors.white,
+                        Padding(
+                          padding: EdgeInsets.all(8),
+                          child: InputField(
+                            lines: 1,
+                            controller: _websiteController,
+                            inputType: TextInputType.text,
+                            labelText: "Website",
+                            suffixIcon: Icon(
+                              Icons.web_asset,
+                              color: Colors.white,
+                            ),
+                            validation: _companyWebsitevalidation,
                           ),
-                          validation: _companyWebsitevalidation,
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8),
-                        child: InputField(
-                          lines: 1,
-                          controller: _companyPriceController,
-                          inputType: TextInputType.number,
-                          labelText: "Price",
-                          suffixIcon: Icon(
-                            Icons.attach_money,
-                            color: Colors.white,
+                        Padding(
+                          padding: EdgeInsets.all(8),
+                          child: InputField(
+                            lines: 1,
+                            controller: _companyPriceController,
+                            inputType: TextInputType.number,
+                            labelText: "Price",
+                            suffixIcon: Icon(
+                              Icons.attach_money,
+                              color: Colors.white,
+                            ),
+                            validation: _priceValidation,
                           ),
-                          validation: _priceValidation,
                         ),
-                      ),
-                    ],
+                        (error)
+                            ? Text(
+                                errorMessage,
+                                style: TextStyle(color: Colors.white),
+                              )
+                            : Container(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                  flex: 6,
+                                  child: SizedBox(
+                                    width: 50,
+                                  )),
+                              Expanded(
+                                flex: 4,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState.validate()) {
+                                      companyService
+                                          .addCompany(ShippingCompanyModel(
+                                              companyName:
+                                                  _companyNameController.text,
+                                              price: double.parse(
+                                                  _companyPriceController.text),
+                                              website: _websiteController.text))
+                                          .then((value) {
+                                        if (!value.error) {
+                                          _getCompanies(context);
+                                          setState(() {
+                                            error = false;
+                                          });
+                                          Navigator.pop(context);
+                                        } else {
+                                          setState(() {
+                                            error = true;
+                                            errorMessage = value.errorMessage;
+                                          });
+                                        }
+                                      });
+                                    }
+                                  },
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Text(
+                                    "Add",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                  flex: 1,
+                                  child: SizedBox(
+                                    width: 20,
+                                  )),
+                              Expanded(
+                                flex: 4,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
               title:
                   Text("Add Category", style: TextStyle(color: Colors.white)),
             ));

@@ -1,5 +1,6 @@
 import 'package:Selfsahaf/controller/product_services.dart';
 import 'package:Selfsahaf/models/book.dart';
+import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/book_profile.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
@@ -8,7 +9,9 @@ import 'package:get_it/get_it.dart';
 
 class SellerBooksPage extends StatefulWidget {
   Book bookfrom;
-  SellerBooksPage({this.bookfrom});
+   User user;
+  int type;//o for normal user 1 for admin
+  SellerBooksPage({this.bookfrom,this.type,this.user});
   @override
   _SellerBooksPage createState() => new _SellerBooksPage();
 }
@@ -20,8 +23,9 @@ class _SellerBooksPage extends State<SellerBooksPage> {
   List<Book> sellerBooks;
 
   Book bookfrom;
+  User seller;
   _getSellerBooks(BuildContext context) async {
-    _productService.getSellerBooks(this.bookfrom.sellerID).then((value) {
+    _productService.getSellerBooks((widget.type==0)?this.bookfrom.sellerID:seller.userID).then((value) {
       print(value.data);
       if (!value.error) {
         setState(() {
@@ -39,6 +43,7 @@ class _SellerBooksPage extends State<SellerBooksPage> {
   @override
   void initState() {
     this.bookfrom = widget.bookfrom;
+    this.seller=widget.user;
     _getSellerBooks(context);
     super.initState();
   }

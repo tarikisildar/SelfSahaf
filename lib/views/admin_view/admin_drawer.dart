@@ -42,7 +42,7 @@ class AdminDrawer extends StatelessWidget {
                 child: ListTile(
                     leading: Icon(Icons.search, color: Colors.white),
                     title: Text(
-                      "Search \nBooks/Users",
+                      "Search Users",
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     )),
                 onTap: () {

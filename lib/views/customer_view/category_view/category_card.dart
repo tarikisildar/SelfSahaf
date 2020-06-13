@@ -31,36 +31,19 @@ class _CategoryCardState extends State<CategoryCard> {
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(
+                
                   "${widget.categoryName} ",
                   style: TextStyle(
                     color: Color(0xffe65100),
                     fontSize: 18,
+                    
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
-            Expanded(
-              flex: 2,
-              child: InkWell(
-                onTap: () {},
-                child: Icon(
-                  Icons.edit,
-                  color: Color(0xffe65100),
-                  size: 40,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: InkWell(
-                onTap: () {},
-                child: Icon(
-                  Icons.delete,
-                  color: Color(0xffe65100),
-                  size: 40,
-                ),
-              ),
-            ),
+           
+           
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:Selfsahaf/controller/rating_controller.dart';
 import 'package:Selfsahaf/models/book.dart';
@@ -13,13 +14,16 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class SellerCommentsPage extends StatefulWidget {
   Book sellingBook;
-  SellerCommentsPage({this.sellingBook});
+   User user;
+  int type;//o for normal user 1 for admin
+  SellerCommentsPage({this.sellingBook,this.type,this.user});
   @override
   _SellerCommentsPage createState() => new _SellerCommentsPage();
 }
 
 class _SellerCommentsPage extends State<SellerCommentsPage> {
   Book sellingBook;
+  User seller;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   RatingService _ratingService = GetIt.I<RatingService>();
@@ -27,11 +31,12 @@ class _SellerCommentsPage extends State<SellerCommentsPage> {
   @override
   void initState() {
     this.sellingBook = widget.sellingBook;
+    this.seller=widget.user;
     _getRatings(context);
   }
 
   _getRatings(BuildContext context) async {
-    _ratingService.getRatings(sellingBook.sellerID).then((value) {
+    _ratingService.getRatings((widget.type==0)?sellingBook.sellerID:seller.userID).then((value) {
       print(value.data);
       if (!value.error) {
         setState(() {

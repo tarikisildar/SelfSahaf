@@ -271,6 +271,7 @@ class _AddAddressState extends State<AddAddress> {
                       ),
                       onTap: () => Navigator.pop(context),
                     ),
+                    SizedBox(width: 12,),
                     InkWell(
                         child: Icon(
                           Icons.check,

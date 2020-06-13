@@ -14,8 +14,16 @@ class EditCategories extends StatefulWidget {
 class _EditCategoriesState extends State<EditCategories> {
   CategoryService _categoryService = GetIt.I<CategoryService>();
   List<Category> _categories;
-
-  _getCompanies(BuildContext context) async {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+  @override
+  void initState() {
+    super.initState();
+    _getCategories(context);
+  }
+bool error=false;
+String errorMessage=" ";
+  _getCategories(BuildContext context) async {
     _categoryService.getCategories().then((value) {
       if (!value.error) {
         setState(() {
@@ -30,41 +38,8 @@ class _EditCategoriesState extends State<EditCategories> {
     });
   }
 
-  Future<Null> _refresh() {
-    return _categoryService.getCategories().then((value) {
-      if (!value.error) {
-        setState(() {
-          this._categories = value.data;
-        });
-      } else {
-        ErrorDialog().showErrorDialog(context, "Error", value.errorMessage);
-        setState(() {
-          this._categories = value.data;
-        });
-      }
-    });
-  }
-
-  // _addCategory(BuildContext buildContext,String categoryName)async{
-  //   _categoryService.addCategory(categoryName).then((value) {
-  //                                 if(!value.error){
-  //                                   _refresh();
-  //                                   Navigator.pop(context);
-  //                                 }
-  //                                 else{
-  //                                   setState(() {
-  //                                         error=true;
-  //                                         errorMessage=value.errorMessage;
-  //                                   });
-                                
-  //                                   print(value.errorMessage);
-  //                                 }
-  //                               });
-  // }
-  
-  
   final _formKey = GlobalKey<FormState>();
-
+/*
   void messagepopup(int val) {
     var _title;
     var _content;
@@ -112,14 +87,14 @@ class _EditCategoriesState extends State<EditCategories> {
             ],
           );
         });
-  }
+  }*/
 
   CategoryService categoryApi = new CategoryService();
   TextEditingController categorynameController = TextEditingController();
 
   String categorynameValidation(String categoryname) {
     if (categoryname.length < 2) {
-      return "Soyisim kismi bos birakilamaz.";
+      return "Category name too small.";
     } else
       return null;
   }
@@ -136,28 +111,50 @@ class _EditCategoriesState extends State<EditCategories> {
         title: Container(
             height: 50, child: Image.asset("images/logo_white/logo_white.png")),
       ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                child: Text(
-                  "Edit Categories",
-                  style: TextStyle(fontSize: 24, color: Colors.white),
+      body: RefreshIndicator(
+          onRefresh: () => _getCategories(context),
+          key: _refreshIndicatorKey,
+          child: ListView(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Categories",
+                    style: TextStyle(fontSize: 24, color: Colors.white),
+                  ),
                 ),
               ),
-            ),
-            Divider(
-              thickness: 2,
-              color: Colors.white,
-            ),
-            
-          ],
-        ),
-      ),
+              Divider(
+                thickness: 2,
+                color: Colors.white,
+              ),
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, index) {
+                  return (_categories == null)
+                      ? Center(
+                          child: Text(
+                            "No Category",
+                            style: TextStyle(color: Colors.white, fontSize: 25),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : CategoryCard(
+                          categoryName: _categories[index].categoryName);
+                },
+                itemCount: (_categories == null) ? 1 : _categories.length,
+              ),
+              SizedBox(
+                height: 80,
+              )
+            ],
+          )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          categorynameController.text="";
           return showDialog(
               context: context,
               builder: (context) {
@@ -170,65 +167,98 @@ class _EditCategoriesState extends State<EditCategories> {
                     "Add New Category",
                     style: TextStyle(color: Colors.white),
                   ),
-                  content: SafeArea(
-                    child: Form(
-                      key: _formKey,
-                      child: Container(
-                        height: 100,
+                  content: StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
+                    return SafeArea(
+                      child: Form(
+                        key: _formKey,
                         child: Column(
-                          children: <Widget>[
-                            Text(
-                              "Category Name: ",
-                              style: TextStyle(color: Colors.white),
+                          mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              
+                              InputField(
+                                labelText: "Category Name",
+                                inputType: TextInputType.text,
+
+                                validation: categorynameValidation,
+                                controller: categorynameController,
+                              ),
+                              (error)?Text(errorMessage,style: TextStyle(color:Colors.white),):Container(),
+                              SizedBox(height: 10,),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                            flex: 6,
+                            child: SizedBox(
+                              width: 50,
+                            )),
+                        Expanded(
+                          flex: 4,
+                          child: FlatButton(
+                            onPressed: () {
+                              _categoryService
+                            .addCategory(categorynameController.text)
+                            .then((value) {
+                          if (!value.error) {
+                            setState(() {
+                              error=false;
+                            });
+                            _getCategories(context);
+                            Navigator.pop(context);
+                          }
+                          else{
+                            setState(() {
+                              error=true;
+                              errorMessage=value.errorMessage;
+                            });
+                          }
+                        });
+                            },
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                            SizedBox(
-                              height: 10,
+                            child: Text(
+                              "Add",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
                             ),
-                            InputField(
-                              validation: categorynameValidation,
-                              controller: categorynameController,
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        Expanded(
+                            flex: 1,
+                            child: SizedBox(
+                              width: 20,
+                            )),
+                        Expanded(
+                          flex: 4,
+                          child: FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                  )
+                            ],
+                          ),
+                       
                       ),
-                      child: Text(
-                        "Ekle",
-                        style: TextStyle(color: Color(0xffe65100)),
-                      ),
-                      onPressed: () {
-                        if (categorynameController.text == "" ||
-                            categorynameController.text == " ") {
-                          messagepopup(2);
-                        } else {
-                          
-                        }
-                      },
-                    ),
-                    FlatButton(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: Text(
-                        "Vazgec",
-                        style: TextStyle(color: Color(0xffe65100)),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                  ],
+                    );
+                  }),
+                 
                 );
               });
         },
