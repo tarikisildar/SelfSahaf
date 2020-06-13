@@ -1,20 +1,19 @@
 package com.example.accessingdatamysql.controllers;
 
-<<<<<<< HEAD
+
 import com.example.accessingdatamysql.dao.OrderDetailRepository;
 import com.example.accessingdatamysql.dao.OrderRepository;
 import com.example.accessingdatamysql.dao.UserRepository;
 import com.example.accessingdatamysql.models.Order;
 import com.example.accessingdatamysql.models.OrderDetail;
 import com.example.accessingdatamysql.models.User;
-=======
+
 import com.example.accessingdatamysql.dao.CategoryRepository;
 import com.example.accessingdatamysql.dao.OrderRepository;
 import com.example.accessingdatamysql.dao.UserRepository;
 import com.example.accessingdatamysql.models.Category;
 import com.example.accessingdatamysql.models.Product;
 import com.example.accessingdatamysql.models.Sells;
->>>>>>> 2726977d74bb55a157b13bdaa91309fddd4c416c
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,13 +23,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-<<<<<<< HEAD
+
 import java.util.ArrayList;
 import java.util.List;
-=======
-import java.util.List;
 import java.util.Set;
->>>>>>> 2726977d74bb55a157b13bdaa91309fddd4c416c
+
 
 @Controller
 @RequestMapping(path="/admin")
@@ -46,11 +43,12 @@ public class AdminController {
     private OrderRepository orderRepository;
 
     @Autowired
-<<<<<<< HEAD
+
     private OrderDetailRepository orderDetailRepository;
-=======
+
+    @Autowired
     CategoryRepository categoryRepository;
->>>>>>> 2726977d74bb55a157b13bdaa91309fddd4c416c
+
 
 
     @ApiOperation("Get Total Number of Registered Users")
@@ -75,7 +73,6 @@ public class AdminController {
     }
 
 
-<<<<<<< HEAD
     @ApiOperation("Get Top Sellers")
     @GetMapping(path="/getTopSellers")
     public @ResponseBody List<User> getTopSellers(Integer N){
@@ -95,7 +92,7 @@ public class AdminController {
 
         return topSellers;
     }
-=======
+
     @ApiOperation("Set Discount in Category Event")
     @PostMapping(path="/setDiscount")
     public @ResponseBody String  setDiscount(Integer categoryID, Integer discount){
@@ -105,8 +102,6 @@ public class AdminController {
         return "saved";
     }
 
-
->>>>>>> 2726977d74bb55a157b13bdaa91309fddd4c416c
 
 
 }
