@@ -61,6 +61,7 @@ public class Product
     @Column(length = 45)
     private String publisher;
     @Column(length = 45)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
     private String ISBN;
 
 
