@@ -150,11 +150,11 @@ class _TakenOrdersState extends State<TakenOrders> {
                               )),
                             )
                           : Padding(
-                              padding: const EdgeInsets.all(12.0),
+                              padding: const EdgeInsets.all(16.0),
                               child: Container(
-                                  height: 120,
+                                  height: 200,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(24),
                                     color: Colors.white,
                                   ),
                                   child: Padding(
@@ -162,7 +162,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                     child: Row(
                                       children: <Widget>[
                                         Expanded(
-                                          flex: 8,
+                                          flex: 11,
                                           child: Column(
                                             children: <Widget>[
                                               Expanded(
@@ -274,7 +274,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                     Expanded(
                                                       flex: 8,
                                                       child: Text(
-                                                        "Price: ",
+                                                        "Book Price: ",
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
@@ -288,7 +288,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                         allorders[index]
                                                             .product
                                                             .price
-                                                            .toString(),
+                                                            .toString()+ " TL",
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
@@ -323,6 +323,40 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                             .shippingInfo
                                                             .shippingcompany
                                                             .companyName,
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 8,
+                                                      child: Text(
+                                                        "Shipping Company Price: ",
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 9),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Text(
+                                                        allorders[index]
+                                                            .shippingInfo
+                                                            .shippingcompany
+                                                            .price.toString()+ " TL",
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
@@ -399,11 +433,105 @@ class _TakenOrdersState extends State<TakenOrders> {
                                                   ],
                                                 ),
                                               ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 8,
+                                                      child: Text(
+                                                        "Status: ",
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Text(
+                                                        allorders[index].status,
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 8,
+                                                      child: Text(
+                                                        "Price: ",
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Text(
+                                                        ((allorders[index].price * allorders[index].quantity)+allorders[index].shippingInfo.shippingcompany.price).toString()+ " TL",
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 8,
+                                                      child: Text(
+                                                        "Amount: ",
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Text(
+                                                        allorders[index].quantity.toString(),
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
                                             ],
                                           ),
                                         ),
                                         Expanded(
-                                          flex: 2,
+                                          flex: 1,
                                           child: GestureDetector(
                                             onTap: () {
                                               _markDialog(context, allorders[index]);
