@@ -6,6 +6,13 @@ class Rating{
   Rating.fromJson(Map<String, dynamic> json)
       : comment = json["comment"],
         rating = json["rating"];
+
+  Map<String, dynamic> toJsonRating() {
+    return {
+        "comment": comment,
+        "rating": rating,
+      };
+      }
         
 
 }

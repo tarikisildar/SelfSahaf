@@ -69,4 +69,31 @@ class RatingService extends GeneralServices {
           data: null, error: true, errorMessage: "Some errors occurs!");
     }
   }
+
+  Future<APIResponse<int>> rateSeller(int orderDetailID, Rating rating) async {
+    try {
+      Response response = await _dio.post(
+        "rating/rateSeller", queryParameters: {
+          "orderDetailID":orderDetailID,
+          
+        }, data: rating.toJsonRating()
+      );
+      if (response.statusCode == 200) {
+        if (response.data != null) {
+          int i = response.statusCode;
+          
+          return APIResponse<int>(data: i, error: false);
+        } else
+          return APIResponse<int>(data: null, error: false);
+      } else if (response.statusCode == 403)
+        return APIResponse<int>(
+            data: null, error: true, errorMessage: "Something went wrong!");
+      else
+        return APIResponse<int>(
+            data: null, error: true, errorMessage: "Some errors occurs.!");
+    } on DioError catch (e) {
+      return APIResponse<int>(
+          data: null, error: true, errorMessage: "Some errors occurs!");
+    }
+  }
 }

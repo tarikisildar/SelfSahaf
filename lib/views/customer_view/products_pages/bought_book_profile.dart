@@ -2,16 +2,20 @@ import 'dart:typed_data';
 
 import 'package:Selfsahaf/controller/cart_service.dart';
 import 'package:Selfsahaf/controller/order_service.dart';
+import 'package:Selfsahaf/controller/rating_controller.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
 import 'package:Selfsahaf/models/order.dart';
+import 'package:Selfsahaf/models/rating.dart';
 import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/refund_page.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/seller_profile.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
+import 'package:Selfsahaf/views/registration/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/main_page/home_page_carousel.dart';
 import 'package:Selfsahaf/controller/product_services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class BoughtBookProfile extends StatefulWidget {
   final Order selectedBook;
@@ -25,8 +29,19 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
   Order ourOrder;
   ProductService get _productService => GetIt.I<ProductService>();
   OrderService get _orderService => GetIt.I<OrderService>();
+  RatingService get _ratingService => GetIt.I<RatingService>();
   CartService get _cartService => GetIt.I<CartService>();
   AuthService get _userService => GetIt.I<AuthService>();
+  TextEditingController commentController = new TextEditingController();
+  int finalRate = 0;
+  String commentValidation(String comment) {
+    bool valid = false;
+    if (comment.length > 20) {
+      valid = true;
+    }
+    return valid ? null : "Please make comments in detail";
+  }
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   User _user;
   int _itemCount = 1;
@@ -44,8 +59,8 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
       this.status = 2;
     } else if (widget.selectedBook.status == "DELIVERED") {
       this.status = 3;
-    }
-    else this.status = 4;
+    } else
+      this.status = 4;
 
     this.ourOrder = widget.selectedBook;
     _user = _userService.getUser();
@@ -71,7 +86,7 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
   }
 
   _cancelOrder(int orderDetailID) {
-    _orderService.cancelOrder(orderDetailID).then((value){
+    _orderService.cancelOrder(orderDetailID).then((value) {
       if (value.error) {
         ErrorDialog().showErrorDialog(context, "Error!", value.errorMessage);
       } else {
@@ -84,7 +99,7 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                 ),
                 backgroundColor: Theme.of(context).primaryColor,
                 title: Text(
-                  "Rate ${widget.selectedBook.seller.name} ${widget.selectedBook.seller.surname}",
+                  "OK!",
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -114,53 +129,181 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
     });
   }
 
+  _rateSeller(int orderDetailID, Rating rating){
+    _ratingService
+        .rateSeller(orderDetailID, rating)
+        .then((value) {
+      print(value.data);
+      if (!value.error) {
+        setState(() {
+          return showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        title: Text("Rating"),
+                        content: Text("Your comment submission has been saved!"),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text("OK!",style: TextStyle(color: Theme.of(context).primaryColor),),
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    }
+                  );
+        });
+      } else {
+        ErrorDialog().showErrorDialog(context, "Error", value.errorMessage);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: (this.status == 3)?
-      FloatingActionButton(
-        backgroundColor: Colors.white,
-        child: Icon(Icons.star,color: Colors.deepPurple,),
-        onPressed: () {
-          return showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                backgroundColor: Theme.of(context).primaryColor,
-                title: Text(
-                  "OK",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                content: Text("Cancellation is Successful.",
-                    style: TextStyle(
-                      color: Colors.white,
-                    )),
-                actions: <Widget>[
-                  FlatButton(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      "OK",
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                  ),
-                ],
-              );
-            });
-        },
-      )
-      :
-      null,
+      floatingActionButton: (this.status == 3)
+          ? FloatingActionButton(
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.star,
+                color: Colors.deepPurple,
+              ),
+              onPressed: () {
+                return showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        title: Text(
+                          "Rate ${widget.selectedBook.seller.name} ${widget.selectedBook.seller.surname}",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        content: Container(
+                          height: 250,
+                          child: Column(
+                            children: <Widget>[
+                              Text("Rate seller out of 5",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  )),
+                              SmoothStarRating(
+                                allowHalfRating: false,
+                                defaultIconData: Icons.star_border,
+                                filledIconData: Icons.star,
+                                borderColor: Colors.deepPurple,
+                                color: Colors.deepPurple,
+                                size: 40,
+                                isReadOnly: false,
+                                onRated: (value) {
+                                  setState(() {
+                                    finalRate = value.toInt();
+                                  });
+                                  // print("rating value dd -> ${value.truncate()}");
+                                },
+                                starCount: 5,
+                                spacing: 2,
+                              ),
+                              SizedBox(height: 15,),
+                              TextFormField(
+                                maxLines: 6,
+                                controller: commentController,
+                                validator: commentValidation,
+                                cursorColor: Colors.orange,
+                                style: TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                    errorStyle: TextStyle(color: Colors.white),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 8.0),
+                                    labelText: "Comments About Seller",
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    focusedBorder: OutlineInputBorder(
+                                        gapPadding: 2.0,
+                                        borderSide: BorderSide(
+                                            color: Colors.white, width: 3.0),
+                                        borderRadius:
+                                            new BorderRadius.circular(16.0)),
+                                    enabledBorder: new OutlineInputBorder(
+                                      gapPadding: 2.0,
+                                      borderRadius:
+                                          new BorderRadius.circular(16.0),
+                                      borderSide: new BorderSide(
+                                        color: Colors.white,
+                                        width: 3.0,
+                                      ),
+                                    ),
+                                    errorBorder: new OutlineInputBorder(
+                                      gapPadding: 2.0,
+                                      borderRadius:
+                                          new BorderRadius.circular(16.0),
+                                      borderSide: new BorderSide(
+                                        color: Colors.deepPurple,
+                                        width: 3.0,
+                                      ),
+                                    ),
+                                    focusedErrorBorder: new OutlineInputBorder(
+                                      gapPadding: 2.0,
+                                      borderRadius:
+                                          new BorderRadius.circular(16.0),
+                                      borderSide: new BorderSide(
+                                        color: Colors.deepPurple,
+                                        width: 3.0,
+                                      ),
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ),
+                        actions: <Widget>[
+                          FlatButton(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            onPressed: () {
+                              Rating newRating = new Rating(comment: commentController.text,rating: finalRate);
+                              _rateSeller(widget.selectedBook.orderDetailID, newRating);
+                            },
+                            child: Text(
+                              "Accept",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                          ),
+                          FlatButton(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                          ),
+                        ],
+                      );
+                    });
+              },
+            )
+          : null,
       key: _scaffoldKey,
       appBar: AppBar(
         elevation: 12,
@@ -198,7 +341,8 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
-                                  _cancelOrder(widget.selectedBook.orderDetailID);
+                                  _cancelOrder(
+                                      widget.selectedBook.orderDetailID);
                                 },
                                 child: Text(
                                   "Yes",
@@ -223,29 +367,26 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                         });
                   },
                 )
-                : (this.status == 2 || this.status==3)?
-                IconButton(
-                  icon: Icon(
-                    Icons.assignment,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RefundPage(
-                                ourOrder: widget.selectedBook,
-                              )),
-                    );
-                  },
-                )
-                :
-                Icon(
-                    Icons.cancel,
-                    color: Colors.transparent,
-                  ),
-                  
-                
+              : (this.status == 2 || this.status == 3)
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.assignment,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RefundPage(
+                                    ourOrder: widget.selectedBook,
+                                  )),
+                        );
+                      },
+                    )
+                  : Icon(
+                      Icons.cancel,
+                      color: Colors.transparent,
+                    ),
         ],
       ),
       body: (_loading)
