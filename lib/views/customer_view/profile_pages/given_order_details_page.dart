@@ -8,8 +8,8 @@ import 'package:Selfsahaf/views/customer_view/products_pages/book_profile.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
 
 class GivenOrderDetails extends StatefulWidget {
-  final int ID;
-  GivenOrderDetails({this.ID});
+  final int id;
+  GivenOrderDetails({this.id});
 
   @override
   _GivenOrderDetailsState createState() => _GivenOrderDetailsState();
@@ -24,14 +24,14 @@ class _GivenOrderDetailsState extends State<GivenOrderDetails> {
 
   @override
   void initState() {
-    print("sa" + widget.ID.toString());
+    print("sa" + widget.id.toString());
     super.initState();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
 
   Future<Null> _refresh() {
-    return _orderService.givenOrderDetails(widget.ID).then((e) {
+    return _orderService.givenOrderDetails(widget.id).then((e) {
       print(e.data);
       if (!e.error) {
         setState(() {

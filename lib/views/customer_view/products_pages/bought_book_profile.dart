@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:Selfsahaf/controller/cart_service.dart';
+import 'package:Selfsahaf/controller/order_service.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
 import 'package:Selfsahaf/models/order.dart';
 import 'package:Selfsahaf/models/user.dart';
@@ -27,6 +28,7 @@ class BoughtBookProfile extends StatefulWidget {
 class _BoughtBookProfileState extends State<BoughtBookProfile> {
   Order ourOrder;
   ProductService get _productService => GetIt.I<ProductService>();
+  OrderService get _orderService => GetIt.I<OrderService>();
   CartService get _cartService => GetIt.I<CartService>();
   AuthService get _userService => GetIt.I<AuthService>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,8 +36,22 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
   int _itemCount = 1;
   List<Image> images;
   bool _loading = true;
+  bool leading = true;
+  int status; // 1=> order cancel is able.  2=> confirm/shipping/delivered ise refund is able. 3=> delivered ise rate seller is able
   @override
   void initState() {
+    if (widget.selectedBook.status == "ACTIVE") {
+      this.status = 1;
+      leading = false;
+    } else if (widget.selectedBook.status == "CONFIRM" ||
+        widget.selectedBook.status == "SHIPPING") {
+      this.status = 2;
+      leading = true;
+    } else if (widget.selectedBook.status == "DELIVERED") {
+      this.status = 3;
+      leading = true;
+    }
+
     this.ourOrder = widget.selectedBook;
     _user = _userService.getUser();
     if (widget.amount != null) {
@@ -45,7 +61,9 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
   }
 
   _fetchData() async {
-    _productService.getAllImages(widget.selectedBook.product.productID).then((value) {
+    _productService
+        .getAllImages(widget.selectedBook.product.productID)
+        .then((value) {
       setState(() {
         if (value.error) {
           print("error");
@@ -54,6 +72,50 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
           _loading = false;
         }
       });
+    });
+  }
+
+  _cancelOrder(int orderDetailID) {
+    _orderService.cancelOrder(orderDetailID).then((value) {
+      if (value.error) {
+        ErrorDialog().showErrorDialog(context, "Error!", value.errorMessage);
+      } else {
+        return showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                backgroundColor: Theme.of(context).primaryColor,
+                title: Text(
+                  "OK",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                content: Text("Cancellation is Successful.",
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                actions: <Widget>[
+                  FlatButton(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "OK",
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                  ),
+                ],
+              );
+            });
+      }
     });
   }
 
@@ -66,18 +128,77 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
         title: Container(
             height: 50, child: Image.asset("images/logo_white/logo_white.png")),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.assignment,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RefundPage(ourOrder: widget.selectedBook,)),
-              );
-            },
-          ),
+          (leading)
+              ? IconButton(
+                  icon: Icon(
+                    Icons.assignment,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RefundPage(
+                                ourOrder: widget.selectedBook,
+                              )),
+                    );
+                  },
+                )
+              : IconButton(
+                  icon: Icon(
+                    Icons.cancel,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    return showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            backgroundColor: Theme.of(context).primaryColor,
+                            title: Text(
+                              "Cancel Order",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            content: Text(
+                              "Are you sure about cancelling order?",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            actions: <Widget>[
+                              FlatButton(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  _cancelOrder(widget.selectedBook.orderDetailID);
+                                },
+                                child: Text(
+                                  "Yes",
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                              ),
+                              FlatButton(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("No",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor)),
+                              ),
+                            ],
+                          );
+                        });
+                  },
+                ),
         ],
       ),
       body: (_loading)
@@ -142,7 +263,8 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => SellerProfilePage(
-                                              seller: widget.selectedBook.product,
+                                              seller:
+                                                  widget.selectedBook.product,
                                               type: 0,
                                             )),
                                   );
@@ -193,7 +315,9 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                                         "Author: ",
                                         style: TextStyle(color: Colors.white),
                                       ),
-                                      Text(widget.selectedBook.product.authorName,
+                                      Text(
+                                          widget
+                                              .selectedBook.product.authorName,
                                           style: TextStyle(color: Colors.white))
                                     ],
                                   ),
@@ -250,7 +374,9 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                                         "Category: ",
                                         style: TextStyle(color: Colors.white),
                                       ),
-                                      Text(widget.selectedBook.product.categoryName,
+                                      Text(
+                                          widget.selectedBook.product
+                                              .categoryName,
                                           style: TextStyle(color: Colors.white))
                                     ],
                                   ),
@@ -330,7 +456,8 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                                       style: TextStyle(color: Colors.white),
                                     ),
                                     Text(
-                                      widget.selectedBook.shippingInfo.shippingcompany.companyName,
+                                      widget.selectedBook.shippingInfo
+                                          .shippingcompany.companyName,
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ],
@@ -350,7 +477,8 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                                       style: TextStyle(color: Colors.white),
                                     ),
                                     Text(
-                                      widget.selectedBook.shippingInfo.trackingNumber,
+                                      widget.selectedBook.shippingInfo
+                                          .trackingNumber,
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ],
@@ -415,7 +543,8 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                                           child: SingleChildScrollView(
                                               child: Text(
                                             "More About Book:\n " +
-                                                widget.selectedBook.product.description,
+                                                widget.selectedBook.product
+                                                    .description,
                                             style:
                                                 TextStyle(color: Colors.white),
                                           )),

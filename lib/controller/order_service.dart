@@ -86,6 +86,26 @@ class OrderService extends GeneralServices {
     }
   }
 
+  Future<APIResponse<int>> cancelOrder(
+      int orderDetailID) async {
+    try {
+      Response response = await _dio.post("order/cancel", queryParameters: {
+        "orderDetailID": orderDetailID,
+      });
+      if (response.statusCode == 200) {
+        return APIResponse<int>(data: response.statusCode);
+      } else if (response.statusCode == 403) {
+        return APIResponse<int>(
+            data: 403, error: true, errorMessage: response.data.toString());
+      }
+      return APIResponse<int>(
+          data: -1, error: true, errorMessage: "Some error occurs");
+    } on DioError catch (e) {
+      return APIResponse<int>(
+          data: -1, error: true, errorMessage: "Some error occurs");
+    }
+  }
+
   Future<APIResponse<List<GivenOrders>>> givenOrders() async {
     try {
       Response response = await _dio.get("order/givenOrders");

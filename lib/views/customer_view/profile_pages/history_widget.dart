@@ -12,7 +12,7 @@ class HistoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=> GivenOrderDetails(ID: givenOrders.orderID) ));
+            Navigator.push(context,MaterialPageRoute(builder: (context)=> GivenOrderDetails(id: givenOrders.orderID) ));
         },
           child: Padding(
           padding:
