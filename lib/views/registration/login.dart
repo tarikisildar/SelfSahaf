@@ -209,20 +209,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 25.0),
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          print("Sifremi unuttum aq");
-                        },
-                        child: Text(
-                          "Forgot My Password",
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

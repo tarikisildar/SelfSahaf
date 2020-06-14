@@ -65,14 +65,13 @@ class OrderService extends GeneralServices {
   }
 
   Future<APIResponse<int>> markOrder(
-      int orderID, int productID, String status) async {
+      int orderID, String status) async {
     try {
       Response response = await _dio.post("order/markOrder", queryParameters: {
-        "orderID": orderID,
-        "productID": productID,
+        "orderDetailID": orderID,
         "status": status
       });
-
+      print(response.data);
       if (response.statusCode == 200) {
         return APIResponse<int>(data: response.statusCode);
       } else if (response.statusCode == 403) {

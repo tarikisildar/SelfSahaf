@@ -110,9 +110,10 @@ class _TakenOrdersState extends State<TakenOrders> {
 
                                 print("please mark order.");
                               } else {
+                                print(markedAs);
                                 orderService
                                     .markOrder(order.orderDetailID,
-                                        order.product.productID, markedAs)
+                                        markedAs)
                                     .then((value) {
                                   if (!value.error) {
                                     _refresh();

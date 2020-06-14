@@ -35,13 +35,14 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
   int status; // 1=> order cancel is able.  2=> confirm/shipping/delivered ise refund is able. 3=> delivered ise rate seller is able
   @override
   void initState() {
-    print(widget.selectedBook.product.status);
-    if (widget.selectedBook.product.status.compareTo("ACTIVE")==0) {
+    print(widget.selectedBook.status);
+    if (widget.selectedBook.status == "ACTIVE") {
       this.status = 1;
-    } else if (widget.selectedBook.product.status == "CONFIRM" ||
-        widget.selectedBook.product.status == "SHIPPING") {
+      print(this.status);
+    } else if (widget.selectedBook.status == "CONFIRM" ||
+        widget.selectedBook.status == "SHIPPING") {
       this.status = 2;
-    } else if (widget.selectedBook.product.status == "DELIVERED") {
+    } else if (widget.selectedBook.status == "DELIVERED") {
       this.status = 3;
     }
     else this.status = 4;
@@ -83,7 +84,7 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                 ),
                 backgroundColor: Theme.of(context).primaryColor,
                 title: Text(
-                  "OK",
+                  "Rate ${widget.selectedBook.seller.name} ${widget.selectedBook.seller.surname}",
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -169,22 +170,6 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
           (this.status == 1)
               ? IconButton(
                   icon: Icon(
-                    Icons.assignment,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RefundPage(
-                                ourOrder: widget.selectedBook,
-                              )),
-                    );
-                  },
-                )
-              : (this.status == 2 || this.status==3)?
-              IconButton(
-                  icon: Icon(
                     Icons.cancel,
                     color: Colors.white,
                   ),
@@ -236,6 +221,22 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                             ],
                           );
                         });
+                  },
+                )
+                : (this.status == 2 || this.status==3)?
+                IconButton(
+                  icon: Icon(
+                    Icons.assignment,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RefundPage(
+                                ourOrder: widget.selectedBook,
+                              )),
+                    );
                   },
                 )
                 :
@@ -398,10 +399,29 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                                   child: Row(
                                     children: <Widget>[
                                       Text(
-                                        "Status: ",
+                                        "Book Status: ",
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       Text(widget.selectedBook.product.status,
+                                          style: TextStyle(color: Colors.white))
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 45,
+                                child: Center(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "Order Status: ",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      Text(widget.selectedBook.status,
                                           style: TextStyle(color: Colors.white))
                                     ],
                                   ),
