@@ -1,6 +1,7 @@
 import 'package:Selfsahaf/controller/order_service.dart';
 import 'package:Selfsahaf/models/order.dart';
 import 'package:Selfsahaf/models/refund_model.dart';
+import 'package:Selfsahaf/views/admin_view/refund_admin_detail_page.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/refund_seller_detail_page.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
@@ -374,7 +375,7 @@ class _RefundRequestForAdminState extends State<RefundRequestForAdmin> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        "Status: ",
+                                                        "Refund Status: ",
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
@@ -386,7 +387,38 @@ class _RefundRequestForAdminState extends State<RefundRequestForAdmin> {
                                                       flex: 12,
                                                       child: Text(
                                                         refundList[index]
-                                                            .order
+                                                            .status,
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                               Expanded(
+                                                flex: 1,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Text(
+                                                        "Order Status: ",
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Text(
+                                                        refundList[index].order
                                                             .status,
                                                         style: TextStyle(
                                                             color: Theme.of(
@@ -483,7 +515,17 @@ class _RefundRequestForAdminState extends State<RefundRequestForAdmin> {
                                           flex: 1,
                                           child: GestureDetector(
                                             onTap: () {
-                                              Navigator.push(context,MaterialPageRoute(builder: (_)=>RefundDetailsPage(refundItem:refundList[index])));
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          RefundDetailsPageForAdmin(
+                                                              refundItem:
+                                                                  refundList[
+                                                                      index]))).then(
+                                                  (value) {
+                                                _fetchData();
+                                              });
                                             },
                                             child: Container(
                                               child: Icon(

@@ -4,6 +4,7 @@ import 'package:Selfsahaf/controller/order_service.dart';
 import 'package:Selfsahaf/models/order.dart';
 import 'package:Selfsahaf/models/refund_model.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/book_profile.dart';
+import 'package:Selfsahaf/views/customer_view/profile_pages/seller_profile.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:Selfsahaf/views/registration/input_field.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -15,7 +16,8 @@ class RefundDetailsPageForAdmin extends StatefulWidget {
   RefundModel refundItem;
   RefundDetailsPageForAdmin({@required this.refundItem});
   @override
-  _RefundDetailsPageForAdminState createState() => _RefundDetailsPageForAdminState();
+  _RefundDetailsPageForAdminState createState() =>
+      _RefundDetailsPageForAdminState();
 }
 
 class _RefundDetailsPageForAdminState extends State<RefundDetailsPageForAdmin> {
@@ -90,8 +92,9 @@ class _RefundDetailsPageForAdminState extends State<RefundDetailsPageForAdmin> {
                     "Status: " + widget.refundItem.status,
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   )),
-                  SizedBox(height: 10,),
-              
+              SizedBox(
+                height: 10,
+              ),
               (_imagesList == null)
                   ? Container(
                       alignment: Alignment.center,
@@ -120,8 +123,8 @@ class _RefundDetailsPageForAdminState extends State<RefundDetailsPageForAdmin> {
                 height: 10,
               ),
               Container(
-                child: Text("User message: \n\t\t\t\t\t\t"+
-                  widget.refundItem.message,
+                child: Text(
+                  "User message: \n\t\t\t\t\t\t" + widget.refundItem.message,
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -137,10 +140,110 @@ class _RefundDetailsPageForAdminState extends State<RefundDetailsPageForAdmin> {
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
                 onPressed: () {
-                  Navigator.push(context,MaterialPageRoute(builder: (_)=>BookProfile(selectedBook: widget.refundItem.order.product, type: 3)));
-
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => BookProfile(
+                              selectedBook: widget.refundItem.order.product,
+                              type: 3)));
                 },
               ),
+               
+              SizedBox(
+                height: 10,
+              ),
+              FlatButton(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Text(
+                  "Seller Profile",
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => SellerProfilePage(
+                            user: widget.refundItem.order.seller,
+                              type: 1)));
+                },
+              ),
+               SizedBox(
+                height: 10,
+              ),
+               Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                            child: SizedBox(
+                          width: 10,
+                        )),
+                        Expanded(
+                          flex: 4,
+                          child: FlatButton(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Text(
+                              "Confrim",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                            onPressed: () {
+                              orderService
+                                  .refundEvaulate(
+                                      true, widget.refundItem.refundID)
+                                  .then((value) {
+                                if (!value.error) {
+                                  Navigator.pop(context);
+                                } else {
+                                  ErrorDialog().showErrorDialog(
+                                      context, "Error", value.errorMessage);
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                            child: SizedBox(
+                          width: 10,
+                        )),
+                        Expanded(
+                          flex: 4,
+                          child: FlatButton(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                            onPressed: () {
+                              orderService
+                                  .refundEvaulate(
+                                      false, widget.refundItem.refundID)
+                                  .then((value) {
+                                if (!value.error) {
+                                  Navigator.pop(context);
+                                } else {
+                                  ErrorDialog().showErrorDialog(
+                                      context, "Error", value.errorMessage);
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                        Expanded(
+                            flex: 2,
+                            child: SizedBox(
+                              width: 10,
+                            )),
+                      ],
+                    )
+                 ,
             ],
           ),
         ),

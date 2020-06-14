@@ -87,7 +87,7 @@ class _RefundDetailsPageState extends State<RefundDetailsPage> {
               Container(
                   alignment: Alignment.center,
                   child: Text(
-                    "Status: " + widget.refundItem.status,
+                    "Refund Status: " + widget.refundItem.status,
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   )),
                   SizedBox(height: 10,),

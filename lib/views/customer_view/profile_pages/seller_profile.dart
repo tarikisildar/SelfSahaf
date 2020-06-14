@@ -55,9 +55,9 @@ class _SellerProfilePage extends State<SellerProfilePage> {
 
   @override
   void initState() {
-    (widget.type == 0)
-        ? this.seller = widget.seller
-        : this.sellerUser = widget.user;
+
+        this.seller = widget.seller;
+         this.sellerUser = widget.user;
 
     _getRatings(context);
     _avgRating(context);
@@ -95,14 +95,7 @@ class _SellerProfilePage extends State<SellerProfilePage> {
         centerTitle: true,
         title: Container(
             height: 50, child: Image.asset("images/logo_white/logo_white.png")),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsPage()));
-              }),
-        ],
+    
       ),
       body: (_isloading)
           ? Container(
@@ -153,7 +146,7 @@ class _SellerProfilePage extends State<SellerProfilePage> {
                                       Text(
                                         (widget.type == 1)
                                             ? sellerUser.name
-                                            : seller.name,
+                                            : seller.userName,
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 18),
                                       ),

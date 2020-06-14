@@ -325,6 +325,31 @@ class _SettingsPage extends State<SettingsPage> {
                     Container(
                         width: 50.0,
                         height: 50.0,
+                        padding: EdgeInsets.fromLTRB(75, 0, 75, 0),
+                        child: FlatButton(
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(12.0),
+                              side: BorderSide(color: Colors.white)),
+                          color: Colors.white,
+                          child: Text(
+                            (_user.role=="ROLE_USER")?
+                            "Be Seller":"Change Seller Address",
+                            style: TextStyle(
+                                color: Color.fromRGBO(230, 81, 0, 1),
+                                fontSize: 20.0),
+                          ),
+                          onPressed: () {
+                            showDialog(context: context, builder: (_)=>AlertDialog(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              content: AddAddress(addType: 1)
+                            )); 
+                            
+                          },
+                        )),
+                        SizedBox(height: 20,),
+                    Container(
+                        width: 50.0,
+                        height: 50.0,
                         padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
                         child: FlatButton(
                           shape: new RoundedRectangleBorder(
