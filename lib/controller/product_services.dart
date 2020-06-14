@@ -9,22 +9,22 @@ import 'dart:io';
 import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/models/category.dart';
 import 'package:Selfsahaf/models/api_response.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+
 class ProductService extends GeneralServices {
   Dio _dio;
   ProductService() {
     this._dio = super.dio;
   }
-    Future<APIResponse<List<Book>>> getSellerBooks(int sellerID) async {
+  Future<APIResponse<List<Book>>> getSellerBooks(int sellerID) async {
     try {
-      Response response = await _dio.get(
-        "product/getSellerBooks", queryParameters: {"sellerID": sellerID}
-      );
+      Response response = await _dio.get("product/getSellerBooks",
+          queryParameters: {"sellerID": sellerID});
       List<Book> result;
       if (response.statusCode == 200) {
         if (response.data.length != 0) {
           List<dynamic> i = response.data;
           result = i.map((e) => Book.fromJson(e)).toList();
-          
         } else
           result = null;
         return APIResponse<List<Book>>(data: result);
@@ -103,8 +103,8 @@ class ProductService extends GeneralServices {
 
   Future<APIResponse<List<Book>>> getTopBooks(int pageNo, int pageSize) async {
     try {
-      Response response = await _dio
-          .get("product/bestSeller", queryParameters: {"pageNo": pageNo,"pageSize":pageSize});
+      Response response = await _dio.get("product/bestSeller",
+          queryParameters: {"pageNo": pageNo, "pageSize": pageSize});
       print(response.data);
       if (response.statusCode == 200) {
         if (response.data.length != 0) {
@@ -178,7 +178,11 @@ class ProductService extends GeneralServices {
   Future<int> updateBook(Book book) async {
     try {
       Response response = await _dio.post("product/updateBook",
-          queryParameters: {"price": book.price, "quantity": book.quantity, "discount":book.discount},
+          queryParameters: {
+            "price": book.price,
+            "quantity": book.quantity,
+            "discount": book.discount
+          },
           data: jsonEncode(book.toJsonBookUpdate()));
       print(response.statusCode);
       return response.statusCode;
@@ -197,7 +201,8 @@ class ProductService extends GeneralServices {
     }
   }
 
-  Future<int> uploadImages(List<File> images, int productID) async {
+  Future<int> uploadImages(
+      List<File> images, int productID, ProgressDialog pr) async {
     List<MultipartFile> multiFiles = [];
     for (int i = 0; i < images.length; i++) {
       multiFiles.add(MultipartFile(
@@ -214,10 +219,34 @@ class ProductService extends GeneralServices {
             new MultipartFile(images[i].openRead(), await images[i].length(),
                 filename: images[i].path.split("/").last)));
       }
-
-      Response response = await _dio.post("product/uploadImages",
-          data: formData,
-          options: Options(contentType: 'multipart/form-data', method: 'POST'));
+      pr.show();
+      Response response = await _dio.post(
+        "product/uploadImages",
+        data: formData,
+        options: Options(contentType: 'multipart/form-data', method: 'POST'),
+        onSendProgress: (count, total) {
+          print(count);
+          print(total);
+          pr.update(
+            progress: ((count / total)*100).toInt().toDouble(),
+            message: "Photo uploading. Please wait...",
+            progressWidget: Container(
+              
+                padding: EdgeInsets.all(8.0),
+                child: CircularProgressIndicator()),
+            maxProgress: 100.0,
+            progressTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 13.0,
+                fontWeight: FontWeight.w400),
+            messageTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 19.0,
+                fontWeight: FontWeight.w600),
+          );
+        },
+      );
+      pr.hide();
       print("response ${response.data.toString()}");
       return response.statusCode;
     } on DioError catch (e) {
@@ -289,16 +318,16 @@ class ProductService extends GeneralServices {
   }
 
   Future<List<Book>> getAllBooks(
-      int pageNo, int pageSize, String sortBy,bool increasing) async {
-        List<Book> result;
+      int pageNo, int pageSize, String sortBy, bool increasing) async {
+    List<Book> result;
     try {
       Response response = await _dio.get("product/getBooks", queryParameters: {
         "pageNo": pageNo,
         "pageSize": pageSize,
         "sortBy": sortBy,
-        "ascending":increasing
+        "ascending": increasing
       });
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         if (response.data.length != 0) {
           List<dynamic> i = response.data;
           result = i.map((p) => Book.fromJson(p)).toList();
@@ -317,42 +346,39 @@ class ProductService extends GeneralServices {
     }
   }
 
-  Future<APIResponse<List<Image>>> getAllImages(
-     int productID) async {
+  Future<APIResponse<List<Image>>> getAllImages(int productID) async {
     try {
       Response response = await _dio.get("product/getImagePaths",
           queryParameters: {"productID": productID});
-      List<Image> images=new List();
+      List<Image> images = new List();
       if (response.statusCode == 200) {
-         
-          int size=response.data.length;
-       for (int i = 0; i < size; i++) {
+        int size = response.data.length;
+        for (int i = 0; i < size; i++) {
           response = await _dio.get("product/images",
               queryParameters: {
-                "path":
-                   "/./root/images/productImages/$productID/${i+1}.png"
+                "path": "/./root/images/productImages/$productID/${i + 1}.png"
               },
               options: Options(
                   contentType: 'application/json',
                   method: 'GET',
                   responseType: ResponseType.bytes));
-                  print(response.data);
-                  images.add(Image.memory(response.data, fit:BoxFit.cover));
+          print(response.data);
+          images.add(Image.memory(response.data, fit: BoxFit.cover));
         }
 
-        return APIResponse(data:images);
+        return APIResponse(data: images);
       }
-      return APIResponse(data:null,error:true,errorMessage: "Error occurs");
+      return APIResponse(data: null, error: true, errorMessage: "Error occurs");
     } on DioError catch (e) {
       if (e.response != null) {
-       return APIResponse(data:null,error:true,errorMessage: "Error occurs");
+        return APIResponse(
+            data: null, error: true, errorMessage: "Error occurs");
       } else {
         // Something happened in setting up or sending the request that triggered an Error
 
-        return APIResponse(data:null,error:true,errorMessage: "Error occurs");
+        return APIResponse(
+            data: null, error: true, errorMessage: "Error occurs");
       }
     }
   }
-  
 }
-
