@@ -21,8 +21,9 @@ class _EditCategoriesState extends State<EditCategories> {
     super.initState();
     _getCategories(context);
   }
-bool error=false;
-String errorMessage=" ";
+
+  bool error = false;
+  String errorMessage = " ";
   _getCategories(BuildContext context) async {
     _categoryService.getCategories().then((value) {
       if (!value.error) {
@@ -39,6 +40,7 @@ String errorMessage=" ";
   }
 
   final _formKey = GlobalKey<FormState>();
+  final _discountFromKey=GlobalKey<FormState>();
 /*
   void messagepopup(int val) {
     var _title;
@@ -91,7 +93,22 @@ String errorMessage=" ";
 
   CategoryService categoryApi = new CategoryService();
   TextEditingController categorynameController = TextEditingController();
+  TextEditingController discountController=TextEditingController();
 
+    bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return int.tryParse(s) != null;
+  }
+
+  String discountValidation(String discount) {
+
+    if (!isNumeric(discount)) return "price should be number";
+    if(int.parse(discount)>100 ||int.parse(discount)<0 )
+     return 'not valid price';
+    return  null;
+  }
   String categorynameValidation(String categoryname) {
     if (categoryname.length < 2) {
       return "Category name too small.";
@@ -142,8 +159,148 @@ String errorMessage=" ";
                             textAlign: TextAlign.center,
                           ),
                         )
-                      : CategoryCard(
-                          categoryName: _categories[index].categoryName);
+                      : Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 9,
+                              child: CategoryCard(
+                                  categoryName:
+                                      _categories[index].categoryName,
+                                       discount: _categories[index].discount,),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                height: 100,
+                       
+                                decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(25))),
+                                child: InkWell(
+                                  onTap: () {
+                                    discountController.text=_categories[index].discount.toString();
+                                       return showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  backgroundColor: Color(0xffe65100),
+                  title: Text(
+                    "Add Discount",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  content: StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
+                    return SafeArea(
+                      child: Form(
+                        key: _discountFromKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            InputField(
+                              labelText: "Discount",
+                              inputType: TextInputType.text,
+                              validation: discountValidation,
+                              controller: discountController,
+                            ),
+                            (error)
+                                ? Text(
+                                    errorMessage,
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                : Container(),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 6,
+                                      child: SizedBox(
+                                        width: 50,
+                                      )),
+                                  Expanded(
+                                    flex: 4,
+                                    child: FlatButton(
+                                      onPressed: () {
+                                        if(_discountFromKey.currentState.validate())
+                                        _categoryService
+                                          .setDiscountToCategory(_categories[index].categoryID, int.parse(discountController.text))
+                                            .then((value) {
+                                          if (!value.error) {
+                                            setState(() {
+                                              error = false;
+                                            });
+                                            _getCategories(context);
+                                            Navigator.pop(context);
+                                          } else {
+                                            setState(() {
+                                              error = true;
+                                              errorMessage = value.errorMessage;
+                                            });
+                                          }
+                                        });
+                                      },
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Text(
+                                        "Add",
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                      flex: 1,
+                                      child: SizedBox(
+                                        width: 20,
+                                      )),
+                                  Expanded(
+                                    flex: 4,
+                                    child: FlatButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                );
+              });
+
+                                  },
+                                  child: Container(
+                                      child: Icon(Icons.attach_money,
+                                          size: 25,
+                                          color: Theme.of(context).primaryColor)),
+                                ),
+                              ),
+                            )
+                          ],
+                        );
                 },
                 itemCount: (_categories == null) ? 1 : _categories.length,
               ),
@@ -154,7 +311,7 @@ String errorMessage=" ";
           )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          categorynameController.text="";
+          categorynameController.text = "";
           return showDialog(
               context: context,
               builder: (context) {
@@ -174,91 +331,97 @@ String errorMessage=" ";
                         key: _formKey,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              
-                              InputField(
-                                labelText: "Category Name",
-                                inputType: TextInputType.text,
-
-                                validation: categorynameValidation,
-                                controller: categorynameController,
+                          children: <Widget>[
+                            InputField(
+                              labelText: "Category Name",
+                              inputType: TextInputType.text,
+                              validation: categorynameValidation,
+                              controller: categorynameController,
+                            ),
+                            (error)
+                                ? Text(
+                                    errorMessage,
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                : Container(),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 6,
+                                      child: SizedBox(
+                                        width: 50,
+                                      )),
+                                  Expanded(
+                                    flex: 4,
+                                    child: FlatButton(
+                                      onPressed: () {
+                                        if(_formKey.currentState.validate())
+                                        _categoryService
+                                            .addCategory(
+                                                categorynameController.text)
+                                            .then((value) {
+                                          if (!value.error) {
+                                            setState(() {
+                                              error = false;
+                                            });
+                                            _getCategories(context);
+                                            Navigator.pop(context);
+                                          } else {
+                                            setState(() {
+                                              error = true;
+                                              errorMessage = value.errorMessage;
+                                            });
+                                          }
+                                        });
+                                      },
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Text(
+                                        "Add",
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                      flex: 1,
+                                      child: SizedBox(
+                                        width: 20,
+                                      )),
+                                  Expanded(
+                                    flex: 4,
+                                    child: FlatButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              (error)?Text(errorMessage,style: TextStyle(color:Colors.white),):Container(),
-                              SizedBox(height: 10,),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                            flex: 6,
-                            child: SizedBox(
-                              width: 50,
-                            )),
-                        Expanded(
-                          flex: 4,
-                          child: FlatButton(
-                            onPressed: () {
-                              _categoryService
-                            .addCategory(categorynameController.text)
-                            .then((value) {
-                          if (!value.error) {
-                            setState(() {
-                              error=false;
-                            });
-                            _getCategories(context);
-                            Navigator.pop(context);
-                          }
-                          else{
-                            setState(() {
-                              error=true;
-                              errorMessage=value.errorMessage;
-                            });
-                          }
-                        });
-                            },
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              "Add",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          ),
+                            )
+                          ],
                         ),
-                        Expanded(
-                            flex: 1,
-                            child: SizedBox(
-                              width: 20,
-                            )),
-                        Expanded(
-                          flex: 4,
-                          child: FlatButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              "Cancel",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                            ],
-                          ),
-                       
                       ),
                     );
                   }),
-                 
                 );
               });
         },

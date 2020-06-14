@@ -93,16 +93,7 @@ class _SahafDrawer extends State<SahafDrawer> {
               thickness: 2,
               color: Colors.white60,
             ),
-            InkWell(
-              child: ListTile(
-                  leading: Icon(Icons.person, color: Colors.white),
-                  title: Text(
-                    "My Account",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  )),
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProfilePage())),
-            ),
+        
             InkWell(
               child: ListTile(
                   leading: Icon(

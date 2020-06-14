@@ -1,3 +1,5 @@
+import 'package:Selfsahaf/models/address.dart';
+import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
@@ -88,11 +90,9 @@ class _SettingsPage extends State<SettingsPage> {
     String pattern =
         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.!@#\$&*~]).{8,24}$';
     RegExp regExp = new RegExp(pattern);
-    return (!doppelValidation(
-                _passController.text, _passCheckController.text))
-            ? "password does not match":regExp.hasMatch(passwrd)
-        ? null
-            : "Lütfen geçerli bir şifre giriniz.";
+    return (!doppelValidation(_passController.text, _passCheckController.text))
+        ? "password does not match"
+        : regExp.hasMatch(passwrd) ? null : "Lütfen geçerli bir şifre giriniz.";
   }
 
   bool doppelValidation(String random, String random2) {
@@ -107,10 +107,9 @@ class _SettingsPage extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Container(
-              height: 50,
-              child: Image.asset("images/logo_white/logo_white.png")),
-        ),
+        title: Container(
+            height: 50, child: Image.asset("images/logo_white/logo_white.png")),
+      ),
       backgroundColor: Color.fromRGBO(230, 81, 0, 1),
       key: _scaffoldKey,
       body: SafeArea(
@@ -188,7 +187,7 @@ class _SettingsPage extends State<SettingsPage> {
                         _checkPasswordChange = false;
                         _passController.text = "";
                         _passCheckController.text = "";
-                      
+
                         return showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -233,7 +232,6 @@ class _SettingsPage extends State<SettingsPage> {
                                               color: Colors.white,
                                             ),
                                           ),
-                                         
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
@@ -258,14 +256,12 @@ class _SettingsPage extends State<SettingsPage> {
                                                     setState(() {
                                                       _checkPasswordChange =
                                                           true;
-                                                     
                                                     });
                                                     Navigator.pop(context);
                                                   } else {
                                                     setState(() {
                                                       _checkPasswordChange =
                                                           true;
-                                                    
                                                     });
                                                   }
                                                 },
@@ -325,28 +321,63 @@ class _SettingsPage extends State<SettingsPage> {
                     Container(
                         width: 50.0,
                         height: 50.0,
-                        padding: EdgeInsets.fromLTRB(75, 0, 75, 0),
+                        padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
                         child: FlatButton(
                           shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(12.0),
                               side: BorderSide(color: Colors.white)),
                           color: Colors.white,
                           child: Text(
-                            (_user.role=="ROLE_USER")?
-                            "Be Seller":"Change Seller Address",
+                            (_user.role == "ROLE_USER")
+                                ? "Be Seller"
+                                : "Change Seller Address",
                             style: TextStyle(
                                 color: Color.fromRGBO(230, 81, 0, 1),
                                 fontSize: 20.0),
                           ),
                           onPressed: () {
-                            showDialog(context: context, builder: (_)=>AlertDialog(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              content: AddAddress(addType:1 )
-                            )); 
-                            
+                            if (_user.role != "ROLE_USER") {
+                              Address sellerAddress;
+                              userService.getSellerAddress().then((value) {
+                                if (!value.error) {
+                                  sellerAddress = value.data;
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => AlertDialog(
+                                          backgroundColor:
+                                              Theme.of(context).primaryColor,
+                                          content: AddAddress(
+                                            addType: 2,
+                                            addressID: sellerAddress.addressID,
+                                            addressLine:
+                                                sellerAddress.addressLine,
+                                            addressName:
+                                                sellerAddress.addressName,
+                                            city: sellerAddress.city,
+                                            country: sellerAddress.country,
+                                            postalCode:
+                                                sellerAddress.postalCode,
+                                          )));
+                                }else{
+                                  ErrorDialog().showErrorDialog(context, "Error!", value.errorMessage);
+                                }
+                              });
+                            }
+                            else{
+                              showDialog(
+                                      context: context,
+                                      builder: (_) => AlertDialog(
+                                          backgroundColor:
+                                              Theme.of(context).primaryColor,
+                                          content: AddAddress(
+                                            addType: 1
+                                          )));
+                            }
                           },
                         )),
-                        SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Container(
                         width: 50.0,
                         height: 50.0,

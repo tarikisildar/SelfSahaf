@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 class CategoryCard extends StatefulWidget {
   final String categoryName;
+  final int discount;
 
   CategoryCard({
     @required this.categoryName,
+    @required this.discount
   });
 
   @override
@@ -42,7 +44,24 @@ class _CategoryCardState extends State<CategoryCard> {
                 ),
               ),
             ),
-           
+               Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                
+                  "%${widget.discount}",
+                  style: TextStyle(
+                    color: Color(0xffe65100),
+                    fontSize: 18,
+                    
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            
+            
            
           ],
         ),

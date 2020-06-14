@@ -240,6 +240,16 @@ class AuthService extends GeneralServices {
       }
     }
   }
+  Future<APIResponse<Address>> getSellerAddress()async{
+    try{
+        Response response=await _dio.get("user/getselleradress");
+        if(response.statusCode==200)
+          return APIResponse<Address>(data: Address.fromJson(response.data));
+        return APIResponse<Address>(data: null, error: true,errorMessage: response.data.toString());
+    }on DioError catch(e){
+   return APIResponse<Address>(data: null, error: true,errorMessage:"some error occurs.");
+    }
+  }
   User getUser() {
     return _user;
   }

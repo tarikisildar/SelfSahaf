@@ -8,10 +8,10 @@ class Book {
   String categoryName;
   String isbn;
   String sellerName;
-  String status,condition;
+  String status, condition;
   int productID;
   int quantity;
-
+  int discount;
   double price;
   int categoryID;
   int sellerID;
@@ -30,9 +30,10 @@ class Book {
       this.categoryID,
       this.sellerName,
       this.status,
-      this.condition});
-  Book.bookForUpdate({
-this.authorName,
+      this.condition,
+      this.discount});
+  Book.bookForUpdate(
+      {this.authorName,
       this.name,
       this.description,
       this.language,
@@ -46,8 +47,8 @@ this.authorName,
       this.productID,
       this.categoryName,
       this.condition,
-      this.status
-  });
+      this.status,
+      this.discount});
 
   Map<String, dynamic> toJsonBook() {
     return {
@@ -61,17 +62,16 @@ this.authorName,
       "name": name,
       "imagePath": imagePath,
       "publisher": publisher,
-      "condition":condition,
-      "status":status
+      "condition": condition,
+      "status": status
     };
   }
-    Map<String, dynamic> toJsonBookUpdate() {
+
+  Map<String, dynamic> toJsonBookUpdate() {
     return {
       "author": authorName,
       "categories": [
-        {"categoryID": categoryID,
-          "name": categoryName
-        }
+        {"categoryID": categoryID, "name": categoryName}
       ],
       "description": description,
       "isbn": isbn,
@@ -79,9 +79,9 @@ this.authorName,
       "name": name,
       "imagePath": imagePath,
       "publisher": publisher,
-      "productID":productID,
-      "condition":condition,
-      "status":status
+      "productID": productID,
+      "condition": condition,
+      "status": status
     };
   }
 
@@ -94,16 +94,16 @@ this.authorName,
         price = json["sells"][0]['currentPrice'],
         quantity = json["sells"][0]['quantity'],
         isbn = json["isbn"],
-        categoryName=json["categories"][0]["name"],
-        imagePath=json["imagePath"],
-        language=json["language"],
-        sellerID=json["sells"][0]["sellerID"],
-        categoryID=json["categories"][0]["categoryID"],
-        userName=json["sells"][0]["user"]["name"],
-        userSurname=json["sells"][0]["user"]["surname"],
-       condition=json["condition"],
-      status=json["status"]
-        ;
+        categoryName = json["categories"][0]["name"],
+        imagePath = json["imagePath"],
+        language = json["language"],
+        sellerID = json["sells"][0]["sellerID"],
+        categoryID = json["categories"][0]["categoryID"],
+        userName = json["sells"][0]["user"]["name"],
+        userSurname = json["sells"][0]["user"]["surname"],
+        condition = json["condition"],
+        status = json["status"],
+        discount = json["sells"][0]['discount'];
 
   fromJson(e) {}
 }

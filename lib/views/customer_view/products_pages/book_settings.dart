@@ -32,6 +32,7 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   TextEditingController _descController;
   TextEditingController _priceController;
   TextEditingController _quantityController;
+   TextEditingController discountController=TextEditingController();
   bool _edit = false;
   List<Category> categories;
   Category selectedCategory;
@@ -67,7 +68,7 @@ String condition;
         TextEditingController(text: "${widget.selectedBook.quantity}");
     _descController =
         TextEditingController(text: widget.selectedBook.description);
-
+    discountController=TextEditingController(text:widget.selectedBook.discount.toString());
     selectedLanguage = widget.selectedBook.language;
     _getCategories();
   }
@@ -88,6 +89,13 @@ String condition;
     });
   }
 
+  String discountValidation(String discount) {
+
+    if (!isNumeric(discount)) return "price should be number";
+    if(int.parse(discount)>100 ||int.parse(discount)<0 )
+     return 'not valid price';
+    return  null;
+  }
   bool isNumeric(String s) {
     if (s == null) {
       return false;
@@ -234,6 +242,22 @@ String condition;
                                 controller: _priceController,
                                 inputType: TextInputType.number,
                                 validation: _priceValidation,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                       Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 5,
+                              child: InputField(
+                                labelText: "Discount",
+                                controller:   discountController,
+                                inputType: TextInputType.number,
+                                validation: discountValidation,
                               ),
                             ),
                           ],

@@ -51,5 +51,19 @@ class CategoryService extends GeneralServices{
           data: null, error: true, errorMessage: "Some error occurs");
     }
   }
+  Future<APIResponse<int>> setDiscountToCategory(int categoryID,int discount)async{
+    try{
+        Response response=await _dio.post("admin/setDiscount",queryParameters: {
+          "categoryID":categoryID,
+          "discount":discount
+        });
+        if(response.statusCode==200){
+          return APIResponse<int>(data: response.statusCode);
+        }
+        return APIResponse<int>(data: response.statusCode,error: true,errorMessage: response.data.toString());
+    }on DioError catch(e){
+      return APIResponse<int>(data: -1,error: true, errorMessage: "Some erros occurs");
+    }
+  }
 
 }
