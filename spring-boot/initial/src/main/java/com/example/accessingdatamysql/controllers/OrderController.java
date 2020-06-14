@@ -234,7 +234,7 @@ public class OrderController {
 
     @ApiOperation("Mark Order as shipping, Confirmed or delivered. for seller")
     @PostMapping(path = "/markOrder")
-    public  @ResponseBody String MarkShipping(@RequestParam Integer orderID, @RequestParam Integer productID, @RequestParam OrderStatus status,HttpServletResponse response)
+    public  @ResponseBody String MarkShipping(@RequestParam Integer orderDetailID, @RequestParam OrderStatus status,HttpServletResponse response)
     {
         if(!(status == OrderStatus.CONFIRMED || status == OrderStatus.SHIPPING || status == OrderStatus.DELIVERED))
         {
@@ -244,7 +244,7 @@ public class OrderController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
-        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderIDAndProductIDAndSellerID(orderID,productID,userID);
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailsByOrderDetailID(orderDetailID);
 
         orderDetail.setStatus(status);
         orderDetailRepository.save(orderDetail);
