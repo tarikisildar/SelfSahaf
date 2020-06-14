@@ -13,6 +13,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import "package:http/http.dart" as http;
+
 class AddBook extends StatefulWidget {
   @override
   _AddBookState createState() => new _AddBookState();
@@ -34,7 +35,7 @@ class _AddBookState extends State<AddBook> {
   Category selectedCategory;
   List<File> _imagesList = new List();
   final picker = ImagePicker();
-String condition;
+  String condition;
   List<String> languages = [
     "TR",
     "EN",
@@ -92,12 +93,9 @@ String condition;
   String _priceValidation(String price) {
     bool priceValid = false;
     if (!isNumeric(price)) return "price should be number";
-    if (price.length > 0 && price.length < 4) {
-      priceValid = true;
-      if (int.parse(price) <= 0)
-        return "price can not be less then or equal zero";
-    }
-    if (price.length >= 4) return "price is max 3 character";
+
+    if (double.parse(price) <= 0)
+      return "price can not be less then or equal zero";
 
     return priceValid ? null : 'not valid price';
   }
@@ -118,13 +116,9 @@ String condition;
   String _quantityValidation(String quantity) {
     if (!isNumeric(quantity)) return "quantity should be number";
     bool qValid = false;
-    if (quantity.length > 0 && quantity.length < 3) {
-      qValid = true;
 
       if (int.parse(quantity) <= 0)
         return "quantitiy can not be less then or equal zero";
-    }
-    if (quantity.length >= 3) return "quantity is max 2 character";
     return qValid ? null : 'not valid quantity';
   }
 
@@ -200,7 +194,6 @@ String condition;
             height: 50,
             child: Image.asset("images/logo_white/logo_white.png"),
           ),
-         
         ),
         body: Builder(builder: (context) {
           if (_isLoading) {
@@ -392,7 +385,7 @@ String condition;
                                 ),
                               ),
                             )),
-                            Padding(
+                        Padding(
                             padding: const EdgeInsets.only(bottom: 12.0),
                             child: Theme(
                               data: ThemeData(
@@ -403,7 +396,8 @@ String condition;
                                     "Select Condition",
                                     style: TextStyle(color: Colors.white),
                                   ),
-                                  items: ["NEW","SECONDHAND"].map((String dropdownItem) {
+                                  items: ["NEW", "SECONDHAND"]
+                                      .map((String dropdownItem) {
                                     return DropdownMenuItem<String>(
                                       value: dropdownItem,
                                       child: Text(
@@ -414,14 +408,13 @@ String condition;
                                   }).toList(),
                                   onChanged: (String newValueSelected) {
                                     setState(() {
-                                      this.condition= newValueSelected;
+                                      this.condition = newValueSelected;
                                     });
                                   },
                                   value: this.condition,
                                 ),
                               ),
                             )),
-                        
                         Container(
                           height: 55,
                           width: 220,
@@ -441,7 +434,8 @@ String condition;
                                 onPressed: () {
                                   if (_formKey.currentState.validate() &&
                                       selectedCategory != null &&
-                                      selectedLanguage != null &&this.condition!=null&&
+                                      selectedLanguage != null &&
+                                      this.condition != null &&
                                       _imagesList.length != 0) {
                                     Book addedBook = Book(
                                         categoryID: selectedCategory.categoryID,
@@ -456,25 +450,30 @@ String condition;
                                         condition: this.condition,
                                         status: "ACTIVE",
                                         name: _booknameController.text,
-                                        price: double.parse(_priceController.text),
+                                        price:
+                                            double.parse(_priceController.text),
                                         sellerName:
                                             userService.getUser().getUserName(),
                                         publisher: _publisherController.text);
+                                        setState(() {
+                                          _isLoading=true;
+                                        });
                                     productService
                                         .addBook(addedBook,
                                             userService.getUser().userID)
                                         .then((e) {
-                                       productService.uploadImages(_imagesList, e).then((value){
-                                         if(value==200)
-                                           Navigator.of(context).pop(addedBook);
-                                          else{
-                                            productService.deleteBook(e);
+                                      productService
+                                          .uploadImages(_imagesList, e)
+                                          .then((value) {
+                                        if (value == 200)
+                                          Navigator.of(context).pop(addedBook);
+                                        else {
+                                          productService.deleteBook(e);
                                           print("HATA");
                                           print(value);
                                           print(e);
-                                          }
-                                       });
-                                    
+                                        }
+                                      });
                                     });
                                   } else if (selectedLanguage == null ||
                                       selectedCategory == null ||

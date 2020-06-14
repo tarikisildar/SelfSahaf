@@ -88,7 +88,7 @@ class AuthService extends GeneralServices {
   Future<int> addUserAddress(Address address) async {
     try {
       Response response = await _dio.post("user/addAddress",
-          data: json.encode(address.toJson()));
+          data: json.encode(address.toJson()), );
       print(response);
       return response.statusCode;
     } on DioError catch (e) {
