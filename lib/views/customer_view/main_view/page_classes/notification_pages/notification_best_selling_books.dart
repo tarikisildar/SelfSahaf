@@ -80,10 +80,11 @@ class _NotificationBestBooks extends State<NotificationBestBooks> {
                               child: ProductCard(
                                   authorName: bestBooks[index].authorName,
                                   bookName: bestBooks[index].name,
-                                  price: bestBooks[index].price.toString(),
+                                  price: bestBooks[index].price,
                                   productID: bestBooks[index].productID,
                                   sellerID: bestBooks[index].sellerID,
                                   publisherName: bestBooks[index].publisher,
+                                  discount: bestBooks[index].discount,
                                   type: 1),
                             );
                     },

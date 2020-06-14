@@ -138,7 +138,7 @@ class _ProductsCardState extends State<ProductCard> {
                         child: Padding(
                           padding: const EdgeInsets.all(2.5),
                           child: Text(
-                            (widget.type == 1)
+                            (widget.type == 1 && widget.amount!=null)
                                 ? "Amount: " +
                                     widget.amount.toString() +
                                     "    " +

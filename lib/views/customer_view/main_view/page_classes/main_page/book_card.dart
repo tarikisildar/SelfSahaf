@@ -70,13 +70,12 @@ class _BookCardState extends State<BookCard> {
                                         color: Colors.white)),
                               ),
                               Expanded(
-                                flex: 2,
+                                flex: 3,
                                 child: Text(
                                   "Author: " + widget.book.authorName,
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                              SizedBox(height: 5,),
                               Expanded(
 
                                 flex: 4,
