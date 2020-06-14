@@ -215,7 +215,7 @@ class _ShippingCompaniesState extends State<ShippingCompanies> {
                 );
               }),
               title:
-                  Text("Add Category", style: TextStyle(color: Colors.white)),
+                  Text("Add Company", style: TextStyle(color: Colors.white)),
             ));
   }
 

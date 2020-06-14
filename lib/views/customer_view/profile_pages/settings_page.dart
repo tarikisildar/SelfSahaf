@@ -341,7 +341,7 @@ class _SettingsPage extends State<SettingsPage> {
                           onPressed: () {
                             showDialog(context: context, builder: (_)=>AlertDialog(
                               backgroundColor: Theme.of(context).primaryColor,
-                              content: AddAddress(addType: 1)
+                              content: AddAddress(addType:1 )
                             )); 
                             
                           },

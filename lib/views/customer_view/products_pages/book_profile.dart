@@ -175,6 +175,7 @@ class _BookProfileState extends State<BookProfile> {
                                           color: Theme.of(context).primaryColor,
                                           fontSize: 25),
                                     )),
+                                  (widget.selectedBook.quantity==_itemCount)?Container():
                                 new IconButton(
                                     icon: new Icon(
                                       Icons.add,
