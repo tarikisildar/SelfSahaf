@@ -16,7 +16,7 @@ class UserCard extends StatefulWidget {
   _UserCardState createState(){  return _UserCardState(); }
 }
 class _UserCardState extends State<UserCard> {
-  ProductService get _productService => GetIt.I<ProductService>();
+  ProductService get _userService => GetIt.I<ProductService>();
    Uint8List photo;
   /*@override
   void initState() {

@@ -109,7 +109,12 @@ return  (int.parse(value)!=null)?true:false;
     return "please give correct year";
     if(int.parse(year)==int.parse(timeYear)){
       if(int.parse(mount)<int.parse(time[1])){
-        return "please give correct month";
+        if(int.parse(mount)<=12){
+          return null;
+        }
+        else {
+          return "please give correct month";
+        }
       }
       else 
       return null;
