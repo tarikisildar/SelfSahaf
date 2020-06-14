@@ -22,7 +22,7 @@ class ProductCard extends StatefulWidget {
       @required this.productID,
       @required this.type,
       this.amount,
-      @required this.discount});
+      this.discount});
 
   @override
   _ProductsCardState createState() {
@@ -36,7 +36,7 @@ class _ProductsCardState extends State<ProductCard> {
   double currentprice;
   @override
   void initState() {
- 
+    
     if(widget.discount==0){
    currentprice=widget.price;
     }
@@ -137,7 +137,7 @@ class _ProductsCardState extends State<ProductCard> {
                         child: Padding(
                           padding: const EdgeInsets.all(2.5),
                           child: Text(
-                            (widget.type == 1 && widget.amount!=null)
+                            (widget.type == 1 )
                                 ? "Amount: " +
                                     widget.amount.toString() +
                                     "    " +

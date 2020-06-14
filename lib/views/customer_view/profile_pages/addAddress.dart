@@ -69,7 +69,7 @@ class _AddAddressState extends State<AddAddress> {
 
   String _postalCodeValidation(String postalCode) {
     return (!isNumeric(postalCode))
-        ? "Postal Code must be number"
+        ? "Postal Code must be numberic"
         : (int.parse(postalCode) < 0) ? "Postal Code must be postive" : null;
   }
 
