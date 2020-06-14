@@ -11,15 +11,15 @@ import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
 
-class RefundDetailsPage extends StatefulWidget {
+class RefundDetailsPageForAdmin extends StatefulWidget {
   RefundModel refundItem;
-  RefundDetailsPage({@required this.refundItem});
+  RefundDetailsPageForAdmin({@required this.refundItem});
   @override
-  _RefundDetailsPageState createState() => _RefundDetailsPageState();
+  _RefundDetailsPageForAdminState createState() => _RefundDetailsPageForAdminState();
 }
 
-class _RefundDetailsPageState extends State<RefundDetailsPage> {
-  List<Image> _imagesList = new List();
+class _RefundDetailsPageForAdminState extends State<RefundDetailsPageForAdmin> {
+  List<Image> _imagesList;
 
   String refundreasonValidation(String reason) {
     if (reason.length < 60) {
@@ -92,7 +92,7 @@ class _RefundDetailsPageState extends State<RefundDetailsPage> {
                   )),
                   SizedBox(height: 10,),
               
-              (_imagesList==null)
+              (_imagesList == null)
                   ? Container(
                       alignment: Alignment.center,
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 20),

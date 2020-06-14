@@ -1,4 +1,5 @@
 import 'package:Selfsahaf/controller/user_controller.dart';
+import 'package:Selfsahaf/views/admin_view/refund_admin_page.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/admin_view/admin_search.dart';
@@ -90,6 +91,24 @@ class AdminDrawer extends StatelessWidget {
                 },
               ),
             ),
+            InkWell(
+                    child: ListTile(
+                        leading: Icon(
+                          Icons.record_voice_over,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          "Refund Orders",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        )),
+                    onTap: () {
+                      Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RefundRequestForAdmin()));
+                             
+                    },
+                  ),
              Expanded(
               flex: 3,
               child: InkWell(

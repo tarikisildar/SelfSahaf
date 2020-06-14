@@ -1,10 +1,13 @@
 
 
+import 'order.dart';
+
 class RefundModel {
  int refundID;
  String dateTime;
  String status;
  String message;
+ Order order;
   RefundModel({
     this.dateTime,
     this.message,
@@ -18,6 +21,7 @@ class RefundModel {
       "datetime": dateTime,
       "status": status,
       "message": message,
+      
 
     };
   }
@@ -26,7 +30,8 @@ class RefundModel {
       : refundID = json["refundID"],
       dateTime = json["datetime"],
       status = json["status"],
-      message = json["message"]
+      message = json["message"],
+      order=Order.fromJson(json["orderDetail"])
         ;
 
   

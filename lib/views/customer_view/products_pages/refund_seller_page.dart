@@ -1,5 +1,7 @@
 import 'package:Selfsahaf/controller/order_service.dart';
 import 'package:Selfsahaf/models/order.dart';
+import 'package:Selfsahaf/models/refund_model.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/refund_seller_detail_page.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:dio/dio.dart';
@@ -8,171 +10,30 @@ import 'package:get_it/get_it.dart';
 
 class RefundRequest extends StatefulWidget {
   @override
-  _TRefundRequestState createState() => _TRefundRequestState();
+  _RefundRequestState createState() => _RefundRequestState();
 }
 
-class _TRefundRequestState extends State<RefundRequest> {
+class _RefundRequestState extends State<RefundRequest> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   OrderService get orderService => GetIt.I<OrderService>();
-  List<Order> allorders;
+  List<RefundModel> refundList;
   bool _isloading = true;
-  List<String> allStatus = ["CONFIRMED", "SHIPPING", "DELIVERED"];
   _fetchData() async {
     _refresh();
   }
 
-  _markDialog(BuildContext context, Order order) {
-    List<String> status;
-      String markedAs;
-      bool error=false;
-      String errorMessage;
-      String orderStatus=order.status;
-    if (order.status == "CONFIRMED")
-      status = ["SHIPPING", "DELIVERED"];
-    else if (order.status == "SHIPPING")
-      status = ["DELIVERED"];
-    else if (order.status == "CANCELLED")
-      status = ["CANCELLED"];
-      else if (order.status == "DELIVERED")
-      status = ["DELIVERED"];
-    else if (order.status == "REFUNDREQUEST")
-      status = ["REFUNDREQUEST"];
-    else if (order.status == "REFUNDED")
-      status = ["REFUNDED"];
-    else if (order.status == "BLOCKED")
-      status = ["BLOCKED"];
-    else{
-      status = ["CONFIRMED", "SHIPPING", "DELIVERED"];
-      orderStatus="Select Status";
-      }
-
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).primaryColor,
-            title:
-                Text("Mark Order As:", style: TextStyle(color: Colors.white)),
-            content: StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  DropdownButton<String>(
-                    hint: Text(
-                     orderStatus,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    items: status.map((String dropdownItem) {
-                      return DropdownMenuItem<String>(
-                        value: dropdownItem,
-                        child: Text(
-                          dropdownItem,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (String newValueSelected) {
-                      setState(() {
-                        markedAs = newValueSelected;
-                      });
-                    },
-                    value: markedAs,
-                  ),
-                  (error)?Text(errorMessage,style: TextStyle(color:Colors.white),):Container(),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                            flex: 6,
-                            child: SizedBox(
-                              width: 50,
-                            )),
-                        Expanded(
-                          flex: 4,
-                          child: FlatButton(
-                            onPressed: () {
-                              if (markedAs == null) {
-                                setState(() {
-                                    error=true;
-                                    errorMessage="Please select a status";
-                                });
-                              
-                                print("please mark order.");
-                              } else {
-                                print(markedAs);
-                                orderService.markOrder(order.orderDetailID, order.product.productID, markedAs).then((value) {
-                                  if(!value.error){
-                                    _refresh();
-                                    Navigator.pop(context);
-                                  }
-                                  else{
-                                    setState(() {
-                                          error=true;
-                                          errorMessage=value.errorMessage;
-                                    });
-                                
-                                    print(value.errorMessage);
-                                  }
-                                });
-                              }
-                            },
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              "Apply",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: SizedBox(
-                              width: 20,
-                            )),
-                        Expanded(
-                          flex: 4,
-                          child: FlatButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              "Cancel",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              );
-            }),
-          );
-        });
-  }
-
   Future<Null> _refresh() {
-    return orderService.getTakenOrders().then((e) {
+    return orderService.getRefundRequestsForSeller().then((e) {
       if (!e.error) {
         setState(() {
           _isloading = false;
-          this.allorders = e.data;
+          this.refundList = e.data;
         });
       } else {
         setState(() {
           _isloading = false;
-          this.allorders = e.data;
+          this.refundList = e.data;
         });
         ErrorDialog().showErrorDialog(context, "Error!", e.errorMessage);
       }
@@ -192,17 +53,16 @@ class _TRefundRequestState extends State<RefundRequest> {
           title: Container(
               height: 50,
               child: Image.asset("images/logo_white/logo_white.png")),
-         
         ),
         body: RefreshIndicator(
             onRefresh: () => _refresh(),
             key: _refreshIndicatorKey,
             child: new ListView.builder(
-                itemCount: (allorders == null) ? 1 : allorders.length,
+                itemCount: (refundList == null) ? 1 : refundList.length,
                 itemBuilder: (BuildContext ctxt, int index) {
                   return (_isloading)
                       ? CircularProgressIndicator()
-                      : (allorders == null)
+                      : (refundList == null)
                           ? Padding(
                               padding: const EdgeInsets.all(35.0),
                               child: Center(
@@ -237,7 +97,7 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        "OrderID: ",
+                                                        "RefundID: ",
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
@@ -248,9 +108,8 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        allorders[index]
-                                                            .shippingInfo
-                                                            .shippingInfoID
+                                                        refundList[index]
+                                                            .refundID
                                                             .toString(),
                                                         style: TextStyle(
                                                             color: Theme.of(
@@ -282,7 +141,8 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        allorders[index]
+                                                        refundList[index]
+                                                            .order
                                                             .product
                                                             .name,
                                                         style: TextStyle(
@@ -315,7 +175,8 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        allorders[index]
+                                                        refundList[index]
+                                                            .order
                                                             .product
                                                             .authorName,
                                                         style: TextStyle(
@@ -348,7 +209,8 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        allorders[index]
+                                                        refundList[index]
+                                                                .order
                                                                 .product
                                                                 .price
                                                                 .toString() +
@@ -383,7 +245,8 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        allorders[index]
+                                                        refundList[index]
+                                                            .order
                                                             .shippingInfo
                                                             .shippingcompany
                                                             .companyName,
@@ -417,7 +280,8 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        allorders[index]
+                                                        refundList[index]
+                                                                .order
                                                                 .shippingInfo
                                                                 .shippingcompany
                                                                 .price
@@ -453,7 +317,8 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        allorders[index]
+                                                        refundList[index]
+                                                            .order
                                                             .buyer
                                                             .name,
                                                         style: TextStyle(
@@ -486,7 +351,8 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        allorders[index]
+                                                        refundList[index]
+                                                            .order
                                                             .buyer
                                                             .phoneNumber,
                                                         style: TextStyle(
@@ -519,7 +385,9 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        allorders[index].status,
+                                                        refundList[index]
+                                                            .order
+                                                            .status,
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
@@ -550,11 +418,15 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        ((allorders[index].price *
-                                                                        allorders[index]
+                                                        ((refundList[index]
+                                                                            .order
+                                                                            .price *
+                                                                        refundList[index]
+                                                                            .order
                                                                             .quantity) +
-                                                                    allorders[
+                                                                    refundList[
                                                                             index]
+                                                                        .order
                                                                         .shippingInfo
                                                                         .shippingcompany
                                                                         .price)
@@ -590,7 +462,8 @@ class _TRefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        allorders[index]
+                                                        refundList[index]
+                                                            .order
                                                             .quantity
                                                             .toString(),
                                                         style: TextStyle(
@@ -610,8 +483,7 @@ class _TRefundRequestState extends State<RefundRequest> {
                                           flex: 1,
                                           child: GestureDetector(
                                             onTap: () {
-                                              _markDialog(
-                                                  context, allorders[index]);
+                                              Navigator.push(context,MaterialPageRoute(builder: (_)=>RefundDetailsPage(refundItem:refundList[index])));
                                             },
                                             child: Container(
                                               child: Icon(

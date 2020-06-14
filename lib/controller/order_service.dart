@@ -152,6 +152,7 @@ class OrderService extends GeneralServices {
       Response response = await _dio.get("order/refundImagePath",
           queryParameters: {"refundID": refundID});
       List<Image> images = new List();
+      print(response.data);
       if (response.statusCode == 200) {
         if (response.data.length == 0) return APIResponse(data: null);
 
@@ -166,22 +167,23 @@ class OrderService extends GeneralServices {
                   method: 'GET',
                   responseType: ResponseType.bytes));
           print(response.data);
-          images.add(Image.memory(response.data, fit: BoxFit.cover));
+          images.add(Image.memory(
+            response.data,
+            fit: BoxFit.fill,
+            width: 650,
+            height: 650,
+          ));
         }
 
         return APIResponse(data: images);
       }
+
       return APIResponse(data: null, error: true, errorMessage: "Error occurs");
     } on DioError catch (e) {
-      if (e.response != null) {
-        return APIResponse(
-            data: null, error: true, errorMessage: "Error occurs");
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
+      return APIResponse(data: null, error: true, errorMessage: "Error occurs");
 
-        return APIResponse(
-            data: null, error: true, errorMessage: "Error occurs");
-      }
+      // Something happened in setting up or sending the request that triggered an Error
+
     }
   }
 
