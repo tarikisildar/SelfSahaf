@@ -359,7 +359,7 @@ class _SearchPageProductsState extends State<SearchPageProducts> {
                           padding: const EdgeInsets.all(35.0),
                           child: Center(
                               child: Text(
-                            "No Books Can Find",
+                            "No Books Found",
                             style: TextStyle(color: Colors.white, fontSize: 25),
                           )),
                         );

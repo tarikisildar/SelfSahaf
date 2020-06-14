@@ -1,5 +1,4 @@
 import 'package:Selfsahaf/models/user.dart';
-import 'package:Selfsahaf/views/admin_view/admin_list_view.dart';
 import 'package:Selfsahaf/views/admin_view/admin_send_mail.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/seller_profile.dart';
 import 'package:flutter/material.dart';

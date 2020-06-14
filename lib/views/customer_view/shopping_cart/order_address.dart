@@ -1,10 +1,8 @@
 import 'package:Selfsahaf/controller/user_controller.dart';
 import 'package:Selfsahaf/models/address.dart';
-import 'package:Selfsahaf/views/customer_view/profile_pages/address_widget.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/shipping_company_list.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:Selfsahaf/views/customer_view/shopping_cart/card_information.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/addAddress.dart';
 

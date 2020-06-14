@@ -75,7 +75,7 @@ class _AddBookState extends State<AddBook> {
   String _descriptionValidation(String description) {
     bool descValid = false;
     if (description.length >= 20) descValid = true;
-    return descValid ? null : 'Description too small.';
+    return descValid ? null : 'Description length must be over 20.';
   }
 
   bool isNumeric(String s) {
@@ -90,31 +90,31 @@ class _AddBookState extends State<AddBook> {
     if (!isNumeric(price)) return "price should be number";
 
     if (double.parse(price) <= 0)
-      return "price can not be less then or equal zero";
+      return "price can not be less than or equal zero";
 
     return priceValid ? null : 'not valid price';
   }
 
   String _isbnValidation(String isbn) {
     bool isbnValid = false;
-    if (isbn.length > 10) isbnValid = true;
+    if (isbn.length == 11 || isbn.length == 13) isbnValid = true;
 
-    return isbnValid ? null : 'not valid isbn number';
+    return isbnValid ? null : 'ISBN number length should be 11 or 13.';
   }
 
   String _publisherValidation(String pub) {
     bool pubValid = false;
     if (pub.length < 30 && pub.length > 1) pubValid = true;
-    return pubValid ? null : 'not valid publisher name';
+    return pubValid ? null : 'Publisher name length must be over 1';
   }
 
   String _quantityValidation(String quantity) {
-    if (!isNumeric(quantity)) return "quantity should be number";
+    if (!isNumeric(quantity)) return "Quantity should be number";
     bool qValid = false;
 
       if (int.parse(quantity) <= 0)
-        return "quantitiy can not be less then or equal zero";
-    return qValid ? null : 'not valid quantity';
+        return "Quantity can not be less then or equal zero";
+    return qValid ? null : 'Not valid quantity';
   }
 
   Future getImage(ImageSource source) async {

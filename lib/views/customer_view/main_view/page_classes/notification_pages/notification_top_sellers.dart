@@ -1,7 +1,6 @@
 import 'package:Selfsahaf/controller/admin_service.dart';
 import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/notification_pages/user_card_for_user.dart';
-import 'package:Selfsahaf/views/customer_view/profile_pages/seller_profile.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
