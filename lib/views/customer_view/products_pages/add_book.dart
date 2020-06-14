@@ -147,7 +147,7 @@ class _AddBookState extends State<AddBook> {
         showLogs: true);
    progressDialog.style(
 
-  message: 'Downloading file...',
+  message: 'Photo uploading. Please wait...',
   borderRadius: 10.0,
   backgroundColor: Colors.deepOrange,
   progressWidget:  Container(
@@ -161,9 +161,9 @@ class _AddBookState extends State<AddBook> {
   progress: 0.0,
   maxProgress: 100.0,
   progressTextStyle: TextStyle(
-     color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
+     color: Colors.white, fontSize: 13.0, fontWeight: FontWeight.w400),
   messageTextStyle: TextStyle(
-     color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600)
+     color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.w600)
   );     
 
     return Scaffold(
