@@ -10,13 +10,14 @@ class BookService extends GeneralServices {
     this._dio = super.dio;
   }
 
-  Future<List<Book>> getBooks(int pageNo, int pageSize,
-      {String sortBy = "productID"}) async {
+  Future<List<Book>> getBooks(int pageNo, int pageSize, bool increasing,
+      String sortBy ) async {
     try {
       Response response = await _dio.get("product/getBooks", queryParameters: {
         "pageNo": pageNo,
         "pageSize": pageSize,
-        "sortBy": sortBy
+        "sortBy": sortBy,
+        "ascending":increasing
       });
       List<Book> result;
       if (response.statusCode == 200) {

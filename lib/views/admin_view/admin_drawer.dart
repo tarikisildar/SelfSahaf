@@ -6,7 +6,7 @@ import 'package:Selfsahaf/views/admin_view/admin_search.dart';
 import 'package:Selfsahaf/views/admin_view/admin_shipping_companies.dart';
 import 'package:Selfsahaf/views/admin_view/edit_categories.dart';
 import 'package:get_it/get_it.dart';
-
+import 'package:Selfsahaf/views/admin_view/refund_admin_page.dart';
 class AdminDrawer extends StatelessWidget {
   AuthService get userService=>GetIt.I<AuthService>();
   @override
@@ -111,6 +111,24 @@ class AdminDrawer extends StatelessWidget {
                 },
               ),
             ),
+               InkWell(
+                    child: ListTile(
+                        leading: Icon(
+                          Icons.record_voice_over,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          "Refund Orders",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        )),
+                    onTap: () {
+                      Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RefundRequestForAdmin()));
+                             
+                    },
+                  ),
              Expanded(
               flex: 3,
               child: InkWell(

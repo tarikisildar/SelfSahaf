@@ -92,7 +92,7 @@ class _BookProfileState extends State<BookProfile> {
                                 MaterialPageRoute(
                                     builder: (context) => ShoppingCart()));
                       })
-                  : IconButton(
+                  :(widget.type==3)?Container(): IconButton(
                       icon: Icon(Icons.save),
                       onPressed: () {
                         print("salam");

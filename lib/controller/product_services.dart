@@ -267,13 +267,14 @@ class ProductService extends GeneralServices {
   }
 
   Future<List<Book>> getAllBooks(
-      int pageNo, int pageSize, String sortBy) async {
+      int pageNo, int pageSize, String sortBy,bool increasing) async {
         List<Book> result;
     try {
       Response response = await _dio.get("product/getBooks", queryParameters: {
         "pageNo": pageNo,
         "pageSize": pageSize,
-        "sortBy": sortBy
+        "sortBy": sortBy,
+        "ascending":increasing
       });
       if(response.statusCode == 200){
         if (response.data.length != 0) {

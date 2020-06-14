@@ -20,7 +20,10 @@ class _BookCardState extends State<BookCard> {
   @override
   void initState() {
     super.initState();
-    _bookService
+   _getbookphoto();
+  }
+  _getbookphoto(){
+      _bookService
         .getImage(widget.book.sellerID, widget.book.productID, 1)
         .then((value) {
       setState(() {
