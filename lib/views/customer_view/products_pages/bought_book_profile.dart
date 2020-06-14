@@ -228,6 +228,25 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                                   child: Row(
                                     children: <Widget>[
                                       Text(
+                                        "Status: ",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      Text(widget.selectedBook.product.status,
+                                          style: TextStyle(color: Colors.white))
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 45,
+                                child: Center(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
                                         "Category: ",
                                         style: TextStyle(color: Colors.white),
                                       ),

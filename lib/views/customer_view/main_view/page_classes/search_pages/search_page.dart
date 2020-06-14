@@ -4,6 +4,7 @@ import 'package:Selfsahaf/controller/product_services.dart';
 import 'package:Selfsahaf/controller/search_service.dart';
 import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/models/category.dart';
+import 'package:Selfsahaf/views/customer_view/main_view/page_classes/main_page/sahaf_drawer.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/search_pages/search_page_products.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
@@ -98,6 +99,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SahafDrawer(),
         appBar: AppBar(
           title: Container(
               alignment: Alignment.center,
@@ -112,7 +114,7 @@ class _SearchPageState extends State<SearchPage> {
                   backgroundColor: Colors.white,
                 )))
             : Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(16.0),
                 child: ListView(
                   children: <Widget>[
                     Center(
@@ -121,6 +123,8 @@ class _SearchPageState extends State<SearchPage> {
                         style: TextStyle(color: Colors.white, fontSize: 30),
                       ),
                     ),
+                    Divider(color: Colors.white,thickness: 2,),
+                    SizedBox(height: 10,),
                     Center(
                       child: Form(
                         key: _nameFormKey,
@@ -157,7 +161,7 @@ class _SearchPageState extends State<SearchPage> {
                                         borderRadius:
                                             BorderRadius.circular(30.0),
                                       ),
-                                      child: Icon(Icons.search),
+                                      child: Icon(Icons.search,color:Theme.of(context).primaryColor),
                                       onPressed: () {
                                         print("sa");
                                         if (_nameFormKey.currentState
@@ -225,7 +229,7 @@ class _SearchPageState extends State<SearchPage> {
                                         borderRadius:
                                             BorderRadius.circular(30.0),
                                       ),
-                                      child: Icon(Icons.search),
+                                      child: Icon(Icons.search,color:Theme.of(context).primaryColor),
                                       onPressed: () {
                                         if (_isbnFromKey.currentState
                                             .validate())
@@ -302,7 +306,7 @@ class _SearchPageState extends State<SearchPage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
-                                child: Icon(Icons.search),
+                                child: Icon(Icons.search,color:Theme.of(context).primaryColor),
                                 onPressed: () {
                                   if (_numberFormKey.currentState.validate()) {
                                     Navigator.push(
@@ -390,7 +394,7 @@ class _SearchPageState extends State<SearchPage> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),
                                     ),
-                                    child: Icon(Icons.search),
+                                    child: Icon(Icons.search,color:Theme.of(context).primaryColor),
                                     onPressed: () {
                                       if (selectedLanguage != null) {
                                         Navigator.push(
@@ -483,7 +487,7 @@ class _SearchPageState extends State<SearchPage> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),
                                     ),
-                                    child: Icon(Icons.search),
+                                    child: Icon(Icons.search,color:Theme.of(context).primaryColor),
                                     onPressed: () {
                                       if (selectedCategory != null) {
                                         Navigator.push(

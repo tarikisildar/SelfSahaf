@@ -54,118 +54,121 @@ class _MainPageState extends State<MainPage> {
               color: Color(0xffe65100),
             ),
             height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    InkWell(
-                      child: _index == 0
-                          ? Icon(
-                              Icons.home,
-                              size: 35,
-                              color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(top:5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      InkWell(
+                        child: _index == 0
+                            ? Icon(
+                                Icons.home,
+                                size: 35,
+                                color: Colors.white,
+                              )
+                            : Icon(
+                                Icons.home,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                        onTap: () {
+                          _changeIndex(0);
+                        },
+                      ),
+                      _index == 0
+                          ? Text(
+                              "Home",
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
                             )
-                          : Icon(
-                              Icons.home,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                      onTap: () {
-                        _changeIndex(0);
-                      },
-                    ),
-                    _index == 0
-                        ? Text(
-                            "Ana Sayfa",
-                            style: TextStyle(
-                                fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
-                          )
-                        : SizedBox(),
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    InkWell(
-                      child: _index == 1
-                          ? Icon(
-                              Icons.search,
-                              size: 25,
-                              color: Colors.white,
+                          : SizedBox(),
+                    ],
+                  ),
+                  Column(
+                    children: <Widget>[
+                      InkWell(
+                        child: _index == 1
+                            ? Icon(
+                                Icons.search,
+                                size: 25,
+                                color: Colors.white,
+                              )
+                            : Icon(
+                                Icons.search,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                        onTap: () {
+                          _changeIndex(1);
+                        },
+                      ),
+                      _index == 1
+                          ? Text(
+                              "Search",
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
                             )
-                          : Icon(
-                              Icons.search,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                      onTap: () {
-                        _changeIndex(1);
-                      },
-                    ),
-                    _index == 1
-                        ? Text(
-                            "Arama",
-                            style: TextStyle(
-                                fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
-                          )
-                        : SizedBox(),
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    InkWell(
-                      child: _index == 2
-                          ? Icon(
-                              Icons.notifications,
-                              size: 25,
-                              color: Colors.white,
+                          : SizedBox(),
+                    ],
+                  ),
+                  Column(
+                    children: <Widget>[
+                      InkWell(
+                        child: _index == 2
+                            ? Icon(
+                                Icons.notifications,
+                                size: 25,
+                                color: Colors.white,
+                              )
+                            : Icon(
+                                Icons.notifications_none,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                        onTap: () {
+                          _changeIndex(2);
+                        },
+                      ),
+                      _index == 2
+                          ? Text(
+                              "Notifications",
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
                             )
-                          : Icon(
-                              Icons.notifications_none,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                      onTap: () {
-                        _changeIndex(2);
-                      },
-                    ),
-                    _index == 2
-                        ? Text(
-                            "Bildirimler",
-                            style: TextStyle(
-                                fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
-                          )
-                        : SizedBox(),
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    InkWell(
-                      child: _index == 3
-                          ? Icon(
-                              Icons.person,
-                              size: 25,
-                              color: Colors.white,
+                          : SizedBox(),
+                    ],
+                  ),
+                  Column(
+                    children: <Widget>[
+                      InkWell(
+                        child: _index == 3
+                            ? Icon(
+                                Icons.person,
+                                size: 25,
+                                color: Colors.white,
+                              )
+                            : Icon(
+                                Icons.person_outline,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                        onTap: () {
+                          _changeIndex(3);
+                        },
+                      ),
+                      _index == 3
+                          ? Text(
+                              "Profile",
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
                             )
-                          : Icon(
-                              Icons.person_outline,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                      onTap: () {
-                        _changeIndex(3);
-                      },
-                    ),
-                    _index == 3
-                        ? Text(
-                            "Profilim",
-                            style: TextStyle(
-                                fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
-                          )
-                        : SizedBox(),
-                  ],
-                ),
-              ],
+                          : SizedBox(),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

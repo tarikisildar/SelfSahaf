@@ -1,4 +1,5 @@
 import 'package:Selfsahaf/controller/user_controller.dart';
+import 'package:Selfsahaf/views/admin_view/admin_send_mail.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/admin_view/admin_search.dart';
@@ -90,6 +91,26 @@ class AdminDrawer extends StatelessWidget {
                 },
               ),
             ),
+            Expanded(
+              flex: 3,
+              child: InkWell(
+                child: ListTile(
+                    leading: Icon(Icons.mail, color: Colors.white),
+                    title: Text(
+                      "Inform Everyone",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    )),
+                onTap: () {
+                Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => AdminMailPage(
+                            user: userService.getUser(),
+                            everyone: true,
+                          )),
+                          ModalRoute.withName("/Home"));
+                },
+              ),
+            ),
              Expanded(
               flex: 3,
               child: InkWell(
@@ -109,6 +130,7 @@ class AdminDrawer extends StatelessWidget {
                 },
               ),
             ),
+            
             Expanded(
               flex: 25,
               child: Column(

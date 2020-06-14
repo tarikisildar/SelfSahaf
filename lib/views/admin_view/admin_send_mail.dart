@@ -1,12 +1,15 @@
 import 'package:Selfsahaf/controller/mail_service.dart';
+import 'package:Selfsahaf/models/order.dart';
 import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
+import 'package:Selfsahaf/views/registration/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class AdminMailPage extends StatefulWidget {
+  bool everyone;
   User user;
-  AdminMailPage({@required this.user});
+  AdminMailPage({@required this.user,@required this.everyone});
   @override
   _AdminMailPageState createState() => _AdminMailPageState();
 }
@@ -20,7 +23,39 @@ class _AdminMailPageState extends State<AdminMailPage> {
   String popMessage;
 
   
-
+  _sendEveryone(String content, String title){
+    mailService.sendEmailToAllUsers(content,title).then((value) {
+      if (!value.error) {
+        popMessage = "Mails Successfully Sent";
+        Navigator.pop(context);
+        return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text("Success!",style: TextStyle(color: Colors.white),),
+            content: Text(popMessage,style: TextStyle(color: Colors.white)),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("OK!", style: TextStyle(color: Colors.white),),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+          }
+        );
+      } else {
+        setState(() {
+          error = true;
+          errorMessage = value.errorMessage;
+        });
+        ErrorDialog().showErrorDialog(context, "Error", value.errorMessage);
+        print(value.errorMessage);
+      }
+    });
+  }
   _sendMail(String content, String mail, String title) {
     mailService.sendEmailToUser(content, mail, title).then((value) {
       if (!value.error) {
@@ -30,11 +65,12 @@ class _AdminMailPageState extends State<AdminMailPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: Theme.of(context).primaryColor,
             title: Text("Success!",style: TextStyle(color: Colors.white),),
             content: Text(popMessage,style: TextStyle(color: Colors.white)),
             actions: <Widget>[
               FlatButton(
-                child: Text("OK!", style: TextStyle(color: Theme.of(context).primaryColor),),
+                child: Text("OK!", style: TextStyle(color: Colors.white),),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -83,6 +119,12 @@ class _AdminMailPageState extends State<AdminMailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: InkWell(
+          child: Icon(Icons.arrow_back_ios),
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: Container(
             height: 50, child: Image.asset("images/logo_white/logo_white.png")),
       ),
@@ -98,7 +140,12 @@ class _AdminMailPageState extends State<AdminMailPage> {
                   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                   child: Container(
                     child: Center(
-                      child: Text(
+                      child: (widget.everyone) ? Text(
+                        "Send Mail To Everyone",
+                        style: TextStyle(color: Colors.white, fontSize: 25),
+                      )
+                      :
+                      Text(
                         "Send Mail To: " +
                             widget.user.name +
                             " " +
@@ -218,10 +265,17 @@ class _AdminMailPageState extends State<AdminMailPage> {
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   onPressed: () {
-                    print(_mailtitleController.text.length);
-                    if (_mailKey.currentState.validate()) {
+                    if(widget.everyone){
+                      if (_mailKey.currentState.validate()) {
+                      _sendEveryone(_mailcontentController.text, _mailtitleController.text);
+                    }
+                    }
+                    else{
+                      if (_mailKey.currentState.validate()) {
                       _sendMail(_mailcontentController.text, widget.user.email, _mailtitleController.text);
                     }
+                    }
+                    
                   },
                 ),
               ],

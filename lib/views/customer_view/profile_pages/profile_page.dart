@@ -1,3 +1,4 @@
+import 'package:Selfsahaf/views/customer_view/main_view/page_classes/main_page/sahaf_drawer.dart';
 import 'package:Selfsahaf/views/registration/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -42,6 +43,7 @@ class _ProfilePage extends State<ProfilePage> {
               })
         ],
       ),
+      drawer: SahafDrawer(),
       body: (userService.getUser().role == "ROLE_ANON")
           ? Padding(
               padding: EdgeInsets.all(15),

@@ -112,6 +112,7 @@ class _UserCardForAdminState extends State<UserCardForAdmin> {
                             MaterialPageRoute(
                                 builder: (context) => AdminMailPage(
                                       user: this.user,
+                                      everyone: false,
                                     )),
                           );
                         },
@@ -186,6 +187,7 @@ class _UserCardForAdminState extends State<UserCardForAdmin> {
                             MaterialPageRoute(
                                 builder: (context) => AdminMailPage(
                                       user: this.user,
+                                      everyone: false,
                                     )),
                           );
                         },
