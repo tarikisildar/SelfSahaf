@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +24,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import io.swagger.annotations.Api;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
@@ -35,6 +38,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/order")
+
 @Api(value = "order", description = "Controller about order")
 public class OrderController {
     @Autowired
@@ -82,9 +86,9 @@ public class OrderController {
 
     @ApiOperation("Confirm Order")
     @PostMapping(path="/confirmOrder")
-    @Transactional(rollbackFor=Exception.class)
+    @Transactional(rollbackFor={RuntimeException.class,Exception.class})
     public @ResponseBody String confirmOrder(@RequestParam Integer addressID, @RequestParam Integer shippingCompanyID,
-                                            @RequestBody CardInfo card, HttpServletResponse response) throws IOException, MessagingException {
+                                            @RequestBody CardInfo card, HttpServletResponse response) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
@@ -112,14 +116,6 @@ public class OrderController {
                 card = cardRepository.save(card);
 
 
-
-
-                /*Set<User> userSet = new HashSet<User>();
-                userSet.add(user);
-
-                Set<CardInfo> cardSet = new HashSet<CardInfo>();
-                cardSet.add(card);*/
-
                 Order order = new Order();
                 order.setBuyer(user);
                 order.setCardNumber(card);
@@ -140,7 +136,7 @@ public class OrderController {
 
                     Sells sells = item.getSells();
                     Product product = sells.getProduct();
-                    Integer newQuantity = sells.getQuantity() - item.getAmount();
+                    int newQuantity = sells.getQuantity() - item.getAmount();
 
                     if (product.getStatus() != ProductStatus.ACTIVE) {
                         throw new RuntimeException("Product is not active,  transaction rollback");
@@ -188,7 +184,13 @@ public class OrderController {
                 String title = "Selfsahaf Order";
 
 
-                emailController.sendEmailToUser(email, title, context);
+                String emailReturn =  emailController.sendEmailToUser(email, title, context);
+
+
+                if(emailReturn.equals("Email could not be send.")){
+                    throw new RuntimeException("Email could not be send, transaction rollback");
+                }
+
 
                 return "confirmed";
             }
@@ -286,6 +288,7 @@ public class OrderController {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "You can't cancel an order after beginning it's shipment process. Look for refunding.";
         }
+        orderDetailRepository.save(orderDetail);
         return "Your order has canceled";
     }
 
@@ -296,7 +299,7 @@ public class OrderController {
         throw new NotImplementedException();
     }
 
-    @Transactional
+    @Transactional(rollbackFor={RuntimeException.class,Exception.class})
     @ApiOperation("Refund Request, orderId productId and sellerId needed for finding specific product order. file is optional")
     @PostMapping(path="/refundRequest")
     public @ResponseBody String refundRequest(@RequestParam Integer orderDetailID,@RequestBody(required = false) List<MultipartFile> file,@RequestParam String message)
@@ -322,6 +325,7 @@ public class OrderController {
 
             refundRepository.save(refundRequest);
         }
+        orderDetailRepository.save(orderDetail);
         return "refund request created with id " + refundRequest.getRefundID().toString();
     }
 
@@ -371,8 +375,10 @@ public class OrderController {
     public @ResponseBody String evaluateRefundRequest(@RequestParam Integer refundId, @RequestParam boolean confirm)
     {
         RefundRequest refundRequest = refundRepository.findById(refundId).get();
-        if(confirm)
+        if(confirm) {
             refundRequest.setStatus(RefundStatus.CONFIRMED);
+            refundRequest.getOrderDetail().setStatus(OrderStatus.REFUNDED);
+        }
         else{
             refundRequest.setStatus(RefundStatus.DECLINED);
         }
