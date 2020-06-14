@@ -10,11 +10,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-<<<<<<< HEAD
 import "package:progress_dialog/progress_dialog.dart";
 
-=======
->>>>>>> ba968e93e1881318e75de587bcfae30a39b502e2
 class AddBook extends StatefulWidget {
   @override
   _AddBookState createState() => new _AddBookState();
@@ -81,13 +78,8 @@ class _AddBookState extends State<AddBook> {
 
   String _descriptionValidation(String description) {
     bool descValid = false;
-<<<<<<< HEAD
-    if (description.length >= 10) descValid = true;
-    return descValid ? null : 'not valid description';
-=======
     if (description.length >= 20) descValid = true;
     return descValid ? null : 'Description length must be over 20.';
->>>>>>> ba968e93e1881318e75de587bcfae30a39b502e2
   }
 
   bool isNumeric(String s) {
@@ -121,21 +113,12 @@ class _AddBookState extends State<AddBook> {
   }
 
   String _quantityValidation(String quantity) {
-<<<<<<< HEAD
-    if (!isNumeric(quantity)) return "quantity should be number";
-    bool qValid = true;
-
-    if (int.parse(quantity) <= 0)
-      return "quantitiy can not be less then or equal zero";
-    return qValid ? null : 'not valid quantity';
-=======
     if (!isNumeric(quantity)) return "Quantity should be number";
-    bool qValid = false;
+    bool qValid = true;
 
       if (int.parse(quantity) <= 0)
         return "Quantity can not be less then or equal zero";
     return qValid ? null : 'Not valid quantity';
->>>>>>> ba968e93e1881318e75de587bcfae30a39b502e2
   }
 
   Future getImage(ImageSource source) async {
@@ -481,7 +464,7 @@ class _AddBookState extends State<AddBook> {
                                   if (_formKey.currentState.validate() &&
                                       selectedCategory != null &&
                                       selectedLanguage != null &&
-                                      this.condition != null &&
+                                      condition != null &&
                                       _imagesList.length != 0) {
                                     Book addedBook = Book(
                                         categoryID: selectedCategory.categoryID,
@@ -525,7 +508,12 @@ class _AddBookState extends State<AddBook> {
                                   } else if (selectedLanguage == null ||
                                       selectedCategory == null ||
                                       _imagesList.length == 0 ||
-                                      this.condition != null) {
+                                      condition != null) {
+                                        print(selectedLanguage);
+                                        print(selectedCategory);
+                                        print(condition);
+                                        print(_imagesList.length);
+                                 
                                     showDialog(
                                         context: context,
                                         builder: (context) {

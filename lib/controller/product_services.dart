@@ -7,12 +7,9 @@ import 'package:Selfsahaf/models/api_response.dart';
 import 'dart:io';
 import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/models/category.dart';
-<<<<<<< HEAD
 import 'package:Selfsahaf/models/api_response.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-=======
->>>>>>> ba968e93e1881318e75de587bcfae30a39b502e2
 class ProductService extends GeneralServices {
   Dio _dio;
   ProductService() {
@@ -232,17 +229,20 @@ class ProductService extends GeneralServices {
           pr.update(
             progress: ((count / total)*100).toInt().toDouble(),
             message: "Photo uploading. Please wait...",
+            
             progressWidget: Container(
-              
-                padding: EdgeInsets.all(8.0),
-                child: CircularProgressIndicator()),
+                color: Colors.transparent,
+                child: Center(
+                    child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                ))),
             maxProgress: 100.0,
             progressTextStyle: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 13.0,
                 fontWeight: FontWeight.w400),
             messageTextStyle: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 19.0,
                 fontWeight: FontWeight.w600),
           );
