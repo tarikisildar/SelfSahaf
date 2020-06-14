@@ -17,7 +17,10 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     @Query("SELECT Count(user) FROM User user")
     Integer getUserCount();
 
+    @Query("SELECT Count(user) FROM User user WHERE 'ROLE_SELLER' IN user.role")
+    Integer getSellerCount();
 
     @Query("SELECT user.email from User user")
     Iterable<String> getUserEmails();
+
 }

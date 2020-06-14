@@ -81,7 +81,7 @@ public class CartItem {
     }
     public Double getPrice()
     {
-        return this.sells.getPrice();
+        return this.sells.getCurrentPrice();
     }
     public void setAmount(Integer amount) {
         this.amount = amount;

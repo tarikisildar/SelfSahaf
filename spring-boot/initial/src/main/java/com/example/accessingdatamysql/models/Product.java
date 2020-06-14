@@ -4,6 +4,7 @@ import com.example.accessingdatamysql.models.enums.ProductCondition;
 import com.example.accessingdatamysql.models.enums.ProductStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilterFactory;
@@ -61,8 +62,10 @@ public class Product
     @Column(length = 45)
     private String publisher;
     @Column(length = 45)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
     private String ISBN;
 
+    private Integer soldCount = 0;
 
 
     @Enumerated(EnumType.STRING)
@@ -71,6 +74,7 @@ public class Product
 
     @Enumerated(EnumType.STRING)
     @Column(length=45)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "edgeNgram"), store = Store.NO)
     private ProductStatus status;
 
 
@@ -126,6 +130,14 @@ public class Product
         else{
             return null;
         }
+    }
+    @JsonIgnore
+    public Integer getSoldCount() {
+        return soldCount;
+    }
+    @JsonIgnore
+    public void setSoldCount(Integer soldCount) {
+        this.soldCount = soldCount;
     }
 
     public void setPath(String path) {

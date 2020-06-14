@@ -213,7 +213,23 @@ public class FileSystemStorageService implements StorageService {
         return resourceList;
     }
 
+    @Override
+    public List<Resource> loadAllResourcesRefund(String refundID){
+        Path root = this.rootLocation.resolve("refunds");
 
+        File folder = new File(root.resolve(refundID.toString()).toString());
+
+        File[] listOfFiles = folder.listFiles();
+        List<Resource> resourceList = new ArrayList<Resource>();
+
+        for (File file : listOfFiles) {
+            if (acceptExtension(file)) {
+                resourceList.add(loadAsResource(file.toString()));
+            }
+        }
+
+        return resourceList;
+    }
 
     public boolean acceptExtension(final File dir) {
 
