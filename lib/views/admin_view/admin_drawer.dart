@@ -101,13 +101,13 @@ class AdminDrawer extends StatelessWidget {
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     )),
                 onTap: () {
-                Navigator.pushAndRemoveUntil(
+                Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => AdminMailPage(
                             user: userService.getUser(),
                             everyone: true,
-                          )),
-                          ModalRoute.withName("/Home"));
+                          )));
+          
                 },
               ),
             ),

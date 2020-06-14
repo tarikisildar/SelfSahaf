@@ -27,7 +27,7 @@ class _AdminMailPageState extends State<AdminMailPage> {
     mailService.sendEmailToAllUsers(content,title).then((value) {
       if (!value.error) {
         popMessage = "Mails Successfully Sent";
-     
+        
         return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -45,7 +45,7 @@ class _AdminMailPageState extends State<AdminMailPage> {
             ],
           );
           }
-        );
+        ).then((value) => Navigator.pop(context));
       } else {
         setState(() {
           error = true;
@@ -78,7 +78,7 @@ class _AdminMailPageState extends State<AdminMailPage> {
             ],
           );
           }
-        );
+        ).then((value) => Navigator.pop(context));
       } else {
         setState(() {
           error = true;
