@@ -167,32 +167,26 @@ public class ProductSearchService {
         QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
                 .forEntity(Product.class).get();
 
-        FacetingRequest priceFacetingRequest = queryBuilder
-                    .facet()
-                    .name("priceFaceting")
-                    .onField("sells.currentPrice")
-                    .range()
-                    .from(from).to(to)
-                    .excludeLimit()
-                    .createFacetingRequest();
+        Query query = queryBuilder
+                .bool()
+                .must(queryBuilder.range()
+                        .onField("sells.currentPrice")
+                        .from(from).to(to).excludeLimit()
+                        .createQuery())
+                .must(queryBuilder.keyword()
+                        .onFields("status")
+                        .matching(ProductStatus.ACTIVE).createQuery())
+                .createQuery();
 
 
+        javax.persistence.Query jpaQuery =
+                fullTextEntityManager.createFullTextQuery(query, Product.class);
 
-        Query luceneQuery = queryBuilder.all().createQuery(); // match all query
-        FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Product.class);
+        System.out.println(jpaQuery.getResultList().size());
+        jpaQuery.setFirstResult(pageNo * pageSize); // Page size starts at 0.
+        jpaQuery.setMaxResults(pageSize);
 
-        FacetManager facetManager = fullTextQuery.getFacetManager();
-        facetManager.enableFaceting(priceFacetingRequest);
-
-        List<Facet> facets = facetManager.getFacets("priceFaceting");
-
-        FacetSelection facetSelection = facetManager.getFacetGroup( "priceFaceting" );
-        facetSelection.selectFacets(facets.get(0));
-
-        fullTextQuery.setFirstResult(pageNo * pageSize); // Page size starts at 0.
-        fullTextQuery.setMaxResults(pageSize);
-        System.out.println(fullTextQuery.getResultList().size());
-        return fullTextQuery.getResultList();
+        return jpaQuery.getResultList();
 
     }
 
