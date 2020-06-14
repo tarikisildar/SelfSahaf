@@ -1,6 +1,7 @@
 import 'package:Selfsahaf/models/address.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
 import 'package:Selfsahaf/models/user.dart';
@@ -55,7 +56,8 @@ class _SettingsPage extends State<SettingsPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final MaskedTextController _phoneController =
+      MaskedTextController(mask: '0 000 000 00 00');
   final _fnameController = TextEditingController();
   final _surnameController = TextEditingController();
   final _passController = TextEditingController();
