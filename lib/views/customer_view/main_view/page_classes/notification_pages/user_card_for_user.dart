@@ -89,7 +89,7 @@ class _UserCardForUserState extends State<UserCardForUser> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => SellerProfilePage(
-                              type: 0,
+                              type: 1,
                               user: widget.seller,
                             )),
                   );

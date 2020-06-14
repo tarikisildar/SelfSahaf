@@ -263,7 +263,7 @@ class _EditCategoriesState extends State<EditCategories> {
                                         width: 20,
                                       )),
                                   Expanded(
-                                    flex: 4,
+                                    flex: 5,
                                     child: FlatButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();
