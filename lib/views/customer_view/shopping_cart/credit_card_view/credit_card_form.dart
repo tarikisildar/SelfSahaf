@@ -1,7 +1,6 @@
 import 'package:Selfsahaf/models/address.dart';
 import 'package:Selfsahaf/models/card_model.dart';
 import 'package:Selfsahaf/models/shipping_company_model.dart';
-import 'package:Selfsahaf/views/customer_view/shopping_cart/card_information.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';

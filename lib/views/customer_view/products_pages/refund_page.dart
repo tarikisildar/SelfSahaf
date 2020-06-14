@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:Selfsahaf/controller/order_service.dart';
 import 'package:Selfsahaf/models/order.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
-import 'package:Selfsahaf/views/registration/input_field.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';

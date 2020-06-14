@@ -1,20 +1,20 @@
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/views/registration/input_field.dart';
 import 'package:Selfsahaf/controller/product_services.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:Selfsahaf/models/category.dart';
 import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
-import 'dart:convert';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+<<<<<<< HEAD
 import "package:progress_dialog/progress_dialog.dart";
 
+=======
+>>>>>>> ba968e93e1881318e75de587bcfae30a39b502e2
 class AddBook extends StatefulWidget {
   @override
   _AddBookState createState() => new _AddBookState();
@@ -70,19 +70,24 @@ class _AddBookState extends State<AddBook> {
   String _booknameValidation(String email) {
     bool emailValid = false;
     if (email.length >= 2) emailValid = true;
-    return emailValid ? null : 'not valid book name.';
+    return emailValid ? null : 'Book name length should be bigger than 1';
   }
 
   String _authorValidation(String author) {
     bool authorValid = false;
     if (author.length >= 2) authorValid = true;
-    return authorValid ? null : 'not valid author name';
+    return authorValid ? null : 'Author name length should be bigger than 1';
   }
 
   String _descriptionValidation(String description) {
     bool descValid = false;
+<<<<<<< HEAD
     if (description.length >= 10) descValid = true;
     return descValid ? null : 'not valid description';
+=======
+    if (description.length >= 20) descValid = true;
+    return descValid ? null : 'Description length must be over 20.';
+>>>>>>> ba968e93e1881318e75de587bcfae30a39b502e2
   }
 
   bool isNumeric(String s) {
@@ -97,31 +102,40 @@ class _AddBookState extends State<AddBook> {
     if (!isNumeric(price)) return "price should be number";
 
     if (double.parse(price) <= 0)
-      return "price can not be less then or equal zero";
+      return "price can not be less than or equal zero";
 
     return priceValid ? null : 'not valid price';
   }
 
   String _isbnValidation(String isbn) {
     bool isbnValid = false;
-    if (isbn.length > 10) isbnValid = true;
+    if (isbn.length == 11 || isbn.length == 13) isbnValid = true;
 
-    return isbnValid ? null : 'not valid isbn number';
+    return isbnValid ? null : 'ISBN number length should be 11 or 13.';
   }
 
   String _publisherValidation(String pub) {
     bool pubValid = false;
     if (pub.length < 30 && pub.length > 1) pubValid = true;
-    return pubValid ? null : 'not valid publisher name';
+    return pubValid ? null : 'Publisher name length must be over 1';
   }
 
   String _quantityValidation(String quantity) {
+<<<<<<< HEAD
     if (!isNumeric(quantity)) return "quantity should be number";
     bool qValid = true;
 
     if (int.parse(quantity) <= 0)
       return "quantitiy can not be less then or equal zero";
     return qValid ? null : 'not valid quantity';
+=======
+    if (!isNumeric(quantity)) return "Quantity should be number";
+    bool qValid = false;
+
+      if (int.parse(quantity) <= 0)
+        return "Quantity can not be less then or equal zero";
+    return qValid ? null : 'Not valid quantity';
+>>>>>>> ba968e93e1881318e75de587bcfae30a39b502e2
   }
 
   Future getImage(ImageSource source) async {

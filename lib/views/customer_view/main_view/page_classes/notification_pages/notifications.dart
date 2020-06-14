@@ -1,12 +1,8 @@
-import 'package:Selfsahaf/controller/admin_service.dart';
-import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/main_page/sahaf_drawer.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/notification_pages/notification_best_selling_books.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/notification_pages/notification_top_sellers.dart';
-import 'package:Selfsahaf/views/customer_view/profile_pages/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
-import 'package:get_it/get_it.dart';
 
 class NotificationsPage extends StatefulWidget {
   // ExamplePage({ Key key }) : super(key: key);

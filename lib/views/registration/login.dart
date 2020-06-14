@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:Selfsahaf/controller/user_controller.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/main_page.dart';
 import 'input_field.dart';
 import 'package:Selfsahaf/views/registration/signup.dart';
-import 'package:dio/dio.dart';
 import 'package:Selfsahaf/views/registration/input_field.dart';
 
 class LoginPage extends StatefulWidget {

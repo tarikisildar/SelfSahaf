@@ -96,7 +96,7 @@ String status;
 
     if (!isNumeric(discount)) return "price should be number";
     if(int.parse(discount)>100 ||int.parse(discount)<0 )
-     return 'not valid price';
+     return 'Discount rate must be between 100% and 0%';
     return  null;
   }
   bool isNumeric(String s) {
@@ -109,19 +109,19 @@ String status;
   String _booknameValidation(String email) {
     bool emailValid = false;
     if (email.length >= 2) emailValid = true;
-    return emailValid ? null : 'not valid book name.';
+    return emailValid ? null : 'Book name length should be bigger than 1';
   }
 
   String _authorValidation(String author) {
     bool authorValid = false;
     if (author.length >= 2) authorValid = true;
-    return authorValid ? null : 'not valid author name';
+    return authorValid ? null : 'Author name length should be bigger than 1';
   }
 
   String _descriptionValidation(String description) {
     bool descValid = false;
     if (description.length >= 20) descValid = true;
-    return descValid ? null : 'not valid description';
+    return descValid ? null : 'Description length should be bigger than 20';
   }
 
   String _priceValidation(String price) {
@@ -130,33 +130,33 @@ String status;
     if (price.length > 0 && price.length < 7) {
       priceValid = true;
       if (double.parse(price) <= 0)
-        return "price can not be less then or equal zero";
+        return "price can not be less than or equal zero";
     }
-    if (price.length >= 7) return "price is max 3 character";
+    if (price.length >= 7) return "price can be max 3 character";
     return priceValid ? null : 'not valid price';
   }
 
   String _isbnValidation(String isbn) {
     bool isbnValid = false;
     if (isbn.length > 10) isbnValid = true;
-    return isbnValid ? null : 'not valid isbn number';
+    return isbnValid ? null : 'ISBN number length should be 11 or 13.';
   }
 
   String _publisherValidation(String pub) {
     bool pubValid = false;
     if (pub.length < 30 && pub.length > 1) pubValid = true;
-    return pubValid ? null : 'not valid publisher name';
+    return pubValid ? null : 'Publisher name length must be between 1 and 30';
   }
 
   String _quantityValidation(String quantity) {
-    if (!isNumeric(quantity)) return "quantity should be number";
+    if (!isNumeric(quantity)) return "Quantity should be number";
     bool qValid = false;
     if (quantity.length > 0 && quantity.length < 3) {
       qValid = true;
       if (int.parse(quantity) <= 0)
         return "quantity can not be less then or equal zero";
     }
-    if (quantity.length >= 3) return "quantity is max 2 character";
+    
     return qValid ? null : 'not valid quantity';
   }
 

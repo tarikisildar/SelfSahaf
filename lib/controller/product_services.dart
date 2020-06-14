@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/controller/generalServices.dart';
 import 'package:Selfsahaf/models/api_response.dart';
 import 'dart:io';
 import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/models/category.dart';
+<<<<<<< HEAD
 import 'package:Selfsahaf/models/api_response.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+=======
+>>>>>>> ba968e93e1881318e75de587bcfae30a39b502e2
 class ProductService extends GeneralServices {
   Dio _dio;
   ProductService() {

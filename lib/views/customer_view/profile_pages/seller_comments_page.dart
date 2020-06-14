@@ -3,13 +3,8 @@ import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:Selfsahaf/controller/rating_controller.dart';
 import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/models/rating.dart';
-import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:Selfsahaf/controller/user_controller.dart';
-import 'package:Selfsahaf/models/address.dart';
-import 'package:Selfsahaf/views/customer_view/profile_pages/address_widget.dart';
-import 'package:Selfsahaf/views/customer_view/profile_pages/addAddress.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class SellerCommentsPage extends StatefulWidget {

@@ -1,16 +1,12 @@
-import 'dart:typed_data';
-
 import 'package:Selfsahaf/controller/product_services.dart';
 import 'package:Selfsahaf/controller/search_service.dart';
 import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/models/category.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/main_page/sahaf_drawer.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/search_pages/search_page_products.dart';
-import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:Selfsahaf/controller/book_controller.dart';
 import 'package:Selfsahaf/views/registration/input_field.dart';
 
 class SearchPage extends StatefulWidget {
@@ -96,13 +92,20 @@ class _SearchPageState extends State<SearchPage> {
       return "invalid";
   }
 
+  bool _maxminValidation(int max, int min) {
+    bool valid = false;
+    if (max > min) {
+      valid = true;
+    }
+    return valid;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SahafDrawer(),
+        drawer: SahafDrawer(),
         appBar: AppBar(
           title: Container(
-              alignment: Alignment.center,
               height: 50,
               child: Image.asset("images/logo_white/logo_white.png")),
         ),
@@ -123,8 +126,13 @@ class _SearchPageState extends State<SearchPage> {
                         style: TextStyle(color: Colors.white, fontSize: 30),
                       ),
                     ),
-                    Divider(color: Colors.white,thickness: 2,),
-                    SizedBox(height: 10,),
+                    Divider(
+                      color: Colors.white,
+                      thickness: 2,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Center(
                       child: Form(
                         key: _nameFormKey,
@@ -161,7 +169,9 @@ class _SearchPageState extends State<SearchPage> {
                                         borderRadius:
                                             BorderRadius.circular(30.0),
                                       ),
-                                      child: Icon(Icons.search,color:Theme.of(context).primaryColor),
+                                      child: Icon(Icons.search,
+                                          color:
+                                              Theme.of(context).primaryColor),
                                       onPressed: () {
                                         print("sa");
                                         if (_nameFormKey.currentState
@@ -229,7 +239,9 @@ class _SearchPageState extends State<SearchPage> {
                                         borderRadius:
                                             BorderRadius.circular(30.0),
                                       ),
-                                      child: Icon(Icons.search,color:Theme.of(context).primaryColor),
+                                      child: Icon(Icons.search,
+                                          color:
+                                              Theme.of(context).primaryColor),
                                       onPressed: () {
                                         if (_isbnFromKey.currentState
                                             .validate())
@@ -306,19 +318,66 @@ class _SearchPageState extends State<SearchPage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
-                                child: Icon(Icons.search,color:Theme.of(context).primaryColor),
+                                child: Icon(Icons.search,
+                                    color: Theme.of(context).primaryColor),
                                 onPressed: () {
                                   if (_numberFormKey.currentState.validate()) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) => SearchPageProducts(
-                                                  type: 4,
-                                                  to: double.parse(
-                                                      _maxNumber.text),
-                                                  from: double.parse(
-                                                      _minNumber.text),
-                                                )));
+                                    if (_maxminValidation(
+                                        int.parse(_maxNumber.text),
+                                        int.parse(_minNumber.text))) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  SearchPageProducts(
+                                                    type: 4,
+                                                    to: double.parse(
+                                                        _maxNumber.text),
+                                                    from: double.parse(
+                                                        _minNumber.text),
+                                                  )));
+                                    } else {
+                                      return showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              backgroundColor: Theme.of(context)
+                                                  .primaryColor,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          16)),
+                                              title: Text(
+                                                "Warning!",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              content: Text(
+                                                "Maximum number cannot be smaller than minimum number!",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16)),
+                                                  color: Colors.white,
+                                                  child: Text(
+                                                    "OK",
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    }
                                   }
                                 },
                               ),
@@ -394,7 +453,8 @@ class _SearchPageState extends State<SearchPage> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),
                                     ),
-                                    child: Icon(Icons.search,color:Theme.of(context).primaryColor),
+                                    child: Icon(Icons.search,
+                                        color: Theme.of(context).primaryColor),
                                     onPressed: () {
                                       if (selectedLanguage != null) {
                                         Navigator.push(
@@ -487,7 +547,8 @@ class _SearchPageState extends State<SearchPage> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),
                                     ),
-                                    child: Icon(Icons.search,color:Theme.of(context).primaryColor),
+                                    child: Icon(Icons.search,
+                                        color: Theme.of(context).primaryColor),
                                     onPressed: () {
                                       if (selectedCategory != null) {
                                         Navigator.push(

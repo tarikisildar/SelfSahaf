@@ -1,8 +1,6 @@
 import 'package:Selfsahaf/controller/search_service.dart';
 import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/admin_view/user_card_for_admin.dart';
-import 'package:Selfsahaf/views/admin_view/user_from_admin.dart';
-import 'package:Selfsahaf/views/customer_view/profile_pages/user_card.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 

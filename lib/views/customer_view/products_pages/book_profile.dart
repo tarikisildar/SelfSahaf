@@ -12,7 +12,6 @@ import 'package:Selfsahaf/views/customer_view/products_pages/book_settings.dart'
 import 'package:Selfsahaf/controller/product_services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
-import 'package:Selfsahaf/views/errors/error_dialog.dart';
 
 class BookProfile extends StatefulWidget {
   final Book selectedBook;

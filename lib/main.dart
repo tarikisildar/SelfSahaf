@@ -5,17 +5,12 @@ import 'package:Selfsahaf/controller/category_controller.dart';
 import 'package:Selfsahaf/controller/order_service.dart';
 import 'package:Selfsahaf/controller/search_service.dart';
 import 'package:Selfsahaf/controller/shipping_company_service.dart';
-import 'package:Selfsahaf/views/admin_view/admin_main_page.dart';
-import 'package:Selfsahaf/views/admin_view/user_from_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-
 import 'package:Selfsahaf/controller/product_services.dart';
 import 'package:Selfsahaf/views/registration/login.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
-
 import 'controller/rating_controller.dart';
-import 'views/registration/signup.dart';
 import 'package:Selfsahaf/controller/book_controller.dart';
 
 

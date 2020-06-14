@@ -3,7 +3,6 @@ import 'package:Selfsahaf/controller/user_controller.dart';
 import 'package:Selfsahaf/models/address.dart';
 import 'package:Selfsahaf/models/shipping_company_model.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/main_page.dart';
-import 'package:Selfsahaf/views/customer_view/shopping_cart/credit_card_view/credit_card_model.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/models/card_model.dart';

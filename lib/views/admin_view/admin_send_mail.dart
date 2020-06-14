@@ -1,8 +1,6 @@
 import 'package:Selfsahaf/controller/mail_service.dart';
-import 'package:Selfsahaf/models/order.dart';
 import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
-import 'package:Selfsahaf/views/registration/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 

@@ -4,7 +4,6 @@ import 'package:Selfsahaf/models/refund_model.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/refund_seller_detail_page.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 

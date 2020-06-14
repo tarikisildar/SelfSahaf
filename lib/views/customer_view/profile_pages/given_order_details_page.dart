@@ -4,7 +4,6 @@ import 'package:Selfsahaf/views/customer_view/products_pages/bought_book_profile
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:Selfsahaf/views/customer_view/products_pages/book_profile.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
 
 class GivenOrderDetails extends StatefulWidget {
