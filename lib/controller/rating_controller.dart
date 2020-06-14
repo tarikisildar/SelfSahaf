@@ -1,10 +1,7 @@
-import 'dart:convert';
-import 'package:Selfsahaf/models/order.dart';
 import 'package:Selfsahaf/models/rating.dart';
 import 'package:dio/dio.dart';
 import 'package:Selfsahaf/controller/generalServices.dart';
 import 'package:Selfsahaf/models/api_response.dart';
-import 'package:Selfsahaf/models/card_model.dart';
 
 class RatingService extends GeneralServices {
   Dio _dio;

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:Selfsahaf/controller/cart_service.dart';
 import 'package:Selfsahaf/controller/order_service.dart';
 import 'package:Selfsahaf/controller/rating_controller.dart';
@@ -10,7 +8,6 @@ import 'package:Selfsahaf/models/user.dart';
 import 'package:Selfsahaf/views/customer_view/products_pages/refund_page.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/seller_profile.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
-import 'package:Selfsahaf/views/registration/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/main_page/home_page_carousel.dart';
 import 'package:Selfsahaf/controller/product_services.dart';
@@ -277,6 +274,7 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                             onPressed: () {
                               Rating newRating = new Rating(comment: commentController.text,rating: finalRate);
                               _rateSeller(widget.selectedBook.orderDetailID, newRating);
+                              Navigator.of(context).pop();
                             },
                             child: Text(
                               "Accept",

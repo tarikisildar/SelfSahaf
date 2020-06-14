@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/views/registration/input_field.dart';
 import 'package:Selfsahaf/controller/product_services.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:Selfsahaf/models/category.dart';
 import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
-import 'dart:convert';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import "package:http/http.dart" as http;
 class AddBook extends StatefulWidget {
   @override
   _AddBookState createState() => new _AddBookState();
@@ -67,19 +63,19 @@ String condition;
   String _booknameValidation(String email) {
     bool emailValid = false;
     if (email.length >= 2) emailValid = true;
-    return emailValid ? null : 'not valid book name.';
+    return emailValid ? null : 'Book name length should be bigger than 1';
   }
 
   String _authorValidation(String author) {
     bool authorValid = false;
     if (author.length >= 2) authorValid = true;
-    return authorValid ? null : 'not valid author name';
+    return authorValid ? null : 'Author name length should be bigger than 1';
   }
 
   String _descriptionValidation(String description) {
     bool descValid = false;
     if (description.length >= 20) descValid = true;
-    return descValid ? null : 'not valid description';
+    return descValid ? null : 'Description too small.';
   }
 
   bool isNumeric(String s) {

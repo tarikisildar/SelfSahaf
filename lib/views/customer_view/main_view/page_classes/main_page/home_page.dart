@@ -2,7 +2,6 @@ import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/controller/book_controller.dart';
-import 'package:Selfsahaf/controller/product_services.dart';
 import 'package:Selfsahaf/controller/user_controller.dart';
 import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/main_page/book_card.dart';
