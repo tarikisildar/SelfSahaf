@@ -11,14 +11,14 @@ public class ShippingCompany {
     @Column(length = 45)
     private String companyName;
 
-    private double price;
+    private float price;
     @Column(length = 45)
     private String website;
 
     public ShippingCompany() {
     }
 
-    public ShippingCompany(String companyName, double price, String website) {
+    public ShippingCompany(String companyName, float price, String website) {
         this.companyName = companyName;
         this.price = price;
         this.website = website;
@@ -44,7 +44,7 @@ public class ShippingCompany {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

@@ -2,12 +2,12 @@ package com.example.accessingdatamysql.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
-import java.beans.Transient;
 import java.util.Set;
 
+@Indexed
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "user")
 public class User {
@@ -15,10 +15,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userID;
     @Column(length = 45)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "edgeNgram"), store = Store.NO)
     private String name;
     @Column(length = 82)
     private String password;
     @Column(length = 45)
+    @Field(termVector = TermVector.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "edgeNgram"), store = Store.NO)
     private String surname;
 
     private String dob;
@@ -28,6 +30,10 @@ public class User {
     private String email;
     @Column(length = 45)
     private String role;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<CartItem> cart;
 
     @OneToOne
     @JoinColumn(name = "sellerAddressID")
@@ -53,14 +59,19 @@ public class User {
             joinColumns = @JoinColumn(name = "userID"),
             inverseJoinColumns = @JoinColumn(name = "addressID")
     )
-    private Set<Address> addresses;     
+    private Set<Address> addresses;
 
 
 
 
     @JsonIgnoreProperties("user")
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<OrderDetail> orderdetails;
+
+    @JsonIgnoreProperties("buyer")
+    @OneToMany(mappedBy = "buyer", fetch = FetchType.EAGER)
+    private Set<Order> orders;
+
 
 
 
@@ -74,6 +85,15 @@ public class User {
         this.dob = dob;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+
+    @JsonIgnore
+    public Set<Order> getOrders() {
+        return orders;
+    }
+    @JsonIgnore
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     @JsonIgnore
@@ -145,7 +165,15 @@ public class User {
     public String getSurname() {
         return surname;
     }
+    @JsonIgnore
+    public Set<CartItem> getCart() {
+        return cart;
+    }
 
+    @JsonIgnore
+    public void setCart(Set<CartItem> cart) {
+        this.cart = cart;
+    }
 
     public String getPassword() {
         return password;

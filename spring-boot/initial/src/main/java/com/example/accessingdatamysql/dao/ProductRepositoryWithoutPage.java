@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.dao;
 
 import com.example.accessingdatamysql.models.Product;
+import com.example.accessingdatamysql.models.Sells;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -21,5 +22,7 @@ USING(productID, sellerID, datetime)) as this
 
     @Query("SELECT sell.product FROM Sells sell WHERE sellerID = ?1")
     List<Product> findProductBySellerID(Integer sellerID);
+
+
 }
 

@@ -15,7 +15,7 @@ public class PriceKey implements Serializable {
     @Column
     private Integer sellerID;
 
-    @Column
+    @Column(length = 64)
     private String datetime;
 
     public PriceKey() {

@@ -6,14 +6,13 @@ import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.models.*;
 import com.example.accessingdatamysql.models.embeddedKey.PriceKey;
 import com.example.accessingdatamysql.models.embeddedKey.SellsKey;
+import com.example.accessingdatamysql.models.enums.ProductStatus;
 import com.example.accessingdatamysql.storage.StorageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.example.accessingdatamysql.models.FilterObject;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,12 +22,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import org.springframework.core.io.Resource;
 
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 @Controller
 @RequestMapping("/product")
@@ -60,40 +66,39 @@ public class ProductController {
     @ApiOperation("add new selling")
     @PostMapping(path ="/addBook")
     public @ResponseBody
-    String addBook(@RequestParam Integer price, @RequestParam Integer quantity, @RequestBody Product product) {
+    String addBook(@RequestParam Double price, @RequestParam Integer quantity, @RequestBody Product product) {
         Product pr = productRepository.save(product);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
         Sells sells = new Sells();
-        SellsKey sellsKey = new SellsKey();
-        sellsKey.setProductID(pr.getProductID());
-        sellsKey.setSellerID(sellerID);
 
-        sells.setSellerID(sellsKey);
+        sells.setProductID(pr.getProductID());
+        sells.setSellerID(sellerID);
 
         Price price1 = new Price();
         LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
         String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
         price1.setPriceID(new PriceKey(pr.getProductID(),sellerID, formatted));
         price1.setPrice(price);
+        price1.setDiscount(0);
         Set<Price> prices = new HashSet<Price>();
 
         prices.add(price1);
         sells.setPrice(prices);
         sells.setQuantity(quantity);
-
+        sells.setCurrentPrice(price);
         sells.setProduct(pr);
         Optional<User> user = userRepository.findUserByUserID(sellerID);
         sells.setUser(user.get());
 
         sellerRepository.save(sells);
-        return "A new selling created";
+        return pr.getProductID().toString();
     }
     @ApiOperation("update Product")
     @PostMapping(path ="/updateBook")
     public @ResponseBody
-    String updateBook( @RequestBody Product product,@RequestParam Integer price, @RequestParam Integer quantity,HttpServletResponse response)
+    String updateBook( @RequestBody Product product,@RequestParam Double price, @RequestParam Integer quantity,  @RequestParam(defaultValue = "0") Integer discount,HttpServletResponse response)
     {
         boolean flag = false;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -111,14 +116,18 @@ public class ProductController {
                 LocalDateTime datetime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.ofHoursMinutes(3,0));
                 String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(datetime);
                 PriceKey priceKey = new PriceKey(product.getProductID(),sell.getSellerID(),formatted);
-                Set<Price> prices = new HashSet<>();
-                prices.add(new Price(priceKey,sell,price));
+                Set<Price> prices = sell.getPriceList();
+                prices.add(new Price(priceKey,sell,price,discount));
                 sell.setPrice(prices);
+                sell.setCurrentPrice(price);
+                if(quantity == 0){
+                    sell.getProduct().setStatus(ProductStatus.DEACTIVE);
+                }
                 sell.setQuantity(quantity);
                 flag = true;
             }
         }
-
+        product.setSoldCount(pr.getSoldCount());
         if(!flag)
         {
             response.setStatus( HttpServletResponse.SC_FORBIDDEN);
@@ -127,6 +136,14 @@ public class ProductController {
         productRepositoryWithoutPage.save(product);
         return "saved";
 
+    }
+
+    @ApiOperation("Get Best Sellers")
+    @GetMapping("/bestSeller")
+    public @ResponseBody Iterable<Product> getBestSellers(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                          @RequestParam(defaultValue = "10") Integer pageSize)
+    {
+        return service.getBestSellers(pageNo,pageSize);
     }
 
     @ApiOperation("delete book by id")
@@ -166,8 +183,9 @@ public class ProductController {
     public @ResponseBody
     Iterable<Product> getProducts(@RequestParam(defaultValue = "0") Integer pageNo,
                                   @RequestParam(defaultValue = "2") Integer pageSize,
-                                  @RequestParam(defaultValue = "productID") String sortBy) {
-        Iterable<Product> list = service.getAll(pageNo,pageSize,sortBy);
+                                  @RequestParam(defaultValue = "productID") String sortBy,
+                                  @RequestParam(defaultValue = "true") boolean ascending) {
+        Iterable<Product> list = service.getAll(pageNo,pageSize,sortBy,ascending);
         return list;
         //return productRepository.findAll(pageable);
     }
@@ -188,12 +206,15 @@ public class ProductController {
         return productRepositoryWithoutPage.findProductBySellerID(sellerID);
         //return productRepository.findAll(pageable);
     }
-    @PostMapping(path = "/uploadImage",consumes = {"multipart/form-data"})
 
-    //@RequestMapping(method = RequestMethod.POST, path = "/uploadImage")
+//    @PostMapping(path = "/uploadImage", consumes = {"multipart/form-data" })
+    @RequestMapping(path= "/uploadImages", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     @ResponseBody
-    public String uploadFile(@RequestParam("files") List<MultipartFile> files, @RequestParam Integer productID,HttpServletResponse response)
+    public String uploadFile(@RequestParam("file")  List<MultipartFile> file, @RequestParam Integer productID, HttpServletResponse response)
     {
+
+//        List<MultipartFile> files = uploadFiles.getFiles();
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
 
@@ -210,7 +231,44 @@ public class ProductController {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "Wrong product ID";
         }
-        String name = storageService.storeAll(files,productID,sellerID);
+
+
+        String name = storageService.storeAll(file,productID);
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/images/")
+                .path(productRepositoryWithoutPage.findById(productID).get().getPath())
+                .toUriString();
+
+        return name;
+    }
+
+
+    @RequestMapping(path= "/uploadMainImage", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    @ResponseBody
+    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam Integer productID, HttpServletResponse response)
+    {
+
+
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+
+        User user = userRepository.findUserByUserID(sellerID).get();
+        boolean flag = false;
+        for (Sells sells :user.getSells())
+        {
+            if(sells.getProductID() == productID)
+            {
+                flag = true;
+            }
+        }
+        if(!flag){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "Wrong product ID";
+        }
+
+
+        String name = storageService.storeMain(file,productID);
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/images/")
                 .path(productRepositoryWithoutPage.findById(productID).get().getPath())
@@ -219,15 +277,26 @@ public class ProductController {
         return name + "\n" + uri;
     }
 
-    @GetMapping("/images/{filename:.+}")
-    public @ResponseBody List<Resource> downloadFile(@RequestParam Integer productID)
-    {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Integer sellerID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
+    @GetMapping("/getImagePaths")
+    public @ResponseBody List<String> GetImagePaths(@RequestParam Integer productID) {
 
-        List<Resource> resources = storageService.loadAllResources(productID.toString(),sellerID.toString());
 
-        return resources;
+        List<Resource> resources = storageService.loadAllResources(productID.toString());
+        List<String> resourcesS = new ArrayList<>();
+        for (Resource res :
+                resources) {
+            try {
+                resourcesS.add(res.getURL().toString().substring(5)); //cut "file:" part from url
+            }
+            catch (IOException e){
+                continue;
+            }
+        }
+        return resourcesS;
+    }
+    @GetMapping("/images")
+    public @ResponseBody Resource getImage(@RequestParam String path){
+        return storageService.loadAsResource(path);
     }
 
 }
