@@ -219,7 +219,7 @@ class _EditCategoriesState extends State<EditCategories> {
                               child: Row(
                                 children: <Widget>[
                                   Expanded(
-                                      flex: 6,
+                                      flex: 5,
                                       child: SizedBox(
                                         width: 50,
                                       )),
@@ -263,7 +263,7 @@ class _EditCategoriesState extends State<EditCategories> {
                                         width: 20,
                                       )),
                                   Expanded(
-                                    flex: 5,
+                                    flex: 6,
                                     child: FlatButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();

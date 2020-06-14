@@ -357,7 +357,7 @@ class _SearchPageState extends State<SearchPage> {
                                         child: SafeArea(
                                           child: DropdownButton<String>(
                                             hint: Text(
-                                              "Select Book Language",
+                                              "Select Language",
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),

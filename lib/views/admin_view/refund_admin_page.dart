@@ -68,7 +68,7 @@ class _RefundRequestForAdminState extends State<RefundRequestForAdmin> {
                               padding: const EdgeInsets.all(35.0),
                               child: Center(
                                   child: Text(
-                                "No Books Waiting For Acceptance",
+                                "No Books Refunded",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 25),
                               )),

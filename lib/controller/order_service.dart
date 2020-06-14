@@ -68,7 +68,11 @@ class OrderService extends GeneralServices {
       int orderID, String status) async {
     try {
       Response response = await _dio.post("order/markOrder", queryParameters: {
+<<<<<<< HEAD
         "orderDetailID": orderID,
+=======
+        "orderID": orderID,
+>>>>>>> Yavuz
         "status": status
       });
       print(response.data);

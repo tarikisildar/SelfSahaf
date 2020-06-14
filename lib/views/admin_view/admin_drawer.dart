@@ -23,7 +23,7 @@ class AdminDrawer extends StatelessWidget {
               height: 10,
             ),
             Expanded(
-              flex: 5,
+              flex: 10,
               child: Padding(
                 padding: const EdgeInsets.only(top:36.0),
                 child: Container(
@@ -37,7 +37,7 @@ class AdminDrawer extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 3,
+              flex: 5,
               child: InkWell(
                 
                 child: ListTile(
@@ -54,8 +54,9 @@ class AdminDrawer extends StatelessWidget {
                 },
               ),
             ),
+            SizedBox(height: 5,),
             Expanded(
-              flex: 3,
+              flex: 5,
               child: InkWell(
                 child: ListTile(
                     leading: Icon(
@@ -74,8 +75,9 @@ class AdminDrawer extends StatelessWidget {
                 },
               ),
             ),
+           
             Expanded(
-              flex: 3,
+              flex: 5,
               child: InkWell(
                 child: ListTile(
                     leading: Icon(Icons.edit, color: Colors.white),
@@ -92,7 +94,7 @@ class AdminDrawer extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 3,
+              flex: 5,
               child: InkWell(
                 child: ListTile(
                     leading: Icon(Icons.mail, color: Colors.white),
