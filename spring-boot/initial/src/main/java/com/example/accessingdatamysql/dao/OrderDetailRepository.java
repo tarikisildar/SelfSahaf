@@ -3,6 +3,7 @@ package com.example.accessingdatamysql.dao;
 import com.example.accessingdatamysql.models.CartItem;
 import com.example.accessingdatamysql.models.Order;
 import com.example.accessingdatamysql.models.OrderDetail;
+import com.example.accessingdatamysql.models.User;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -24,4 +25,8 @@ public interface OrderDetailRepository extends CrudRepository<OrderDetail, Integ
 
     @Query("SELECT ord FROM OrderDetail ord WHERE ord.orderDetailID = ?1")
     OrderDetail findOrderDetailsByOrderDetailID(Integer orderDetailID);
+
+
+    @Query("SELECT ord.user FROM OrderDetail ord GROUP BY ord.user.userID ORDER BY SUM(ord.quantity) DESC")
+    List<User> getTopSellers();
 }

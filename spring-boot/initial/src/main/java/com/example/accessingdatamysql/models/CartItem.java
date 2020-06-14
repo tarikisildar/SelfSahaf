@@ -28,7 +28,7 @@ public class CartItem {
     private Integer sellerID;
 
     @Transient
-    private Integer productID;
+    private Product product;
 
 
 
@@ -72,12 +72,16 @@ public class CartItem {
         this.user = user;
     }
 
+    public Product getProduct() {
+        return sells.getProduct();
+    }
+
     public Integer getAmount() {
         return amount;
     }
     public Double getPrice()
     {
-        return this.sells.getPrice();
+        return this.sells.getCurrentPrice();
     }
     public void setAmount(Integer amount) {
         this.amount = amount;

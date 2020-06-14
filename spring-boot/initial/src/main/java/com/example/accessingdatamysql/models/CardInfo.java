@@ -84,7 +84,7 @@ public class CardInfo {
         this.ownerName = ownerName;
     }
 
-    @JsonIgnore
+
     public String getCvv() {
         return cvv;
     }
@@ -92,7 +92,7 @@ public class CardInfo {
     public void setCvv(String cvv) {
         this.cvv = cvv;
     }
-    @JsonIgnore
+
     public String getExpirationYear() {
         return expirationYear;
     }
@@ -100,7 +100,7 @@ public class CardInfo {
     public void setExpirationYear(String expirationYear) {
         this.expirationYear = expirationYear;
     }
-    @JsonIgnore
+
     public String getExpirationMonth() {
         return expirationMonth;
     }

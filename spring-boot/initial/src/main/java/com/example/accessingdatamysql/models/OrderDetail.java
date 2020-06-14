@@ -27,6 +27,9 @@ public class OrderDetail implements Serializable {
     private OrderStatus status;
 
 
+    @Transient
+    private User buyer;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
 //    @MapsId("orderID")
@@ -63,27 +66,31 @@ public class OrderDetail implements Serializable {
     public void setOrder(Order order) {
         this.order = order;
     }
-    @JsonIgnore
+
     public ShippingInfo getShippingInfo() {
         return shippingInfo;
     }
-    @JsonIgnore
+    
     public void setShippingInfo(ShippingInfo shippingInfo) {
         this.shippingInfo = shippingInfo;
     }
-    @JsonIgnore
+
+    public User getBuyer() {
+        return order.getBuyer();
+    }
+
     public User getUser() {
         return user;
     }
-    @JsonIgnore
+
     public void setUser(User user) {
         this.user = user;
     }
-    @JsonIgnore
+
     public Product getProduct() {
         return product;
     }
-    @JsonIgnore
+
     public void setProduct(Product product) {
         this.product = product;
     }

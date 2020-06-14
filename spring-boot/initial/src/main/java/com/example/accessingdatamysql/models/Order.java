@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -28,10 +29,21 @@ public class Order {
     private String datetime;
 
 
+    private Integer itemCount;
+
+
 
     @OneToOne
     @JoinColumn(name = "receiverAddressID", referencedColumnName = "addressID")
     private Address receiverAddressID;
+
+    public Integer getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(Integer itemCount) {
+        this.itemCount = itemCount;
+    }
 
     public Integer getOrderID() {
         return orderID;
@@ -40,19 +52,19 @@ public class Order {
     public void setOrderID(Integer orderID) {
         this.orderID = orderID;
     }
-
+    @JsonIgnore
     public User getBuyer() {
         return buyer;
     }
-
+    @JsonIgnore
     public void setBuyer(User buyer) {
         this.buyer = buyer;
     }
-
+    @JsonIgnore
     public CardInfo getCardNumber() {
         return cardNumber;
     }
-
+    @JsonIgnore
     public void setCardNumber(CardInfo cardNumber) {
         this.cardNumber = cardNumber;
     }
@@ -64,11 +76,11 @@ public class Order {
     public void setDatetime(String datetime) {
         this.datetime = datetime;
     }
-
+    @JsonIgnore
     public Address getReceiverAddressID() {
         return receiverAddressID;
     }
-
+    @JsonIgnore
     public void setReceiverAddressID(Address receiverAddressID) {
         this.receiverAddressID = receiverAddressID;
     }

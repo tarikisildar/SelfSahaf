@@ -10,6 +10,7 @@ import com.example.accessingdatamysql.storage.StorageService;
 import com.example.accessingdatamysql.thirdparty.PaypalPayment;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import io.swagger.annotations.Api;
+
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
 import java.sql.Ref;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -70,6 +74,9 @@ public class OrderController {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private EmailController emailController;
+
 
     private PaypalPayment paypal = PaypalPayment.getInstance();
 
@@ -77,7 +84,7 @@ public class OrderController {
     @PostMapping(path="/confirmOrder")
     @Transactional(rollbackFor=Exception.class)
     public @ResponseBody String confirmOrder(@RequestParam Integer addressID, @RequestParam Integer shippingCompanyID,
-                                            @RequestBody CardInfo card, HttpServletResponse response){
+                                            @RequestBody CardInfo card, HttpServletResponse response) throws IOException, MessagingException {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer userID = ((UserDetailsImp) auth.getPrincipal()).getUserID();
@@ -98,16 +105,13 @@ public class OrderController {
 
 
                 /*validate card if validated return true*/
-            System.out.println("Hello");
+
             if(paypal.validateCard(card)) {
 
-                System.out.println("Hello");
+
                 card = cardRepository.save(card);
 
 
-
-                System.out.println(user.getUserID());
-                System.out.println(card.getCardNumber());
 
 
                 /*Set<User> userSet = new HashSet<User>();
@@ -121,6 +125,7 @@ public class OrderController {
                 order.setCardNumber(card);
                 order.setDatetime(formattedDatetime);
                 order.setReceiverAddressID(address);
+                order.setItemCount(cart.size());
 
                 orderRepository.save(order);
 
@@ -132,6 +137,7 @@ public class OrderController {
 
                     shippingInfo = shippingInfoRepository.save(shippingInfo);
 
+
                     Sells sells = item.getSells();
                     Product product = sells.getProduct();
                     Integer newQuantity = sells.getQuantity() - item.getAmount();
@@ -141,6 +147,7 @@ public class OrderController {
                     } else if (newQuantity < 0) {
                         throw new RuntimeException("Not enough stock, transaction rollback");
                     }
+                    product.setSoldCount(product.getSoldCount()+item.getAmount());
 
                     /* Product Soldout */
                     if (newQuantity == 0) {
@@ -172,6 +179,16 @@ public class OrderController {
 
 
                 }
+
+
+
+                /* Send email to User about the order*/
+                String email = user.getEmail();
+                String context = "Your Order has ben taken. \n\n Regards, \nSelfsahaf Support";
+                String title = "Selfsahaf Order";
+
+
+                emailController.sendEmailToUser(email, title, context);
 
                 return "confirmed";
             }
@@ -301,11 +318,30 @@ public class OrderController {
         refundRequest = refundRepository.save(refundRequest);
         if(file != null)
         {
-            refundRequest.setPath(storageService.storeAllRefund(file,refundRequest.getRefundID()));
+            storageService.storeAllRefund(file,refundRequest.getRefundID());
+
             refundRepository.save(refundRequest);
         }
         return "refund request created with id " + refundRequest.getRefundID().toString();
     }
+
+    @ApiOperation("RefundImagePath")
+    @GetMapping("/refundImagePath")
+    public @ResponseBody List<String> refundPaths(@RequestParam Integer refundID){
+        List<Resource> resources = storageService.loadAllResourcesRefund(refundID.toString());
+        List<String> resourcesS = new ArrayList<>();
+        for (Resource res :
+                resources) {
+            try {
+                resourcesS.add(res.getURL().toString().substring(5)); //cut "file:" part from url
+            }
+            catch (IOException e){
+                continue;
+            }
+        }
+        return  resourcesS;
+    }
+
 
     @ApiOperation("List Refund Requests, for seller")
     @GetMapping(path = "/sellerRefundRequests")
