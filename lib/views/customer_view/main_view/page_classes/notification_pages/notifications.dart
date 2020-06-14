@@ -1,5 +1,12 @@
+import 'package:Selfsahaf/controller/admin_service.dart';
+import 'package:Selfsahaf/models/book.dart';
+import 'package:Selfsahaf/views/customer_view/main_view/page_classes/main_page/sahaf_drawer.dart';
+import 'package:Selfsahaf/views/customer_view/main_view/page_classes/notification_pages/notification_best_selling_books.dart';
+import 'package:Selfsahaf/views/customer_view/main_view/page_classes/notification_pages/notification_top_sellers.dart';
+import 'package:Selfsahaf/views/customer_view/profile_pages/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
+import 'package:get_it/get_it.dart';
 
 class NotificationsPage extends StatefulWidget {
   // ExamplePage({ Key key }) : super(key: key);
@@ -8,9 +15,14 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage>{
+  
+  var controller = PageController(
+    initialPage: 0,
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SahafDrawer(),
       appBar: AppBar(
           title: Container(
               height: 50,
@@ -27,7 +39,51 @@ class _NotificationsPageState extends State<NotificationsPage>{
           ],
         ),
       body: Center(
-        child: Text("Badi"),
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 15,),
+            Container(child: Text(
+              "Hotlist",style: TextStyle(color: Colors.white,fontSize: 25),
+            ),),
+            Divider(thickness: 2,color: Colors.white,),
+            Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.fromLTRB(20, 5, 50, 5),
+                        child: Text(
+                          "Sellers",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                          textDirection: TextDirection.ltr,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.fromLTRB(50, 5, 20, 5),
+                        child: Text(
+                          "Books",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                          textDirection: TextDirection.ltr,
+                        ),
+                      )
+                    ],
+                  ),
+                  Divider(
+                    thickness: 3,
+                    color: Colors.white,
+                  ),
+                  Expanded(
+                    child: PageView(
+                      controller: controller,
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[NotificationTopSellers(), NotificationBestBooks()],
+                    ),
+                  )
+          ],
+        ),
       ),
     );
   }

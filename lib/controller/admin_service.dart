@@ -1,3 +1,5 @@
+import 'package:Selfsahaf/models/book.dart';
+import 'package:Selfsahaf/models/user.dart';
 import 'package:dio/dio.dart';
 import 'package:Selfsahaf/controller/generalServices.dart';
 import 'package:Selfsahaf/models/api_response.dart';
@@ -6,6 +8,29 @@ class AdminService extends GeneralServices {
   Dio _dio;
   AdminService() {
     this._dio = super.dio;
+  }
+
+  Future<APIResponse<List<User>>> getTopSellers(int count) async {
+    try {
+      Response response = await _dio
+          .get("admin/getTopSellers", queryParameters: {"N": count});
+      print(response.data);
+      if (response.statusCode == 200) {
+        if (response.data.length != 0) {
+          List<User> result;
+          List<dynamic> i = response.data;
+          result = i.map((p) => User.fromJson(p)).toList();
+          return APIResponse(data: result);
+        } else {
+          return APIResponse(data: null);
+        }
+      }
+      return APIResponse(
+          data: null, error: true, errorMessage: "Some errors occurs.");
+    } on DioError catch (e) {
+      return APIResponse(
+          data: null, error: true, errorMessage: "Some errors occurs.");
+    }
   }
 
   Future<APIResponse<int>> getOrderCount() async {

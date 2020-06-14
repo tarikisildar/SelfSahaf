@@ -52,6 +52,9 @@ class _TakenOrdersState extends State<TakenOrders> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: Theme.of(context).primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             title:
                 Text("Mark Order As:", style: TextStyle(color: Colors.white)),
             content: StatefulBuilder(
@@ -107,7 +110,6 @@ class _TakenOrdersState extends State<TakenOrders> {
 
                                 print("please mark order.");
                               } else {
-                                print(markedAs);
                                 orderService
                                     .markOrder(order.orderDetailID,
                                         order.product.productID, markedAs)
@@ -143,7 +145,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                               width: 20,
                             )),
                         Expanded(
-                          flex: 4,
+                          flex: 5,
                           child: FlatButton(
                             onPressed: () {
                               Navigator.of(context).pop();

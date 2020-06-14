@@ -78,7 +78,6 @@ class ProductService extends GeneralServices {
           return result;
         }
       }
-      print("satatus code");
       print(response.statusCode);
       print(response.data);
 

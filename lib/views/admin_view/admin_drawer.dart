@@ -154,26 +154,7 @@ class AdminDrawer extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  FlatButton(
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(15.0),
-                        side: BorderSide(color: Color.fromRGBO(230, 81, 0, 1))),
-                    color: Colors.white,
-                    onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => Signup()),
-                      // );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Update Hotlist",
-                        style: TextStyle(
-                            color: Color.fromRGBO(230, 81, 0, 1), fontSize: 20),
-                      ),
-                    ),
-                  ),
+                  Container(),
                 ],
               ),
             ),

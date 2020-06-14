@@ -9,13 +9,9 @@ import 'package:Selfsahaf/views/customer_view/products_pages/refund_page.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/seller_profile.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/views/customer_view/main_view/page_classes/main_page/home_page_carousel.dart';
-import 'package:Selfsahaf/views/customer_view/products_pages/book_settings.dart';
 import 'package:Selfsahaf/controller/product_services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:Selfsahaf/views/customer_view/shopping_cart/shopping_cart.dart';
-import 'package:Selfsahaf/views/errors/error_dialog.dart';
 
 class BoughtBookProfile extends StatefulWidget {
   final Order selectedBook;
@@ -36,21 +32,19 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
   int _itemCount = 1;
   List<Image> images;
   bool _loading = true;
-  bool leading = true;
   int status; // 1=> order cancel is able.  2=> confirm/shipping/delivered ise refund is able. 3=> delivered ise rate seller is able
   @override
   void initState() {
-    if (widget.selectedBook.status == "ACTIVE") {
+    print(widget.selectedBook.product.status);
+    if (widget.selectedBook.product.status.compareTo("ACTIVE")==0) {
       this.status = 1;
-      leading = false;
-    } else if (widget.selectedBook.status == "CONFIRM" ||
-        widget.selectedBook.status == "SHIPPING") {
+    } else if (widget.selectedBook.product.status == "CONFIRM" ||
+        widget.selectedBook.product.status == "SHIPPING") {
       this.status = 2;
-      leading = true;
-    } else if (widget.selectedBook.status == "DELIVERED") {
+    } else if (widget.selectedBook.product.status == "DELIVERED") {
       this.status = 3;
-      leading = true;
     }
+    else this.status = 4;
 
     this.ourOrder = widget.selectedBook;
     _user = _userService.getUser();
@@ -122,13 +116,57 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: (this.status == 3)?
+      FloatingActionButton(
+        backgroundColor: Colors.white,
+        child: Icon(Icons.star,color: Colors.deepPurple,),
+        onPressed: () {
+          return showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                backgroundColor: Theme.of(context).primaryColor,
+                title: Text(
+                  "OK",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                content: Text("Cancellation is Successful.",
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                actions: <Widget>[
+                  FlatButton(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "OK",
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                  ),
+                ],
+              );
+            });
+        },
+      )
+      :
+      null,
       key: _scaffoldKey,
       appBar: AppBar(
         elevation: 12,
         title: Container(
             height: 50, child: Image.asset("images/logo_white/logo_white.png")),
         actions: <Widget>[
-          (leading)
+          (this.status == 1)
               ? IconButton(
                   icon: Icon(
                     Icons.assignment,
@@ -144,7 +182,8 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                     );
                   },
                 )
-              : IconButton(
+              : (this.status == 2 || this.status==3)?
+              IconButton(
                   icon: Icon(
                     Icons.cancel,
                     color: Colors.white,
@@ -198,7 +237,14 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
                           );
                         });
                   },
-                ),
+                )
+                :
+                Icon(
+                    Icons.cancel,
+                    color: Colors.transparent,
+                  ),
+                  
+                
         ],
       ),
       body: (_loading)
