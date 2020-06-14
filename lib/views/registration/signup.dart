@@ -68,8 +68,8 @@ class _SignupState extends State<Signup> {
 
   String emailValidation(String email) {
     bool emailValid =
-        RegExp(r"^[a-zA-Z0-9.!#$%&’*+\=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\p{L}+$").hasMatch(email);
-    return emailValid ? null : "Please enter valid e-mail address";
+        RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+    return emailValid ? null : "Please enter valid email address";
   }
 
   String passwrdValidation(String passwrd) {

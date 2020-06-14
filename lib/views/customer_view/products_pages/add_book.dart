@@ -86,7 +86,7 @@ class _AddBookState extends State<AddBook> {
   }
 
   String _priceValidation(String price) {
-    bool priceValid = false;
+    bool priceValid = true;
     if (!isNumeric(price)) return "price should be number";
 
     if (double.parse(price) <= 0)
@@ -110,10 +110,13 @@ class _AddBookState extends State<AddBook> {
 
   String _quantityValidation(String quantity) {
     if (!isNumeric(quantity)) return "Quantity should be number";
-    bool qValid = false;
+    bool qValid = true;
 
-      if (int.parse(quantity) <= 0)
+      if (int.parse(quantity) <= 0){
+        qValid= false;
         return "Quantity can not be less then or equal zero";
+      }
+        
     return qValid ? null : 'Not valid quantity';
   }
 
