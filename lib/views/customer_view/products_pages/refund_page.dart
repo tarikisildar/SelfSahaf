@@ -225,8 +225,7 @@ class _RefundPageState extends State<RefundPage> {
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
                 onPressed: () {
-                  if (_formKey.currentState.validate() &&
-                      _imagesList.length != 0) {
+                  if (_formKey.currentState.validate()) {
                     orderService
                         .sendRefundRequest(
                             _imagesList,
@@ -235,14 +234,11 @@ class _RefundPageState extends State<RefundPage> {
                         .then((value) {
                       if (!value.error) {
                         Navigator.pop(context);
-                      }
-                      else{
-                        ErrorDialog().showErrorDialog(context, "Error!", value.errorMessage);
+                      } else {
+                        ErrorDialog().showErrorDialog(
+                            context, "Error!", value.errorMessage);
                       }
                     });
-                  } else if (_imagesList.length == 0) {
-                    ErrorDialog().showErrorDialog(context, "Select Photo",
-                        "Please select a photo or photos of book.");
                   }
                 },
               ),

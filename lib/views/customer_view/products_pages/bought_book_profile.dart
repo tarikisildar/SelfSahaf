@@ -70,7 +70,7 @@ class _BoughtBookProfileState extends State<BoughtBookProfile> {
   }
 
   _cancelOrder(int orderDetailID) {
-    _orderService.cancelOrder(orderDetailID).then((value) {
+    _orderService.cancelOrder(orderDetailID).then((value){
       if (value.error) {
         ErrorDialog().showErrorDialog(context, "Error!", value.errorMessage);
       } else {
