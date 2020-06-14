@@ -118,12 +118,12 @@ class _MainPageState extends State<MainPage> {
                       InkWell(
                         child: _index == 2
                             ? Icon(
-                                Icons.notifications,
+                                Icons.favorite,
                                 size: 25,
                                 color: Colors.white,
                               )
                             : Icon(
-                                Icons.notifications_none,
+                                Icons.favorite_border,
                                 size: 30,
                                 color: Colors.white,
                               ),
@@ -133,7 +133,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                       _index == 2
                           ? Text(
-                              "Notifications",
+                              "Hotlist",
                               style: TextStyle(
                                   fontSize: 10, fontWeight: FontWeight.bold,color: Colors.white),
                             )
