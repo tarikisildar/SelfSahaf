@@ -33,6 +33,29 @@ class AdminService extends GeneralServices {
     }
   }
 
+  Future<APIResponse<List<Book>>> getTopBooks(int pageNo, int pageSize) async {
+    try {
+      Response response = await _dio
+          .get("product/bestSeller", queryParameters: {"pageNo": pageNo,"pageSize":pageSize});
+      print(response.data);
+      if (response.statusCode == 200) {
+        if (response.data.length != 0) {
+          List<Book> result;
+          List<dynamic> i = response.data;
+          result = i.map((p) => Book.fromJson(p)).toList();
+          return APIResponse(data: result);
+        } else {
+          return APIResponse(data: null);
+        }
+      }
+      return APIResponse(
+          data: null, error: true, errorMessage: "Some errors occurs.");
+    } on DioError catch (e) {
+      return APIResponse(
+          data: null, error: true, errorMessage: "Some errors occurs.");
+    }
+  }
+
   Future<APIResponse<int>> getOrderCount() async {
     try {
       Response response = await _dio.get("admin/getOrderCount");

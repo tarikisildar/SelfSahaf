@@ -43,7 +43,7 @@ class _NotificationsPageState extends State<NotificationsPage>{
           children: <Widget>[
             SizedBox(height: 15,),
             Container(child: Text(
-              "Hotlist",style: TextStyle(color: Colors.white,fontSize: 25),
+              "Best of the Best",style: TextStyle(color: Colors.white,fontSize: 25),
             ),),
             Divider(thickness: 2,color: Colors.white,),
             Row(

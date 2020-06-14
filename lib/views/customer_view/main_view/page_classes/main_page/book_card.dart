@@ -47,9 +47,13 @@ class _BookCardState extends State<BookCard> {
           child: (clicked)
               ? Container(
                   width: 40,
-                  color: Color.fromRGBO(252, 140, 3, 0.8),
+                  
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(252, 140, 3, 0.8),
+                    borderRadius: BorderRadius.circular(25)
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -72,6 +76,7 @@ class _BookCardState extends State<BookCard> {
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
+                              SizedBox(height: 5,),
                               Expanded(
 
                                 flex: 4,
@@ -135,7 +140,12 @@ class _BookCardState extends State<BookCard> {
                             color: Colors.white,
                             size: 80,
                           )
-                        : Image.memory(photo, fit: BoxFit.cover),
+                        : ClipRRect(
+                        borderRadius: BorderRadius.circular(25),
+                        child: Image.memory(
+                          photo,
+                          fit: BoxFit.cover,
+                        )),
                   ),
                 ),
         ),

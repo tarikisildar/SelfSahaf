@@ -1,5 +1,9 @@
 import 'package:Selfsahaf/controller/order_service.dart';
+import 'package:Selfsahaf/controller/product_services.dart';
+import 'package:Selfsahaf/models/book.dart';
 import 'package:Selfsahaf/models/given_orders.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/book_profile.dart';
+import 'package:Selfsahaf/views/customer_view/products_pages/product_card.dart';
 import 'package:Selfsahaf/views/customer_view/profile_pages/history_widget.dart';
 import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
@@ -14,23 +18,25 @@ class NotificationBestBooks extends StatefulWidget {
 class _NotificationBestBooks extends State<NotificationBestBooks> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
-  OrderService _orderService = GetIt.I<OrderService>();
-  List<GivenOrders> _givenOrdes;
+  ProductService _productService = GetIt.I<ProductService>();
+  List<Book> bestBooks;
   @override
   void initState() {
-    _getHistory(context);
+    _getTopBooks(context);
+    super.initState();
   }
 
-  _getHistory(BuildContext context) async {
-    _orderService.givenOrders().then((value) {
+  _getTopBooks(BuildContext context) async {
+    _productService.getTopBooks(0, 10).then((value) {
+      print(value.data.length);
       if (!value.error) {
         setState(() {
-          this._givenOrdes = value.data;
+          this.bestBooks = value.data;
         });
       } else {
         ErrorDialog().showErrorDialog(context, "Error", value.errorMessage);
         setState(() {
-          this._givenOrdes = value.data;
+          this.bestBooks = value.data;
         });
       }
     });
@@ -41,33 +47,53 @@ class _NotificationBestBooks extends State<NotificationBestBooks> {
     // TODO: implement build
     return Scaffold(
         body: RefreshIndicator(
-            onRefresh: () => _getHistory(context),
+            onRefresh: () => _getTopBooks(context),
             key: _refreshIndicatorKey,
-            child: ListView(
-              children: <Widget>[
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, index) {
-                    return (_givenOrdes == null)
-                        ? Center(
-                            child: Text(
-                              "No Orders",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25),
-                              textAlign: TextAlign.center,
-                            ),
-                          )
-                        : HistoryWidget(
-                            givenOrders: _givenOrdes[index],
-                          );
-                  },
-                  itemCount: (_givenOrdes == null) ? 1 : _givenOrdes.length,
-                ),
-                SizedBox(
-                  height: 80,
-                )
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView(
+                children: <Widget>[
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, index) {
+                      return (bestBooks == null)
+                          ? Center(
+                              child: Text(
+                                "No Orders",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 25),
+                                textAlign: TextAlign.center,
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BookProfile(
+                                            selectedBook: bestBooks[index],
+                                            type: 1,
+                                          )),
+                                );
+                              },
+                              child: ProductCard(
+                                  authorName: bestBooks[index].authorName,
+                                  bookName: bestBooks[index].name,
+                                  price: bestBooks[index].price.toString(),
+                                  productID: bestBooks[index].productID,
+                                  sellerID: bestBooks[index].sellerID,
+                                  publisherName: bestBooks[index].publisher,
+                                  type: 1),
+                            );
+                    },
+                    itemCount: (bestBooks == null) ? 1 : bestBooks.length,
+                  ),
+                  SizedBox(
+                    height: 80,
+                  )
+                ],
+              ),
             )));
   }
 }
