@@ -8,13 +8,13 @@ class User {
   String email;
   String role;
 
-  User({mail, name, surname, password, dob,role}) {
+  User({mail, name, surname, password, dob, role}) {
     this.email = mail;
     this.password = password;
     this.surname = surname;
     this.name = name;
     this.dateOfBirth = dob;
-    this.role=role;
+    this.role = role;
   }
   String getUserName() {
     return this.name + " " + this.surname;
@@ -30,38 +30,44 @@ class User {
         "role": "ROLE_USER",
       };
   Map<String, dynamic> toJsonUpdate(bool changePassowrd) {
-    if(changePassowrd){
-        print(password);
-    
-    return {
-      "email": email,
-      "password": password,
-      "surname": surname,
-      "dob": dateOfBirth,
-      "name": name,
-      "phoneNumber": phoneNumber,
-      "role": role,
-      "userID": userID
-    };
-    }
-    else{
+    if (changePassowrd) {
+      print(password);
+
       return {
-      "email": email,
-      "surname": surname,
-      "dob": dateOfBirth,
-      "name": name,
-      "phoneNumber": phoneNumber,
-      "role": role,
-      "userID": userID
-    };
+        "email": email,
+        "password": password,
+        "surname": surname,
+        "dob": dateOfBirth,
+        "name": name,
+        "phoneNumber": phoneNumber,
+        "role": role,
+        "userID": userID
+      };
+    } else {
+      return {
+        "email": email,
+        "surname": surname,
+        "dob": dateOfBirth,
+        "name": name,
+        "phoneNumber": phoneNumber,
+        "role": role,
+        "userID": userID
+      };
     }
   }
 
-  Map<String, dynamic> toJsonBecameSeller() => {
-        
+  Map<String, dynamic> toJsonBecameSeller() {
+    this.role="ROLE_SELLER";
+    return {
         "role": "ROLE_SELLER",
-        "userID": userID
+        "email": email,
+        "surname": surname,
+        "dob": dateOfBirth,
+        "name": name,
+        "phoneNumber": phoneNumber,
+        "userID": userID,
       };
+      }
 
   User.fromJson(Map<String, dynamic> json)
       : role = json["role"],

@@ -127,6 +127,7 @@ class _AddAddressState extends State<AddAddress> {
                   autofocus: false,
                 ),
               ),
+              SizedBox(height: 8,),
               Container(
                 width: 300,
                 child: TextFormField(
@@ -173,6 +174,7 @@ class _AddAddressState extends State<AddAddress> {
                   autofocus: false,
                 ),
               ),
+              SizedBox(height: 8,),
               Container(
                 child: TextFormField(
                   style: TextStyle(color: Colors.white),

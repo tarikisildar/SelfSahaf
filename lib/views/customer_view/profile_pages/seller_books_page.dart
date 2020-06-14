@@ -97,7 +97,7 @@ class _SellerBooksPage extends State<SellerBooksPage> {
                                             builder: (context) => BookProfile(
                                                   selectedBook:
                                                       sellerBooks[index],
-                                                  type: 0,
+                                                  type: 1,
                                                 )));
                                   },
                                 ),

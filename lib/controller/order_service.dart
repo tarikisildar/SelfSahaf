@@ -133,7 +133,8 @@ class OrderService extends GeneralServices {
   Future<APIResponse<int>> refundEvaulate(bool confirm, int refundID) async {
     try {
       Response response = await _dio.post("order/refundEvaluate",
-          queryParameters: {"confirm": confirm, "refundID": refundID});
+          queryParameters: {"confirm": confirm,
+           "refundId": refundID});
       if (response.statusCode == 200) {
         return APIResponse<int>(data: response.statusCode);
       }

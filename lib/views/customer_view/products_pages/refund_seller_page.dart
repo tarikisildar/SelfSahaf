@@ -374,7 +374,7 @@ class _RefundRequestState extends State<RefundRequest> {
                                                     Expanded(
                                                       flex: 12,
                                                       child: Text(
-                                                        "Status: ",
+                                                        "Refund Status: ",
                                                         style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
@@ -386,7 +386,38 @@ class _RefundRequestState extends State<RefundRequest> {
                                                       flex: 12,
                                                       child: Text(
                                                         refundList[index]
-                                                            .order
+                                                            .status,
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                               Expanded(
+                                                flex: 1,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Text(
+                                                        "Order Status: ",
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Text(
+                                                        refundList[index].order
                                                             .status,
                                                         style: TextStyle(
                                                             color: Theme.of(

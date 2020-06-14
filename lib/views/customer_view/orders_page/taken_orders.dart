@@ -24,17 +24,17 @@ class _TakenOrdersState extends State<TakenOrders> {
 
   _markDialog(BuildContext context, Order order) {
     List<String> status;
-      String markedAs;
-      bool error=false;
-      String errorMessage;
-      String orderStatus=order.status;
+    String markedAs;
+    bool error = false;
+    String errorMessage;
+    String orderStatus = order.status;
     if (order.status == "CONFIRMED")
       status = ["SHIPPING", "DELIVERED"];
     else if (order.status == "SHIPPING")
       status = ["DELIVERED"];
     else if (order.status == "CANCELLED")
       status = ["CANCELLED"];
-      else if (order.status == "DELIVERED")
+    else if (order.status == "DELIVERED")
       status = ["DELIVERED"];
     else if (order.status == "REFUNDREQUEST")
       status = ["REFUNDREQUEST"];
@@ -42,10 +42,10 @@ class _TakenOrdersState extends State<TakenOrders> {
       status = ["REFUNDED"];
     else if (order.status == "BLOCKED")
       status = ["BLOCKED"];
-    else{
-      status = ["CONFIRMED", "SHIPPING", "DELIVERED"];
-      orderStatus="Select Status";
-      }
+    else {
+      status = ["CONFIRMED", "SHIPPING", "DELIVERED", "CANCELLED"];
+      orderStatus = "Select Status";
+    }
 
     return showDialog(
         context: context,
@@ -61,7 +61,7 @@ class _TakenOrdersState extends State<TakenOrders> {
                 children: <Widget>[
                   DropdownButton<String>(
                     hint: Text(
-                     orderStatus,
+                      orderStatus,
                       style: TextStyle(color: Colors.white),
                     ),
                     items: status.map((String dropdownItem) {
@@ -80,7 +80,12 @@ class _TakenOrdersState extends State<TakenOrders> {
                     },
                     value: markedAs,
                   ),
-                  (error)?Text(errorMessage,style: TextStyle(color:Colors.white),):Container(),
+                  (error)
+                      ? Text(
+                          errorMessage,
+                          style: TextStyle(color: Colors.white),
+                        )
+                      : Container(),
                   Container(
                     alignment: Alignment.centerRight,
                     child: Row(
@@ -96,24 +101,26 @@ class _TakenOrdersState extends State<TakenOrders> {
                             onPressed: () {
                               if (markedAs == null) {
                                 setState(() {
-                                    error=true;
-                                    errorMessage="Please select a status";
+                                  error = true;
+                                  errorMessage = "Please select a status";
                                 });
-                              
+
                                 print("please mark order.");
                               } else {
                                 print(markedAs);
-                                orderService.markOrder(order.orderDetailID, order.product.productID, markedAs).then((value) {
-                                  if(!value.error){
+                                orderService
+                                    .markOrder(order.orderDetailID,
+                                        order.product.productID, markedAs)
+                                    .then((value) {
+                                  if (!value.error) {
                                     _refresh();
                                     Navigator.pop(context);
-                                  }
-                                  else{
+                                  } else {
                                     setState(() {
-                                          error=true;
-                                          errorMessage=value.errorMessage;
+                                      error = true;
+                                      errorMessage = value.errorMessage;
                                     });
-                                
+
                                     print(value.errorMessage);
                                   }
                                 });
@@ -192,7 +199,6 @@ class _TakenOrdersState extends State<TakenOrders> {
           title: Container(
               height: 50,
               child: Image.asset("images/logo_white/logo_white.png")),
-         
         ),
         body: RefreshIndicator(
             onRefresh: () => _refresh(),
