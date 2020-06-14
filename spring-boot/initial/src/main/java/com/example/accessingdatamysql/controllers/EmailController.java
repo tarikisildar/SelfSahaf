@@ -34,7 +34,9 @@ public class EmailController {
 
     @ApiOperation("Send email to a user")
     @PostMapping(value = "/sendEmailToUser")
-    public @ResponseBody String sendEmailToUser(String email, String title, String context) throws IOException, MessagingException {
+    public @ResponseBody String sendEmailToUser(String email, String title, String context){
+
+
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom("selfsahaf.ss@gmail.com");
         msg.setTo(email);
@@ -42,7 +44,15 @@ public class EmailController {
         msg.setSubject(title);
         msg.setText(context);
 
-        javaMailSender.send(msg);
+        try{
+            javaMailSender.send(msg);
+        }
+        catch(Exception e){
+            return "Email could not be send.";
+        }
+
+
+
         return "Email sent successfully";
     }
 
