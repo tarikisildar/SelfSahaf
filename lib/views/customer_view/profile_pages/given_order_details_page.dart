@@ -90,10 +90,11 @@ class _GivenOrderDetailsState extends State<GivenOrderDetails> {
                         bookName: orderList[index].product.name,
                         authorName: orderList[index].product.authorName,
                         publisherName: orderList[index].product.publisher,
-                        price: "${orderList[index].product.price}",
+                        price: orderList[index].product.price,
                         productID: orderList[index].product.productID,
                         sellerID: orderList[index].product.sellerID,
                         type: 0,
+                        discount: orderList[index].product.discount,
                       ),
                       direction: DismissDirection.endToStart,
                       onDismissed: (direction) {

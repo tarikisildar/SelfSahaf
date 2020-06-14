@@ -73,13 +73,40 @@ class _BookCardState extends State<BookCard> {
                                 ),
                               ),
                               Expanded(
-                                flex: 2,
-                                child: Text(
+
+                                flex: 4,
+                                child: Container(
+                                  padding: EdgeInsets.only(left:30),
+                                  alignment: Alignment.centerRight,
+                                  child:
+                               (widget.book.discount ==
+                                                0)
+                                            ? Text(
+                                                "${widget.book.price } TL",
+                                                style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800),
+                                              )
+                                            : ListTile(
+                                                title: Text(
+                                                  "${(widget.book.price - widget.book.price * widget.book.discount / 100) } TL",
+                                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800,
+                                                )),
+                                                subtitle: Text(
+                                                  "${widget.book.price } TL",
+                                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800, decoration: TextDecoration.lineThrough)
+                                                ),
+                                              ),
+                                ), /*Text(
                                   "${widget.book.price} TL",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w800),
-                                ),
+                                )*/
                               ),
                             ],
                           ),

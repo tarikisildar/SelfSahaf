@@ -92,12 +92,14 @@ class _BookProfileState extends State<BookProfile> {
                                 MaterialPageRoute(
                                     builder: (context) => ShoppingCart()));
                       })
-                  :(widget.type==3)?Container(): IconButton(
-                      icon: Icon(Icons.save),
-                      onPressed: () {
-                        print("salam");
-                        Navigator.of(context).pop(this._itemCount);
-                      })
+                  : (widget.type == 3)
+                      ? Container()
+                      : IconButton(
+                          icon: Icon(Icons.save),
+                          onPressed: () {
+                            print("salam");
+                            Navigator.of(context).pop(this._itemCount);
+                          })
         ],
       ),
       body: (_loading)
@@ -139,7 +141,7 @@ class _BookProfileState extends State<BookProfile> {
                       ),
                     ),
                     Container(
-                      height: 60,
+                      height: 70,
                       child: Row(
                         children: <Widget>[
                           Expanded(
@@ -175,66 +177,100 @@ class _BookProfileState extends State<BookProfile> {
                                           color: Theme.of(context).primaryColor,
                                           fontSize: 25),
                                     )),
-                                  (widget.selectedBook.quantity==_itemCount)?Container():
-                                new IconButton(
-                                    icon: new Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      size: 35,
-                                    ),
-                                    onPressed: () =>
-                                        setState(() => _itemCount++)),
+                                (widget.selectedBook.quantity == _itemCount)
+                                    ? Container()
+                                    : new IconButton(
+                                        icon: new Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                          size: 35,
+                                        ),
+                                        onPressed: () =>
+                                            setState(() => _itemCount++)),
                               ])),
                           Expanded(
-                              flex: 10,
+                              flex: 11,
                               child: InkWell(
                                   child: Container(
-                                    margin: EdgeInsets.only(right: 15),
-                                    width: double.maxFinite,
-                                    height: 50,
+                               alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.only(bottom: 30,left: 15,),
+                                    margin: EdgeInsets.only(right: 15,bottom: 10),
+                                  
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(25))),
                                     child: Center(
-                                        child: Text(
-                                      "${widget.selectedBook.price * _itemCount} TL",
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 16),
-                                    )),
+                                        child: (widget.selectedBook.discount ==
+                                                0)
+                                            ? Text(
+                                                "${widget.selectedBook.price * _itemCount} TL",
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    fontSize: 16),
+                                              )
+                                            : ListTile(
+                                                title: Text(
+                                                  "${(widget.selectedBook.price - widget.selectedBook.price * widget.selectedBook.discount / 100) * _itemCount} TL",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontSize: 16),
+                                                ),
+                                                subtitle: Text(
+                                                  "${widget.selectedBook.price * _itemCount} TL",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontSize: 13,
+                                                      decoration: TextDecoration
+                                                          .lineThrough),
+                                                ),
+                                              )),
                                   ),
                                   onTap: () {
                                     (_user.role == "ROLE_ANON")
                                         ? ErrorDialog().showLogin(context)
-                                        :(widget.selectedBook.sellerID==_user.userID)? ErrorDialog().showErrorDialog(context,"Error!", "You can not buy your product!"):_cartService
-                                            .addItemToCart(
-                                                _itemCount,
-                                                widget.selectedBook.productID,
-                                                widget.selectedBook.sellerID)
-                                            .then((value) {
-                                            if (!value.error) {
-                                              _scaffoldKey.currentState
-                                                  .showSnackBar(SnackBar(
-                                                duration: Duration(seconds: 1),
-                                                backgroundColor: Colors.white,
-                                                content: Text(
-                                                  "Added to the cart.",
-                                                  style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        230, 81, 0, 1),
-                                                    fontSize: 18,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ));
-                                            } else {
-                                              ErrorDialog().showErrorDialog(
-                                                  context,
-                                                  "Error!",
-                                                  value.errorMessage);
-                                            }
-                                          });
+                                        : (widget.selectedBook.sellerID ==
+                                                _user.userID)
+                                            ? ErrorDialog().showErrorDialog(
+                                                context,
+                                                "Error!",
+                                                "You can not buy your product!")
+                                            : _cartService
+                                                .addItemToCart(
+                                                    _itemCount,
+                                                    widget
+                                                        .selectedBook.productID,
+                                                    widget
+                                                        .selectedBook.sellerID)
+                                                .then((value) {
+                                                if (!value.error) {
+                                                  _scaffoldKey.currentState
+                                                      .showSnackBar(SnackBar(
+                                                    duration:
+                                                        Duration(seconds: 1),
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    content: Text(
+                                                      "Added to the cart.",
+                                                      style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            230, 81, 0, 1),
+                                                        fontSize: 18,
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ));
+                                                } else {
+                                                  ErrorDialog().showErrorDialog(
+                                                      context,
+                                                      "Error!",
+                                                      value.errorMessage);
+                                                }
+                                              });
                                   }))
                         ],
                       ),
@@ -255,9 +291,8 @@ class _BookProfileState extends State<BookProfile> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => SellerProfilePage(
-                                              seller: widget.selectedBook,
-                                              type:0
-                                            )),
+                                            seller: widget.selectedBook,
+                                            type: 0)),
                                   );
                                 },
                                 child: Container(

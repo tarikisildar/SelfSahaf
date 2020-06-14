@@ -43,7 +43,7 @@ class _TakenOrdersState extends State<TakenOrders> {
     else if (order.status == "BLOCKED")
       status = ["BLOCKED"];
     else {
-      status = ["CONFIRMED", "SHIPPING", "DELIVERED", "CANCELLED"];
+      status = ["CONFIRMED", "SHIPPING", "DELIVERED"];
       orderStatus = "Select Status";
     }
 

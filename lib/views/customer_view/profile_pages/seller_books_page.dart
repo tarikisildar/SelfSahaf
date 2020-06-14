@@ -83,12 +83,13 @@ class _SellerBooksPage extends State<SellerBooksPage> {
                                     price: this
                                         .sellerBooks[index]
                                         .price
-                                        .toString(),
+                                       ,
                                     sellerID: this.sellerBooks[index].sellerID,
                                     publisherName:
                                         this.sellerBooks[index].publisher,
                                     amount: this.sellerBooks[index].quantity,
                                     type: 0,
+                                    discount: this.sellerBooks[index].discount,
                                   ),
                                   onTap: () {
                                     Navigator.push(

@@ -155,7 +155,7 @@ class ProductService extends GeneralServices {
   Future<int> updateBook(Book book) async {
     try {
       Response response = await _dio.post("product/updateBook",
-          queryParameters: {"price": book.price, "quantity": book.quantity},
+          queryParameters: {"price": book.price, "quantity": book.quantity, "discount":book.discount},
           data: jsonEncode(book.toJsonBookUpdate()));
       print(response.statusCode);
       return response.statusCode;

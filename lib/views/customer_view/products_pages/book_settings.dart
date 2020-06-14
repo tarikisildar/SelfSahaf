@@ -49,7 +49,8 @@ class _BookSettingsPage extends State<BookSettingsPage> {
   ];
   String selectedLanguage;
   bool _isLoading = true;
-String condition;
+String condition="NEW";
+String status;
   @override
   void initState() {
     print(widget.selectedBook.sellerName);
@@ -68,9 +69,11 @@ String condition;
         TextEditingController(text: "${widget.selectedBook.quantity}");
     _descController =
         TextEditingController(text: widget.selectedBook.description);
-    discountController=TextEditingController(text:widget.selectedBook.discount.toString());
+    discountController=TextEditingController(text:"${widget.selectedBook.discount}");
     selectedLanguage = widget.selectedBook.language;
     _getCategories();
+    condition=widget.selectedBook.condition;
+    status=widget.selectedBook.status;
   }
 
   _getCategories() async {
@@ -105,7 +108,7 @@ String condition;
 
   String _booknameValidation(String email) {
     bool emailValid = false;
-    if (email.length >= 5) emailValid = true;
+    if (email.length >= 2) emailValid = true;
     return emailValid ? null : 'not valid book name.';
   }
 
@@ -167,6 +170,7 @@ String condition;
             print("sa");
             Book oldBook = widget.selectedBook;
             Book updatedBook = Book.bookForUpdate(
+              discount: int.parse(discountController.text),
                 authorName: _authorController.text,
                 description: _descController.text,
                 categoryID: selectedCategory.categoryID,
@@ -180,8 +184,8 @@ String condition;
                 publisher: _publisherController.text,
                 quantity: int.parse(_quantityController.text),
                 sellerName: userService.getUser().name,
-                condition: this.condition,
-                status: "ACTIVE"
+                condition: condition,
+                status: status
                 );
             productService.updateBook(updatedBook).then((e) {
               if (e == 200) {
@@ -400,10 +404,7 @@ String condition;
                             child: SafeArea(
                               child: DropdownButton<String>(
                                 
-                                hint: Text(
-                                  widget.selectedBook.condition,
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                               
                                 items: ["NEW", "SECONDHAND"]
                                     .map((String dropdownItem) {
                                   return DropdownMenuItem<String>(

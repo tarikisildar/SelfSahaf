@@ -118,11 +118,12 @@ class _ShoppingCartState extends State<ShoppingCart> {
                                 bookName: _cartList[index].book.name,
                                 authorName: _cartList[index].book.authorName,
                                 publisherName: _cartList[index].book.publisher,
-                                price: "${_cartList[index].price}",
+                                price: _cartList[index].price,
                                 productID: _cartList[index].productID,
                                 sellerID: _cartList[index].sellerID,
                                 type: 1,
                                 amount: _cartList[index].amount,
+                                discount: _cartList[index].book.discount,
                               ),
                               direction: DismissDirection.horizontal,
 

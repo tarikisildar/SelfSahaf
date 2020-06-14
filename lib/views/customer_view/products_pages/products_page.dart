@@ -123,10 +123,11 @@ class _ProductsPageState extends State<ProductsPage> {
                       bookName: bookList[index].name,
                       authorName: bookList[index].authorName,
                       publisherName: bookList[index].publisher,
-                      price: "${bookList[index].price}",
+                      price: bookList[index].price,
                       productID: bookList[index].productID,
                       sellerID: bookList[index].sellerID,
                       type: 0,
+                      discount: bookList[index].discount,
                     ),
                     direction: DismissDirection.horizontal,
                     onDismissed: (direction) {

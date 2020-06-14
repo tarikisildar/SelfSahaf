@@ -9,10 +9,11 @@ class ProductCard extends StatefulWidget {
   final String bookName;
   final String authorName;
   final String publisherName;
-  final String price;
+  final double price;
   final int sellerID, productID;
   final int type;
   final int amount;
+  final int discount;
   ProductCard(
       {@required this.bookName,
       @required this.authorName,
@@ -21,7 +22,8 @@ class ProductCard extends StatefulWidget {
       @required this.sellerID,
       @required this.productID,
       @required this.type,
-      this.amount});
+      this.amount,
+      @required this.discount});
 
   @override
   _ProductsCardState createState() {
@@ -32,8 +34,16 @@ class ProductCard extends StatefulWidget {
 class _ProductsCardState extends State<ProductCard> {
   ProductService get _productService => GetIt.I<ProductService>();
   Uint8List photo;
+  double currentprice;
   @override
   void initState() {
+ 
+    if(widget.discount==0){
+   currentprice=widget.price;
+    }
+    else{
+      currentprice=widget.price-widget.price*widget.discount/100;
+    }
     super.initState();
     _productService
         .getImage(widget.sellerID, widget.productID, 1)
@@ -132,9 +142,9 @@ class _ProductsCardState extends State<ProductCard> {
                                 ? "Amount: " +
                                     widget.amount.toString() +
                                     "    " +
-                                    widget.price.toString() +
+                                    currentprice.toString() +
                                     " TL"
-                                : widget.price + " TL",
+                                : currentprice.toString() + " TL",
                             style: TextStyle(
                               color: Color(0xffe65100),
                               fontSize: 12,
