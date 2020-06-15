@@ -339,7 +339,7 @@ bool increasing=true;
                     (bookList.length == 0)
                         ? Center(
                             child: Text(
-                              "No book on sale",
+                              "No books on sale",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 25),
                             ),

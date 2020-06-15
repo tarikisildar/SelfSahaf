@@ -57,7 +57,7 @@ class _SettingsPage extends State<SettingsPage> {
 
   final _emailController = TextEditingController();
   final MaskedTextController _phoneController =
-      MaskedTextController(mask: '0 000 000 00 00');
+      MaskedTextController(mask: '000 000 00 00');
   final _fnameController = TextEditingController();
   final _surnameController = TextEditingController();
   final _passController = TextEditingController();

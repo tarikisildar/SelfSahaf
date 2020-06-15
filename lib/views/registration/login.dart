@@ -57,7 +57,11 @@ class _LoginPageState extends State<LoginPage> {
     String pattern =
         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.!@#\$&*~]).{8,24}$';
     RegExp regExp = new RegExp(pattern);
-    return regExp.hasMatch(passwrd) ? null : "not valid password";
+    return regExp.hasMatch(passwrd) ? null : """Password must include at least
+    1 uppercase letter,
+    1 lowercase letter,
+    1 number and 1 sign.
+    Password length must be between 8 and 24""";
   }
 
   String message(statusCode) {
@@ -131,13 +135,9 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Color.fromRGBO(230, 81, 0, 1))),
                         color: Colors.white,
                         onPressed: () async {
-                          //@TODO : degistir bunu
-                          _login();
-                          /*if (_formKey.currentState.validate()) {
-                            
-                          } else {
-                            print("not valid.");
-                          }*/
+                          if (_formKey.currentState.validate()) {
+                            _login();
+                          } 
                         },
                         child: Text(
                           "Login",
