@@ -178,4 +178,28 @@ class SearchService extends GeneralServices {
           data: null, error: true, errorMessage: "Some errors occurs.");
     }
   }
+  
+  Future<APIResponse<List<User>>> getAllUsers() async {
+    try {
+      Response response = await _dio
+          .get("user/all");
+      print(response.data);
+      if (response.statusCode == 200) {
+        if (response.data.length != 0) {
+          List<User> result;
+          List<dynamic> i = response.data;
+          result = i.map((p) => User.fromJson(p)).toList();
+    
+          return APIResponse(data: result);
+        } else {
+          return APIResponse(data: null);
+        }
+      }
+      return APIResponse(
+          data: null, error: true, errorMessage: "Some errors occurs.");
+    } on DioError catch (e) {
+      return APIResponse(
+          data: null, error: true, errorMessage: "Some errors occurs.");
+    }
+  }
 }
