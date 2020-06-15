@@ -95,7 +95,9 @@ class _ProductsPageState extends State<ProductsPage> {
                     if (e != null) bookList.add(e);
                     WidgetsBinding.instance.addPostFrameCallback(
                         (_) => _refreshIndicatorKey.currentState.show());
+                        _isloading=true;
                   });
+                  _refresh();
                 });
               }),
         ],
