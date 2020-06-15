@@ -33,6 +33,25 @@ class _AdminSearchState extends State<AdminSearch> {
       }
     });
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    _getUsers();
+  }
+  _getUsers()async{
+    searchService.getAllUsers().then((value) {
+  if (!value.error) {
+        setState(() {
+          users = value.data;
+          _isloading = false;
+        });
+      } else {
+        users = value.data;
+        _isloading = false;
+        ErrorDialog().showErrorDialog(context, "Error!", value.errorMessage);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -84,61 +84,61 @@ class _CreditCardFormState extends State<CreditCardForm> {
     creditCardModel = CreditCardModel(cardNumber, expiryDate, cardHolderName,
         cardHolderSurname, cvvCode, isCvvFocused);
   }
-bool isNumberic(String value){
-return  (int.parse(value)!=null)?true:false;
-}
-  String _cardholdernameValidation(String value) {
 
+  bool isNumberic(String value) {
+    return (int.parse(value) != null) ? true : false;
+  }
+
+  String _cardholdernameValidation(String value) {
     bool cardHolderName = false;
-    if (value.length>=3) cardHolderName = true;
+    if (value.length >= 3) cardHolderName = true;
     return cardHolderName ? null : 'not valid card holder name.';
   }
-  String _cardYearValidation(String value){
-    bool cardYearValid=false;
-    var mountandYear=value.split("/");
-    if(mountandYear.length!=2)
-    return "please give all date";
-    String mount=mountandYear[0];
-    String year=mountandYear[1];
-    var time=DateTime.now().toString().split("-");
-    if(!isNumberic(year)||!isNumberic(mount))
-      return "Date must be numberic";
-    String timeYear=time[0][2]+time[0][3];
-    if(int.parse(year)<int.parse(timeYear))
-    return "Please give correct year";
-    if(int.parse(year)==int.parse(timeYear)){
-      if(int.parse(mount)<int.parse(time[1])){
-        if(int.parse(mount)<=12){
-          return null;
-        }
-        else {
-          return "Please give correct month";
-        }
-      }
-      else 
-      return null;
+
+  String _cardYearValidation(String value) {
+    bool cardYearValid = false;
+    var mountandYear = value.split("/");
+    if (mountandYear.length != 2) return "please give all date";
+    String mount = mountandYear[0];
+    String year = mountandYear[1];
+    var time = DateTime.now().toString().split("-");
+    print(time[0]);
+    if (!isNumberic(year) || !isNumberic(mount)) return "Date must be numberic";
+    String timeYear = time[0][2] + time[0][3];
+    if (int.parse(year) < int.parse(timeYear))
+      return "please give correct year";
+    if (int.parse(mount) >= 13) {
+      return "please give correct month";
+    }
+
+    if (int.parse(year) == int.parse(timeYear)) {
+      if (int.parse(mount) < int.parse(time[1])) {
+        return "please give correct month";
+      } else
+        return null;
     }
     return null;
   }
-   String _cardHolderSurnameValidation(String value) {
 
+  String _cardHolderSurnameValidation(String value) {
     bool cardHolderName = false;
-    if (value.length>=3) cardHolderName = true;
+    if (value.length >= 3) cardHolderName = true;
     return cardHolderName ? null : 'not valid card holder surname.';
   }
+
   String _cardNumberValidation(String value) {
     bool _cardNumberValid = false;
-    if(value.length==19){
-return null;
-
-    }
-    else
+    if (value.length == 19) {
+      return null;
+    } else
       return "Invalid card number.";
-
   }
-   String _cardCVVValidation(String value) {
+
+  String _cardCVVValidation(String value) {
     bool _cardCVVValid = false;
-      (value.length==3)?(isNumberic(value))? _cardCVVValid = true:_cardCVVValid=false :_cardCVVValid=false;
+    (value.length == 3)
+        ? (isNumberic(value)) ? _cardCVVValid = true : _cardCVVValid = false
+        : _cardCVVValid = false;
     return _cardCVVValid ? null : 'not valid CVV number.';
   }
 
@@ -260,7 +260,6 @@ return null;
                     )),
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
-               
               ),
             ),
             Container(
@@ -371,8 +370,7 @@ return null;
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
               child: TextFormField(
-              
-                 validator: _cardholdernameValidation,
+                validator: _cardholdernameValidation,
                 controller: _cardHolderNameController,
                 cursorColor: widget.cursorColor ?? themeColor,
                 style: TextStyle(
@@ -478,20 +476,22 @@ return null;
                   color: Colors.white,
                   onPressed: () async {
                     if (formKey.currentState.validate()) {
-      /*_cardNumberController.text,
+                      /*_cardNumberController.text,
                         _expiryDateController.text,
                         _cardHolderNameController.text,
                         _cardHolderSurnameController.text,
                         _cvvCodeController.text,
-                        isCvvFocused*/ 
-                       CardModel myCard = new CardModel(
-                         cardNumber: _cardNumberController.text.split(" ").join(),
-                         cvv: _cvvCodeController.text,
-                         ownerName:_cardHolderNameController.text,
-                         ownerSurname: _cardHolderSurnameController.text,
-                         expirationMonth: _expiryDateController.text.split("/")[0],
-                         expirationYear: _expiryDateController.text.split("/")[1]
-                        );
+                        isCvvFocused*/
+                      CardModel myCard = new CardModel(
+                          cardNumber:
+                              _cardNumberController.text.split(" ").join(),
+                          cvv: _cvvCodeController.text,
+                          ownerName: _cardHolderNameController.text,
+                          ownerSurname: _cardHolderSurnameController.text,
+                          expirationMonth:
+                              _expiryDateController.text.split("/")[0],
+                          expirationYear:
+                              _expiryDateController.text.split("/")[1]);
                       Navigator.push(
                         context,
                         MaterialPageRoute(

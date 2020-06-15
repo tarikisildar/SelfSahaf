@@ -1,3 +1,4 @@
+import 'package:Selfsahaf/views/errors/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:Selfsahaf/views/registration/input_field.dart';
@@ -9,12 +10,15 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import "package:progress_dialog/progress_dialog.dart";
+
 class AddBook extends StatefulWidget {
   @override
   _AddBookState createState() => new _AddBookState();
 }
 
 class _AddBookState extends State<AddBook> {
+  ProgressDialog progressDialog;
   final _formKey = GlobalKey<FormState>();
   ProductService get productService => GetIt.I<ProductService>();
   AuthService get userService => GetIt.I<AuthService>();
@@ -140,6 +144,31 @@ class _AddBookState extends State<AddBook> {
 
   @override
   Widget build(BuildContext context) {
+    progressDialog = ProgressDialog(context,
+        type: ProgressDialogType.Download,
+        isDismissible: false,
+        showLogs: true);
+   progressDialog.style(
+
+  message: 'Photo uploading. Please wait...',
+  borderRadius: 10.0,
+  backgroundColor: Colors.deepOrange,
+  progressWidget:  Container(
+                color: Colors.transparent,
+                child: Center(
+                    child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                ))),
+  elevation: 10.0,
+  insetAnimCurve: Curves.easeInOut,
+  progress: 0.0,
+  maxProgress: 100.0,
+  progressTextStyle: TextStyle(
+     color: Colors.white, fontSize: 13.0, fontWeight: FontWeight.w400),
+  messageTextStyle: TextStyle(
+     color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.w600)
+  );     
+
     return Scaffold(
         backgroundColor: Color(0xffe65100),
         floatingActionButton: SpeedDial(
@@ -195,7 +224,12 @@ class _AddBookState extends State<AddBook> {
         ),
         body: Builder(builder: (context) {
           if (_isLoading) {
-            return CircularProgressIndicator();
+            return Container(
+                color: Colors.transparent,
+                child: Center(
+                    child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                )));
           } else
             return Container(
               child: Padding(
@@ -433,7 +467,7 @@ class _AddBookState extends State<AddBook> {
                                   if (_formKey.currentState.validate() &&
                                       selectedCategory != null &&
                                       selectedLanguage != null &&
-                                      this.condition != null &&
+                                      condition != null &&
                                       _imagesList.length != 0) {
                                     Book addedBook = Book(
                                         categoryID: selectedCategory.categoryID,
@@ -453,20 +487,21 @@ class _AddBookState extends State<AddBook> {
                                         sellerName:
                                             userService.getUser().getUserName(),
                                         publisher: _publisherController.text);
-                                        setState(() {
-                                          _isLoading=true;
-                                        });
+
                                     productService
                                         .addBook(addedBook,
                                             userService.getUser().userID)
                                         .then((e) {
                                       productService
-                                          .uploadImages(_imagesList, e)
+                                          .uploadImages(
+                                              _imagesList, e, progressDialog)
                                           .then((value) {
-                                        if (value == 200)
+                                        if (value == 200) {
+                                      
                                           Navigator.of(context).pop(addedBook);
-                                        else {
+                                        } else {
                                           productService.deleteBook(e);
+                                          ErrorDialog().showErrorDialog(context,"Error", "Some error occurs book can not created");
                                           print("HATA");
                                           print(value);
                                           print(e);
@@ -475,7 +510,13 @@ class _AddBookState extends State<AddBook> {
                                     });
                                   } else if (selectedLanguage == null ||
                                       selectedCategory == null ||
-                                      _imagesList.length == 0) {
+                                      _imagesList.length == 0 ||
+                                      condition != null) {
+                                        print(selectedLanguage);
+                                        print(selectedCategory);
+                                        print(condition);
+                                        print(_imagesList.length);
+                                 
                                     showDialog(
                                         context: context,
                                         builder: (context) {
@@ -496,7 +537,7 @@ class _AddBookState extends State<AddBook> {
                                                     style: TextStyle(
                                                         color: Colors.white))
                                                 : Text(
-                                                    "Please select category or language.",
+                                                    "Please select category, language or condition.",
                                                     style: TextStyle(
                                                         color: Colors.white)),
                                             actions: <Widget>[
