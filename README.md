@@ -1,4 +1,4 @@
-![alt text](https://drive.google.com/uc?export=view&id=1BfBshAS5oyfF3D3lDnz_Pzbvmy3hVqjZ)
+![selfsahaf](https://imgur.com/Z3dCGNZ)
 # SelfSahaf
 
 SelfSahaf is a 2nd hand book selling app that aims for c2c relations on book industry. It developed by 5 developers as a part of Hacettepe University Software Engineering course project.
