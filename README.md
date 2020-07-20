@@ -1,7 +1,7 @@
 ![selfsahaf](https://imgur.com/Z3dCGNZ)
 # SelfSahaf
 
-SelfSahaf is a 2nd hand book selling app that aims for c2c relations on book industry. It developed by 5 developers as a part of Hacettepe University Software Engineering course project.
+SelfSahaf is a second hand book selling app that aims for customer to customer relations in the book industry. It developed by 5 developers as a part of Hacettepe University Software Engineering course project.
 
 ## Used Technologies
 * Programming Language & Framework: Java Spring Boot(backend) + Dart Flutter(frontend)
